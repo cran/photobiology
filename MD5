@@ -1,7 +1,6 @@
-102eadf38523775353673ce221271cba *DESCRIPTION
-6f129bc56c02045a7b89bded5a643ef4 *NAMESPACE
-e2d096454510664aa0e5af831e16d645 *NEWS
-c0bd26b0ebe2e43ad77326a2c870b5d7 *R/RcppExports.R
+1bb1f6afd6ecccc1330c579f9f292fb4 *DESCRIPTION
+94b83287e9403b5fc93f77de605c7803 *NAMESPACE
+866c8c4017383cdfef97dd7374a7b7ac *NEWS
 71fc59c43ac474f6ca16e64b0df4df96 *R/as.energy.r
 51f7aa8bce5d882eae7a94a6ba7e7953 *R/as.quantum.mol.r
 d35784ac23d225fdf0c6db3eaaeac401 *R/as.quantum.r
@@ -21,6 +20,8 @@ e0113bdc13ac4c586d737cde33adec59 *R/div.spectra.r
 35cb93e411416d4a4887dc6fd3323e43 *R/energy.ratio.r
 d70b2bdd4771e185dee7744fe3782990 *R/fel.spectrum.r
 ff29280df559f3120cb0816cf75461c2 *R/filter.data.r
+3bf80e248af8a74c1bcaa6e644b7cd0b *R/insert.hinges.r
+1b911e6ca6bd6e8a91b15b8247b3c4b8 *R/integrate.xy.r
 d5b033a4858ff0790797bc74c8feb811 *R/interpolate.spectrum.r
 b05e21f23742e0632791272fc61cf897 *R/irradiance.r
 1b512d860f59555714ba95724b38c9cb *R/mspct.classes.R
@@ -29,7 +30,7 @@ a402ff0e417885a1bbfa27bfe5c97010 *R/mspct.methods.R
 31bb4d6392ebf23be0781c1f81a418cc *R/normalized.diff.idx.r
 adb3b531c2ea099fe30f4ad0b73af04b *R/object.data.r
 aad8d6482a218ac550a40a9847acd48c *R/oper.spectra.r
-61bfa15dd862ab639f0968592b172857 *R/photobiology.r
+2a98ea1fc79a48e4b101fd5b6637e772 *R/photobiology.r
 94ee70a8ad96521a57b86fb2f4818279 *R/photon.irradiance.r
 91fa0c1eaaff459fde1672f06937bf47 *R/photon.ratio.r
 ae56b362818742acb64bf42dc7f328ba *R/photons.energy.ratio.r
@@ -44,7 +45,7 @@ e1d614170516ffeb1f591a37851a56cc *R/spct.absorptance.R
 04d1170f45cad5fe979d688beaac8296 *R/spct.clean.r
 de254a2ccdc3b0e057d7f27d152bea08 *R/spct.fscale.r
 04dd38bb8847a04c801d64f89a47df5c *R/spct.fshift.r
-5ada44f989571f9977ac03cdab939ff7 *R/spct.insert.spct.hinges.r
+2637c2be08f6e593a752c8fa249d4195 *R/spct.insert.spct.hinges.r
 7435207ba9e10fe4bb9a1ab4ca4b67aa *R/spct.integrate.r
 ec4121ee9c73cb682c87442091a38b5e *R/spct.irrad.r
 9b0559ad7a85abb38e86f31b5a4b0c87 *R/spct.new.r
@@ -58,7 +59,7 @@ fb03d0ded08c12a4ea97fa3bcc709152 *R/spct.response.R
 4d6c47a330e84754a54ca7caf0dcea44 *R/spct.smooth.spct.r
 bf9b3c3e94b9271670fadfd8dfecf3d5 *R/spct.summaries.r
 2499e681df18a84d18e7751b41f62acd *R/spct.tag.r
-6eb31b15f4eb934e32521adfc53596f8 *R/spct.transmittance.r
+1bf2709ade0b693202a5bb3ed1f9857a *R/spct.transmittance.r
 7f58c020a3e4bd5480aa5516c7ad682e *R/spct.trim.r
 e8b70642ef8278d596133d451886971f *R/spct.upgrade.r
 1a3bd112b6ca3e391944e6411cc79e8c *R/split.energy.irradiance.r
@@ -75,7 +76,7 @@ fdf450f5587fd19cea26ec7d2a61fb60 *R/trim.waveband.r
 1b9e0130ef75ec51646d398a36509cd7 *R/waveband.class.r
 483ac70a3e6e5b85117f0da8658a5093 *R/waveband.new.r
 c359cfce81052ed6beb3fb37caf90586 *R/waveband.ratio.r
-3f6c62ba20c6c28ff5f0064bdd473836 *README.md
+395f7008b5130f5e85c9e527470ae801 *README.md
 95a328b43ff6cf959a3b769224a28de8 *build/vignette.rds
 2eedb6a49b4e295ec6c07b93306badcb *data/A.illuminant.spct.rda
 5d499811b069105167b9b70706c3169a *data/D65.illuminant.spct.rda
@@ -100,8 +101,8 @@ d60aa0adde7e6507bc3b97b8cb98484a *data/sun.spct.rda
 bff1b94e7717da11913ffc8c0277002f *data/white_body.spct.rda
 eb232622fb35ce3f300bbf7f8f58f80c *data/yellow.gel.rda
 16dd645e4295339567677ffd116e55ba *inst/doc/userguide.R
-60891dd95036ef05afe124c9fd768053 *inst/doc/userguide.Rnw
-88b992b3db6edf6d67dd175a7bb2ed34 *inst/doc/userguide.pdf
+f0f3c06d1eb1e58dd6327421febf8c58 *inst/doc/userguide.Rnw
+ec288c119a36f89b047d6dcd503c685a *inst/doc/userguide.pdf
 69a22a9066a7631f104fa6431bc6ee6e *man/A.illuminant.spct.Rd
 a19dc81026621416eed4332208af3057 *man/A2T.Rd
 7d95a7277f36224e7f1bc5cc4b1f6e09 *man/D2_spectrum.Rd
@@ -190,10 +191,10 @@ f43d3bbf9f85d435865665f20139ca10 *man/getTimeUnit.Rd
 5f4c721c78eb14b5c3091cf134f277ab *man/getWhenMeasured.Rd
 3cf42b24c2e0953cecc5d2257b56db01 *man/getWhereMeasured.Rd
 09e876205b8bb1c4b587599fc2a0c124 *man/get_peaks.Rd
-d9a901bc5dca1279c37e7d9ceb310656 *man/insert_hinges.Rd
+06ee52c7bf0d57f63114ff9bd877650b *man/insert_hinges.Rd
 e19e97b25d4b957a3aa5b1b6e1efd589 *man/insert_spct_hinges.Rd
 2955c168d046458afb2ad5a0cde786ae *man/integrate_spct.Rd
-4b604d877d86c651744471a32a72acdc *man/integrate_xy.Rd
+02ddc67754273dd895a553ec51542965 *man/integrate_xy.Rd
 d855cd13faf5a7eeab03d367cc44af3e *man/interpolate_spct.Rd
 0fed14cf7cbdb140b247052c342f4d37 *man/interpolate_spectrum.Rd
 fa2e58f21a993bf093a4d05aa96aa2b0 *man/interpolate_wl.Rd
@@ -243,7 +244,6 @@ cb29501ad50492af81c911059f226ce2 *man/polyester.spct.Rd
 e53ae3c177d755440bd22297d21ca693 *man/print.summary_generic_spct.Rd
 daa2d68c600f4235f70c29bac99da741 *man/print.waveband.Rd
 8b4c8ce22868682371ecf6ebf356f54d *man/prod_spectra.Rd
-a803ead1c63a58cc4373829f388f04ca *man/put_hinges.Rd
 21f1877d567677219ddaceb430a0bc3b *man/q2e.Rd
 27eab98006e99fc715dcc774c3f67827 *man/q_fluence.Rd
 54793fbff1e60c5880dd0077a4eb1ca6 *man/q_irrad.Rd
@@ -320,12 +320,6 @@ e40851b86605d5fbc350baab39b80e77 *man/wb2spct.Rd
 d30052fe1ad3d61661fc9dd8a42f6e30 *man/wb2tagged_spct.Rd
 f9428be02cf2c42c62e9485b1feb1d5c *man/white_body.spct.Rd
 4c492028bfb8059c9734a354f9ec2b3c *man/yellow_gel.spct.Rd
-fbaeba5cea9bcfecb1df7e9f5f6e9326 *src/Makevars
-2c191867d785ec263a52669ff1533dcf *src/Makevars.win
-c31cabe26b9f9fa8fd4cd54e727b4f99 *src/RcppExports.cpp
-95df2003c6b4cf9cdf550e04c51f7c42 *src/insert.hinges.cpp
-c49be97797d3106403f091b57050d1b8 *src/integrate.xy.cpp
-a5b7670726a5e0b18dded7b1376aa674 *src/put.hinges.cpp
 97594b05994480f5a2ada05c8b6b7bea *vignettes/framed.sty
-8e4ea685fb996dcceded156e60606d41 *vignettes/userguide-concordance.tex
-60891dd95036ef05afe124c9fd768053 *vignettes/userguide.Rnw
+78dd7f5b31a5ac2442c1b6e712ace922 *vignettes/userguide-concordance.tex
+f0f3c06d1eb1e58dd6327421febf8c58 *vignettes/userguide.Rnw

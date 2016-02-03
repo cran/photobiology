@@ -1,9 +1,9 @@
 Package: photobiology
 Type: Package
 Title: Photobiological Calculations
-Version: 0.9.4
-Date: 2016-02-01
-Author: Pedro J. Aphalo
+Version: 0.9.5
+Date: 2016-02-02
+Author: Pedro J. Aphalo [aut, cre]
 Maintainer: Pedro J. Aphalo <pedro.aphalo@helsinki.fi>
 Description: Definitions of classes, methods, operators and functions for use in
     photobiology and radiation meteorology and climatology. Calculation of
@@ -16,19 +16,18 @@ Description: Definitions of classes, methods, operators and functions for use in
 License: GPL (>= 3)
 VignetteBuilder: knitr
 Depends: R (>= 3.2.0)
-Imports: Rcpp (>= 0.12.2), lubridate (>= 1.5.0), plyr (>= 1.8.3), dplyr
-        (>= 0.4.3), splus2R (>= 1.2-0), caTools (>= 1.17.1)
+Imports: lubridate (>= 1.5.0), plyr (>= 1.8.3), dplyr (>= 0.4.3),
+        splus2R (>= 1.2-0), caTools (>= 1.17.1)
 Suggests: knitr (>= 1.11), testthat (>= 0.11.0), roxygen2 (>= 5.0.1)
 LazyLoad: yes
 LazyData: yes
 ByteCompile: true
-NeedsCompilation: yes
-LinkingTo: Rcpp
 URL: http://www.r4photobiology.info/,
         https://bitbucket.org/aphalo/photobiology
 BugReports: https://bitbucket.org/aphalo/photobiology/issues
 Encoding: UTF-8
 RoxygenNote: 5.0.1
-Packaged: 2016-02-01 17:30:55 UTC; aphalo
+NeedsCompilation: no
+Packaged: 2016-02-02 20:18:47 UTC; aphalo
 Repository: CRAN
-Date/Publication: 2016-02-01 21:11:41
+Date/Publication: 2016-02-03 01:20:58
