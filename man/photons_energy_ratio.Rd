@@ -5,9 +5,8 @@
 \title{Photon:energy ratio}
 \usage{
 photons_energy_ratio(w.length, s.irrad, w.band = NULL, unit.in = "energy",
-  check.spectrum = TRUE,
-  use.cached.mult = getOption("photobiology.use.cached.mult", default =
-  FALSE), use.hinges = getOption("photobiology.use.hinges", default = NULL))
+  check.spectrum = TRUE, use.cached.mult = FALSE,
+  use.hinges = getOption("photobiology.use.hinges", default = NULL))
 }
 \arguments{
 \item{w.length}{numeric array of wavelength (nm)}
@@ -43,11 +42,9 @@ with(sun.data, photons_energy_ratio(w.length, s.e.irrad))
 
 }
 \seealso{
-Other photon and energy ratio functions: \code{\link{e_ratio.source_mspct}},
-  \code{\link{energy_ratio}},
-  \code{\link{eq_ratio.source_mspct}},
-  \code{\link{photon_ratio}},
-  \code{\link{q_ratio.source_mspct}},
-  \code{\link{qe_ratio.source_mspct}}
+Other photon and energy ratio functions: \code{\link{e_ratio}},
+  \code{\link{energy_ratio}}, \code{\link{eq_ratio}},
+  \code{\link{photon_ratio}}, \code{\link{q_ratio}},
+  \code{\link{qe_ratio}}
 }
 

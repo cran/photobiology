@@ -13,8 +13,5 @@ environment .photobio.cache the objects to be deleted}
 \description{
 Clear the cache objects stored in environment .photobio.cache
 }
-\examples{
-clear_photobio.cache()
-
-}
+\keyword{internal}
 

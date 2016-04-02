@@ -1,3 +1,13 @@
+globalVariables(".photobio.cache")
+
+.onLoad <- function(libname, pkgname) {
+  .photobio.cache <<- new.env(parent = emptyenv())
+}
+
+.onUnload <- function(libpath) {
+  rm(.photobio.cache, envir = emptyenv())
+}
+
 #' Spectral weights
 #'
 #' Calculate multipliers for selecting a range of wavelengths and optionally
@@ -25,7 +35,7 @@ calc_multipliers <-
            w.band,
            unit.out = "energy",
            unit.in = "energy",
-           use.cached.mult = getOption("photobiology.use.cached.mult", default = FALSE),
+           use.cached.mult = FALSE,
            fill = 0) {
     cache.needs.saving <- FALSE
     if (use.cached.mult && !is.null(w.band$name)) {
@@ -93,16 +103,6 @@ calc_multipliers <-
     return(mult)
   }
 
-globalVariables(".photobio.cache")
-
-.onLoad <- function(libname, pkgname) {
-  .photobio.cache <<- new.env(parent = emptyenv())
-}
-
-.onUnload <- function(libpath) {
-  rm(.photobio.cache, envir = emptyenv())
-}
-
 #' clear the spectral weights cache
 #'
 #' Clear the cache objects stored in environment .photobio.cache
@@ -110,10 +110,9 @@ globalVariables(".photobio.cache")
 #' @param pattern character string passed to ls() for selecting within the
 #'   environment .photobio.cache the objects to be deleted
 #'
-#' @examples
-#' clear_photobio.cache()
-#'
 #' @export
+#'
+#' @keywords internal
 #'
 clear_photobio.cache <- function(pattern = "*") {
   if (!exists(".photobio.cache", mode = "environment")) {

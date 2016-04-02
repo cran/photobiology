@@ -5,8 +5,7 @@
 \title{Spectral weights}
 \usage{
 calc_multipliers(w.length, w.band, unit.out = "energy", unit.in = "energy",
-  use.cached.mult = getOption("photobiology.use.cached.mult", default =
-  FALSE), fill = 0)
+  use.cached.mult = FALSE, fill = 0)
 }
 \arguments{
 \item{w.length}{numeric Vector of wavelengths (nm)}

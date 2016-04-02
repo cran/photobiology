@@ -5,9 +5,8 @@
 \title{Photon (quantum) irradiance from spectral (energy) irradiance.}
 \usage{
 irradiance(w.length, s.irrad, w.band = NULL, unit.out = NULL,
-  unit.in = "energy", check.spectrum = TRUE,
-  use.cached.mult = getOption("photobiology.use.cached.mult", default =
-  FALSE), use.hinges = getOption("photobiology.use.hinges", default = NULL))
+  unit.in = "energy", check.spectrum = TRUE, use.cached.mult = FALSE,
+  use.hinges = getOption("photobiology.use.hinges", default = NULL))
 }
 \arguments{
 \item{w.length}{numeric Vector of wavelength (nm)}
@@ -56,17 +55,14 @@ The last three parameters control speed optimizations. The defaults
   package.
 }
 \examples{
-data(sun.data)
+
 with(sun.data, irradiance(w.length, s.e.irrad, new_waveband(400,700), "photon"))
 }
 \seealso{
-Other irradiance functions: \code{\link{e_fluence.source_mspct}},
-  \code{\link{e_irrad.source_mspct}},
-  \code{\link{energy_irradiance}},
-  \code{\link{fluence.source_mspct}},
-  \code{\link{irrad.source_mspct}},
-  \code{\link{photon_irradiance}},
-  \code{\link{q_fluence.source_mspct}},
-  \code{\link{q_irrad.source_mspct}}
+Other irradiance functions: \code{\link{e_fluence}},
+  \code{\link{e_irrad}}, \code{\link{energy_irradiance}},
+  \code{\link{fluence}}, \code{\link{irrad}},
+  \code{\link{photon_irradiance}}, \code{\link{q_fluence}},
+  \code{\link{q_irrad}}
 }
 

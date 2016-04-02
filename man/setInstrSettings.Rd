@@ -15,7 +15,7 @@ setInstrSettings(x, instr.settings)
 x
 }
 \description{
-Function to set by reference the "instr.settings" attribute  of an existing
+Function to set by reference the "what.measured" attribute  of an existing
 generic_spct or derived-class object.
 }
 \note{
@@ -24,10 +24,12 @@ if x is not a generic_spct x is not modified.
 \seealso{
 Other measurement metadata functions: \code{\link{getInstrDesc}},
   \code{\link{getInstrSettings}},
-  \code{\link{getWhenMeasured.generic_mspct}},
-  \code{\link{getWhereMeasured.generic_mspct}},
+  \code{\link{getWhatMeasured}},
+  \code{\link{getWhenMeasured}},
+  \code{\link{getWhereMeasured}},
   \code{\link{setInstrDesc}},
-  \code{\link{setWhenMeasured.generic_mspct}},
-  \code{\link{setWhereMeasured.generic_mspct}}
+  \code{\link{setWhatMeasured}},
+  \code{\link{setWhenMeasured}},
+  \code{\link{setWhereMeasured}}
 }
 

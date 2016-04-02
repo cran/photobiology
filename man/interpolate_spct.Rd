@@ -29,11 +29,14 @@ This function gives the result of interpolating spectral data from the original 
 wavelengths to a new one.
 }
 \details{
-If \code{length.out} it is a numeric value, then gives the number of rows in the
-output, if it is \code{NULL}, the values in the numeric vector \code{w.length.out} are used.
-If both are not \code{NULL} then the range of \code{w.length.out} and \code{length.out} are
-used to generate a vector of wavelength. A value of \code{NULL} for \code{fill} prevents
-extrapolation.
+If \code{length.out} it is a numeric value, then gives the number of
+  rows in the output, if it is \code{NULL}, the values in the numeric vector
+  \code{w.length.out} are used. If both are not \code{NULL} then the range of
+  \code{w.length.out} and \code{length.out} are used to generate a vector of
+  wavelength. A value of \code{NULL} for \code{fill} prevents extrapolation.
+  If both \code{w.length.out} and \code{length.out} are \code{NULL} the input
+  is returned as is. If \code{w.length.out} has length equal to zero, zero
+  rows from the input are returned.
 }
 \note{
 The default \code{fill = NA} fills extrpolated values with NA. Giving NULL as

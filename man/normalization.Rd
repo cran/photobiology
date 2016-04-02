@@ -26,7 +26,7 @@ attributes.
 \item \code{waveband}: Normalization of a \code{\link{waveband}} object.
 }}
 \seealso{
-Other waveband attributes: \code{\link{is_effective.summary_generic_spct}},
-  \code{\link{labels.waveband}}
+Other waveband attributes: \code{\link{is_effective}},
+  \code{\link{labels}}
 }
 

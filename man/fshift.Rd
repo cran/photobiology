@@ -2,8 +2,14 @@
 % Please edit documentation in R/spct.fshift.r
 \name{fshift}
 \alias{fshift}
+\alias{fshift.cps_mspct}
+\alias{fshift.cps_spct}
 \alias{fshift.filter_mspct}
 \alias{fshift.filter_spct}
+\alias{fshift.generic_mspct}
+\alias{fshift.generic_spct}
+\alias{fshift.raw_mspct}
+\alias{fshift.raw_spct}
 \alias{fshift.reflector_mspct}
 \alias{fshift.reflector_spct}
 \alias{fshift.response_mspct}
@@ -33,6 +39,15 @@ fshift(x, ...)
   unit.out = getOption("photobiology.radiation.unit", default = "energy"),
   ...)
 
+\method{fshift}{raw_spct}(x, range = c(min(x), min(x) + 10), f = "mean",
+  qty.out = NULL, ...)
+
+\method{fshift}{cps_spct}(x, range = c(min(x), min(x) + 10), f = "mean",
+  qty.out = NULL, ...)
+
+\method{fshift}{generic_spct}(x, range = c(min(x), min(x) + 10), f = "mean",
+  col.names, ...)
+
 \method{fshift}{response_mspct}(x, range = c(min(x), min(x) + 10),
   f = "mean", unit.out = getOption("photobiology.radiation.unit", default =
   "energy"), ...)
@@ -43,6 +58,15 @@ fshift(x, ...)
 
 \method{fshift}{reflector_mspct}(x, range = c(min(x), min(x) + 10),
   f = "min", qty.out = NULL, ...)
+
+\method{fshift}{raw_mspct}(x, range = c(min(x), min(x) + 10), f = "min",
+  ...)
+
+\method{fshift}{cps_mspct}(x, range = c(min(x), min(x) + 10), f = "min",
+  ...)
+
+\method{fshift}{generic_mspct}(x, range = c(min(x), min(x) + 10), f = "min",
+  col.names, ...)
 }
 \arguments{
 \item{x}{An R object}
@@ -62,6 +86,9 @@ returning a numeric value.}
 "quantum"}
 
 \item{qty.out}{character Allowed values "transmittance", and "absorbance"}
+
+\item{col.names}{character vector containing the names of columns or
+variables to which to apply the scale shift.}
 }
 \description{
 These functions return a spectral object of the same class as the one
@@ -79,11 +106,23 @@ supplied as argument but with the spectral data on a shift scale.
 
 \item \code{source_mspct}: 
 
+\item \code{raw_spct}: 
+
+\item \code{cps_spct}: 
+
+\item \code{generic_spct}: 
+
 \item \code{response_mspct}: 
 
 \item \code{filter_mspct}: 
 
 \item \code{reflector_mspct}: 
+
+\item \code{raw_mspct}: 
+
+\item \code{cps_mspct}: 
+
+\item \code{generic_mspct}: 
 }}
 \seealso{
 Other rescaling functions: \code{\link{fscale}},

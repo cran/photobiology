@@ -2,9 +2,15 @@
 % Please edit documentation in R/spct.clean.r
 \name{clean}
 \alias{clean}
+\alias{clean.cps_mspct}
+\alias{clean.cps_spct}
 \alias{clean.default}
 \alias{clean.filter_mspct}
 \alias{clean.filter_spct}
+\alias{clean.generic_mspct}
+\alias{clean.generic_spct}
+\alias{clean.raw_mspct}
+\alias{clean.raw_spct}
 \alias{clean.reflector_mspct}
 \alias{clean.reflector_spct}
 \alias{clean.response_mspct}
@@ -32,6 +38,15 @@ clean(x, range, range.s.data, fill, ...)
   fill = range.s.data, unit.out = getOption("photobiology.radiation.unit",
   default = "energy"), ...)
 
+\method{clean}{cps_spct}(x, range = x, range.s.data = c(0, NA),
+  fill = range.s.data, ...)
+
+\method{clean}{raw_spct}(x, range = x, range.s.data = c(NA_real_, NA_real_),
+  fill = range.s.data, ...)
+
+\method{clean}{generic_spct}(x, range = x, range.s.data = c(NA_real_,
+  NA_real_), fill = range.s.data, col.names, ...)
+
 \method{clean}{source_mspct}(x, range = NULL, range.s.data = c(0, NA),
   fill = range.s.data, unit.out = getOption("photobiology.radiation.unit",
   default = "energy"), ...)
@@ -46,6 +61,15 @@ clean(x, range, range.s.data, fill, ...)
 \method{clean}{response_mspct}(x, range = NULL, range.s.data = c(0, NA),
   fill = range.s.data, unit.out = getOption("photobiology.radiation.unit",
   default = "energy"), ...)
+
+\method{clean}{cps_mspct}(x, range = NULL, range.s.data = c(0, NA),
+  fill = range.s.data, ...)
+
+\method{clean}{raw_mspct}(x, range = NULL, range.s.data = c(0, NA),
+  fill = range.s.data, ...)
+
+\method{clean}{generic_mspct}(x, range = x, range.s.data = c(NA_real_,
+  NA_real_), fill = range.s.data, col.names, ...)
 }
 \arguments{
 \item{x}{an R object}
@@ -65,6 +89,8 @@ or its alias "quantum"}
 
 \item{qty.out}{character string with allowed values "energy", and "photon",
 or its alias "quantum"}
+
+\item{col.names}{character The name of the variable to clean}
 }
 \description{
 These functions implement the equivalent of replace() but for spectral
@@ -82,6 +108,12 @@ objects instead of vectors.
 
 \item \code{response_spct}: Replace off-range values in a response spectrum
 
+\item \code{cps_spct}: Replace off-range values in a counts per second spectrum
+
+\item \code{raw_spct}: Replace off-range values in a raw counts spectrum
+
+\item \code{generic_spct}: Replace off-range values in a generic spectrum
+
 \item \code{source_mspct}: 
 
 \item \code{filter_mspct}: 
@@ -89,5 +121,11 @@ objects instead of vectors.
 \item \code{reflector_mspct}: 
 
 \item \code{response_mspct}: 
+
+\item \code{cps_mspct}: 
+
+\item \code{raw_mspct}: 
+
+\item \code{generic_mspct}: 
 }}
 

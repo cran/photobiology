@@ -8,6 +8,7 @@
 \alias{[.filter_spct}
 \alias{[.generic_spct}
 \alias{[.object_spct}
+\alias{[.raw_spct}
 \alias{[.reflector_spct}
 \alias{[.response_spct}
 \alias{[.source_spct}
@@ -15,6 +16,8 @@
 \title{Extract or replace parts of a spectrum}
 \usage{
 \method{[}{generic_spct}(x, i, j, drop = NULL)
+
+\method{[}{raw_spct}(x, i, j, drop = NULL)
 
 \method{[}{cps_spct}(x, i, j, drop = NULL)
 

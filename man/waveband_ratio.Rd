@@ -6,9 +6,8 @@
 \usage{
 waveband_ratio(w.length, s.irrad, w.band.num = NULL, w.band.denom = NULL,
   unit.out.num = NULL, unit.out.denom = unit.out.num, unit.in = "energy",
-  check.spectrum = TRUE,
-  use.cached.mult = getOption("photobiology.use.cached.mult", default =
-  FALSE), use.hinges = getOption("photobiology.use.hinges", default = NULL))
+  check.spectrum = TRUE, use.cached.mult = FALSE,
+  use.hinges = getOption("photobiology.use.hinges", default = NULL))
 }
 \arguments{
 \item{w.length}{numeric Vector of wavelengths (nm)}

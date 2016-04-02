@@ -21,9 +21,8 @@ check_spct(x, byref, strict.range, ...)
 \method{check_spct}{generic_spct}(x, byref = TRUE, strict.range = NA,
   multiple.wl = getMultipleWl(x), ...)
 
-\method{check_spct}{raw_spct}(x, byref = TRUE,
-  strict.range = getOption("photobiology.strict.range", default = FALSE),
-  multiple.wl = 1L, ...)
+\method{check_spct}{raw_spct}(x, byref = TRUE, strict.range = FALSE,
+  multiple.wl = getMultipleWl(x), ...)
 
 \method{check_spct}{cps_spct}(x, byref = TRUE,
   strict.range = getOption("photobiology.strict.range", default = FALSE),

@@ -5,6 +5,8 @@
 \alias{color.default}
 \alias{color.list}
 \alias{color.numeric}
+\alias{color.source_mspct}
+\alias{color.source_spct}
 \alias{color.waveband}
 \title{Color of an object}
 \usage{
@@ -17,6 +19,10 @@ color(x, ...)
 \method{color}{list}(x, short.names = TRUE, type = "CMF", ...)
 
 \method{color}{waveband}(x, short.names = TRUE, type = "CMF", ...)
+
+\method{color}{source_spct}(x, type = "CMF", ...)
+
+\method{color}{source_mspct}(x, ..., idx = !is.null(names(x)))
 }
 \arguments{
 \item{x}{an R object}
@@ -27,6 +33,9 @@ color(x, ...)
 
 \item{short.names}{logical indicating whether to use short or long names for
 wavebands}
+
+\item{idx}{logical whether to add a column with the names of the elements of
+spct}
 }
 \description{
 A function that returns the equivalent RGB color of an object such as a
@@ -42,6 +51,10 @@ numeric values representing a wavelengths in nm.
 \item \code{list}: Method that returns Color of elements in a list.
 
 \item \code{waveband}: Color at midpoint of a \code{\link{waveband}} object.
+
+\item \code{source_spct}: 
+
+\item \code{source_mspct}: 
 }}
 \note{
 When \code{x} is a list but not a waveband, if a method  \code{color}
@@ -55,6 +68,9 @@ color(waveband(c(300,400)))
 color(list(blue = waveband(c(400,480)), red = waveband(c(600,700))))
 color(numeric())
 color(NA_real_)
+
+color(sun.spct)
+
 
 }
 

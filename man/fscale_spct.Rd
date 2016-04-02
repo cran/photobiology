@@ -4,7 +4,7 @@
 \alias{fscale_spct}
 \title{fscale a spectrum}
 \usage{
-fscale_spct(spct, range, var.name, f, ...)
+fscale_spct(spct, range, col.names, f, ...)
 }
 \arguments{
 \item{spct}{generic_spct The spectrum to be normalized}
@@ -12,7 +12,7 @@ fscale_spct(spct, range, var.name, f, ...)
 \item{range}{an R object on which range() returns a vector of length 2, with
 min annd max wavelengths (nm)}
 
-\item{var.name}{character The name of the variable to fscale}
+\item{col.names}{character The name of the variable to fscale}
 
 \item{f}{function A summary function to be applied to \code{spct}}
 

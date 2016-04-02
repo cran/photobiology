@@ -2,9 +2,14 @@
 % Please edit documentation in R/spct.normalize.r
 \name{normalize}
 \alias{normalize}
+\alias{normalize.cps_mspct}
+\alias{normalize.cps_spct}
 \alias{normalize.default}
 \alias{normalize.filter_mspct}
 \alias{normalize.filter_spct}
+\alias{normalize.generic_spct}
+\alias{normalize.raw_mspct}
+\alias{normalize.raw_spct}
 \alias{normalize.reflector_mspct}
 \alias{normalize.reflector_spct}
 \alias{normalize.response_mspct}
@@ -29,6 +34,13 @@ normalize(x, ...)
 \method{normalize}{reflector_spct}(x, ..., range = NULL, norm = "max",
   qty.out = NULL)
 
+\method{normalize}{raw_spct}(x, ..., range = NULL, norm = "max")
+
+\method{normalize}{cps_spct}(x, ..., range = NULL, norm = "max")
+
+\method{normalize}{generic_spct}(x, ..., range = NULL, norm = "max",
+  col.names)
+
 \method{normalize}{source_mspct}(x, ..., range = NULL, norm = "max",
   unit.out = getOption("photobiology.radiation.unit", default = "energy"))
 
@@ -40,6 +52,10 @@ normalize(x, ...)
 
 \method{normalize}{reflector_mspct}(x, ..., range = x, norm = "max",
   qty.out = NULL)
+
+\method{normalize}{raw_mspct}(x, ..., range = x, norm = "max")
+
+\method{normalize}{cps_mspct}(x, ..., range = x, norm = "max")
 }
 \arguments{
 \item{x}{An R object}
@@ -59,6 +75,9 @@ or its alias "quantum"}
 
 \item{qty.out}{character string  Allowed values are "transmittance", and
 "absorbance" indicating on which quantity to apply the normalization.}
+
+\item{col.names}{character vector containing the names of columns or
+variables to which to apply the normalization.}
 }
 \value{
 A new object of the same class as \code{x}.
@@ -80,6 +99,12 @@ wavelength.
 
 \item \code{reflector_spct}: Normalize a reflector spectrum.
 
+\item \code{raw_spct}: Normalize a raw spectrum.
+
+\item \code{cps_spct}: Normalize a cps spectrum.
+
+\item \code{generic_spct}: Normalize a raw spectrum.
+
 \item \code{source_mspct}: Normalize the members of a source_mspct object.
 
 \item \code{response_mspct}: Normalize the members of a response_mspct object.
@@ -87,6 +112,10 @@ wavelength.
 \item \code{filter_mspct}: Normalize the members of a filter_mspct object.
 
 \item \code{reflector_mspct}: Normalize the members of a reflector_mspct object.
+
+\item \code{raw_mspct}: Normalize the members of a raw_mspct object.
+
+\item \code{cps_mspct}: Normalize the members of a cps_mspct object.
 }}
 \note{
 Accepted values for \code{norm} vary depending on the class of

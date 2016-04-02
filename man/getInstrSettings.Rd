@@ -10,19 +10,21 @@ getInstrSettings(x)
 \item{x}{a generic_spct object}
 }
 \value{
-list (depends on instrument type)
+list
 }
 \description{
-Function to read the "instr.desc" attribute of an existing generic_spct
+Function to read the "instr.settings" attribute of an existing generic_spct
 object.
 }
 \seealso{
 Other measurement metadata functions: \code{\link{getInstrDesc}},
-  \code{\link{getWhenMeasured.generic_mspct}},
-  \code{\link{getWhereMeasured.generic_mspct}},
+  \code{\link{getWhatMeasured}},
+  \code{\link{getWhenMeasured}},
+  \code{\link{getWhereMeasured}},
   \code{\link{setInstrDesc}},
   \code{\link{setInstrSettings}},
-  \code{\link{setWhenMeasured.generic_mspct}},
-  \code{\link{setWhereMeasured.generic_mspct}}
+  \code{\link{setWhatMeasured}},
+  \code{\link{setWhenMeasured}},
+  \code{\link{setWhereMeasured}}
 }
 

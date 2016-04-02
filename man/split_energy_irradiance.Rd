@@ -6,8 +6,8 @@
 \usage{
 split_energy_irradiance(w.length, s.irrad, cut.w.length = range(w.length),
   unit.in = "energy", scale = "absolute", check.spectrum = TRUE,
-  use.cached.mult = getOption("photobiology.use.cached.mult", default =
-  FALSE), use.hinges = getOption("photobiology.use.hinges", default = NULL))
+  use.cached.mult = FALSE, use.hinges = getOption("photobiology.use.hinges",
+  default = NULL))
 }
 \arguments{
 \item{w.length}{numeric Vector of wavelengths (nm)}

@@ -2,9 +2,15 @@
 % Please edit documentation in R/spct.fscale.r, R/spct.fshift.r
 \name{fscale}
 \alias{fscale}
+\alias{fscale.cps_mspct}
+\alias{fscale.cps_spct}
 \alias{fscale.default}
 \alias{fscale.filter_mspct}
 \alias{fscale.filter_spct}
+\alias{fscale.generic_mspct}
+\alias{fscale.generic_spct}
+\alias{fscale.raw_mspct}
+\alias{fscale.raw_spct}
 \alias{fscale.reflector_mspct}
 \alias{fscale.reflector_spct}
 \alias{fscale.response_mspct}
@@ -33,6 +39,12 @@ fscale(x, ...)
 \method{fscale}{reflector_spct}(x, range = NULL, f = "mean",
   qty.out = NULL, ...)
 
+\method{fscale}{raw_spct}(x, range = NULL, f = "mean", ...)
+
+\method{fscale}{cps_spct}(x, range = NULL, f = "mean", ...)
+
+\method{fscale}{generic_spct}(x, range = NULL, f = "mean", col.names, ...)
+
 \method{fscale}{source_mspct}(x, range = NULL, f = "mean",
   unit.out = getOption("photobiology.radiation.unit", default = "energy"),
   ...)
@@ -47,6 +59,12 @@ fscale(x, ...)
 
 \method{fscale}{reflector_mspct}(x, range = NULL, f = "mean",
   qty.out = NULL, ...)
+
+\method{fscale}{raw_mspct}(x, range = NULL, f = "mean", ...)
+
+\method{fscale}{cps_mspct}(x, range = NULL, f = "mean", ...)
+
+\method{fscale}{generic_mspct}(x, range = NULL, f = "mean", col.names, ...)
 
 \method{fshift}{default}(x, ...)
 }
@@ -67,6 +85,9 @@ value becomes 1 for the returned object, or the name of a function taking
 "quantum"}
 
 \item{qty.out}{character Allowed values "transmittance", and "absorbance"}
+
+\item{col.names}{character vector containing the names of columns or
+variables to which to apply the scaling.}
 }
 \value{
 a new object of the same class as \code{x}.
@@ -89,6 +110,12 @@ as argument but with the spectral data rescaled.
 
 \item \code{reflector_spct}: 
 
+\item \code{raw_spct}: 
+
+\item \code{cps_spct}: 
+
+\item \code{generic_spct}: 
+
 \item \code{source_mspct}: 
 
 \item \code{response_mspct}: 
@@ -96,6 +123,12 @@ as argument but with the spectral data rescaled.
 \item \code{filter_mspct}: 
 
 \item \code{reflector_mspct}: 
+
+\item \code{raw_mspct}: 
+
+\item \code{cps_mspct}: 
+
+\item \code{generic_mspct}: 
 
 \item \code{default}: Default for generic function
 }}

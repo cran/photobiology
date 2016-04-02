@@ -18,11 +18,13 @@ object.
 }
 \seealso{
 Other measurement metadata functions: \code{\link{getInstrSettings}},
-  \code{\link{getWhenMeasured.generic_mspct}},
-  \code{\link{getWhereMeasured.generic_mspct}},
+  \code{\link{getWhatMeasured}},
+  \code{\link{getWhenMeasured}},
+  \code{\link{getWhereMeasured}},
   \code{\link{setInstrDesc}},
   \code{\link{setInstrSettings}},
-  \code{\link{setWhenMeasured.generic_mspct}},
-  \code{\link{setWhereMeasured.generic_mspct}}
+  \code{\link{setWhatMeasured}},
+  \code{\link{setWhenMeasured}},
+  \code{\link{setWhereMeasured}}
 }
 

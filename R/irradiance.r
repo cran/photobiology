@@ -24,7 +24,7 @@
 #'
 #' @export
 #' @examples
-#' data(sun.data)
+#' 
 #' with(sun.data, irradiance(w.length, s.e.irrad, new_waveband(400,700), "photon"))
 #' @note The last three parameters control speed optimizations. The defaults
 #'   should be suitable in mosts cases. If you set \code{check.spectrum=FALSE}
@@ -44,18 +44,18 @@
 irradiance <-
   function(w.length, s.irrad, w.band = NULL, unit.out = NULL, unit.in = "energy",
            check.spectrum = TRUE,
-           use.cached.mult = getOption("photobiology.use.cached.mult", default = FALSE),
+           use.cached.mult = FALSE,
            use.hinges = getOption("photobiology.use.hinges", default = NULL) ){
     # what output? seems safer to not have a default here
     if (is.null(unit.out)){
       warning("'unit.out' has no default value")
-      return(NA)
+      return(NA_real_)
     }
     # make code a bit simpler further down
     if (unit.in=="quantum") {unit.in <- "photon"}
     # sanity check for spectral data and abort if check fails
     if (check.spectrum && !check_spectrum(w.length, s.irrad)) {
-      return(NA)
+      return(NA_real_)
     }
     # if the waveband is undefined then use all data
     if (is.null(w.band)){
@@ -87,12 +87,12 @@ irradiance <-
     if (use.hinges) {
       all.hinges <- NULL
       for (wb in w.band) {
-        if (!is.null(wb$hinges) & length(wb$hinges)>0) {
+        if (!is.null(wb$hinges) & length(wb$hinges) > 0) {
           all.hinges <- c(all.hinges, wb$hinges)
         }
       }
       if (!is.null(all.hinges)) {
-        new.data <- insert_hinges(x = w.length, y = s.irrad, all.hinges)
+        new.data <- l_insert_hinges(x = w.length, y = s.irrad, all.hinges)
         w.length <- new.data$x
         s.irrad <- new.data$y
       }

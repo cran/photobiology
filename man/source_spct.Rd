@@ -4,6 +4,7 @@
 \alias{chroma_spct}
 \alias{cps_spct}
 \alias{filter_spct}
+\alias{generic_spct}
 \alias{object_spct}
 \alias{raw_spct}
 \alias{reflector_spct}
@@ -13,28 +14,33 @@
 \usage{
 source_spct(w.length = NULL, s.e.irrad = NULL, s.q.irrad = NULL,
   time.unit = c("second", "day", "exposure"), bswf.used = c("none",
-  "unknown"), comment = NULL, strict.range = FALSE)
+  "unknown"), comment = NULL, strict.range = FALSE, ...)
 
-raw_spct(w.length = NULL, counts = NA, comment = NULL, instr.desc = NA,
-  instr.settings = NA)
+raw_spct(w.length = NULL, counts = NA_real_, comment = NULL,
+  instr.desc = NA, instr.settings = NA, ...)
 
-cps_spct(w.length = NULL, cps = NA, comment = NULL)
+cps_spct(w.length = NULL, cps = NA_real_, comment = NULL,
+  instr.desc = NA, instr.settings = NA, ...)
+
+generic_spct(w.length = NULL, comment = NULL, ...)
 
 response_spct(w.length = NULL, s.e.response = NULL, s.q.response = NULL,
-  time.unit = c("second", "day", "exposure"), comment = NULL)
+  time.unit = c("second", "day", "exposure"), comment = NULL, ...)
 
 filter_spct(w.length = NULL, Tfr = NULL, Tpc = NULL, A = NULL,
-  Tfr.type = c("total", "internal"), comment = NULL, strict.range = FALSE)
+  Tfr.type = c("total", "internal"), comment = NULL, strict.range = FALSE,
+  ...)
 
 reflector_spct(w.length = NULL, Rfr = NULL, Rpc = NULL,
-  Rfr.type = c("total", "specular"), comment = NULL, strict.range = FALSE)
+  Rfr.type = c("total", "specular"), comment = NULL, strict.range = FALSE,
+  ...)
 
 object_spct(w.length = NULL, Rfr = NULL, Tfr = NULL,
   Tfr.type = c("total", "internal"), Rfr.type = c("total", "specular"),
-  comment = NULL, strict.range = FALSE)
+  comment = NULL, strict.range = FALSE, ...)
 
 chroma_spct(w.length = NULL, x, y, z, comment = NULL,
-  strict.range = FALSE)
+  strict.range = FALSE, ...)
 }
 \arguments{
 \item{w.length}{numeric vector with wavelengths in nanometres}
@@ -57,6 +63,8 @@ object created.}
 
 \item{strict.range}{logical Flag indicating whether off-range values result
 in an error instead of a warning.}
+
+\item{...}{other arguments passed to \code{data_frame()}}
 
 \item{counts}{numeric vector with raw counts expressed per scan}
 

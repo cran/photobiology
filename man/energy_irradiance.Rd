@@ -5,9 +5,8 @@
 \title{Calculate (energy) irradiance from spectral irradiance}
 \usage{
 energy_irradiance(w.length, s.irrad, w.band = NULL, unit.in = "energy",
-  check.spectrum = TRUE,
-  use.cached.mult = getOption("photobiology.use.cached.mult", default =
-  FALSE), use.hinges = getOption("photobiology.use.hinges", default = NULL))
+  check.spectrum = TRUE, use.cached.mult = FALSE,
+  use.hinges = getOption("photobiology.use.hinges", default = NULL))
 }
 \arguments{
 \item{w.length}{numeric array of wavelength (nm)}
@@ -43,13 +42,10 @@ with(sun.data, energy_irradiance(w.length, s.e.irrad, new_waveband(400,700)))
 
 }
 \seealso{
-Other irradiance functions: \code{\link{e_fluence.source_mspct}},
-  \code{\link{e_irrad.source_mspct}},
-  \code{\link{fluence.source_mspct}},
-  \code{\link{irrad.source_mspct}},
-  \code{\link{irradiance}},
-  \code{\link{photon_irradiance}},
-  \code{\link{q_fluence.source_mspct}},
-  \code{\link{q_irrad.source_mspct}}
+Other irradiance functions: \code{\link{e_fluence}},
+  \code{\link{e_irrad}}, \code{\link{fluence}},
+  \code{\link{irradiance}}, \code{\link{irrad}},
+  \code{\link{photon_irradiance}}, \code{\link{q_fluence}},
+  \code{\link{q_irrad}}
 }
 

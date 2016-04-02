@@ -55,7 +55,7 @@ q_ratio.source_spct <-
   function(spct,
            w.band.num = NULL, w.band.denom = NULL,
            wb.trim = getOption("photobiology.waveband.trim", default = TRUE),
-           use.cached.mult = getOption("photobiology.use.cached.mult", default = FALSE),
+           use.cached.mult = FALSE,
            use.hinges = getOption("photobiology.use.hinges", default = NULL), ... ) {
     q.irrad.num <- irrad_spct(spct, w.band = w.band.num,
                               unit.out = "photon", quantity = "total",
@@ -134,7 +134,7 @@ e_ratio.source_spct <-
   function(spct,
            w.band.num = NULL, w.band.denom = NULL,
            wb.trim = getOption("photobiology.waveband.trim", default = TRUE),
-           use.cached.mult = getOption("photobiology.use.cached.mult", default = FALSE),
+           use.cached.mult = FALSE,
            use.hinges=getOption("photobiology.use.hinges", default = NULL), ...) {
     e.irrad.num <- irrad_spct(spct, w.band = w.band.num, unit.out = "energy", quantity = "total",
                               wb.trim = wb.trim,
@@ -206,7 +206,7 @@ qe_ratio.default <- function(spct, w.band, wb.trim,
 qe_ratio.source_spct <-
   function(spct, w.band = NULL,
            wb.trim = getOption("photobiology.waveband.trim", default = TRUE),
-           use.cached.mult = getOption("photobiology.use.cached.mult", default = FALSE),
+           use.cached.mult = FALSE,
            use.hinges = getOption("photobiology.use.hinges", default = NULL), ...) {
     q.irrad <- irrad_spct(spct, w.band=w.band, unit.out = "photon",
                           quantity ="total",
@@ -282,7 +282,7 @@ eq_ratio.default <- function(spct, w.band, wb.trim,
 eq_ratio.source_spct <-
   function(spct, w.band=NULL,
            wb.trim = getOption("photobiology.waveband.trim", default = TRUE),
-           use.cached.mult = getOption("photobiology.use.cached.mult", default = FALSE),
+           use.cached.mult =FALSE,
            use.hinges  = getOption("photobiology.use.hinges", default = NULL), ...) {
     ratio <- 1 / qe_ratio(spct = spct, w.band = w.band, wb.trim = wb.trim,
                           use.cached.mult = use.cached.mult, use.hinges = use.hinges)
@@ -291,3 +291,111 @@ eq_ratio.source_spct <-
     attr(ratio, "radiation.unit") <- "e:q ratio"
     return(ratio)
   }
+
+# source_mspct methods ----------------------------------------------------
+
+#' @describeIn q_ratio Calculates photon:photon from a \code{source_mspct}
+#'   object.
+#'
+#' @param idx logical whether to add a column with the names of the elements of spct
+#'
+#' @export
+#'
+q_ratio.source_mspct <-
+  function(spct,
+           w.band.num = NULL, w.band.denom = NULL,
+           wb.trim = getOption("photobiology.waveband.trim", default = TRUE),
+           use.cached.mult = FALSE,
+           use.hinges = getOption("photobiology.use.hinges", default = NULL),
+           ..., idx = !is.null(names(spct))) {
+    msdply(
+      mspct = spct,
+      .fun = q_ratio,
+      w.band.num = w.band.num,
+      w.band.denom = w.band.denom,
+      wb.trim = wb.trim,
+      use.cached.mult = use.cached.mult,
+      use.hinges = use.hinges,
+      idx = idx
+    )
+  }
+
+#' @describeIn e_ratio Calculates energy:energy ratio from a \code{source_mspct}
+#'   object.
+#'
+#' @param idx logical whether to add a column with the names of the elements of spct
+#'
+#' @export
+#'
+e_ratio.source_mspct <-
+  function(spct,
+           w.band.num = NULL, w.band.denom = NULL,
+           wb.trim = getOption("photobiology.waveband.trim", default = TRUE),
+           use.cached.mult = FALSE,
+           use.hinges = getOption("photobiology.use.hinges", default = NULL),
+           ..., idx = !is.null(names(spct))) {
+    msdply(
+      mspct = spct,
+      .fun = e_ratio,
+      w.band.num = w.band.num,
+      w.band.denom = w.band.denom,
+      wb.trim = wb.trim,
+      use.cached.mult = use.cached.mult,
+      use.hinges = use.hinges,
+      idx = idx
+    )
+  }
+
+#' @describeIn eq_ratio Calculates energy:photon from a \code{source_mspct}
+#'   object.
+#'
+#' @param idx logical whether to add a column with the names of the elements of spct
+#'
+#' @export
+#'
+eq_ratio.source_mspct <-
+  function(spct, w.band = NULL,
+           wb.trim = getOption("photobiology.waveband.trim", default = TRUE),
+           use.cached.mult = FALSE,
+           use.hinges = getOption("photobiology.use.hinges", default = NULL),
+           ...,
+           idx = !is.null(names(spct))) {
+    msdply(
+      mspct = spct,
+      .fun = eq_ratio,
+      w.band = w.band,
+      wb.trim = wb.trim,
+      use.cached.mult = use.cached.mult,
+      use.hinges = use.hinges,
+      idx = idx,
+      col.names = names(w.band)
+    )
+  }
+
+#' @describeIn qe_ratio Calculates photon:energy ratio from a
+#'   \code{source_mspct} object.
+#'
+#' @param idx logical whether to add a column with the names of the elements of spct
+#'
+#' @export
+#'
+qe_ratio.source_mspct <-
+  function(spct, w.band=NULL,
+           wb.trim = getOption("photobiology.waveband.trim", default = TRUE),
+           use.cached.mult = FALSE,
+           use.hinges=getOption("photobiology.use.hinges", default = NULL),
+           ...,
+           idx = !is.null(names(spct))) {
+    msdply(
+      spct,
+      .fun = qe_ratio,
+      w.band = w.band,
+      wb.trim = wb.trim,
+      use.cached.mult = use.cached.mult,
+      use.hinges = use.hinges,
+      idx = idx,
+      col.names = names(w.band)
+    )
+  }
+
+

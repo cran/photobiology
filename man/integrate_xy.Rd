@@ -17,12 +17,10 @@ a single numeric value with no change in scale factor: e.g. [W m-2
 }
 \description{
 This function gives the result of integrating spectral irradiance over
-wavelengths. Coded in C++.
+wavelengths.
 }
 \examples{
 with(sun.data, integrate_xy(w.length, s.e.irrad))
 
 }
-\keyword{manip}
-\keyword{misc}
 

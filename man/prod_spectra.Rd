@@ -43,7 +43,7 @@ If trim=="union" spectral values are calculated for the whole range
   wavelengths, and a simple addition is used, ensuring fast calculation.
 }
 \examples{
-data(sun.data)
+
 head(sun.data)
 square.sun.data <-
   with(sun.data, prod_spectra(w.length, w.length, s.e.irrad, s.e.irrad))

@@ -35,12 +35,8 @@ insert_spct_hinges <- function(spct, hinges=NULL, byref=FALSE) {
   if (is.null(hinges) || length(hinges) == 0) {
     return(spct)
   }
-  hinges <- hinges[hinges > min(spct) & hinges < max(spct)]
-  hinges <- unique(sort(hinges))
   old.w.length <- spct[["w.length"]]
-  hinges <- setdiff(hinges, old.w.length)
   if (length(hinges) > 0) {
-#    new.w.length <- unique(sort(c(hinges, old.w.length)))
     name <- substitute(spct)
     names.spct <- names(spct)
     names.data <- names.spct != "w.length"
@@ -58,7 +54,6 @@ insert_spct_hinges <- function(spct, hinges=NULL, byref=FALSE) {
     if (is.reflector_spct(spct) || is.object_spct(spct)) {
       Rfr.type <- getRfrType(spct)
     }
-#    new.spct <- dplyr::data_frame(w.length = new.w.length)
     first.iter <- TRUE
     for (data.col in idx.data) {
       temp.data <- spct[[data.col]]
@@ -68,10 +63,9 @@ insert_spct_hinges <- function(spct, hinges=NULL, byref=FALSE) {
         first.iter <- FALSE
       } else {
         new.spct[ , names.spct[data.col] ] <-
-          insert_hinges(old.w.length, temp.data, hinges)[["y"]]
+          v_insert_hinges(old.w.length, temp.data, hinges)
       }
     }
-    new.spct <- dplyr::as_data_frame(new.spct)
     if(class_spct[1] == "source_spct") {
       setSourceSpct(new.spct, time.unit = time.unit, bswf.used = bswf.used)
     } else if (class_spct[1] == "filter_spct") {

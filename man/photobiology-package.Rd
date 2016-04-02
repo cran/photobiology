@@ -4,16 +4,16 @@
 \name{photobiology-package}
 \alias{photobiology}
 \alias{photobiology-package}
-\title{Photobiological Calculations}
+\title{'Photobiological' Calculations}
 \description{
 Definitions of classes, methods, operators and functions for use in
-photobiology and radiation meteorology and climatology. Calculation of
-effective (weighted) and not-weighted irradiances/doses, fluence rates,
-transmittance, reflectance, absorptance, absorbance and diverse ratios and
-other derived quantities from spectral data. Local maxima and minima.
-Conversion between energy- and photon-based units. Wavelength interpolation.
-Astronomical calculations related solar angles and day length. Colours and
-vision.
+'photobiology' and radiation meteorology and climatology. Calculation of
+effective (weighted) and not-weighted 'irradiances'/doses, 'fluence' rates,
+'transmittance', 'reflectance', 'absorptance', 'absorbance' and diverse
+ratios and other derived quantities from spectral data. Local 'maxima' and
+'minima'. Conversion between energy- and photon-based units. Wavelength
+interpolation. Astronomical calculations related solar angles and day
+length. Colours and vision.
 }
 \details{
 Package 'photobiology' is at the core of a suite of packages for
