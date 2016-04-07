@@ -1,8 +1,8 @@
 Package: photobiology
 Type: Package
 Title: 'Photobiological' Calculations
-Version: 0.9.6
-Date: 2016-04-01
+Version: 0.9.7
+Date: 2016-04-06
 Author: Pedro J. Aphalo [aut, cre]
 Maintainer: Pedro J. Aphalo <pedro.aphalo@helsinki.fi>
 Description: Definitions of classes, methods, operators and functions for use in
@@ -28,6 +28,6 @@ BugReports: https://bitbucket.org/aphalo/photobiology/issues
 Encoding: UTF-8
 RoxygenNote: 5.0.1
 NeedsCompilation: no
-Packaged: 2016-04-02 14:49:36 UTC; aphalo
+Packaged: 2016-04-06 16:06:25 UTC; aphalo
 Repository: CRAN
-Date/Publication: 2016-04-02 23:45:57
+Date/Publication: 2016-04-07 01:37:22

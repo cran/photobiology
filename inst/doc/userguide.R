@@ -196,11 +196,11 @@ convolve_each(two.mspct, sun.spct, oper = `+`)
 
 ## ------------------------------------------------------------------------
 getWhenMeasured(two.mspct)
-setWhenMeasured(two.mspct, ymd("2015-10-31"))
+setWhenMeasured(two.mspct, ymd("2015-10-31", tz = "EET"))
 getWhenMeasured(two.mspct)
 setWhenMeasured(two.mspct,
-                list(ymd_hm("2015-10-31 10:00"),
-                     ymd_hm("2015-10-31 11:00")))
+                list(ymd_hm("2015-10-31 10:00", tz = "EET"),
+                     ymd_hm("2015-10-31 11:00", tz = "EET")))
 getWhenMeasured(two.mspct)
 two.mspct
 
@@ -470,10 +470,9 @@ with(sun.spct, photon_irradiance(w.length, s.e.irrad, PAR))
 ## ------------------------------------------------------------------------
 fluence(sun.spct, exposure.time = duration(1, "hours"))
 fluence(sun.spct, exposure.time = 3600) # seconds
-fluence(sun.spct, exposure.time = hms("01:00:00"))
 
 ## ------------------------------------------------------------------------
-e_fluence(sun.spct, PAR, exposure.time = hms("00:25:00"))
+e_fluence(sun.spct, PAR, exposure.time = duration(25, "minutes"))
 
 ## ------------------------------------------------------------------------
 q_ratio(sun.spct, UVB, PAR)
@@ -547,23 +546,23 @@ day_night(dates, lat =  60)
 sunrise_time(lat = 60)
 
 ## ------------------------------------------------------------------------
-sunrise_time(today(tzone = "UTC"), tz = "UTC", lat = 60, lon = 0)
-sunrise_time(today(tzone = "EET"), tz = "EET", lat = 60, lon = 25)
+sunrise_time(today(tz = "UTC"), tz = "UTC", lat = 60, lon = 0)
+sunrise_time(today(tz = "EET"), tz = "EET", lat = 60, lon = 25)
 
 ## ------------------------------------------------------------------------
 sunrise_time(dates, lat =  60)
 sunrise_time(dates, lat = -60)
 
 ## ------------------------------------------------------------------------
-sunrise_time(today(tzone = "EET"), tz = "EET", lat = 60, lon = 25,
+sunrise_time(today(tz = "EET"), tz = "EET", lat = 60, lon = 25,
              twilight = "civil")
-sunrise_time(today(tzone = "EET"), tz = "EET", lat = 60, lon = 25,
+sunrise_time(today(tz = "EET"), tz = "EET", lat = 60, lon = 25,
              twilight = -10)
-sunrise_time(today(tzone = "EET"), tz = "EET", lat = 60, lon = 25,
+sunrise_time(today(tz = "EET"), tz = "EET", lat = 60, lon = 25,
              twilight = +12)
 
 ## ------------------------------------------------------------------------
-sunrise_time(today(tzone = "EET"), tz = "EET", lat = 60, lon = 25,
+sunrise_time(today(tz = "EET"), tz = "EET", lat = 60, lon = 25,
              unit.out = "hour")
 
 ## ------------------------------------------------------------------------

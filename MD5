@@ -1,6 +1,6 @@
-77b2c48f4bd0f906b7b2a730667d6c5e *DESCRIPTION
+1c56030a075db6c2163ab6381ca4ca7c *DESCRIPTION
 513bc9eb0fe0f6c5f32bc5c34be44221 *NAMESPACE
-e434909e829b86df5e66570531f58a2c *NEWS
+b2ab56bfa7adbc6f61faad282b6587e3 *NEWS
 71fc59c43ac474f6ca16e64b0df4df96 *R/as.energy.r
 51f7aa8bce5d882eae7a94a6ba7e7953 *R/as.quantum.mol.r
 d35784ac23d225fdf0c6db3eaaeac401 *R/as.quantum.r
@@ -18,7 +18,7 @@ c62d8e4b723635c6917f321092c15f3a *R/cieillum.data.r
 6b21d5dc9c6b0656a8c285477cf27638 *R/e2qmol.multipliers.r
 30a166923c5118a457a76977b83ae692 *R/e2quantum.multipliers.r
 796e8ab2baf1da266e43b73e1f34b048 *R/energy.irradiance.r
-40d9168e2d91033c1b5b324e94985631 *R/energy.ratio.r
+4f69b3d6170555e66c0965eebaacf8fd *R/energy.ratio.r
 d70b2bdd4771e185dee7744fe3782990 *R/fel.spectrum.r
 ff29280df559f3120cb0816cf75461c2 *R/filter.data.r
 3c3c43db2927c5119c261e13ce4e5399 *R/insert.hinges.r
@@ -42,7 +42,7 @@ b9d4bcf55160cd9555b63109292000fb *R/rbindspct.r
 dfbc7c2d790b27ea4289173ee41ca269 *R/s.e.irrad2rgb.r
 f9e3291a1a7a07d860615e4f6b446c11 *R/spct.absorbance.R
 f00164dcc1f235e2ed8c5c0882e8f4b3 *R/spct.absorptance.R
-4746359bf587b5cccde3bdd2c2749cc2 *R/spct.classes.r
+c1b6f91e1a1968ffd3a82351b413fa74 *R/spct.classes.r
 5338f9fb7f4ff5d7709788e363dd8e19 *R/spct.clean.r
 d8f1f9243638b9b2d213c7de88840a03 *R/spct.conversion.R
 01d08d45841b231a9d2dda9dc8f9f355 *R/spct.fscale.r
@@ -104,9 +104,9 @@ bab9e579304b75ddd154fb06278feea1 *data/photodiode.spct.rda
 d60aa0adde7e6507bc3b97b8cb98484a *data/sun.spct.rda
 bff1b94e7717da11913ffc8c0277002f *data/white_body.spct.rda
 eb232622fb35ce3f300bbf7f8f58f80c *data/yellow.gel.rda
-16dd645e4295339567677ffd116e55ba *inst/doc/userguide.R
-93eaa94d39322c2ceea489d37e1c4ee2 *inst/doc/userguide.Rnw
-1d195998cb709d559d606c4a2548b320 *inst/doc/userguide.pdf
+4494ad73b077850df1239cc05726b0e2 *inst/doc/userguide.R
+6c92e835938cfe76c7de7f8dcd892334 *inst/doc/userguide.Rnw
+50ff25adaad8d5ea964488a20a0b8f7a *inst/doc/userguide.pdf
 69a22a9066a7631f104fa6431bc6ee6e *man/A.illuminant.spct.Rd
 a19dc81026621416eed4332208af3057 *man/A2T.Rd
 7d95a7277f36224e7f1bc5cc4b1f6e09 *man/D2_spectrum.Rd
@@ -277,7 +277,7 @@ ee9e08ee38e35d248bf6886747d987ca *man/setScaled.Rd
 c4f2be19b59be55e57998dfa20e60160 *man/setTfrType.Rd
 4c03cec1e5c52ccb68b8aaaef6534812 *man/setTimeUnit.Rd
 c36a5c095f259013c6ce741f47352786 *man/setWhatMeasured.Rd
-f647d234ae77a631461000dc8f268168 *man/setWhenMeasured.Rd
+9d5d56bf5639704c9f3f9fb291b49720 *man/setWhenMeasured.Rd
 280e63da82c741a0033af52631fca7fc *man/setWhereMeasured.Rd
 bb4e6e144fec0f131c332429787e5d9c *man/shared_member_class.Rd
 48df35b46540707872bd45e80fa420bb *man/sign.Rd
@@ -327,5 +327,5 @@ d30052fe1ad3d61661fc9dd8a42f6e30 *man/wb2tagged_spct.Rd
 f9428be02cf2c42c62e9485b1feb1d5c *man/white_body.spct.Rd
 4c492028bfb8059c9734a354f9ec2b3c *man/yellow_gel.spct.Rd
 97594b05994480f5a2ada05c8b6b7bea *vignettes/framed.sty
-195cca6d46c2a039a769749c36e65778 *vignettes/userguide-concordance.tex
-93eaa94d39322c2ceea489d37e1c4ee2 *vignettes/userguide.Rnw
+f7eb3ed22ad019aaca0dff3f6647b2fa *vignettes/userguide-concordance.tex
+6c92e835938cfe76c7de7f8dcd892334 *vignettes/userguide.Rnw

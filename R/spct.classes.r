@@ -181,8 +181,11 @@ check_spct.filter_spct <-
       Tfr.min <- min(x[["Tfr"]], na.rm = TRUE)
       Tfr.max <- max(x[["Tfr"]], na.rm = TRUE)
       if (!is.null(strict.range) && !is.na(strict.range) && (Tfr.min < -1e-4 || Tfr.max > 1 + 1e-6)) {
-        message.text <- paste("Off-range transmittance values [", signif(Tfr.min, 2),
-                              "...", signif(Tfr.max, 2), "] instead of  [0..1]", sep="")
+        message.text <- paste("Off-range transmittance values [",
+                              signif(Tfr.min, 2),
+                              "...",
+                              signif(Tfr.max, 2),
+                              "] instead of  [0..1]", sep = "")
         if (strict.range) {
           stop(message.text)
         } else {
@@ -200,8 +203,11 @@ check_spct.filter_spct <-
       A.max <- max(x[["A"]], na.rm = TRUE)
       if (!is.null(strict.range) && !is.na(strict.range) &&
           (A.min < -1e-7 || A.max > 20)) {
-        message.text <- paste("Off-range absorbance values [", signif(A.min, 2),
-                              "...", signif(A.max, 2), "] instead of  [0..1]", sep="")
+        message.text <- paste("Off-range absorbance values [",
+                              signif(A.min, 2),
+                              "...",
+                              signif(A.max, 2),
+                              "] instead of  [0..20]", sep = "")
         if (strict.range) {
           stop(message.text)
         } else {
@@ -1682,7 +1688,7 @@ setWhenMeasured.default <- function(x, when.measured, ...) {
 #' @export
 setWhenMeasured.generic_spct <-
   function(x,
-           when.measured = lubridate::now(),
+           when.measured = lubridate::now(tz = "UTC"),
            ...) {
     name <- substitute(x)
     stopifnot(is.null(when.measured) ||
@@ -1703,7 +1709,7 @@ setWhenMeasured.generic_spct <-
 #'
 setWhenMeasured.summary_generic_spct <-
   function(x,
-           when.measured = lubridate::now(),
+           when.measured = lubridate::now(tz = "UTC"),
            ...) {
     name <- substitute(x)
     stopifnot(is.null(when.measured) ||
@@ -1723,7 +1729,7 @@ setWhenMeasured.summary_generic_spct <-
 #' @export
 setWhenMeasured.generic_mspct <-
   function(x,
-           when.measured = lubridate::now(),
+           when.measured = lubridate::now(tz = "UTC"),
            ...) {
     name <- substitute(x)
     stopifnot((lubridate::is.POSIXct(when.measured) && length(when.measured) == 1) ||
@@ -1774,7 +1780,8 @@ getWhenMeasured <- function(x, ...) UseMethod("getWhenMeasured")
 #' @export
 getWhenMeasured.default <- function(x, ...) {
   # we return an NA of class POSIXct
-  suppressWarnings(lubridate::ymd(NA_character_))
+  suppressWarnings(lubridate::ymd_hms(NA_character_,
+                                  tz = "UTC"))
 }
 
 #' @describeIn getWhenMeasured generic_spct
@@ -1785,7 +1792,8 @@ getWhenMeasured.generic_spct <- function(x, ...) {
       !lubridate::is.POSIXct(when.measured)) {
     # need to handle invalid attribute values
     # we return an NA of class POSIXct
-    when.measured <- suppressWarnings(lubridate::ymd(NA_character_))
+    when.measured <- suppressWarnings(lubridate::ymd_hms(NA_character_,
+                                                     tz = "UTC"))
   }
   when.measured
 }
@@ -1798,7 +1806,8 @@ getWhenMeasured.summary_generic_spct <- function(x, ...) {
       !lubridate::is.POSIXct(when.measured)) {
     # need to handle invalid attribute values
     # we return an NA of class POSIXct
-    when.measured <- suppressWarnings(lubridate::ymd(NA_character_))
+    when.measured <- suppressWarnings(lubridate::ymd_hms(NA_character_,
+                                                     tz = "UTC"))
   }
   when.measured
 }
