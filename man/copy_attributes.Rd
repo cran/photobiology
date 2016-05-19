@@ -11,7 +11,8 @@ copy_attributes(x, y, which, ...)
 
 \method{copy_attributes}{default}(x, y, which = NULL, ...)
 
-\method{copy_attributes}{generic_spct}(x, y, which = NULL, ...)
+\method{copy_attributes}{generic_spct}(x, y, which = NULL,
+  copy.class = FALSE, ...)
 
 \method{copy_attributes}{waveband}(x, y, which = NULL, ...)
 }
@@ -21,6 +22,8 @@ copy_attributes(x, y, which, ...)
 \item{which}{character}
 
 \item{...}{not used}
+
+\item{copy.class}{logical If TRUE class attributes are also copied.}
 }
 \value{
 A copy of \code{y} with additional attributes set.

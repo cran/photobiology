@@ -12,29 +12,32 @@
 \alias{as.source_spct}
 \title{Spectral-object copy constructor}
 \usage{
-as.generic_spct(x)
+as.generic_spct(x, ...)
 
-as.raw_spct(x)
+as.raw_spct(x, ...)
 
-as.cps_spct(x)
+as.cps_spct(x, ...)
 
 as.source_spct(x, time.unit = c("second", "day", "exposure"),
-  bswf.used = c("none", "unknown"), strict.range = FALSE)
+  bswf.used = c("none", "unknown"), strict.range = FALSE, ...)
 
-as.response_spct(x, time.unit = "second")
+as.response_spct(x, time.unit = "second", ...)
 
-as.filter_spct(x, Tfr.type = c("total", "internal"), strict.range = FALSE)
+as.filter_spct(x, Tfr.type = c("total", "internal"), strict.range = FALSE,
+  ...)
 
 as.reflector_spct(x, Rfr.type = c("total", "specular"),
-  strict.range = FALSE)
+  strict.range = FALSE, ...)
 
 as.object_spct(x, Tfr.type = c("total", "internal"), Rfr.type = c("total",
-  "specular"), strict.range = FALSE)
+  "specular"), strict.range = FALSE, ...)
 
-as.chroma_spct(x)
+as.chroma_spct(x, ...)
 }
 \arguments{
 \item{x}{an R object}
+
+\item{...}{other arguments passed to "set" functions}
 
 \item{time.unit}{character A string, "second", "day" or "exposure"}
 

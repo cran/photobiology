@@ -25,7 +25,10 @@ e_response(spct, w.band, quantity, time.unit, wb.trim, use.hinges, ...)
 \arguments{
 \item{spct}{an R object}
 
-\item{w.band}{a waveband object or a list of waveband objects}
+\item{w.band}{waveband or list of waveband objects or a numeric vector of
+length two. The waveband(s) determine the region(s) of the spectrum that
+are summarized. If a numeric range is supplied a waveband object is
+constructed on the fly from it.}
 
 \item{quantity}{character}
 

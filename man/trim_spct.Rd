@@ -7,7 +7,7 @@
 \usage{
 trim_spct(spct, range = NULL, low.limit = NULL, high.limit = NULL,
   use.hinges = TRUE, fill = NULL, byref = FALSE,
-  verbose = getOption("photobiology.verbose", default = TRUE))
+  verbose = getOption("photobiology.verbose", default = FALSE))
 
 trim_mspct(mspct, range = NULL, low.limit = NULL, high.limit = NULL,
   use.hinges = TRUE, fill = NULL, byref = FALSE,

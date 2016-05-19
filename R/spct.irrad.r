@@ -77,7 +77,14 @@ irrad.source_spct <-
            wb.trim = getOption("photobiology.waveband.trim", default = TRUE),
            use.cached.mult = getOption("photobiology.use.cached.mult", default = FALSE),
            use.hinges = getOption("photobiology.use.hinges"),
-           allow.scaled = FALSE, ...){
+           allow.scaled = FALSE, ...) {
+    # we look for multiple spectra and return with a warning
+    num.spectra <- getMultipleWl(spct)
+    if (num.spectra != 1) {
+      warning("Skipping irradiance calculation as object contains ",
+              num.spectra, " spectra")
+      return(NA_real_)
+    }
     # we have a default, but we check for invalid arguments
     if (!allow.scaled && (is_normalized(spct) || is_scaled(spct))) {
       warning("The spectral data has been normalized or scaled, ",
@@ -104,6 +111,9 @@ irrad.source_spct <-
     }
     if (unit.out == "quantum") {
       unit.out <- "photon"
+    }
+    if (is.numeric(w.band)) {
+      w.band <- waveband(w.band)
     }
     if (is.null(w.band)) {
       w.band <- waveband(spct)
@@ -156,9 +166,6 @@ irrad.source_spct <-
       all.hinges <- NULL
       for (wb in w.band) {
         all.hinges <- c(all.hinges, wb$hinges)
-      }
-      if (!is.null(all.hinges)) {
-
       }
       lst <- l_insert_hinges(w.length, s.irrad, all.hinges)
       w.length <- lst[["x"]]

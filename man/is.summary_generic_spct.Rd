@@ -7,12 +7,15 @@
 \alias{is.summary_filter_spct}
 \alias{is.summary_generic_spct}
 \alias{is.summary_object_spct}
+\alias{is.summary_raw_spct}
 \alias{is.summary_reflector_spct}
 \alias{is.summary_response_spct}
 \alias{is.summary_source_spct}
 \title{Query class of spectrum summary objects}
 \usage{
 is.summary_generic_spct(x)
+
+is.summary_raw_spct(x)
 
 is.summary_cps_spct(x)
 

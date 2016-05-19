@@ -12,22 +12,13 @@ library(lubridate)
 ## ----own-set-up, echo=FALSE, include=FALSE-------------------------------
 my_version <- packageVersion("photobiology")
 
-## ----set-up-printing-----------------------------------------------------
-options(dplyr.print_max = 4)
-options(dplyr.print_min = 4)
-
-## ----eval=FALSE----------------------------------------------------------
-#  print(sun.spct, n = 3)
-
-## ----eval=FALSE----------------------------------------------------------
-#  summary(sun.spct)
-
 ## ----example-1, eval=FALSE-----------------------------------------------
 #  # not run
 #  my.spct <- source_spct(w.length = wavelength/10, s.e.irrad = irrad/1000)
 
 ## ------------------------------------------------------------------------
 is.any_spct(sun.spct)
+is.generic_spct(sun.spct)
 is.source_spct(sun.spct)
 
 ## ------------------------------------------------------------------------
@@ -101,6 +92,8 @@ two_suns.mspct
 
 ## ------------------------------------------------------------------------
 mixed.mspct <- generic_mspct(list(filter = clear.spct, source = sun.spct))
+class(mixed.mspct)
+lapply(mixed.mspct, class_spct)
 
 ## ------------------------------------------------------------------------
 two_gen.mscpt <- as.generic_mspct(two_suns.mspct)
@@ -116,6 +109,10 @@ test1.df <- data.frame(w.length = rep(200:210, 2),
                        s.e.irrad = rep(c(1, 2), c(11, 11)),
                        spectrum = factor(rep(c("A", "B"), c(11,11))))
 subset2mspct(test1.df, member.class = "source_spct", idx.var = "spectrum")
+
+## ------------------------------------------------------------------------
+setSourceSpct(test1.df, multiple.wl = 2L)
+test1.df
 
 ## ------------------------------------------------------------------------
 test2.df <- data.frame(w.length = 200:210, A = 1, B = 2, z = "A")
@@ -259,6 +256,16 @@ split_bands(list(c(100, 150, 200), c(800, 825)))
 split_bands(UV_bands, length.out  =  2)
 split_bands(list(c(100, 150, 200), c(800, 825)), length.out = 1)
 
+## ----set-up-printing-----------------------------------------------------
+options(dplyr.print_max = 4)
+options(dplyr.print_min = 4)
+
+## ----eval=FALSE----------------------------------------------------------
+#  print(sun.spct, n = 3)
+
+## ----eval=FALSE----------------------------------------------------------
+#  summary(sun.spct)
+
 ## ------------------------------------------------------------------------
 sun.spct * sun.spct
 
@@ -398,6 +405,9 @@ is_tagged(tg.sun.spct)
 summary(sun.spct)
 
 ## ------------------------------------------------------------------------
+summary(two_suns.spct)
+
+## ------------------------------------------------------------------------
 range(sun.spct)
 min(sun.spct)
 max(sun.spct)
@@ -429,6 +439,9 @@ irrad(sun.spct)
 
 ## ------------------------------------------------------------------------
 irrad(sun.spct, PAR)
+
+## ------------------------------------------------------------------------
+irrad(sun.spct, c(400, 700))
 
 ## ------------------------------------------------------------------------
 e_irrad(sun.spct, PAR) # W m-2

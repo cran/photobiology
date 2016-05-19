@@ -8,7 +8,8 @@
 \usage{
 \method{print}{generic_spct}(x, ..., n = NULL, width = NULL)
 
-\method{print}{generic_mspct}(x, ..., n = NULL, width = NULL)
+\method{print}{generic_mspct}(x, ..., n = NULL, width = NULL,
+  n.members = 10)
 }
 \arguments{
 \item{x}{An object of one of the summary classes for spectra}
@@ -22,6 +23,8 @@ less than option dplyr.print_max. Otherwise, will print dplyr.print_min}
 means use getOption("width") and only display the columns that fit on one
 screen. You can also set option(dplyr.width = Inf) to override this default
 and always print all columns.}
+
+\item{n.members}{numeric Number of members of the collection to print.}
 }
 \value{
 Returns \code{x} invisibly.

@@ -11,8 +11,10 @@ absorptance_spct(spct, w.band = NULL, quantity = "average",
 \arguments{
 \item{spct}{object_spct}
 
-\item{w.band}{waveband or list of waveband objects The wavebands determine
-the region(s) of the spectrum that are summarized.}
+\item{w.band}{waveband or list of waveband objects or a numeric vector of
+length two. The waveband(s) determine the region(s) of the spectrum that
+are summarized. If a numeric range is supplied a waveband object is
+constructed on the fly from it.}
 
 \item{quantity}{character string}
 

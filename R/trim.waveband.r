@@ -37,8 +37,12 @@ trim_waveband <-
     if (input.was.waveband) {
       w.band <- list(w.band)
     }
-
-    range <- normalize_range_arg(range)
+    if (is.null(range)) {
+      range <- c(low.limit, high.limit)
+    }
+    wb.range <- c(min(sapply(w.band, min), na.rm = TRUE),
+                  max(sapply(w.band, max), na.rm = TRUE))
+    range <- normalize_range_arg(range, wb.range)
     low.limit <- range[1]
     high.limit <- range[2]
 

@@ -14,33 +14,34 @@
 \usage{
 source_spct(w.length = NULL, s.e.irrad = NULL, s.q.irrad = NULL,
   time.unit = c("second", "day", "exposure"), bswf.used = c("none",
-  "unknown"), comment = NULL, strict.range = FALSE, ...)
+  "unknown"), comment = NULL, strict.range = FALSE, multiple.wl = 1L, ...)
 
 raw_spct(w.length = NULL, counts = NA_real_, comment = NULL,
-  instr.desc = NA, instr.settings = NA, ...)
+  instr.desc = NA, instr.settings = NA, multiple.wl = 1L, ...)
 
 cps_spct(w.length = NULL, cps = NA_real_, comment = NULL,
-  instr.desc = NA, instr.settings = NA, ...)
+  instr.desc = NA, instr.settings = NA, multiple.wl = 1L, ...)
 
-generic_spct(w.length = NULL, comment = NULL, ...)
+generic_spct(w.length = NULL, comment = NULL, multiple.wl = 1L, ...)
 
 response_spct(w.length = NULL, s.e.response = NULL, s.q.response = NULL,
-  time.unit = c("second", "day", "exposure"), comment = NULL, ...)
+  time.unit = c("second", "day", "exposure"), comment = NULL,
+  multiple.wl = 1L, ...)
 
 filter_spct(w.length = NULL, Tfr = NULL, Tpc = NULL, A = NULL,
   Tfr.type = c("total", "internal"), comment = NULL, strict.range = FALSE,
-  ...)
+  multiple.wl = 1L, ...)
 
 reflector_spct(w.length = NULL, Rfr = NULL, Rpc = NULL,
   Rfr.type = c("total", "specular"), comment = NULL, strict.range = FALSE,
-  ...)
+  multiple.wl = 1L, ...)
 
 object_spct(w.length = NULL, Rfr = NULL, Tfr = NULL,
   Tfr.type = c("total", "internal"), Rfr.type = c("total", "specular"),
-  comment = NULL, strict.range = FALSE, ...)
+  comment = NULL, strict.range = FALSE, multiple.wl = 1L, ...)
 
 chroma_spct(w.length = NULL, x, y, z, comment = NULL,
-  strict.range = FALSE, ...)
+  strict.range = FALSE, multiple.wl = 1L, ...)
 }
 \arguments{
 \item{w.length}{numeric vector with wavelengths in nanometres}
@@ -63,6 +64,9 @@ object created.}
 
 \item{strict.range}{logical Flag indicating whether off-range values result
 in an error instead of a warning.}
+
+\item{multiple.wl}{numeric Maximum number of repeated w.length entries with
+same value.}
 
 \item{...}{other arguments passed to \code{data_frame()}}
 
@@ -111,8 +115,8 @@ character scalars for attributes, and a logical flag.
 The functions can be used to add only one spectral quantity to a
   spectral object. Some of the functions have different arguments, for the
   same quantity expressed in different units. An actual parameter can be
-  supplied to only one of these formal parameters in a given call to any
-  of these functions.
+  supplied to only one of these formal parameters in a given call to any of
+  these functions.
 
 "internal" transmittance is defined as the transmittance of the
   material body itself, while "total" transmittance includes the effects of

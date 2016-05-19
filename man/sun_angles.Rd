@@ -14,7 +14,7 @@ current time}
 \item{geocode}{data frame with variables lon and lat as numeric values
 (degrees).}
 
-\item{lon}{numeric Vector of longitudes (degrees)}
+\item{lon}{numeric Vector of longitudes (degrees) W is < 0, and E is > 0}
 
 \item{lat}{numeric Vector of latitudes (degrees)}
 
@@ -28,12 +28,34 @@ A list with components time in same TZ as input, azimuth, elevation,
 \description{
 This function returns the solar angles for a given time and location.
 }
+\note{
+Several implementations of this algorithm are available in the
+  internet. I have found FORTRAN, Perl and R versions. Not all these
+  implementations correctly handle year 2000, which is an exception to the
+  normal leap-year rule. They also differ on the handling of refraction. The
+  algorithm used only accepts dates for years 1950 to 2050. A listing is also
+  available in an appendix in Vignola et al. (2012). This implementation is
+  not a direct copy or translation of any of these examples. The current
+  version of the code owes much to Josh O'Brien's asnwer to a question in
+  StackOverflow
+  \url{http://stackoverflow.com/questions/8708048/position-of-the-sun-given-time-of-day-latitude-and-longitude}
+}
 \examples{
 require(lubridate)
 sun_angles()
 sun_angles(ymd_hms("2014-09-23 12:00:00"))
 sun_angles(ymd_hms("2014-09-23 12:00:00"), lat=60, lon=0)
 
+}
+\references{
+Michalsky, J. J., 1988. "The Astronomical Almanac's algorithm for approximate
+solar position (1950--2050)". Solar Energy, 227--235.
+
+Spencer, J. W., 1989. "Comments on The Astronomical Almanac's algorithm for
+approximate solar position (1950--2050)." Solar Energy, 42, 353.
+
+Vignola, F.; Michalsky, J. & Stoffel, T., 2012 (Eds.) "Solar and infrared
+radiation measurements." Boca Raton, CRC Press, ISBN 9781439851890.
 }
 \seealso{
 Other astronomy related functions: \code{\link{day_night}}

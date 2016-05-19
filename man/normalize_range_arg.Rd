@@ -4,14 +4,18 @@
 \alias{normalize_range_arg}
 \title{Normalize a range argument into a true numeric range}
 \usage{
-normalize_range_arg(range, default.range = c(0, Inf))
+normalize_range_arg(arg.range, wl.range, trim = TRUE)
 }
 \arguments{
-\item{range}{a numeric vector of length two, or any other object for which
-function range() will return two}
+\item{arg.range}{a numeric vector of length two, or any other object for
+which function range() will return a range of wavelengths (nm).}
 
-\item{default.range}{a numeric vector of length two, missing values are
-not allowed, but Inf amd -Inf are.}
+\item{wl.range}{a numeric vector of length two, or any other object for which
+function range() will return a range of wavelengths (nm), missing values
+are not allowed.}
+
+\item{trim}{logical If TRUE the range returned is bound within
+\code{wl.range} while if FALSE it can be broader.}
 }
 \value{
 a numeric vector of length two, guaranteed not to have missing
@@ -23,19 +27,19 @@ with a flexible syntax. To ensure that all functions and methods behave
 in the same way this code has been factored out into a separate function.
 }
 \details{
-The \code{range} argument can contain NAs which are replaced by
-  the value at the same position in \code{default.range}. In addition
-  a NULL argument for \code{range} is converted into \code{default.range}.
-  The \code{default.range} is also the limit to which the returned value
-  is trimmed. The idea is that the value supplied as default is the whole
-  valid range, and as we use range only for wavelength, the default is
-  0 to Inf.
+The \code{arg.range} argument can contain NAs which are replaced by
+  the value at the same position in \code{wl.range}. In addition
+  a NULL argument for \code{range} is converted into \code{wl.range}.
+  The \code{wl.range} is also the limit to which the returned value
+  is trimmed if \code{trim == TRUE}. The idea is that the value supplied as
+  \code{wl.range} is the wavelength range of the data.
 }
 \examples{
-normalize_range_arg(sun.spct)
-normalize_range_arg(c(NA, 500))
-normalize_range_arg(c(NA, 500), c(100, Inf))
-normalize_range_arg(c(-100, 500), c(-Inf, Inf))
+normalize_range_arg(c(NA, 500), range(sun.spct))
+normalize_range_arg(c(300, NA), range(sun.spct))
+normalize_range_arg(c(100, 5000), range(sun.spct), FALSE)
+normalize_range_arg(c(NA, NA), range(sun.spct))
+normalize_range_arg(c(NA, NA), sun.spct)
 
 }
 
