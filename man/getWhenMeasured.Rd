@@ -48,7 +48,7 @@ If x is not a \code{generic_spct} or an object of a derived class
   \code{NA} is returned.
 
 The method for collections of spectra returns the
-  a data_frame with the correct times in TZ = "UTC".
+  a tibble with the correct times in TZ = "UTC".
 }
 \examples{
 getWhenMeasured(sun.spct)

@@ -5,9 +5,6 @@
 \alias{ciexyzCMF10.spct}
 \title{Linear energy CIE xyz colour matching function (CMF) 10 deg data}
 \format{A chroma_spct object with 441 rows and 4 variables}
-\usage{
-ciexyzCMF10.spct
-}
 \description{
 A dataset containing wavelengths at a 1 nm interval (390 nm to
   830 nm) and the corresponding x, y, and z 10 degrees CMF values. Derived

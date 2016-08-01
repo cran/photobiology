@@ -44,7 +44,7 @@
 
 \item{j}{index for columns, specifying elements to extract or replace. Indices are
 numeric or character vectors or empty (missing) or NULL. Please, see
-\code{\link[base]{Extract.data.frame}} for more details.}
+\code{\link[base]{Extract}} for more details.}
 
 \item{drop}{logical. If TRUE the result is coerced to the lowest possible
 dimension. The default is FALSE unless the result is a single column.}

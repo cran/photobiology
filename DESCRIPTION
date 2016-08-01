@@ -1,9 +1,13 @@
 Package: photobiology
 Type: Package
 Title: 'Photobiological' Calculations
-Version: 0.9.8
-Date: 2016-05-18
-Author: Pedro J. Aphalo [aut, cre]
+Version: 0.9.9
+Date: 2016-08-01
+Authors@R: 
+   c(
+    person("Pedro J.", "Aphalo", email = "pedro.aphalo@helsinki.fi", role = c("aut", "cre")),
+    person("Titta K.", "Kotilainen", email = "titta.kotilainen@helsinki.fi", role = "ctb")
+    )
 Maintainer: Pedro J. Aphalo <pedro.aphalo@helsinki.fi>
 Description: Definitions of classes, methods, operators and functions for use in
     'photobiology' and radiation meteorology and climatology. Calculation of
@@ -14,11 +18,11 @@ Description: Definitions of classes, methods, operators and functions for use in
     interpolation. Astronomical calculations related solar angles and day
     length. Colours and vision.
 License: GPL (>= 3)
-VignetteBuilder: knitr
 Depends: R (>= 3.2.0)
-Imports: lubridate (>= 1.5.0), plyr (>= 1.8.3), dplyr (>= 0.4.3),
-        splus2R (>= 1.2-0), caTools (>= 1.17.1)
-Suggests: knitr (>= 1.12.3), testthat (>= 0.11.0), roxygen2 (>= 5.0.1)
+Imports: tibble (>= 1.1), lubridate (>= 1.5.6), plyr (>= 1.8.4), dplyr
+        (>= 0.5.0), splus2R (>= 1.2-1), caTools (>= 1.17.1)
+Suggests: knitr (>= 1.13), rmarkdown (>= 1.0), testthat (>= 1.0.2),
+        roxygen2 (>= 5.0.1)
 LazyLoad: yes
 LazyData: yes
 ByteCompile: true
@@ -27,7 +31,10 @@ URL: http://www.r4photobiology.info/,
 BugReports: https://bitbucket.org/aphalo/photobiology/issues
 Encoding: UTF-8
 RoxygenNote: 5.0.1
+VignetteBuilder: knitr
 NeedsCompilation: no
-Packaged: 2016-05-19 19:48:28 UTC; aphalo
+Packaged: 2016-08-01 16:47:08 UTC; aphalo
+Author: Pedro J. Aphalo [aut, cre],
+  Titta K. Kotilainen [ctb]
 Repository: CRAN
-Date/Publication: 2016-05-19 23:27:52
+Date/Publication: 2016-08-01 19:13:07

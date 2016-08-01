@@ -24,7 +24,7 @@ the SWF, greatly reduces the errors caused by interpolating the weighted
 irradiance during integration of the effective spectral irradiance. This is
 specially true when data have a large wavelength step size. This fucntion
 differs from \code{insert_hinges()} in that it returns a vector of \code{y}
-values instead of a \code{data_frame}.
+values instead of a \code{tibble}.
 }
 \keyword{internal}
 

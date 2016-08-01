@@ -68,7 +68,7 @@ in an error instead of a warning.}
 \item{multiple.wl}{numeric Maximum number of repeated w.length entries with
 same value.}
 
-\item{...}{other arguments passed to \code{data_frame()}}
+\item{...}{other arguments passed to \code{tibble()}}
 
 \item{counts}{numeric vector with raw counts expressed per scan}
 

@@ -431,7 +431,7 @@ sunset_time <- function(date = lubridate::today(), tz = "UTC",
       stats::uniroot(f = altitude,
               lon = lon, lat = lat,
               twlght_angl = twlght_angl,
-              lower = t_num, upper = t_num + 86400 / 2)$root,
+              lower = t_num - 1, upper = t_num + 86400 / 2)$root,
       silent = TRUE)
     if (inherits(set, "try-error")) {
       set <- NA # never
@@ -470,6 +470,10 @@ day_length <- function(date = lubridate::today(), tz = "UTC",
   hours <- ifelse(is.na(rise_time) | is.na(set_time),
          ifelse(altitude(noon, lon = lon, lat = lat) > 0, 24, 0),
          set_time - rise_time)
+  if (any(hours > 24) || any(hours < 0)) {
+    hours <- NA_real_
+    warning("Convergence failed!")
+  }
   switch(unit.out,
          "date" = hours,
          "hour" = hours,

@@ -130,7 +130,7 @@ rbindspct <- function(l, use.names = TRUE, fill = TRUE, idfactor = TRUE) {
     ans <- l[[1]]
   } else {
     ans <- plyr::rbind.fill(l)
-    ans <- dplyr::as_data_frame(ans)
+    ans <- tibble::as_tibble(ans)
   }
   if (is.null(ans)) {
     return(generic_spct())
@@ -205,6 +205,19 @@ rbindspct <- function(l, use.names = TRUE, fill = TRUE, idfactor = TRUE) {
       return(reflector_spct())
     }
     setReflectorSpct(ans, Rfr.type = Rfr.type[1], multiple.wl = mltpl.wl)
+  } else if (l.class == "object_spct") {
+    Tfr.type <- sapply(l, FUN = getTfrType)
+    Rfr.type <- sapply(l, FUN = getRfrType)
+    if (length(unique(Tfr.type)) > 1L) {
+      warning("Inconsistent 'Tfr.type' among filter spectra in rbindspct")
+      return(filter_spct())
+    }
+    if (length(unique(Rfr.type)) > 1L) {
+      warning("Inconsistent 'Rfr.type' among reflector spectra in rbindspct")
+      return(reflector_spct())
+    }
+    setObjectSpct(ans, Tfr.type = Tfr.type[1], Rfr.type = Rfr.type[1],
+                  multiple.wl = mltpl.wl)
   } else if (l.class == "response_spct") {
     time.unit <- sapply(l, FUN = getTimeUnit)
     if (length(unique(time.unit)) > 1L) {
@@ -274,7 +287,7 @@ rbindspct <- function(l, use.names = TRUE, fill = TRUE, idfactor = TRUE) {
 #' @param i index for rows,
 #' @param j index for columns, specifying elements to extract or replace. Indices are
 #'   numeric or character vectors or empty (missing) or NULL. Please, see
-#'   \code{\link[base]{Extract.data.frame}} for more details.
+#'   \code{\link[base]{Extract}} for more details.
 #' @param drop logical. If TRUE the result is coerced to the lowest possible
 #'   dimension. The default is FALSE unless the result is a single column.
 #'
