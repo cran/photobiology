@@ -14,7 +14,8 @@ length two. The waveband(s) determine the region(s) of the spectrum that
 are summarized. If a numeric range is supplied a waveband object is
 constructed on the fly from it.}
 
-\item{quantity}{character}
+\item{quantity}{character string One of "total", "average" or "mean",
+"contribution", "contribution.pc", "relative" or "relative.pc"}
 
 \item{wb.trim}{logical Flag indicating if wavebands crossing spectral data boundaries
 are trimmed or ignored}

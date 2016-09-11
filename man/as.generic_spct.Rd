@@ -19,18 +19,20 @@ as.raw_spct(x, ...)
 as.cps_spct(x, ...)
 
 as.source_spct(x, time.unit = c("second", "day", "exposure"),
-  bswf.used = c("none", "unknown"), strict.range = FALSE, ...)
+  bswf.used = c("none", "unknown"),
+  strict.range = getOption("photobiology.strict.range", default = FALSE), ...)
 
 as.response_spct(x, time.unit = "second", ...)
 
-as.filter_spct(x, Tfr.type = c("total", "internal"), strict.range = FALSE,
-  ...)
+as.filter_spct(x, Tfr.type = c("total", "internal"),
+  strict.range = getOption("photobiology.strict.range", default = FALSE), ...)
 
 as.reflector_spct(x, Rfr.type = c("total", "specular"),
-  strict.range = FALSE, ...)
+  strict.range = getOption("photobiology.strict.range", default = FALSE), ...)
 
 as.object_spct(x, Tfr.type = c("total", "internal"), Rfr.type = c("total",
-  "specular"), strict.range = FALSE, ...)
+  "specular"), strict.range = getOption("photobiology.strict.range", default =
+  FALSE), ...)
 
 as.chroma_spct(x, ...)
 }

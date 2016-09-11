@@ -36,7 +36,8 @@ constructed on the fly from it.}
 \item{unit.out}{character Allowed values "energy", and "photon", or its alias
 "quantum"}
 
-\item{quantity}{character Allowed values ""}
+\item{quantity}{character string One of "total", "average" or "mean",
+"contribution", "contribution.pc", "relative" or "relative.pc"}
 
 \item{time.unit}{character or lubridate::duration}
 

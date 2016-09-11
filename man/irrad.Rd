@@ -19,15 +19,15 @@ irrad(spct, w.band, unit.out, quantity, time.unit, wb.trim, use.cached.mult,
   wb.trim = getOption("photobiology.waveband.trim", default = TRUE),
   use.cached.mult = getOption("photobiology.use.cached.mult", default =
   FALSE), use.hinges = getOption("photobiology.use.hinges"),
-  allow.scaled = FALSE, ...)
+  allow.scaled = !quantity \%in\% c("average", "mean", "total"), ...)
 
 \method{irrad}{source_mspct}(spct, w.band = NULL,
   unit.out = getOption("photobiology.radiation.unit", default = "energy"),
   quantity = "total", time.unit = NULL,
   wb.trim = getOption("photobiology.waveband.trim", default = TRUE),
   use.cached.mult = getOption("photobiology.use.cached.mult", default =
-  FALSE), use.hinges = NULL, allow.scaled = FALSE, ...,
-  idx = !is.null(names(spct)))
+  FALSE), use.hinges = NULL, allow.scaled = !quantity \%in\% c("average",
+  "mean", "total"), ..., idx = !is.null(names(spct)))
 }
 \arguments{
 \item{spct}{an R object}
@@ -38,7 +38,8 @@ the region(s) of the spectrum that are summarized.}
 \item{unit.out}{character string with allowed values "energy", and "photon",
 or its alias "quantum"}
 
-\item{quantity}{character string}
+\item{quantity}{character string One of "total", "average" or "mean",
+"contribution", "contribution.pc", "relative" or "relative.pc"}
 
 \item{time.unit}{character or lubridate::duration}
 
@@ -96,8 +97,16 @@ The last two parameters control speed optimizations. The defaults
   vector.
 }
 \examples{
-irrad(sun.spct, waveband(c(400,700)), "photon")
+irrad(sun.spct, waveband(c(400,700)))
 irrad(sun.spct, waveband(c(400,700)), "energy")
+irrad(sun.spct, waveband(c(400,700)), "photon")
+irrad(sun.spct, split_bands(c(400,700), length.out = 3))
+irrad(sun.spct, split_bands(c(400,700), length.out = 3), quantity = "total")
+irrad(sun.spct, split_bands(c(400,700), length.out = 3), quantity = "average")
+irrad(sun.spct, split_bands(c(400,700), length.out = 3), quantity = "relative")
+irrad(sun.spct, split_bands(c(400,700), length.out = 3), quantity = "relative.pc")
+irrad(sun.spct, split_bands(c(400,700), length.out = 3), quantity = "contribution")
+irrad(sun.spct, split_bands(c(400,700), length.out = 3), quantity = "contribution.pc")
 
 }
 \seealso{

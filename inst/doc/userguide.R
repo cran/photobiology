@@ -1,13 +1,10 @@
 ## ---- include=FALSE, echo=FALSE------------------------------------------
 library(knitr)
-opts_chunk$set(fig.path = 'figure/pos-', fig.align = 'center', fig.show = 'hold',
-               fig.width = 7, fig.height = 4)
-# options(warnPartialMatchArgs = FALSE)
+opts_chunk$set(fig.path = 'figure/pos-', fig.align = 'center', fig.show = 'hold', fig.width = 7, fig.height = 4)
 
 ## ---- printing-spectra, eval=TRUE, include=FALSE-------------------------
 library(tibble)
-options(tibble.print_max = 6)
-options(tibble.print_min = 4)
+options(tibble.print_max = 6, tibble.print_min = 4)
 
 ## ---- pkg-load, eval=TRUE------------------------------------------------
 library(photobiology)
@@ -549,23 +546,23 @@ day_night(dates, lat =  60)
 sunrise_time(lat = 60)
 
 ## ------------------------------------------------------------------------
-sunrise_time(today(tz = "UTC"), tz = "UTC", lat = 60, lon = 0)
-sunrise_time(today(tz = "EET"), tz = "EET", lat = 60, lon = 25)
+sunrise_time(today("UTC"), tz = "UTC", lat = 60, lon = 0)
+sunrise_time(today("EET"), tz = "EET", lat = 60, lon = 25)
 
 ## ------------------------------------------------------------------------
 sunrise_time(dates, lat =  60)
 sunrise_time(dates, lat = -60)
 
 ## ------------------------------------------------------------------------
-sunrise_time(today(tz = "EET"), tz = "EET", lat = 60, lon = 25,
+sunrise_time(today("EET"), tz = "EET", lat = 60, lon = 25,
              twilight = "civil")
-sunrise_time(today(tz = "EET"), tz = "EET", lat = 60, lon = 25,
+sunrise_time(today("EET"), tz = "EET", lat = 60, lon = 25,
              twilight = -10)
-sunrise_time(today(tz = "EET"), tz = "EET", lat = 60, lon = 25,
+sunrise_time(today("EET"), tz = "EET", lat = 60, lon = 25,
              twilight = +12)
 
 ## ------------------------------------------------------------------------
-sunrise_time(today(tz = "EET"), tz = "EET", lat = 60, lon = 25,
+sunrise_time(today("EET"), tz = "EET", lat = 60, lon = 25,
              unit.out = "hour")
 
 ## ------------------------------------------------------------------------

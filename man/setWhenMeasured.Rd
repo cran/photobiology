@@ -12,14 +12,14 @@ setWhenMeasured(x, when.measured, ...)
 
 \method{setWhenMeasured}{default}(x, when.measured, ...)
 
-\method{setWhenMeasured}{generic_spct}(x, when.measured = lubridate::now(tz =
-  "UTC"), ...)
+\method{setWhenMeasured}{generic_spct}(x, when.measured = lubridate::now(tzone
+  = "UTC"), ...)
 
 \method{setWhenMeasured}{summary_generic_spct}(x,
-  when.measured = lubridate::now(tz = "UTC"), ...)
+  when.measured = lubridate::now(tzone = "UTC"), ...)
 
-\method{setWhenMeasured}{generic_mspct}(x, when.measured = lubridate::now(tz =
-  "UTC"), ...)
+\method{setWhenMeasured}{generic_mspct}(x,
+  when.measured = lubridate::now(tzone = "UTC"), ...)
 }
 \arguments{
 \item{x}{a generic_spct object}

@@ -14,23 +14,29 @@
 \usage{
 setGenericSpct(x, multiple.wl = 1L)
 
-setRawSpct(x, strict.range = FALSE, multiple.wl = 1L)
+setRawSpct(x, strict.range = getOption("photobiology.strict.range", default =
+  FALSE), multiple.wl = 1L)
 
-setCpsSpct(x, strict.range = FALSE, multiple.wl = 1L)
+setCpsSpct(x, strict.range = getOption("photobiology.strict.range", default =
+  FALSE), multiple.wl = 1L)
 
-setFilterSpct(x, Tfr.type = c("total", "internal"), strict.range = FALSE,
+setFilterSpct(x, Tfr.type = c("total", "internal"),
+  strict.range = getOption("photobiology.strict.range", default = FALSE),
   multiple.wl = 1L)
 
-setReflectorSpct(x, Rfr.type = c("total", "specular"), strict.range = FALSE,
+setReflectorSpct(x, Rfr.type = c("total", "specular"),
+  strict.range = getOption("photobiology.strict.range", default = FALSE),
   multiple.wl = 1L)
 
 setObjectSpct(x, Tfr.type = c("total", "internal"), Rfr.type = c("total",
-  "specular"), strict.range = FALSE, multiple.wl = 1L)
+  "specular"), strict.range = getOption("photobiology.strict.range", default =
+  FALSE), multiple.wl = 1L)
 
 setResponseSpct(x, time.unit = "second", multiple.wl = 1L)
 
 setSourceSpct(x, time.unit = "second", bswf.used = c("none", "unknown"),
-  strict.range = FALSE, multiple.wl = 1L)
+  strict.range = getOption("photobiology.strict.range", default = FALSE),
+  multiple.wl = 1L)
 
 setChromaSpct(x, multiple.wl = 1L)
 }

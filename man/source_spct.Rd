@@ -14,7 +14,9 @@
 \usage{
 source_spct(w.length = NULL, s.e.irrad = NULL, s.q.irrad = NULL,
   time.unit = c("second", "day", "exposure"), bswf.used = c("none",
-  "unknown"), comment = NULL, strict.range = FALSE, multiple.wl = 1L, ...)
+  "unknown"), comment = NULL,
+  strict.range = getOption("photobiology.strict.range", default = FALSE),
+  multiple.wl = 1L, ...)
 
 raw_spct(w.length = NULL, counts = NA_real_, comment = NULL,
   instr.desc = NA, instr.settings = NA, multiple.wl = 1L, ...)
@@ -29,19 +31,23 @@ response_spct(w.length = NULL, s.e.response = NULL, s.q.response = NULL,
   multiple.wl = 1L, ...)
 
 filter_spct(w.length = NULL, Tfr = NULL, Tpc = NULL, A = NULL,
-  Tfr.type = c("total", "internal"), comment = NULL, strict.range = FALSE,
+  Tfr.type = c("total", "internal"), comment = NULL,
+  strict.range = getOption("photobiology.strict.range", default = FALSE),
   multiple.wl = 1L, ...)
 
 reflector_spct(w.length = NULL, Rfr = NULL, Rpc = NULL,
-  Rfr.type = c("total", "specular"), comment = NULL, strict.range = FALSE,
+  Rfr.type = c("total", "specular"), comment = NULL,
+  strict.range = getOption("photobiology.strict.range", default = FALSE),
   multiple.wl = 1L, ...)
 
 object_spct(w.length = NULL, Rfr = NULL, Tfr = NULL,
   Tfr.type = c("total", "internal"), Rfr.type = c("total", "specular"),
-  comment = NULL, strict.range = FALSE, multiple.wl = 1L, ...)
+  comment = NULL, strict.range = getOption("photobiology.strict.range",
+  default = FALSE), multiple.wl = 1L, ...)
 
 chroma_spct(w.length = NULL, x, y, z, comment = NULL,
-  strict.range = FALSE, multiple.wl = 1L, ...)
+  strict.range = getOption("photobiology.strict.range", default = FALSE),
+  multiple.wl = 1L, ...)
 }
 \arguments{
 \item{w.length}{numeric vector with wavelengths in nanometres}

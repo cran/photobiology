@@ -19,7 +19,8 @@ as.raw_mspct(x)
 as.cps_mspct(x)
 
 as.source_mspct(x, time.unit = c("second", "day", "exposure"),
-  bswf.used = c("none", "unknown"), strict.range = FALSE)
+  bswf.used = c("none", "unknown"),
+  strict.range = getOption("photobiology.strict.range", default = FALSE))
 
 as.response_mspct(x, time.unit = "second")
 

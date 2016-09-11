@@ -17,8 +17,8 @@ constructed on the fly from it.}
 \item{unit.out}{character with allowed values "energy", and "photon", or its
 alias "quantum"}
 
-\item{quantity}{character with allowed values "total", "average" ("mean"),
-"contibution", "contribution.pc", "relative", "relative.pc"}
+\item{quantity}{character string One of "total", "average" or "mean",
+"contribution", "contribution.pc", "relative" or "relative.pc"}
 
 \item{wb.trim}{logical if TRUE wavebands crossing spectral data boundaries
 are trimmed, if FALSE, they are discarded}

@@ -16,20 +16,22 @@ q_irrad(spct, w.band, quantity, time.unit, wb.trim, use.cached.mult, use.hinges,
 \method{q_irrad}{source_spct}(spct, w.band = NULL, quantity = "total",
   time.unit = NULL, wb.trim = getOption("photobiology.waveband.trim",
   default = TRUE), use.cached.mult = getOption("photobiology.use.cached.mult",
-  default = FALSE), use.hinges = NULL, allow.scaled = FALSE, ...)
+  default = FALSE), use.hinges = NULL, allow.scaled = !quantity \%in\%
+  c("average", "mean", "total"), ...)
 
 \method{q_irrad}{source_mspct}(spct, w.band = NULL, quantity = "total",
   time.unit = NULL, wb.trim = getOption("photobiology.waveband.trim",
   default = TRUE), use.cached.mult = getOption("photobiology.use.cached.mult",
-  default = FALSE), use.hinges = NULL, allow.scaled = FALSE, ...,
-  idx = !is.null(names(spct)))
+  default = FALSE), use.hinges = NULL, allow.scaled = !quantity \%in\%
+  c("average", "mean", "total"), ..., idx = !is.null(names(spct)))
 }
 \arguments{
 \item{spct}{an R object}
 
 \item{w.band}{a list of \code{waveband} objects or a \code{waveband} object}
 
-\item{quantity}{character string}
+\item{quantity}{character string One of "total", "average" or "mean",
+"contribution", "contribution.pc", "relative" or "relative.pc"}
 
 \item{time.unit}{character or lubridate::duration}
 
@@ -83,6 +85,13 @@ The last two parameters control speed optimizations. The defaults
 }
 \examples{
 q_irrad(sun.spct, waveband(c(400,700)))
+q_irrad(sun.spct, split_bands(c(400,700), length.out = 3))
+q_irrad(sun.spct, split_bands(c(400,700), length.out = 3), quantity = "total")
+q_irrad(sun.spct, split_bands(c(400,700), length.out = 3), quantity = "average")
+q_irrad(sun.spct, split_bands(c(400,700), length.out = 3), quantity = "relative")
+q_irrad(sun.spct, split_bands(c(400,700), length.out = 3), quantity = "relative.pc")
+q_irrad(sun.spct, split_bands(c(400,700), length.out = 3), quantity = "contribution")
+q_irrad(sun.spct, split_bands(c(400,700), length.out = 3), quantity = "contribution.pc")
 
 }
 \seealso{

@@ -16,20 +16,22 @@ e_irrad(spct, w.band, quantity, time.unit, wb.trim, use.cached.mult, use.hinges,
 \method{e_irrad}{source_spct}(spct, w.band = NULL, quantity = "total",
   time.unit = NULL, wb.trim = getOption("photobiology.waveband.trim",
   default = TRUE), use.cached.mult = getOption("photobiology.use.cached.mult",
-  default = FALSE), use.hinges = NULL, allow.scaled = FALSE, ...)
+  default = FALSE), use.hinges = NULL, allow.scaled = !quantity \%in\%
+  c("average", "mean", "total"), ...)
 
 \method{e_irrad}{source_mspct}(spct, w.band = NULL, quantity = "total",
   time.unit = NULL, wb.trim = getOption("photobiology.waveband.trim",
   default = TRUE), use.cached.mult = getOption("photobiology.use.cached.mult",
-  default = FALSE), use.hinges = NULL, allow.scaled = FALSE, ...,
-  idx = !is.null(names(spct)))
+  default = FALSE), use.hinges = NULL, allow.scaled = !quantity \%in\%
+  c("average", "mean", "total"), ..., idx = !is.null(names(spct)))
 }
 \arguments{
 \item{spct}{an R object}
 
 \item{w.band}{a list of \code{waveband} objects or a \code{waveband} object}
 
-\item{quantity}{character string}
+\item{quantity}{character string One of "total", "average" or "mean",
+"contribution", "contribution.pc", "relative" or "relative.pc"}
 
 \item{time.unit}{character or lubridate::duration}
 
@@ -55,8 +57,9 @@ One numeric value for each waveband with no change in scale factor,
   with name attribute set to the name of each waveband unless a named list is
   supplied in which case the names of the list elements are used. The
   time.unit attribute is copied from the spectrum object to the output. Units
-  are as follows: If time.unit is second, [W m-2 nm-1] -> [W m-2] If
-  time.unit is day, [J d-1 m-2 nm-1] -> [J m-2]
+  are as follows: If units are absolute and time.unit is second, [W m-2 nm-1]
+  -> [W m-2] If time.unit is day, [J d-1 m-2 nm-1] -> [J m-2]; if units are
+  relative, fraction of one or percent.
 }
 \description{
 This function returns the energy irradiance for a given waveband of a light
@@ -83,6 +86,19 @@ The last two parameters control speed optimizations. The defaults
 }
 \examples{
 e_irrad(sun.spct, waveband(c(400,700)))
+e_irrad(sun.spct, split_bands(c(400,700), length.out = 3))
+e_irrad(sun.spct, split_bands(c(400,700), length.out = 3),
+        quantity = "total")
+e_irrad(sun.spct, split_bands(c(400,700), length.out = 3),
+        quantity = "average")
+e_irrad(sun.spct, split_bands(c(400,700), length.out = 3),
+        quantity = "relative")
+e_irrad(sun.spct, split_bands(c(400,700), length.out = 3),
+        quantity = "relative.pc")
+e_irrad(sun.spct, split_bands(c(400,700), length.out = 3),
+        quantity = "contribution")
+e_irrad(sun.spct, split_bands(c(400,700), length.out = 3),
+        quantity = "contribution.pc")
 
 }
 \seealso{
