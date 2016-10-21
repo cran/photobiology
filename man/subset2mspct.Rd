@@ -4,7 +4,7 @@
 \alias{subset2mspct}
 \title{Convert 'long' or tidy spectral data into a collection of spectra}
 \usage{
-subset2mspct(x, member.class = NULL, idx.var = "spct.idx",
+subset2mspct(x, member.class = NULL, idx.var = attr(x, "idfactor"),
   drop.idx = TRUE, ncol = 1, byrow = FALSE, ...)
 }
 \arguments{

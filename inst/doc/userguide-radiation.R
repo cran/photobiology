@@ -1,9 +1,8 @@
 ## ---- include=FALSE, echo=FALSE------------------------------------------
-library(knitr)
-opts_chunk$set(fig.path = 'figure/pos-', fig.align = 'center', fig.show = 'hold', fig.width = 7, fig.height = 4)
+knitr::opts_chunk$set(fig.width=8, fig.height=4)
 
 ## ---- printing-spectra, eval=TRUE, include=FALSE-------------------------
-library(tibble)
+# library(tibble)
 options(tibble.print_max = 6, tibble.print_min = 4)
 
 ## ---- pkg-load, eval=TRUE------------------------------------------------
@@ -74,6 +73,11 @@ getWhereMeasured(my.spct)
 getWhereMeasured(my.spct)$lon
 my.spct
 
+## ---- attr-2a------------------------------------------------------------
+setWhatMeasured(my.spct, "something")
+getWhatMeasured(my.spct)
+my.spct
+
 ## ---- attr-3-------------------------------------------------------------
 is_effective(sun.spct)
 is_effective(sun.spct * waveband(c(400, 700)))
@@ -128,12 +132,14 @@ class(mixed.mspct)
 lapply(mixed.mspct, class_spct)
 lapply(mixed.mspct, class)
 
-## ---- extract-1----------------------------------------------------------
-two_suns.mspct[1]
-two_suns.mspct[2:1]
+## ---- extract-1, eval=FALSE----------------------------------------------
+#  # not run as this triggers an error when building the vignette with 'devtools'
+#  two_suns.mspct[1]
+#  two_suns.mspct[1:2]
 
-## ---- extract-2----------------------------------------------------------
-two_suns.mspct[1:2] <- two_suns.mspct[2:1]
+## ---- extract-2, eval=FALSE----------------------------------------------
+#  # not run as this triggers an error when building the vignette with 'devtools'
+#  two_suns.mspct[1:2] <- two_suns.mspct[2:1]
 
 ## ---- extract-3----------------------------------------------------------
 two_suns.mspct[[1]]
@@ -327,10 +333,21 @@ normalize(sun.spct, range = PAR.wb, norm = "max")
 ## ---- manip-8------------------------------------------------------------
 normalize(sun.spct, norm = 600.3)
 
+## ------------------------------------------------------------------------
+my.spct <- normalize(sun.spct)
+is_normalized(my.spct)
+getNormalized(my.spct)
+
 ## ---- manip-9------------------------------------------------------------
 fscale(sun.spct)
 fscale(sun.spct, f = "total")
 fscale(sun.spct, range = PAR.wb, f = irrad)
+fscale(sun.spct, range = PAR.wb, f = q_irrad, target = 800e-6)
+
+## ------------------------------------------------------------------------
+my.spct <- fscale(sun.spct)
+is_scaled(my.spct)
+getScaled(my.spct)
 
 ## ---- manip-10-----------------------------------------------------------
 fshift(sun.spct, range = UVB.wb, f = "mean")
@@ -524,54 +541,6 @@ integrate_spct(sun.spct)
 
 ## ------------------------------------------------------------------------
 average_spct(sun.spct)
-
-## ------------------------------------------------------------------------
-sun_angles(now(), lat = 34, lon = 0)
-sun_angles(ymd_hms("2014-01-01 0:0:0", tz = "UTC"))
-
-## ------------------------------------------------------------------------
-sun_angles(getWhenMeasured(sun.spct), geocode = getWhereMeasured(sun.spct))
-
-## ------------------------------------------------------------------------
-dates <- seq(from = ymd("2015-03-01"), to = ymd("2015-07-1"), length.out = 3)
-
-## ------------------------------------------------------------------------
-noon_time(dates, tz = "UTC", lat =  60)
-noon_time(dates, tz = "CET", lat =  60)
-
-## ------------------------------------------------------------------------
-day_night(dates, lat =  60)
-
-## ------------------------------------------------------------------------
-sunrise_time(lat = 60)
-
-## ------------------------------------------------------------------------
-sunrise_time(today("UTC"), tz = "UTC", lat = 60, lon = 0)
-sunrise_time(today("EET"), tz = "EET", lat = 60, lon = 25)
-
-## ------------------------------------------------------------------------
-sunrise_time(dates, lat =  60)
-sunrise_time(dates, lat = -60)
-
-## ------------------------------------------------------------------------
-sunrise_time(today("EET"), tz = "EET", lat = 60, lon = 25,
-             twilight = "civil")
-sunrise_time(today("EET"), tz = "EET", lat = 60, lon = 25,
-             twilight = -10)
-sunrise_time(today("EET"), tz = "EET", lat = 60, lon = 25,
-             twilight = +12)
-
-## ------------------------------------------------------------------------
-sunrise_time(today("EET"), tz = "EET", lat = 60, lon = 25,
-             unit.out = "hour")
-
-## ------------------------------------------------------------------------
-day_length(dates, lat = 60)
-night_length(dates, lat = 60)
-
-## ------------------------------------------------------------------------
-day_night(dates, lat = 60)
-day_night(dates, lat = 60, unit.out = "hour")
 
 ## ------------------------------------------------------------------------
 w_length2rgb(550) # green

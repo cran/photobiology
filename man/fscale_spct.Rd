@@ -4,7 +4,7 @@
 \alias{fscale_spct}
 \title{fscale a spectrum}
 \usage{
-fscale_spct(spct, range, col.names, f, ...)
+fscale_spct(spct, range, col.names, f, target, ...)
 }
 \arguments{
 \item{spct}{generic_spct The spectrum to be normalized}

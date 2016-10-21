@@ -24,47 +24,49 @@ fscale(x, ...)
 
 \method{fscale}{default}(x, ...)
 
-\method{fscale}{source_spct}(x, range = NULL, f = "mean",
+\method{fscale}{source_spct}(x, range = NULL, f = "mean", target = 1,
   unit.out = getOption("photobiology.radiation.unit", default = "energy"),
   ...)
 
-\method{fscale}{response_spct}(x, range = NULL, f = "mean",
+\method{fscale}{response_spct}(x, range = NULL, f = "mean", target = 1,
   unit.out = getOption("photobiology.radiation.unit", default = "energy"),
   ...)
 
-\method{fscale}{filter_spct}(x, range = NULL, f = "mean",
+\method{fscale}{filter_spct}(x, range = NULL, f = "mean", target = 1,
   qty.out = getOption("photobiology.filter.qty", default = "transmittance"),
   ...)
 
-\method{fscale}{reflector_spct}(x, range = NULL, f = "mean",
+\method{fscale}{reflector_spct}(x, range = NULL, f = "mean", target = 1,
   qty.out = NULL, ...)
 
-\method{fscale}{raw_spct}(x, range = NULL, f = "mean", ...)
+\method{fscale}{raw_spct}(x, range = NULL, f = "mean", target = 1, ...)
 
-\method{fscale}{cps_spct}(x, range = NULL, f = "mean", ...)
+\method{fscale}{cps_spct}(x, range = NULL, f = "mean", target = 1, ...)
 
-\method{fscale}{generic_spct}(x, range = NULL, f = "mean", col.names, ...)
+\method{fscale}{generic_spct}(x, range = NULL, f = "mean", target = 1,
+  col.names, ...)
 
-\method{fscale}{source_mspct}(x, range = NULL, f = "mean",
+\method{fscale}{source_mspct}(x, range = NULL, f = "mean", target = 1,
   unit.out = getOption("photobiology.radiation.unit", default = "energy"),
   ...)
 
-\method{fscale}{response_mspct}(x, range = NULL, f = "mean",
+\method{fscale}{response_mspct}(x, range = NULL, f = "mean", target = 1,
   unit.out = getOption("photobiology.radiation.unit", default = "energy"),
   ...)
 
-\method{fscale}{filter_mspct}(x, range = NULL, f = "mean",
+\method{fscale}{filter_mspct}(x, range = NULL, f = "mean", target = 1,
   qty.out = getOption("photobiology.filter.qty", default = "transmittance"),
   ...)
 
-\method{fscale}{reflector_mspct}(x, range = NULL, f = "mean",
+\method{fscale}{reflector_mspct}(x, range = NULL, f = "mean", target = 1,
   qty.out = NULL, ...)
 
-\method{fscale}{raw_mspct}(x, range = NULL, f = "mean", ...)
+\method{fscale}{raw_mspct}(x, range = NULL, f = "mean", target = 1, ...)
 
-\method{fscale}{cps_mspct}(x, range = NULL, f = "mean", ...)
+\method{fscale}{cps_mspct}(x, range = NULL, f = "mean", target = 1, ...)
 
-\method{fscale}{generic_mspct}(x, range = NULL, f = "mean", col.names, ...)
+\method{fscale}{generic_mspct}(x, range = NULL, f = "mean", target = 1,
+  col.names, ...)
 
 \method{fshift}{default}(x, ...)
 }
@@ -80,6 +82,8 @@ wavelengths (nm)}
 \item{f}{character string "mean" or "total" for scaling so taht this summary
 value becomes 1 for the returned object, or the name of a function taking
 \code{x} as first argument and returning a numeric value.}
+
+\item{target}{numeric A constant used as target value for scaling.}
 
 \item{unit.out}{character Alowed values "energy", and "photon", or its alias
 "quantum"}

@@ -4,60 +4,41 @@
 \alias{sun_angles}
 \title{Solar angles}
 \usage{
-sun_angles(time = lubridate::now(), geocode = NULL, lon = 0, lat = 0,
-  use_refraction = FALSE)
+sun_angles(time = lubridate::now(), tz = lubridate::tz(time),
+  geocode = data.frame(lon = 0, lat = 51.5, address = "Greenwich"),
+  use.refraction = FALSE)
 }
 \arguments{
 \item{time}{POSIXct Time, any valid time zone (TZ) is allowed, default is
 current time}
 
+\item{tz}{character string indicating time zone to be used in output.}
+
 \item{geocode}{data frame with variables lon and lat as numeric values
 (degrees).}
 
-\item{lon}{numeric Vector of longitudes (degrees) W is < 0, and E is > 0}
-
-\item{lat}{numeric Vector of latitudes (degrees)}
-
-\item{use_refraction}{logical Flag indicating whether to correct for
+\item{use.refraction}{logical Flag indicating whether to correct for
 fraction in the atmosphere}
 }
 \value{
-A list with components time in same TZ as input, azimuth, elevation,
-  diameter, and distance.
+A data.frame with variables time (in same TZ as input), TZ, solartime,
+  longitude, latitude, address, azimuth, and elevation.
 }
 \description{
 This function returns the solar angles for a given time and location.
 }
-\note{
-Several implementations of this algorithm are available in the
-  internet. I have found FORTRAN, Perl and R versions. Not all these
-  implementations correctly handle year 2000, which is an exception to the
-  normal leap-year rule. They also differ on the handling of refraction. The
-  algorithm used only accepts dates for years 1950 to 2050. A listing is also
-  available in an appendix in Vignola et al. (2012). This implementation is
-  not a direct copy or translation of any of these examples. The current
-  version of the code owes much to Josh O'Brien's asnwer to a question in
-  StackOverflow
-  \url{http://stackoverflow.com/questions/8708048/position-of-the-sun-given-time-of-day-latitude-and-longitude}
-}
 \examples{
-require(lubridate)
+library(lubridate)
 sun_angles()
 sun_angles(ymd_hms("2014-09-23 12:00:00"))
-sun_angles(ymd_hms("2014-09-23 12:00:00"), lat=60, lon=0)
+sun_angles(ymd_hms("2014-09-23 12:00:00"),
+           geocode = data.frame(lat=60, lon=0))
 
-}
-\references{
-Michalsky, J. J., 1988. "The Astronomical Almanac's algorithm for approximate
-solar position (1950--2050)". Solar Energy, 227--235.
-
-Spencer, J. W., 1989. "Comments on The Astronomical Almanac's algorithm for
-approximate solar position (1950--2050)." Solar Energy, 42, 353.
-
-Vignola, F.; Michalsky, J. & Stoffel, T., 2012 (Eds.) "Solar and infrared
-radiation measurements." Boca Raton, CRC Press, ISBN 9781439851890.
 }
 \seealso{
-Other astronomy related functions: \code{\link{day_night}}
+Other astronomy related functions: \code{\link{day_night}},
+  \code{\link{format.solar_time}},
+  \code{\link{is.solar_time}},
+  \code{\link{print.solar_time}}, \code{\link{solar_time}}
 }
 

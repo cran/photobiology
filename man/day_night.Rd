@@ -9,48 +9,49 @@
 \alias{sunset_time}
 \title{Times for sun positions}
 \usage{
-day_night(date = lubridate::today(), tz = "UTC", geocode = NULL,
-  lon = 0, lat = 0, twilight = "none", unit.out = "date")
+day_night(date = lubridate::today(), tz = Sys.timezone(),
+  geocode = data.frame(lon = 0, lat = 51.5, address = "Greenwich"),
+  twilight = "none", unit.out = "hours")
 
-noon_time(date = lubridate::today(), tz = "UTC", geocode = NULL,
-  lon = 0, lat = 0, twilight = NA, unit.out = "date")
+noon_time(date = lubridate::today(), tz = Sys.timezone(),
+  geocode = data.frame(lon = 0, lat = 51.5, address = "Greenwich"),
+  twilight = "none", unit.out = "datetime")
 
-sunrise_time(date = lubridate::today(), tz = "UTC", geocode = NULL,
-  lon = 0, lat = 0, twilight = "none", unit.out = "date")
+sunrise_time(date = lubridate::today(), tz = Sys.timezone(),
+  geocode = data.frame(lon = 0, lat = 51.5, address = "Greenwich"),
+  twilight = "sunlight", unit.out = "datetime")
 
-sunset_time(date = lubridate::today(), tz = "UTC", geocode = NULL,
-  lon = 0, lat = 0, twilight = "none", unit.out = "date")
+sunset_time(date = lubridate::today(), tz = Sys.timezone(),
+  geocode = data.frame(lon = 0, lat = 51.5, address = "Greenwich"),
+  twilight = "sunlight", unit.out = "datetime")
 
-day_length(date = lubridate::today(), tz = "UTC", geocode = NULL,
-  lon = 0, lat = 0, twilight = "none", unit.out = "hour")
+day_length(date = lubridate::today(), tz = "UTC", geocode = data.frame(lon
+  = 0, lat = 51.5, address = "Greenwich"), twilight = "sunlight",
+  unit.out = "hours")
 
-night_length(date = lubridate::today(), tz = "UTC", geocode = NULL,
-  lon = 0, lat = 0, twilight = "none", unit.out = "hour")
+night_length(date = lubridate::today(), tz = "UTC",
+  geocode = data.frame(lon = 0, lat = 51.5, address = "Greenwich"),
+  twilight = "sunlight", unit.out = "hours")
 }
 \arguments{
-\item{date}{array of POSIXct times or Date objects, any valid TZ is allowed,
+\item{date}{vector of POSIXct times or Date objects, any valid TZ is allowed,
 default is current date}
 
-\item{tz}{character string incading time zone to be used in output, default
-is system time zone}
+\item{tz}{vector of character string indicating time zone to be used in output.}
 
-\item{geocode}{data frame with variables lon and lat as numeric values
-(degrees).}
-
-\item{lon}{numeric array of longitudes (degrees)}
-
-\item{lat}{numeric array of latitudes (degrees)}
+\item{geocode}{data frame with one or more rows and variables lon and lat as
+numeric values (degrees).}
 
 \item{twilight}{character string, one of "none", "civil", "nautical",
 "astronomical", or a \code{numeric} vector of length one, or two, giving
 solar elevation angle(s) in degrees (negative if below the horizon).}
 
-\item{unit.out}{charater string, One of "date", "hour", "minute", or "second".}
+\item{unit.out}{charater string, One of "datetime", "hour", "minute", or "second".}
 }
 \value{
-\code{day_night} returns a list with fields sunrise time, sunset
-  time, day length, night length. Each element of the list is a vector of the
-  same length as the argument supplied for date.
+A data.fraame with variables day, tz, twilight.rise, twilight.set,
+  longitude, latitude, address, sunrise, noon, sunset, daylength,
+  nightlength.
 
 \code{noon_time}, \code{sunrise_time} and \code{sunset_time} return a
   vector of POSIXct times
@@ -64,6 +65,17 @@ Functions for calculating the timing of solar positions by means of function
 used to find the time for an arbitrary solar elevation between 90 and -90
 degrees by supplying "twilight" angle(s) as argument.
 }
+\details{
+Twilight names are interpreted as follows. "none": solar elevation =
+  0 degrees. "refraction": solar elevation = 0 degrees + refraction
+  correction. "sunlight": upper rim of solar disk corrected for refraction.
+  "civil": -6 degrees, "naval": -12 degrees, and "astronomical": -18 degrees.
+  Unit names for output are as follows: "hours" times for sunrise and sunset
+  are returned as times-of-day in hours since middnight. "date" or "datetime"
+  return the same times as datetime objects with TZ set (this is much slower
+  the "hours"). Day length and night length are always returned as numeric
+  values expressed in hours.
+}
 \note{
 If twilight is a numeric vector of length two, the element with index 1
   is used for sunrise and that with index 2 for sunset.
@@ -74,15 +86,14 @@ If twilight is a numeric vector of length two, the element with index 1
 }
 \examples{
 library(lubridate)
-day_length()
-day_length(ymd("2015-05-30"), lat = 60, lon = 25)
-day_length(ymd("2014-12-30"), lat = 60, lon = 25)
-day_length(ymd("2015-05-30"), lat = 60, lon = 25, twilight = "civil")
-sunrise_time(ymd("2015-05-30"), lat = 60, lon = 25, tz = "EET")
-day_night(ymd("2015-05-30"), lat = 60, lon = 25, twilight = "civil")
+my.geocode <- data.frame(lat = 60, lon = 25)
+day_night(ymd("2015-05-30"), geocode = my.geocode, twilight = "civil")
 
 }
 \seealso{
-Other astronomy related functions: \code{\link{sun_angles}}
+Other astronomy related functions: \code{\link{format.solar_time}},
+  \code{\link{is.solar_time}},
+  \code{\link{print.solar_time}}, \code{\link{solar_time}},
+  \code{\link{sun_angles}}
 }
 
