@@ -2,9 +2,24 @@
 % Please edit documentation in R/sun.calc.r
 \name{sun_angles}
 \alias{sun_angles}
+\alias{sun_azimuth}
+\alias{sun_elevation}
+\alias{sun_zenith_angle}
 \title{Solar angles}
 \usage{
 sun_angles(time = lubridate::now(), tz = lubridate::tz(time),
+  geocode = data.frame(lon = 0, lat = 51.5, address = "Greenwich"),
+  use.refraction = FALSE)
+
+sun_elevation(time = lubridate::now(), tz = lubridate::tz(time),
+  geocode = data.frame(lon = 0, lat = 51.5, address = "Greenwich"),
+  use.refraction = FALSE)
+
+sun_zenith_angle(time = lubridate::now(), tz = lubridate::tz(time),
+  geocode = data.frame(lon = 0, lat = 51.5, address = "Greenwich"),
+  use.refraction = FALSE)
+
+sun_azimuth(time = lubridate::now(), tz = lubridate::tz(time),
   geocode = data.frame(lon = 0, lat = 51.5, address = "Greenwich"),
   use.refraction = FALSE)
 }

@@ -8,9 +8,9 @@
 \usage{
 cps2irrad(x.sample, pre.fun = NULL, ...)
 
-cps2Rfr(x.sample, x.white, x.black = NULL)
+cps2Rfr(x.sample, x.white, x.black = NULL, dyn.range = NULL)
 
-cps2Tfr(x.sample, x.clear, x.opaque = NULL)
+cps2Tfr(x.sample, x.clear, x.opaque = NULL, dyn.range = NULL)
 }
 \arguments{
 \item{x.sample, x.clear, x.opaque, x.white, x.black}{cps_spct objects.}
@@ -18,6 +18,10 @@ cps2Tfr(x.sample, x.clear, x.opaque = NULL)
 \item{pre.fun}{function A function applied to x.sample before converison.}
 
 \item{...}{Additional arguments passed to \code{pre.fun}.}
+
+\item{dyn.range}{numeric The effective dynamic range of the instrument,
+if \code{NULL} it is automatically set based on integartion time
+bracketing.}
 }
 \value{
 A source_spct, filter_spct or reflector_spct object containing the

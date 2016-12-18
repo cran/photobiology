@@ -14,13 +14,14 @@ eq_ratio(spct, w.band, wb.trim, use.cached.mult, use.hinges, ...)
 
 \method{eq_ratio}{source_spct}(spct, w.band = NULL,
   wb.trim = getOption("photobiology.waveband.trim", default = TRUE),
-  use.cached.mult = FALSE, use.hinges = getOption("photobiology.use.hinges",
-  default = NULL), ...)
+  use.cached.mult = FALSE,
+  use.hinges = getOption("photobiology.use.hinges"), ...)
 
 \method{eq_ratio}{source_mspct}(spct, w.band = NULL,
   wb.trim = getOption("photobiology.waveband.trim", default = TRUE),
-  use.cached.mult = FALSE, use.hinges = getOption("photobiology.use.hinges",
-  default = NULL), ..., idx = !is.null(names(spct)))
+  use.cached.mult = FALSE,
+  use.hinges = getOption("photobiology.use.hinges"), ...,
+  idx = !is.null(names(spct)))
 }
 \arguments{
 \item{spct}{source_spct}

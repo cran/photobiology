@@ -329,5 +329,31 @@ print.summary_generic_spct <- function(x, ...) {
   invisible(x)
 }
 
+# Instrument data ---------------------------------------------------------
 
+#' @export
+#'
+print.instr_desc <- function(x, ...) {
+  cat("Data acquired with '",
+      x[["spectrometer.name"]], "' s.n. ", x[["spectrometer.sn"]],
+            "\ngrating '", x[["bench.grating"]],
+            "', slit '", x[["bench.slit"]], "'", sep = "",
+      ...
+  )
+  invisible(x)
+}
 
+#' @export
+#'
+print.instr_settings <- function(x, ...) {
+  cat("integ. time (s): ",
+      paste(signif(as.numeric(x[["integ.time"]]) * 1e-6, digits = 3), collapse = ", "),
+      "\ntotal time (s): ",
+      paste(signif(as.numeric(x[["tot.time"]]) * 1e-6, digits = 3), collapse = ", "),
+      "\ncounts @ peak (% of max): ",
+      signif(as.numeric(x[["rel.signal"]]) * 100, digits = 3),
+      sep = "",
+      ...
+  )
+  invisible(x)
+}

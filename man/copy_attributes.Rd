@@ -5,7 +5,7 @@
 \alias{copy_attributes.default}
 \alias{copy_attributes.generic_spct}
 \alias{copy_attributes.waveband}
-\title{Copy attributes}
+\title{Copy attributes from one R object to another}
 \usage{
 copy_attributes(x, y, which, ...)
 
@@ -29,7 +29,7 @@ copy_attributes(x, y, which, ...)
 A copy of \code{y} with additional attributes set.
 }
 \description{
-Copy attributes from one R object to another.
+Copy attributes from \code{x} to \code{y}.
 }
 \section{Methods (by class)}{
 \itemize{

@@ -4,16 +4,16 @@
 \alias{D2_spectrum}
 \title{Calculate deuterim lamp output spectrum from fitted constants}
 \usage{
-D2_spectrum(w.length, k = D2.UV653, fill = NULL)
+D2_spectrum(w.length, k = photobiology::D2.UV653, fill = NA_real_)
 }
 \arguments{
 \item{w.length}{numeric vector of wavelengths (nm) for output}
 
-\item{k}{a numeric vector with n constants for the polynomial}
+\item{k}{a polynom:polynomial object with n constants for the polynomial}
 
 \item{fill}{if NA, no extrapolation is done, and NA is returned for
-wavelengths outside the range of the input. If NULL then the tails are
-deleted. If 0 then the tails are set to zero, etc. NULL is default.}
+wavelengths outside the range 190 nm to 450 nm. If NULL then the tails are
+deleted. If 0 then the tails are set to zero, etc. NA is default.}
 }
 \value{
 a dataframe with four numeric vectors with wavelength values

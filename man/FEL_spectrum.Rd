@@ -4,16 +4,16 @@
 \alias{FEL_spectrum}
 \title{Incandescent "FEL" lamp emission spectrum}
 \usage{
-FEL_spectrum(w.length, k = FEL, fill = NA)
+FEL_spectrum(w.length, k = photobiology::FEL.BN.9101.165, fill = NA_real_)
 }
 \arguments{
 \item{w.length}{numeric vector of wavelengths (nm) for output}
 
-\item{k}{a numeric vector with n constants for the polynomial}
+\item{k}{a numeric vector with n constants for the function}
 
 \item{fill}{if NA, no extrapolation is done, and NA is returned for
-wavelengths outside the range of the input. If NULL then the tails are
-deleted. If 0 then the tails are set to zero, etc. NULL is default.}
+wavelengths outside the range 250 nm to 900 nm. If NULL then the tails are
+deleted. If 0 then the tails are set to zero, etc. NA is default.}
 }
 \value{
 a dataframe with four numeric vectors with wavelength values
@@ -25,7 +25,7 @@ Calculate values by means of a nth degree polynomial from
 user-supplied constants (for example from a lamp calibration certificate).
 }
 \note{
-This is function is valid for wavelengths in the range 180 nm to 495
+This is function is valid for wavelengths in the range 250 nm to 900
   nm, for wavelengths outside this range NAs are returned.
 }
 \examples{

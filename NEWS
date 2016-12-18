@@ -5,7 +5,23 @@ Add test cases for chroma_spct and improve tests for the _mspct
 classes. Add test cases for smooth_spct().
 Replace filter_cps.mspct data with newly measured data.
 
-photobiology 0.10.0
+photobiology 0.9.13
+===================
+
+Add functions sun_elevation() and sun_azimuth().
+Add convenience functions trim2overlap() and extend2extremes().
+Add print() methods for instr_desc and instr_settings classes.
+Change threshold for automatic use of hinges when calculating summaries, so
+that hinges are used by default in more cases.
+Allow lists of length zero as argument to w.band, and treat them as equivalent
+to NULL.
+Make argument span = NULL behave in the same way in peak and valley related
+summary functions as it has for some time in statistics in package 'ggspectra'.
+Fix bug in the range check for counts per second which triggered warnings
+too easily.
+Change scaling of D2 and FEL spectra so that they are expressed in W m-2 nm-1.
+
+photobiology 0.9.12
 ===================
 
 Enhancements:

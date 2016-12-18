@@ -137,12 +137,12 @@ check_spct.cps_spct <- function(x,
       if (all(is.na(x[[col]]))) {
         next()
       }
-      cps.range <- range(x[[col]], na.rm = TRUE)
-      stopifnot(cps.range[2] >= 0)
-      cps.spread <- diff(cps.range)
-      if (cps.range[1] < -0.05 * cps.spread) {
-        message.text <- paste0("Off-range cps values:", signif(cps.spread[1], 2))
-
+      # we need to include zero as otherwise dark scans may not pass the test
+      cps.range <- range(0, x[[col]], na.rm = TRUE)
+#      stopifnot(cps.range[2] >= 0)
+      if (abs(cps.range[1]) > 1.2 * cps.range[2]) {
+        message.text <- paste0("Off-range cps values, min = ",
+                               cps.range[1], ", max = ", cps.range[2])
         if (is.null(strict.range) || is.na(strict.range)) {
           message(message.text)
         } else if (strict.range) {
@@ -2097,7 +2097,13 @@ getInstrDesc <- function(x) {
     instr.desc <- attr(x, "instr.desc", exact = TRUE)
     if (is.null(instr.desc) || is.na(instr.desc)) {
       # need to handle objects created with old versions
-      instr.desc <- NA
+      instr.desc <- list(spectrometer.name = NA_character_,
+                         spectrometer.sn = NA_character_,
+                         bench.grating = NA_character_,
+                         bench.slit = NA_character_)
+    }
+    if (!inherits(instr.desc, "instr_desc")) {
+      class(instr.desc) <- c("instr_desc", class(instr.desc))
     }
     return(instr.desc)
   } else {
@@ -2150,7 +2156,13 @@ getInstrSettings <- function(x) {
     instr.settings <- attr(x, "instr.settings", exact = TRUE)
     if (is.null(instr.settings) || is.na(instr.settings)) {
       # need to handle objects created with old versions
-      instr.settings <- NA
+      instr.settings <- list(integ.time = NA_real_,
+                             tot.time = NA_real_,
+                             num.scans = NA_integer_,
+                             rel.signal = NA_real_)
+    }
+    if (!inherits(instr.settings, "instr_settings")) {
+      class(instr.settings) <- c("instr_settings", class(instr.settings))
     }
     return(instr.settings)
   } else {

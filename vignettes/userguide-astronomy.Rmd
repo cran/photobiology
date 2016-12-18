@@ -1,5 +1,5 @@
 ---
-title: "photobiology `r packageVersion('photobiology')`: User Guide (astronomy)"
+title: "photobiology `r packageVersion('photobiology')`<br>User Guide: 3 Astronomy"
 author: "Pedro J. Aphalo"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
@@ -59,6 +59,18 @@ sun_angles(getWhenMeasured(sun.spct), geocode = getWhereMeasured(sun.spct))
 ```
 
 The object to be supplied as argument for `geocode` is a data frame with variables `lon` and `lat`. This matches the return value of function `ggmap::geocode()`, function that can be used to find the coordinates using any _address_ entered as a character string understood by the Google maps API.
+
+```{r}
+sun_elevation(ymd_hms("2014-01-01 0:0:0", tz = "UTC") + hours(1:3))
+```
+
+```{r}
+sun_zenith_angle(ymd_hms("2014-01-01 0:0:0", tz = "UTC") + hours(1:3))
+```
+
+```{r}
+sun_azimuth(ymd_hms("2014-01-01 0:0:0", tz = "UTC") + hours(1:3))
+```
 
 ### Times of sunrise, solar noon and sunset
 

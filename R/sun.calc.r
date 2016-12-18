@@ -25,7 +25,9 @@
 #'
 sun_angles <- function(time = lubridate::now(),
                        tz = lubridate::tz(time),
-                       geocode = data.frame(lon = 0, lat = 51.5, address = "Greenwich"),
+                       geocode = data.frame(lon = 0,
+                                            lat = 51.5,
+                                            address = "Greenwich"),
                        use.refraction = FALSE)
 {
   stopifnot(!anyNA(time))
@@ -138,6 +140,57 @@ sun_angles <- function(time = lubridate::now(),
     stop("Returned 'azimuth' values(s) off range")
 
   y
+}
+
+#' @rdname sun_angles
+#'
+#' @export
+#'
+sun_elevation <- function(time = lubridate::now(),
+                          tz = lubridate::tz(time),
+                          geocode = data.frame(lon = 0,
+                                               lat = 51.5,
+                                               address = "Greenwich"),
+                          use.refraction = FALSE)
+{
+  sun_angles(time = time,
+             tz = tz,
+             geocode = geocode,
+             use.refraction = use.refraction)[["elevation"]]
+}
+
+#' @rdname sun_angles
+#'
+#' @export
+#'
+sun_zenith_angle <- function(time = lubridate::now(),
+                             tz = lubridate::tz(time),
+                             geocode = data.frame(lon = 0,
+                                                  lat = 51.5,
+                                                  address = "Greenwich"),
+                             use.refraction = FALSE)
+{
+  90 - sun_angles(time = time,
+                  tz = tz,
+                  geocode = geocode,
+                  use.refraction = use.refraction)[["elevation"]]
+}
+
+#' @rdname sun_angles
+#'
+#' @export
+#'
+sun_azimuth <- function(time = lubridate::now(),
+                        tz = lubridate::tz(time),
+                        geocode = data.frame(lon = 0,
+                                             lat = 51.5,
+                                             address = "Greenwich"),
+                        use.refraction = FALSE)
+{
+  sun_angles(time = time,
+             tz = tz,
+             geocode = geocode,
+             use.refraction = use.refraction)[["azimuth"]]
 }
 
 #' Time difference between two time zones
