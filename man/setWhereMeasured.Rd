@@ -3,9 +3,9 @@
 \name{setWhereMeasured}
 \alias{setWhereMeasured}
 \alias{setWhereMeasured.default}
-\alias{setWhereMeasured.generic_mspct}
 \alias{setWhereMeasured.generic_spct}
 \alias{setWhereMeasured.summary_generic_spct}
+\alias{setWhereMeasured.generic_mspct}
 \title{Set the "where.measured" attribute}
 \usage{
 setWhereMeasured(x, where.measured, lat, lon, ...)
@@ -50,8 +50,10 @@ generic_spct or an object of a class derived from generic_spct.
 
 \item \code{generic_mspct}: generic_mspct
 }}
+
 \note{
-if x is not a generic_spct or an object of a class derived from
+This method alters x itself by reference and in addition
+  returns x invisibly. If x is not a generic_spct or an object of a class derived from
   generic_spct, x is not modified. If \code{where} is not a POSIXct object
   or \code{NULL} an error is triggered. A \code{POSIXct} describes an
   instant in time (date plus time-of-day plus time zone).
@@ -65,9 +67,12 @@ Other measurement metadata functions: \code{\link{getInstrDesc}},
   \code{\link{getWhatMeasured}},
   \code{\link{getWhenMeasured}},
   \code{\link{getWhereMeasured}},
+  \code{\link{isValidInstrDesc}},
+  \code{\link{isValidInstrSettings}},
   \code{\link{setInstrDesc}},
   \code{\link{setInstrSettings}},
   \code{\link{setWhatMeasured}},
-  \code{\link{setWhenMeasured}}
+  \code{\link{setWhenMeasured}},
+  \code{\link{trimInstrDesc}},
+  \code{\link{trimInstrSettings}}
 }
-

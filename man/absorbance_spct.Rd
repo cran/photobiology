@@ -28,4 +28,3 @@ This function returns the mean absorbance for a given
 waveband of a absorbance spectrum.
 }
 \keyword{internal}
-

@@ -2,9 +2,9 @@
 % Please edit documentation in R/sun.calc.r
 \name{sun_angles}
 \alias{sun_angles}
-\alias{sun_azimuth}
 \alias{sun_elevation}
 \alias{sun_zenith_angle}
+\alias{sun_azimuth}
 \title{Solar angles}
 \usage{
 sun_angles(time = lubridate::now(), tz = lubridate::tz(time),
@@ -56,4 +56,3 @@ Other astronomy related functions: \code{\link{day_night}},
   \code{\link{is.solar_time}},
   \code{\link{print.solar_time}}, \code{\link{solar_time}}
 }
-

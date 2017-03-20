@@ -13,4 +13,3 @@ numeric  Solar elevation angle at sunrise or sunset
 twilight argument check and conversion
 }
 \keyword{internal}
-

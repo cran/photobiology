@@ -588,6 +588,8 @@ check_spct.chroma_spct <-
 #'   object into the underlying data.frame object. Otherwise, it just leaves \code{x}
 #'   unchanged.
 #'
+#' @note This function alters x itself by reference. If x is not a generic_spct object, x is not
+#'   modified.
 #' @return A character vector containing the removed class attribute values.
 #'   This is different to the behaviour of function \code{unlist} in base R!
 #'
@@ -621,6 +623,11 @@ rmDerivedSpct <- function(x) {
 #'
 #' @export
 #' @exportClass generic_spct
+#'
+#' @return x
+#' @note This method alters x itself by reference and in addition
+#'   returns x invisibly.
+#'
 #' @family set and unset spectral class functions
 #' @examples
 #' my.df <- data.frame(w.length = 300:309, s.e.irrad = rep(100, 10))
@@ -1124,8 +1131,8 @@ is_transmittance_based <- function(x) {
 #'   overwritting an existing attribute value (used internally)
 #'
 #' @return x
-#'
-#' @note if x is not a source_spct or response_spct object, x is not modified.
+#' @note This function alters x itself by reference and in addition
+#'   returns x invisibly. If x is not a source_spct or response_spct object, x is not modified.
 #'   The behaviour of this function is 'unusual' in that the default for
 #'   parameter \code{time.unit} is used only if \code{x} does not already have
 #'   this attribute set. \code{time.unit = "hour"} is currently not fully
@@ -1337,8 +1344,8 @@ char2duration <- function(time.unit) {
 #' @param bswf.used a character string, either "none" or the name of a BSWF
 #'
 #' @return x
-#'
-#' @note if x is not a source_spct, x is not modified. The behaviour of this
+#' @note This function alters x itself by reference and in addition
+#'   returns x invisibly. If x is not a source_spct, x is not modified. The behaviour of this
 #'   function is 'unusual' in that the default for parameter \code{bswf.used} is
 #'   used only if \code{x} does not already have this attribute set.
 #'   \code{time.unit = "hour"} is currently not fully supported.
@@ -1414,8 +1421,8 @@ getBSWFUsed <- function(x) {
 #' @param Tfr.type a character string, either "total" or "internal"
 #'
 #' @return x
-#'
-#' @note if x is not a filter_spct or an object_spct object, x is not modified
+#' @note This function alters x itself by reference and in addition
+#'   returns x invisibly. If x is not a filter_spct or an object_spct object, x is not modified
 #'   The behaviour of this function is 'unusual' in that the default for
 #'   parameter \code{Tfr.type} is used only if \code{x} does not already have
 #'   this attribute set.
@@ -1494,8 +1501,8 @@ getTfrType <- function(x) {
 #' @param Rfr.type a character string, either "total" or "specular"
 #'
 #' @return x
-#'
-#' @note if x is not a reflector_spct or object_spct object, x is not modified.
+#' @note This function alters x itself by reference and in addition
+#'   returns x invisibly. If x is not a reflector_spct or object_spct object, x is not modified.
 #'   The behaviour of this function is 'unusual' in that the default for
 #'   parameter Rfr.type is used only if \code{x} does not already have this
 #'   attribute set.
@@ -1625,8 +1632,8 @@ checkSpctVersion <- function(x) {
 #'   and set to 1 otherwise.
 #'
 #' @return x
-#'
-#' @note if x is not a generic_spct or an object of a class derived from
+#' @note This function alters x itself by reference and in addition
+#'   returns x invisibly. If x is not a generic_spct or an object of a class derived from
 #'   generic_spct, x is not modified. If \code{multiple.wl}
 #'
 #' @export
@@ -1687,12 +1694,12 @@ getMultipleWl <- function(x) {
 #' generic_spct or an object of a class derived from generic_spct.
 #'
 #' @param x a generic_spct object
-#' @param when.measured POSIXct to add as attribute
+#' @param when.measured POSIXct to add as attribute, or a list of POSIXct.
 #' @param ... Allows use of additional arguments in methods for other classes.
 #'
 #' @return x
-#'
-#' @note if x is not a generic_spct or an object of a class derived from
+#' @note This method alters x itself by reference and in addition
+#'   returns x invisibly. If x is not a generic_spct or an object of a class derived from
 #'   generic_spct, x is not modified. If \code{when} is not a POSIXct object
 #'   or \code{NULL} an error is triggered. A \code{POSIXct} describes an
 #'   instant in time (date plus time-of-day plus time zone).
@@ -1721,10 +1728,19 @@ setWhenMeasured.generic_spct <-
            when.measured = lubridate::now(tzone = "UTC"),
            ...) {
     name <- substitute(x)
-    stopifnot(is.null(when.measured) ||
-              lubridate::is.POSIXct(when.measured))
     if (!is.null(when.measured)) {
-      when.measured <- lubridate::with_tz(when.measured, "UTC")
+      if (!is.list(when.measured)) {
+        when.measured <- list(when.measured)
+      } else if (length(when.measured) != getMultipleWl(x)) {
+        warning("Length of 'when.measured' does not match spectrum object")
+      }
+      if (all(sapply(when.measured, lubridate::is.instant))) {
+        when.measured <-
+          lapply(when.measured, lubridate::with_tz, tzone = "UTC")
+      }
+      if (is.list(when.measured) && length(when.measured) == 1) {
+        when.measured <- when.measured[[1]]
+      }
     }
     attr(x, "when.measured") <- when.measured
     if (is.name(name)) {
@@ -1742,10 +1758,19 @@ setWhenMeasured.summary_generic_spct <-
            when.measured = lubridate::now(tzone = "UTC"),
            ...) {
     name <- substitute(x)
-    stopifnot(is.null(when.measured) ||
-                lubridate::is.POSIXct(when.measured))
     if (!is.null(when.measured)) {
-      when.measured <- lubridate::with_tz(when.measured, "UTC")
+      if (!is.list(when.measured)) {
+        when.measured <- list(when.measured)
+      } else if (length(when.measured) != getMultipleWl(x)) {
+        warning("Length of 'when.measured' does not match spectrum object")
+      }
+      if (all(sapply(when.measured, lubridate::is.instant))) {
+        when.measured <-
+          lapply(when.measured, lubridate::with_tz, tzone = "UTC")
+      }
+      if (is.list(when.measured) && length(when.measured) == 1) {
+        when.measured <- when.measured[[1]]
+      }
     }
     attr(x, "when.measured") <- when.measured
     if (is.name(name)) {
@@ -1819,11 +1844,11 @@ getWhenMeasured.default <- function(x, ...) {
 getWhenMeasured.generic_spct <- function(x, ...) {
   when.measured <- attr(x, "when.measured", exact = TRUE)
   if (is.null(when.measured) ||
-      !lubridate::is.POSIXct(when.measured)) {
+           !all(sapply(when.measured, lubridate::is.instant))) {
     # need to handle invalid attribute values
     # we return an NA of class POSIXct
-    when.measured <- suppressWarnings(lubridate::ymd_hms(NA_character_,
-                                                     tz = "UTC"))
+    when.measured <-
+      suppressWarnings(lubridate::ymd_hms(NA_character_, tz = "UTC"))
   }
   when.measured
 }
@@ -1833,7 +1858,7 @@ getWhenMeasured.generic_spct <- function(x, ...) {
 getWhenMeasured.summary_generic_spct <- function(x, ...) {
   when.measured <- attr(x, "when.measured", exact = TRUE)
   if (is.null(when.measured) ||
-      !lubridate::is.POSIXct(when.measured)) {
+      !all(sapply(when.measured, lubridate::is.instant))) {
     # need to handle invalid attribute values
     # we return an NA of class POSIXct
     when.measured <- suppressWarnings(lubridate::ymd_hms(NA_character_,
@@ -1871,8 +1896,8 @@ getWhenMeasured.generic_mspct <- function(x,
 #' @param ... Allows use of additional arguments in methods for other classes.
 #'
 #' @return x
-#'
-#' @note if x is not a generic_spct or an object of a class derived from
+#' @note This method alters x itself by reference and in addition
+#'   returns x invisibly. If x is not a generic_spct or an object of a class derived from
 #'   generic_spct, x is not modified. If \code{where} is not a POSIXct object
 #'   or \code{NULL} an error is triggered. A \code{POSIXct} describes an
 #'   instant in time (date plus time-of-day plus time zone).
@@ -1900,15 +1925,24 @@ setWhereMeasured.generic_spct <- function(x,
                              lat = NA,
                              lon = NA,
                              ...) {
+
+  is_valid_geocode <- function(x) {
+    is.data.frame(x) &&
+      nrow(x) == 1 &&
+      all(c("lon", "lat") %in% names(x))
+  }
+
   name <- substitute(x)
   if (!is.null(where.measured)) {
     if (any(is.na(where.measured))) {
       where.measured <- data.frame(lon = lon, lat = lat)
-    } else {
-      stopifnot(
-        is.data.frame(where.measured) && nrow(where.measured) == 1 &&
-          all(c("lon", "lat") %in% names(where.measured))
-      )
+    }
+    if (is.data.frame(where.measured)) {
+      where.measured <- list(where.measured)
+    }
+    stopifnot(all(sapply(where.measured, is_valid_geocode)))
+    if (is.list(where.measured) && length(where.measured) == 1) {
+      where.measured <- where.measured[[1]]
     }
   }
   attr(x, "where.measured") <- where.measured
@@ -1926,15 +1960,23 @@ setWhereMeasured.summary_generic_spct <- function(x,
                                                   lat = NA,
                                                   lon = NA,
                                                   ...) {
+  is_valid_geocode <- function(x) {
+    is.data.frame(x) &&
+      nrow(x) == 1 &&
+      all(c("lon", "lat") %in% names(x))
+  }
+
   name <- substitute(x)
   if (!is.null(where.measured)) {
     if (any(is.na(where.measured))) {
       where.measured <- data.frame(lon = lon, lat = lat)
-    } else {
-      stopifnot(
-        is.data.frame(where.measured) && nrow(where.measured) == 1 &&
-          all(c("lon", "lat") %in% names(where.measured))
-      )
+    }
+    if (is.data.frame(where.measured)) {
+      where.measured <- list(where.measured)
+    }
+    stopifnot(all(sapply(where.measured, is_valid_geocode)))
+    if (is.list(where.measured) && length(where.measured) == 1) {
+      where.measured <- where.measured[[1]]
     }
   }
   attr(x, "where.measured") <- where.measured
@@ -2021,7 +2063,8 @@ getWhereMeasured.default <- function(x, ...) {
 getWhereMeasured.generic_spct <- function(x, ...) {
   where.measured <- attr(x, "where.measured", exact = TRUE)
   if (is.null(where.measured) ||
-      !is.data.frame(where.measured)) {
+      !(is.data.frame(where.measured) ||
+      all(sapply(where.measured, is.data.frame)))) {
     # need to handle invalid or missing attribute values
     where.measured <- data.frame(lon = NA_real_, lat = NA_real_)
   }
@@ -2033,7 +2076,8 @@ getWhereMeasured.generic_spct <- function(x, ...) {
 getWhereMeasured.summary_generic_spct <- function(x, ...) {
   where.measured <- attr(x, "where.measured", exact = TRUE)
   if (is.null(where.measured) ||
-      !is.data.frame(where.measured)) {
+      !(is.data.frame(where.measured) ||
+        all(sapply(where.measured, is.data.frame)))) {
     # need to handle invalid or missing attribute values
     where.measured <- data.frame(lon = NA_real_, lat = NA_real_)
   }
@@ -2050,7 +2094,6 @@ getWhereMeasured.generic_mspct <- function(x,
   msdply(mspct = x, .fun = getWhereMeasured, ..., idx = idx)
 }
 
-
 # how measured attributes -------------------------------------------------
 
 #' Set the "instr.desc" attribute
@@ -2062,15 +2105,18 @@ getWhereMeasured.generic_mspct <- function(x,
 #' @param instr.desc a list
 #'
 #' @return x
+#' @note This function alters x itself by reference and in addition
+#'   returns x invisibly. If x is not a generic_spct object, x is not
+#'   modified.
 #'
-#' @note if x is not a generic_spct x is not modified.
+#' @note
 #'
 #' @export
 #' @family measurement metadata functions
 #'
 setInstrDesc <- function(x, instr.desc) {
   name <- substitute(x)
-  if (is.any_spct(x)) {
+  if (is.any_spct(x) || is.any_summary_spct(x)) {
     attr(x, "instr.desc") <- instr.desc
     if (is.name(name)) {
       name <- as.character(name)
@@ -2093,22 +2139,129 @@ setInstrDesc <- function(x, instr.desc) {
 #' @family measurement metadata functions
 #'
 getInstrDesc <- function(x) {
-  if (is.any_spct(x)) {
-    instr.desc <- attr(x, "instr.desc", exact = TRUE)
-    if (is.null(instr.desc) || is.na(instr.desc)) {
-      # need to handle objects created with old versions
+  if (is.any_spct(x) || is.any_summary_spct(x)) {
+    if (isValidInstrDesc(x)) {
+      instr.desc <- attr(x, "instr.desc", exact = TRUE)
+    } else {
       instr.desc <- list(spectrometer.name = NA_character_,
                          spectrometer.sn = NA_character_,
                          bench.grating = NA_character_,
                          bench.slit = NA_character_)
     }
-    if (!inherits(instr.desc, "instr_desc")) {
+    if (!inherits(instr.desc, "instr_desc") &&
+        !inherits(instr.desc[[1]], "instr_desc")) {
       class(instr.desc) <- c("instr_desc", class(instr.desc))
     }
-    return(instr.desc)
+    instr.desc
   } else {
-    return(NA)
+    list()
   }
+}
+
+#' Trim the "instr.desc" attribute
+#'
+#' Function to trim the "instr.desc" attribute of an existing generic_spct
+#' object, discarding all fields except for `spectrometer.name`,
+#' `spectrometer.sn`, `bench.grating`, `bench.slit`, and calibration name.
+#'
+#' @param x a generic_spct object
+#' @param fields a character vector with the names of the fields to keep,
+#'   or if first member is `"-"`, the names of fields to delete; "*" as
+#'   first member of the vector makes the function a no-op, leaving the spectrum
+#'   object unaltered.
+#'
+#' @return x
+#' @note This function alters x itself by reference and in addition
+#'   returns x invisibly. If x is not a generic_spct object, x is not
+#'   modified.
+#'
+#' @export
+#' @family measurement metadata functions
+#'
+trimInstrDesc <- function(x,
+                          fields = c("time",
+                                     "spectrometer.name",
+                                     "spectrometer.sn",
+                                     "bench.grating",
+                                     "bench.slit")
+                          ) {
+  name <- substitute(x)
+  if ((is.any_spct(x) || is.any_summary_spct(x)) &&
+      fields[1] != "*") {
+    instr.desc <- attr(x, "instr.desc", exact = TRUE)
+    if (inherits(instr.desc, "instr_desc") ||
+        "spectrometer.name" %in% names(instr.desc)) {
+      instr.desc <- list(instr.desc)
+    }
+    for (i in seq(along.with = instr.desc)) {
+      if (!(is.null(instr.desc[[i]]) || is.na(instr.desc[[i]]))) {
+        if (fields[1] == "-") {
+          fields.tmp <- setdiff(names(instr.desc[[i]]), fields[-1])
+        } else if (fields[1] == "=") {
+          fields.tmp <- fields[-1]
+        } else {
+          fields.tmp <- fields
+        }
+        instr.desc[[i]] <- instr.desc[[i]][fields.tmp]
+        if (!inherits(instr.desc[[i]], "instr_desc")) {
+          class(instr.desc[[i]]) <- c("instr_desc", class(instr.desc[[i]]))
+        }
+      }
+    }
+    if (length(instr.desc) == 1) {
+      instr.desc <- instr.desc[[1]]
+    }
+    attr(x, "instr.desc") <- instr.desc
+    if (is.name(name)) {
+      name <- as.character(name)
+      assign(name, x, parent.frame(), inherits = TRUE)
+    }
+  }
+  invisible(x)
+}
+
+#' Check the "instr.desc" attribute
+#'
+#' Function to validate the "instr.settings" attribute of an existing generic_spct
+#' object.
+#'
+#' @param x a generic_spct object
+#'
+#' @return logical TRUE if at least instrument name and serial number is found.
+#'
+#' @export
+#'
+#' @family measurement metadata functions
+#'
+isValidInstrDesc <- function(x) {
+  if (is.any_spct(x) || is.any_summary_spct(x)) {
+    instr.desc <- attr(x, "instr.desc", exact = TRUE)
+    if (is.null(instr.desc)) {
+      return(FALSE)
+    }
+    if (inherits(instr.desc, "instr_desc") ||
+        "spectrometer.name" %in% names(instr.desc)) {
+      # need to guard in case of objects created with earlier
+      # versions
+      instr.desc <- list(instr.desc)
+    }
+    valid <- TRUE
+    for (desc in instr.desc) {
+      if (length(desc) == 0 || is.na(desc)) {
+        # need to handle objects created with old versions
+        valid <- FALSE
+      } else if (is.list(desc)) {
+        valid <- valid &&
+          length(intersect(names(desc),
+                           c("spectrometer.name", "spectrometer.sn"))) != 0
+      } else {
+        valid <- FALSE
+      }
+    }
+  } else {
+    valid <- NA_integer_
+  }
+  valid
 }
 
 #' Set the "instr.settings" attribute
@@ -2120,15 +2273,16 @@ getInstrDesc <- function(x) {
 #' @param instr.settings a list
 #'
 #' @return x
-#'
-#' @note if x is not a generic_spct x is not modified.
+#' @note This function alters x itself by reference and in addition
+#'   returns x invisibly. If x is not a generic_spct object, x is not
+#'   modified.
 #'
 #' @export
 #' @family measurement metadata functions
 #'
 setInstrSettings <- function(x, instr.settings) {
   name <- substitute(x)
-  if (is.any_spct(x)) {
+  if (is.any_spct(x) || is.any_summary_spct(x)) {
     attr(x, "instr.settings") <- instr.settings
     if (is.name(name)) {
       name <- as.character(name)
@@ -2152,22 +2306,124 @@ setInstrSettings <- function(x, instr.settings) {
 #' @family measurement metadata functions
 #'
 getInstrSettings <- function(x) {
-  if (is.any_spct(x)) {
-    instr.settings <- attr(x, "instr.settings", exact = TRUE)
-    if (is.null(instr.settings) || is.na(instr.settings)) {
-      # need to handle objects created with old versions
+  if (is.any_spct(x) || is.any_summary_spct(x)) {
+    if (isValidInstrSettings(x)) {
+      instr.settings <- attr(x, "instr.settings", exact = TRUE)
+    } else {
       instr.settings <- list(integ.time = NA_real_,
                              tot.time = NA_real_,
                              num.scans = NA_integer_,
                              rel.signal = NA_real_)
     }
-    if (!inherits(instr.settings, "instr_settings")) {
+    if (!inherits(instr.settings, "instr_settings") &&
+        !inherits(instr.settings[[1]], "instr_settings")) {
       class(instr.settings) <- c("instr_settings", class(instr.settings))
     }
-    return(instr.settings)
+    instr.settings
   } else {
-    return(NA)
+    list()
   }
+}
+
+#' Trim the "instr.settings" attribute
+#'
+#' Function to trim the "instr.settings" attribute of an existing generic_spct
+#' object, by discarding some fields.
+#'
+#' @param x a generic_spct object
+#' @param fields a character vector with the names of the fields to keep,
+#'   or if first member is `"-"`, the names of fields to delete; "*" as
+#'   first member of the vector makes the function a no-op, leaving the spectrum
+#'   object unaltered.
+#'
+#' @return x
+#' @note This function alters x itself by reference and in addition
+#'   returns x invisibly. If x is not a generic_spct object, x is not
+#'   modified.
+#'
+#' @export
+#' @family measurement metadata functions
+#'
+trimInstrSettings <- function(x,
+                              fields = "*" ) {
+  name <- substitute(x)
+  if ((is.any_spct(x) || is.any_summary_spct(x)) &&
+      fields[1] != "*") {
+    instr.settings <- attr(x, "instr.settings", exact = TRUE)
+    if (inherits(instr.settings, "instr_settings") ||
+        "integ.time" %in% names(instr.settings)) {
+      instr.settings <- list(instr.settings)
+    }
+    for (i in seq(along.with = instr.settings)) {
+      if (!(is.null(instr.settings[[i]]) || is.na(instr.settings[[i]]))) {
+        if (fields[1] == "-") {
+          fields.tmp <- setdiff(names(instr.settings[[i]]), fields[-1])
+        } else if (fields[1] == "=") {
+          fields.tmp <- fields[-1]
+        } else {
+          fields.tmp <- fields
+        }
+        instr.settings[[i]] <- instr.settings[[i]][fields.tmp]
+        if (!inherits(instr.settings[[i]], "instr_settings")) {
+          class(instr.settings[[i]]) <- c("instr_settings", class(instr.settings[[i]]))
+        }
+      }
+    }
+    if (length(instr.settings) == 1) {
+      instr.settings <- instr.settings[[1]]
+    }
+    attr(x, "instr.settings") <- instr.settings
+    if (is.name(name)) {
+      name <- as.character(name)
+      assign(name, x, parent.frame(), inherits = TRUE)
+    }
+  }
+  invisible(x)
+}
+
+#' Check the "instr.settings" attribute
+#'
+#' Function to validate the "instr.settings" attribute of an existing generic_spct
+#' object.
+#'
+#' @param x a generic_spct object
+#'
+#' @return logical TRUE if at least integration time data is found.
+#'
+#' @export
+#'
+#' @family measurement metadata functions
+#'
+isValidInstrSettings <- function(x) {
+  if (is.any_spct(x) || is.any_summary_spct(x)) {
+    instr.settings <- attr(x, "instr.settings", exact = TRUE)
+    if (is.null(instr.settings)) {
+      return(FALSE)
+    }
+    if (inherits(instr.settings, "instr_settings") ||
+        "integ.time" %in% names(instr.settings)) {
+      # need to guard in case of objects created with earlier
+      # versions
+      instr.settings <- list(instr.settings)
+    }
+    valid <- TRUE
+    for (setting in instr.settings) {
+      if (length(setting) == 0 || is.na(setting)) {
+        # need to handle objects created with old versions
+        valid <- FALSE
+      } else if (is.list(setting)) {
+        integ.time <- setting[["integ.time"]]
+        if (is.null(integ.time) || is.na(integ.time) || !is.numeric(integ.time)) {
+          valid <- FALSE
+        } # else we keep valid unchanged
+      } else {
+        valid <- FALSE
+      }
+    }
+  } else {
+    valid <- NA_integer_
+  }
+  valid
 }
 
 # what measured attributes -------------------------------------------------
@@ -2181,8 +2437,9 @@ getInstrSettings <- function(x) {
 #' @param what.measured a list
 #'
 #' @return x
-#'
-#' @note if x is not a generic_spct x is not modified.
+#' @note This function alters x itself by reference and in addition
+#'   returns x invisibly. If x is not a generic_spct object, x is not
+#'   modified.
 #'
 #' @export
 #' @family measurement metadata functions
@@ -2217,11 +2474,11 @@ getWhatMeasured <- function(x) {
     what.measured <- attr(x, "what.measured", exact = TRUE)
     if (is.null(what.measured) || is.na(what.measured)) {
       # need to handle objects created with old versions
-      what.measured <- NA
+      what.measured <- NA_character_
     }
     return(what.measured)
   } else {
-    return(NA)
+    return(NA_character_)
   }
 }
 

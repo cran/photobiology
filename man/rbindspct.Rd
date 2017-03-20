@@ -59,7 +59,8 @@ Note that any additional 'user added' attributes that might exist on
   \code{_spct} classes, an error is triggered. The function sets all data in
   \code{source_spct} and \code{response_spct} objects supplied as arguments
   into energy-based quantities, and all data in \code{filter_spct} objects
-  into transmittance before the row binding is done.
+  into transmittance before the row binding is done. If any member spectrum
+  is tagged, it is untagged before row binding.
 }
 \examples{
 spct <- rbindspct(list(sun.spct, sun.spct))
@@ -85,4 +86,3 @@ head(spct)
 class(spct)
 
 }
-

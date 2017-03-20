@@ -19,7 +19,8 @@ Function to set by reference the "Tfr.type" attribute of an existing
 filter_spct or object_spct object
 }
 \note{
-if x is not a filter_spct or an object_spct object, x is not modified
+This function alters x itself by reference and in addition
+  returns x invisibly. If x is not a filter_spct or an object_spct object, x is not modified
   The behaviour of this function is 'unusual' in that the default for
   parameter \code{Tfr.type} is used only if \code{x} does not already have
   this attribute set.
@@ -34,4 +35,3 @@ getTfrType(my.spct)
 \seealso{
 Other Tfr attribute functions: \code{\link{getTfrType}}
 }
-

@@ -22,4 +22,3 @@ class_spct(sun.spct)
 class(sun.spct)
 
 }
-

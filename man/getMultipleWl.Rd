@@ -26,4 +26,3 @@ getMultipleWl(sun.spct)
 \seealso{
 Other multiple.wl attribute functions: \code{\link{setMultipleWl}}
 }
-

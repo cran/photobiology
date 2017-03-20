@@ -3,8 +3,8 @@
 \name{eq_ratio}
 \alias{eq_ratio}
 \alias{eq_ratio.default}
-\alias{eq_ratio.source_mspct}
 \alias{eq_ratio.source_spct}
+\alias{eq_ratio.source_mspct}
 \title{Energy:photon ratio}
 \usage{
 eq_ratio(spct, w.band, wb.trim, use.cached.mult, use.hinges, ...)
@@ -60,6 +60,7 @@ light source spectrum.
 \item \code{source_mspct}: Calculates energy:photon from a \code{source_mspct}
 object.
 }}
+
 \note{
 The last two parameters control speed optimizations. The defaults
   should be suitable in mosts cases. If you will use repeatedly the same SWFs
@@ -79,4 +80,3 @@ Other photon and energy ratio functions: \code{\link{e_ratio}},
   \code{\link{photons_energy_ratio}},
   \code{\link{q_ratio}}, \code{\link{qe_ratio}}
 }
-

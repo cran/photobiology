@@ -16,4 +16,3 @@ Function that returns a vector containing the names of spectra classes.
 spct_classes()
 
 }
-

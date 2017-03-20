@@ -3,8 +3,8 @@
 \name{response}
 \alias{response}
 \alias{response.default}
-\alias{response.response_mspct}
 \alias{response.response_spct}
+\alias{response.response_mspct}
 \title{Integrated response}
 \usage{
 response(spct, w.band, unit.out, quantity, time.unit, wb.trim, use.hinges, ...)
@@ -69,6 +69,7 @@ Calculate average photon- or energy-based photo-response.
 
 \item \code{response_mspct}: Calculates response from a \code{response_mspct}
 }}
+
 \note{
 The parameter \code{use.hinges} controls speed optimization. The
   defaults should be suitable in mosts cases. Only the range of wavelengths
@@ -78,4 +79,3 @@ The parameter \code{use.hinges} controls speed optimization. The
 Other response functions: \code{\link{e_response}},
   \code{\link{q_response}}
 }
-

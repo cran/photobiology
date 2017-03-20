@@ -42,4 +42,3 @@ The parameter \code{use.hinges} controls speed optimization. The
   in the wavebands is used and all BSWFs are ignored.
 }
 \keyword{internal}
-

@@ -3,10 +3,10 @@
 \name{absorptance}
 \alias{absorptance}
 \alias{absorptance.default}
-\alias{absorptance.filter_mspct}
 \alias{absorptance.filter_spct}
-\alias{absorptance.object_mspct}
 \alias{absorptance.object_spct}
+\alias{absorptance.filter_mspct}
+\alias{absorptance.object_mspct}
 \title{Absorptance}
 \usage{
 absorptance(spct, w.band, quantity, wb.trim, use.hinges, ...)
@@ -74,6 +74,7 @@ Absorptance is a different quantity than absorbance.
 
 \item \code{object_mspct}: Calculates absorptance from a \code{object_mspct}
 }}
+
 \note{
 The \code{use.hinges} parameter controls speed optimization. The
   defaults should be suitable in most cases. Only the range of wavelengths
@@ -97,4 +98,3 @@ absorptance(black_body.spct, split_bands(c(400,700), length.out = 3),
         quantity = "contribution.pc")
 
 }
-

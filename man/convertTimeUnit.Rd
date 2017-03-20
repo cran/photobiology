@@ -39,4 +39,3 @@ convertTimeUnit(my.spct, "day")
 Other time attribute functions: \code{\link{checkTimeUnit}},
   \code{\link{getTimeUnit}}, \code{\link{setTimeUnit}}
 }
-

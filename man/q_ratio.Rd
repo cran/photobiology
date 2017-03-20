@@ -3,8 +3,8 @@
 \name{q_ratio}
 \alias{q_ratio}
 \alias{q_ratio.default}
-\alias{q_ratio.source_mspct}
 \alias{q_ratio.source_spct}
+\alias{q_ratio.source_mspct}
 \title{Photon:photon ratio}
 \usage{
 q_ratio(spct, w.band.num, w.band.denom, wb.trim, use.cached.mult, use.hinges,
@@ -63,6 +63,7 @@ light source spectrum.
 \item \code{source_mspct}: Calculates photon:photon from a \code{source_mspct}
 object.
 }}
+
 \note{
 Recycling for wavebans takes place when the number of denominator and
   denominator wavebands differ. The last two parameters control speed
@@ -84,4 +85,3 @@ Other photon and energy ratio functions: \code{\link{e_ratio}},
   \code{\link{photons_energy_ratio}},
   \code{\link{qe_ratio}}
 }
-

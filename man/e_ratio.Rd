@@ -3,8 +3,8 @@
 \name{e_ratio}
 \alias{e_ratio}
 \alias{e_ratio.default}
-\alias{e_ratio.source_mspct}
 \alias{e_ratio.source_spct}
+\alias{e_ratio.source_mspct}
 \title{Energy:energy ratio}
 \usage{
 e_ratio(spct, w.band.num, w.band.denom, wb.trim, use.cached.mult, use.hinges,
@@ -63,6 +63,7 @@ light source spectrum.
 \item \code{source_mspct}: Calculates energy:energy ratio from a \code{source_mspct}
 object.
 }}
+
 \note{
 Recycling for wavebans takes place when the number of denominator and
   denominator wavebands differ. The last two parameters control speed
@@ -83,4 +84,3 @@ Other photon and energy ratio functions: \code{\link{energy_ratio}},
   \code{\link{photons_energy_ratio}},
   \code{\link{q_ratio}}, \code{\link{qe_ratio}}
 }
-

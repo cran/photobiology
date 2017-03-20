@@ -27,4 +27,3 @@ getTfrType(polyester.spct)
 \seealso{
 Other Tfr attribute functions: \code{\link{setTfrType}}
 }
-

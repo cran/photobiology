@@ -24,4 +24,3 @@ shared among the combined objects.
 \description{
 Combine two or more generic_mspct objects into a single object.
 }
-

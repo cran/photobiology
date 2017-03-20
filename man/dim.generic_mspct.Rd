@@ -21,4 +21,3 @@ Either NULL or a numeric vector, which is coerced to integer (by
 \description{
 Retrieve or set the dimension of an object.
 }
-

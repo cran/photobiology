@@ -19,7 +19,9 @@ Function to set by reference the "what.measured" attribute  of an existing
 generic_spct or derived-class object.
 }
 \note{
-if x is not a generic_spct x is not modified.
+This function alters x itself by reference and in addition
+  returns x invisibly. If x is not a generic_spct object, x is not
+  modified.
 }
 \seealso{
 Other measurement metadata functions: \code{\link{getInstrDesc}},
@@ -27,9 +29,12 @@ Other measurement metadata functions: \code{\link{getInstrDesc}},
   \code{\link{getWhatMeasured}},
   \code{\link{getWhenMeasured}},
   \code{\link{getWhereMeasured}},
+  \code{\link{isValidInstrDesc}},
+  \code{\link{isValidInstrSettings}},
   \code{\link{setInstrDesc}},
   \code{\link{setWhatMeasured}},
   \code{\link{setWhenMeasured}},
-  \code{\link{setWhereMeasured}}
+  \code{\link{setWhereMeasured}},
+  \code{\link{trimInstrDesc}},
+  \code{\link{trimInstrSettings}}
 }
-

@@ -39,4 +39,3 @@ is_transmittance_based(polyester.spct)
 \seealso{
 Other query units functions: \code{\link{is_photon_based}}
 }
-

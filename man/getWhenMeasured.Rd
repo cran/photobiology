@@ -3,9 +3,9 @@
 \name{getWhenMeasured}
 \alias{getWhenMeasured}
 \alias{getWhenMeasured.default}
-\alias{getWhenMeasured.generic_mspct}
 \alias{getWhenMeasured.generic_spct}
 \alias{getWhenMeasured.summary_generic_spct}
+\alias{getWhenMeasured.generic_mspct}
 \title{Get the "when.measured" attribute}
 \usage{
 getWhenMeasured(x, ...)
@@ -43,6 +43,7 @@ or a generic_mspct.
 
 \item \code{generic_mspct}: generic_mspct
 }}
+
 \note{
 If x is not a \code{generic_spct} or an object of a derived class
   \code{NA} is returned.
@@ -59,10 +60,13 @@ Other measurement metadata functions: \code{\link{getInstrDesc}},
   \code{\link{getInstrSettings}},
   \code{\link{getWhatMeasured}},
   \code{\link{getWhereMeasured}},
+  \code{\link{isValidInstrDesc}},
+  \code{\link{isValidInstrSettings}},
   \code{\link{setInstrDesc}},
   \code{\link{setInstrSettings}},
   \code{\link{setWhatMeasured}},
   \code{\link{setWhenMeasured}},
-  \code{\link{setWhereMeasured}}
+  \code{\link{setWhereMeasured}},
+  \code{\link{trimInstrDesc}},
+  \code{\link{trimInstrSettings}}
 }
-

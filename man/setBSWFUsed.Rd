@@ -19,7 +19,8 @@ Function to set by reference the "time.unit" attribute of an existing
 source_spct object
 }
 \note{
-if x is not a source_spct, x is not modified. The behaviour of this
+This function alters x itself by reference and in addition
+  returns x invisibly. If x is not a source_spct, x is not modified. The behaviour of this
   function is 'unusual' in that the default for parameter \code{bswf.used} is
   used only if \code{x} does not already have this attribute set.
   \code{time.unit = "hour"} is currently not fully supported.
@@ -27,4 +28,3 @@ if x is not a source_spct, x is not modified. The behaviour of this
 \seealso{
 Other BSWF attribute functions: \code{\link{getBSWFUsed}}
 }
-

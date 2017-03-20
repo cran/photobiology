@@ -3,9 +3,9 @@
 \name{setWhenMeasured}
 \alias{setWhenMeasured}
 \alias{setWhenMeasured.default}
-\alias{setWhenMeasured.generic_mspct}
 \alias{setWhenMeasured.generic_spct}
 \alias{setWhenMeasured.summary_generic_spct}
+\alias{setWhenMeasured.generic_mspct}
 \title{Set the "when.measured" attribute}
 \usage{
 setWhenMeasured(x, when.measured, ...)
@@ -24,7 +24,7 @@ setWhenMeasured(x, when.measured, ...)
 \arguments{
 \item{x}{a generic_spct object}
 
-\item{when.measured}{POSIXct to add as attribute}
+\item{when.measured}{POSIXct to add as attribute, or a list of POSIXct.}
 
 \item{...}{Allows use of additional arguments in methods for other classes.}
 }
@@ -45,8 +45,10 @@ generic_spct or an object of a class derived from generic_spct.
 
 \item \code{generic_mspct}: generic_mspct
 }}
+
 \note{
-if x is not a generic_spct or an object of a class derived from
+This method alters x itself by reference and in addition
+  returns x invisibly. If x is not a generic_spct or an object of a class derived from
   generic_spct, x is not modified. If \code{when} is not a POSIXct object
   or \code{NULL} an error is triggered. A \code{POSIXct} describes an
   instant in time (date plus time-of-day plus time zone).
@@ -64,9 +66,12 @@ Other measurement metadata functions: \code{\link{getInstrDesc}},
   \code{\link{getWhatMeasured}},
   \code{\link{getWhenMeasured}},
   \code{\link{getWhereMeasured}},
+  \code{\link{isValidInstrDesc}},
+  \code{\link{isValidInstrSettings}},
   \code{\link{setInstrDesc}},
   \code{\link{setInstrSettings}},
   \code{\link{setWhatMeasured}},
-  \code{\link{setWhereMeasured}}
+  \code{\link{setWhereMeasured}},
+  \code{\link{trimInstrDesc}},
+  \code{\link{trimInstrSettings}}
 }
-

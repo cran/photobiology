@@ -17,4 +17,3 @@ using for collections of spectra.
 mspct_classes()
 
 }
-

@@ -21,10 +21,10 @@ Function to set by reference the "multiple.wl" attribute  of an existing
 generic_spct or an object of a class derived from generic_spct.
 }
 \note{
-if x is not a generic_spct or an object of a class derived from
+This function alters x itself by reference and in addition
+  returns x invisibly. If x is not a generic_spct or an object of a class derived from
   generic_spct, x is not modified. If \code{multiple.wl}
 }
 \seealso{
 Other multiple.wl attribute functions: \code{\link{getMultipleWl}}
 }
-

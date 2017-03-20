@@ -3,8 +3,8 @@
 \name{q_response}
 \alias{q_response}
 \alias{q_response.default}
-\alias{q_response.response_mspct}
 \alias{q_response.response_spct}
+\alias{q_response.response_mspct}
 \title{Photon-based photo-response}
 \usage{
 q_response(spct, w.band, quantity, time.unit, wb.trim, use.hinges, ...)
@@ -65,6 +65,7 @@ waveband and a response spectrum.
 \item \code{response_mspct}: Calculates photon (quantum) response from a
 \code{response_mspct}
 }}
+
 \note{
 The parameter \code{use.hinges} controls speed optimization. The
   defaults should be suitable in mosts cases. Only the range of wavelengths
@@ -79,4 +80,3 @@ q_response(photodiode.spct)
 Other response functions: \code{\link{e_response}},
   \code{\link{response}}
 }
-

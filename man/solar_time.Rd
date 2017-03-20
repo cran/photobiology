@@ -43,6 +43,7 @@ The algorithm is approximate, it calculates the difference between
   off by one day, if the time zone does not match the coordinates of the
   goecode value provided as argument.
 }
+
 \examples{
 # BA.geocode <- ggmap::geocode("Buenos Aires, Argentina")
 BA.geocode <- data.frame(lon = -58.38156, lat = -34.60368)
@@ -64,4 +65,3 @@ Other astronomy related functions: \code{\link{day_night}},
   \code{\link{is.solar_time}},
   \code{\link{print.solar_time}}, \code{\link{sun_angles}}
 }
-

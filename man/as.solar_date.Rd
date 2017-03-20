@@ -19,4 +19,3 @@ For method \code{as.solar_date()} a date-time object with the class attr
 \description{
 Convert a solar_time object into solar_date object
 }
-

@@ -36,4 +36,3 @@ Other math operators and functions: \code{\link{MathFun}},
   \code{\link{sign}}, \code{\link{slash-.generic_spct}},
   \code{\link{times-.generic_spct}}
 }
-

@@ -23,6 +23,9 @@ If \code{x} is an object of any of the spectral classes defined
   in this package, this function changes by reference the spectrum
   object into the underlying data.frame object. Otherwise, it just leaves \code{x}
   unchanged.
+
+This function alters x itself by reference. If x is not a generic_spct object, x is not
+  modified.
 }
 \examples{
 my.spct <- sun.spct
@@ -35,4 +38,3 @@ class(my.spct)
 \seealso{
 Other set and unset spectral class functions: \code{\link{setGenericSpct}}
 }
-

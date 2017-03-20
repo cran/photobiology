@@ -3,8 +3,8 @@
 \name{e_response}
 \alias{e_response}
 \alias{e_response.default}
-\alias{e_response.response_mspct}
 \alias{e_response.response_spct}
+\alias{e_response.response_mspct}
 \title{Energy-based photo-response}
 \usage{
 e_response(spct, w.band, quantity, time.unit, wb.trim, use.hinges, ...)
@@ -65,6 +65,7 @@ waveband and a response spectrum.
 \item \code{response_mspct}: Calculates energy response from a
 \code{response_mspct}
 }}
+
 \note{
 The parameter \code{use.hinges} controls speed optimization. The
   defaults should be suitable in mosts cases. Only the range of wavelengths
@@ -79,4 +80,3 @@ e_response(photodiode.spct)
 Other response functions: \code{\link{q_response}},
   \code{\link{response}}
 }
-

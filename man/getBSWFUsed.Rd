@@ -25,4 +25,3 @@ getBSWFUsed(sun.spct)
 \seealso{
 Other BSWF attribute functions: \code{\link{setBSWFUsed}}
 }
-

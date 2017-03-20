@@ -17,4 +17,3 @@ recognized by functions from package 'lubridate'}
 Returns the time difference in hours between two time zones at a given
 instant in time.
 }
-

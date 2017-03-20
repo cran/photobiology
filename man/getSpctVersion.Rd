@@ -20,4 +20,3 @@ object.
 if x is not a \code{generic_spct} object, \code{NA} is returned,
   and if it the attribute is missing, zero is returned with a warning.
 }
-

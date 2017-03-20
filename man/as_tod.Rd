@@ -16,4 +16,3 @@ as_tod(x, unit.out = "hours", tz = NULL)
 \description{
 Convert date to time-of-day in hours, minutes or seconds
 }
-

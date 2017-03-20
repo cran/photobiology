@@ -3,9 +3,9 @@
 \name{getWhereMeasured}
 \alias{getWhereMeasured}
 \alias{getWhereMeasured.default}
-\alias{getWhereMeasured.generic_mspct}
 \alias{getWhereMeasured.generic_spct}
 \alias{getWhereMeasured.summary_generic_spct}
+\alias{getWhereMeasured.generic_mspct}
 \title{Get the "where.measured" attribute}
 \usage{
 getWhereMeasured(x, ...)
@@ -42,6 +42,7 @@ Function to read the "where.measured" attribute of an existing generic_spct.
 
 \item \code{generic_mspct}: generic_mspct
 }}
+
 \note{
 If x is not a \code{generic_spct} or an object of a derived class
   \code{NA} is returned.
@@ -55,10 +56,13 @@ Other measurement metadata functions: \code{\link{getInstrDesc}},
   \code{\link{getInstrSettings}},
   \code{\link{getWhatMeasured}},
   \code{\link{getWhenMeasured}},
+  \code{\link{isValidInstrDesc}},
+  \code{\link{isValidInstrSettings}},
   \code{\link{setInstrDesc}},
   \code{\link{setInstrSettings}},
   \code{\link{setWhatMeasured}},
   \code{\link{setWhenMeasured}},
-  \code{\link{setWhereMeasured}}
+  \code{\link{setWhereMeasured}},
+  \code{\link{trimInstrDesc}},
+  \code{\link{trimInstrSettings}}
 }
-

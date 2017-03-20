@@ -30,4 +30,3 @@ This function returns the summary absorptance for a given waveband of a
 \code{object_spct} object
 }
 \keyword{internal}
-

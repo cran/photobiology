@@ -21,10 +21,13 @@ Other measurement metadata functions: \code{\link{getInstrSettings}},
   \code{\link{getWhatMeasured}},
   \code{\link{getWhenMeasured}},
   \code{\link{getWhereMeasured}},
+  \code{\link{isValidInstrDesc}},
+  \code{\link{isValidInstrSettings}},
   \code{\link{setInstrDesc}},
   \code{\link{setInstrSettings}},
   \code{\link{setWhatMeasured}},
   \code{\link{setWhenMeasured}},
-  \code{\link{setWhereMeasured}}
+  \code{\link{setWhereMeasured}},
+  \code{\link{trimInstrDesc}},
+  \code{\link{trimInstrSettings}}
 }
-

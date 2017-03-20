@@ -2,16 +2,16 @@
 % Please edit documentation in R/spct.classes.r
 \name{check_spct}
 \alias{check_spct}
-\alias{check_spct.chroma_spct}
-\alias{check_spct.cps_spct}
 \alias{check_spct.default}
-\alias{check_spct.filter_spct}
 \alias{check_spct.generic_spct}
-\alias{check_spct.object_spct}
 \alias{check_spct.raw_spct}
+\alias{check_spct.cps_spct}
+\alias{check_spct.filter_spct}
 \alias{check_spct.reflector_spct}
+\alias{check_spct.object_spct}
 \alias{check_spct.response_spct}
 \alias{check_spct.source_spct}
+\alias{check_spct.chroma_spct}
 \title{Check validity of spectral objects}
 \usage{
 check_spct(x, byref, strict.range, ...)
@@ -90,6 +90,7 @@ Check that an R object contains the expected data members.
 
 \item \code{chroma_spct}: Specialization for chroma_spct.
 }}
+
 \examples{
 check_spct(sun.spct)
 
@@ -98,4 +99,3 @@ check_spct(sun.spct)
 Other data validity check functions: \code{\link{check_spectrum}},
   \code{\link{check_w.length}}
 }
-

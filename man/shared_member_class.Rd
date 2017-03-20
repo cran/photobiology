@@ -22,4 +22,3 @@ member as a target set of class names.
 \seealso{
 Other set and unset 'multi spectral' class functions: \code{\link{rmDerivedMspct}}
 }
-

@@ -3,10 +3,10 @@
 \name{absorbance}
 \alias{absorbance}
 \alias{absorbance.default}
-\alias{absorbance.filter_mspct}
 \alias{absorbance.filter_spct}
-\alias{absorbance.object_mspct}
 \alias{absorbance.object_spct}
+\alias{absorbance.filter_mspct}
+\alias{absorbance.object_mspct}
 \title{Absorbance}
 \usage{
 absorbance(spct, w.band, quantity, wb.trim, use.hinges, ...)
@@ -69,6 +69,7 @@ spectral data stored in a \code{filter_spct} or in an \code{object_spct}.
 
 \item \code{object_mspct}: Calculates absorbance from a \code{object_mspct}
 }}
+
 \note{
 The \code{use.hinges} parameter controls speed optimization. The
   defaults should be suitable in most cases. Only the range of wavelengths in
@@ -92,4 +93,3 @@ absorbance(yellow_gel.spct, split_bands(c(400,700), length.out = 3),
         quantity = "contribution.pc")
 
 }
-
