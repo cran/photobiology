@@ -4,7 +4,7 @@
 
 <head>
 
-<meta charset="utf-8">
+<meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 
@@ -12,9 +12,9 @@
 
 <meta name="author" content="Pedro J. Aphalo" />
 
-<meta name="date" content="2017-03-20" />
+<meta name="date" content="2017-04-29" />
 
-<title>photobiology 0.9.14 User Guide: 2 Radiation</title>
+<title>User Guide: 2 Radiation</title>
 
 
 
@@ -68,9 +68,10 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 
 
-<h1 class="title toc-ignore">photobiology 0.9.14<br>User Guide: 2 Radiation</h1>
+<h1 class="title toc-ignore">User Guide: 2 Radiation</h1>
+<h3 class="subtitle"><em>Package ‘photobiology’ 0.9.15</em></h3>
 <h4 class="author"><em>Pedro J. Aphalo</em></h4>
-<h4 class="date"><em>2017-03-20</em></h4>
+<h4 class="date"><em>2017-04-29</em></h4>
 
 
 <div id="TOC">
@@ -103,6 +104,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><a href="#object-inspection-methods">Object <em>inspection</em> methods</a><ul>
 <li><a href="#print"><code>print()</code></a></li>
 <li><a href="#summary"><code>summary()</code></a></li>
+<li><a href="#handling-nas">Handling <code>NA</code>s</a></li>
 </ul></li>
 <li><a href="#transformations-using-operators">Transformations: using operators</a><ul>
 <li><a href="#binary-operators">Binary operators</a></li>
@@ -648,7 +650,7 @@ ten.minutes.spct</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">getTimeUnit</span>(ten.minutes.spct)</code></pre></div>
 <pre><code>## [1] &quot;600s (~10 minutes)&quot;</code></pre>
 <hr>
-Attributes <code>instr_desc</code> and <code>instr_settings</code> can be used to store measurement-related metadata, describing the instrument used and settings. These attributes are lists, with a few default fields and possibly unlimited <em>special</em> attributes. The present pakage provides functions for operating on them and print-outs include some of the default fields if the attribute is set. The expectation is that these attributes are set by other packages such as ‘ooacquire’ used for direct data acquisition or raw instrument data import.
+Attributes <code>instr_desc</code> and <code>instr_settings</code> can be used to store measurement-related metadata, describing the instrument used and settings. These attributes are lists, with a few default fields and possibly unlimited <em>special</em> attributes. The present package provides functions for operating on them and print-outs include some of the default fields if the attribute is set. The expectation is that these attributes are set by other packages such as ‘ooacquire’ used for direct data acquisition or raw instrument data import.
 <hr>
 <hr>
 Spectral objects created with earlier (pre-release) versions of this package are missing some attributes. For this reason <em>summary</em> and <em>plot</em> functions may not work as expected with them. These <em>old</em> objects can be updated by adding the missing attribute using functions <code>setTimeUnit</code>, <code>setBSWFUsed</code>, <code>setTfrType</code> and <code>setRfrType</code>. However, in many cases function <code>update_spct</code> can be used to set the missing attributes to default values, or the scripts re-run to rebuild the data objects from raw data.
@@ -1060,7 +1062,7 @@ Methods <code>[</code>, and <code>[&lt;-</code>, extract and replace <em>parts</
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># not run as this triggers an error when building the vignette with 'devtools'</span>
 two_suns.mspct[<span class="dv">1</span>]
 two_suns.mspct[<span class="dv">1</span>:<span class="dv">2</span>]</code></pre></div>
-<p>Avoid code like that in the chunck bellow. Collections of spectra are named lists, consequently assigning by position as shown here swapts the values without swapping the names of the slots!</p>
+<p>Avoid code like that in the chunk bellow. Collections of spectra are named lists, consequently assigning by position as shown here swaps the values without swapping the names of the slots!</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># not run as this triggers an error when building the vignette with 'devtools'</span>
 two_suns.mspct[<span class="dv">1</span>:<span class="dv">2</span>] &lt;-<span class="st"> </span>two_suns.mspct[<span class="dv">2</span>:<span class="dv">1</span>]</code></pre></div>
 <hr>
@@ -1613,6 +1615,12 @@ function(w.length){
 ## low (nm) 280 
 ## high (nm) 800 
 ## weighted none</code></pre>
+<p>An “empty” waveband is returned by some functions as a “null” value.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">waveband</span>()</code></pre></div>
+<pre><code>## range.NA.NA 
+## low (nm) NA 
+## high (nm) NA 
+## weighted none</code></pre>
 </div>
 <div id="querying-the-class-2" class="section level3">
 <h3>Querying the class</h3>
@@ -1826,6 +1834,40 @@ wavebands</code></pre></div>
 <p>The <code>summary()</code> method for spectra is based on base R’s <code>summary()</code> method for data frames, and accepts the same arguments. The main difference is that the attributes containing metadata and dimensions of the original spectrum object are copied to the summary object.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(sun.spct)</code></pre></div>
 <p>Specialized <code>print()</code> methods for summaries of spectra are defined. The output differs from that of the <code>print()</code> method from base R in that additional metadata specific to spectra are shown.</p>
+</div>
+<div id="handling-nas" class="section level3">
+<h3>Handling <code>NA</code>s</h3>
+<p>Functions <code>na.omit()</code> and <code>na.exclude</code> are implemented for all spectral classes. These methods test for <code>NA</code>s only the spectral data, not wavelength. They set the <code>&quot;na.action&quot;</code> attribute in the same way as the corresponding methods for data frames. In the case of <code>na.fail()</code>, <code>na.pass()</code> and <code>na.action()</code>, the methods from base R, can be used with spectra.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">na.omit</span>(sun.spct)</code></pre></div>
+<pre><code>## Object: source_spct [522 x 3]
+## Wavelength range 280 to 800 nm, step 0.9230769 to 1 nm 
+## Measured on 2010-06-22 09:51:00 UTC 
+## Measured at 60.2091078 N, 24.9647354 E 
+## Time unit 1s
+## 
+## # A tibble: 522 × 3
+##   w.length s.e.irrad s.q.irrad
+##      &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
+## 1 280.0000         0         0
+## 2 280.9231         0         0
+## 3 281.8462         0         0
+## 4 282.7692         0         0
+## # ... with 518 more rows</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">na.exclude</span>(sun.spct)</code></pre></div>
+<pre><code>## Object: source_spct [522 x 3]
+## Wavelength range 280 to 800 nm, step 0.9230769 to 1 nm 
+## Measured on 2010-06-22 09:51:00 UTC 
+## Measured at 60.2091078 N, 24.9647354 E 
+## Time unit 1s
+## 
+## # A tibble: 522 × 3
+##   w.length s.e.irrad s.q.irrad
+##      &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
+## 1 280.0000         0         0
+## 2 280.9231         0         0
+## 3 281.8462         0         0
+## 4 282.7692         0         0
+## # ... with 518 more rows</code></pre>
 </div>
 </div>
 <div id="transformations-using-operators" class="section level2">
@@ -4990,7 +5032,7 @@ Most frequently used summary methods are implemented for collections of spectra.
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
-    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
     document.getElementsByTagName("head")[0].appendChild(script);
   })();
 </script>

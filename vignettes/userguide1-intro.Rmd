@@ -1,5 +1,6 @@
 ---
-title: "photobiology `r packageVersion('photobiology')`<br>User Guide: 1 Introduction"
+title: "User Guide: 1 Introduction"
+subtitle: "Package 'photobiology' `r packageVersion('photobiology')` "
 author: "Pedro J. Aphalo"
 date: "`r Sys.Date()`"
 output: 

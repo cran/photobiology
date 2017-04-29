@@ -5,7 +5,7 @@
 \alias{new_waveband}
 \title{Waveband constructor method}
 \usage{
-waveband(x, weight = NULL, SWF.e.fun = NULL, SWF.q.fun = NULL,
+waveband(x = NULL, weight = NULL, SWF.e.fun = NULL, SWF.q.fun = NULL,
   norm = NULL, SWF.norm = NULL, hinges = NULL, wb.name = NULL,
   wb.label = wb.name)
 

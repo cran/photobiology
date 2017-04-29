@@ -1,5 +1,6 @@
 ---
-title: "photobiology `r packageVersion('photobiology')`<br>User Guide: 2 Radiation"
+title: "User Guide: 2 Radiation"
+subtitle: "Package 'photobiology' `r packageVersion('photobiology')` "
 author: "Pedro J. Aphalo"
 date: "`r Sys.Date()`"
 output: 
@@ -280,7 +281,7 @@ getTimeUnit(ten.minutes.spct)
 ```
 
 <hr>
-Attributes `instr_desc` and `instr_settings` can be used to store measurement-related metadata, describing the instrument used and settings. These attributes are lists, with a few default fields and possibly unlimited _special_ attributes. The present pakage provides functions for operating on them and print-outs include some of the default fields if the attribute is set. The expectation is that these attributes are set by other packages such as 'ooacquire' used for direct data acquisition or raw instrument data import.
+Attributes `instr_desc` and `instr_settings` can be used to store measurement-related metadata, describing the instrument used and settings. These attributes are lists, with a few default fields and possibly unlimited _special_ attributes. The present package provides functions for operating on them and print-outs include some of the default fields if the attribute is set. The expectation is that these attributes are set by other packages such as 'ooacquire' used for direct data acquisition or raw instrument data import.
 <hr>
 
 <hr>
@@ -429,7 +430,7 @@ two_suns.mspct[1]
 two_suns.mspct[1:2]
 ```
 
-Avoid code like that in the chunck bellow. Collections of spectra are named lists, consequently assigning by position as shown here swapts the values without swapping the names of the slots!
+Avoid code like that in the chunk bellow. Collections of spectra are named lists, consequently assigning by position as shown here swaps the values without swapping the names of the slots!
 
 ```{r, extract-2, eval=FALSE}
 # not run as this triggers an error when building the vignette with 'devtools'
@@ -621,6 +622,12 @@ The first argument to `waveband()` does not need to be a numeric vector of lengt
 waveband(sun.spct)
 ```
 
+An "empty" waveband is returned by some functions as a "null" value.
+
+```{r}
+waveband()
+```
+
 ### Querying the class
 
 The function `is.waveband` can the used to query any R object. This function returns a logical value.
@@ -715,6 +722,15 @@ summary(sun.spct)
 ```
 
 Specialized `print()` methods for summaries of spectra are defined. The output differs from that of the `print()` method from base R in that additional metadata specific to spectra are shown.
+
+### Handling `NA`s
+
+Functions `na.omit()` and `na.exclude` are implemented for all spectral classes. These methods test for `NA`s only the spectral data, not wavelength. They set the `"na.action"` attribute in the same way as the corresponding methods for data frames. In the case of `na.fail()`, `na.pass()` and `na.action()`, the methods from base R, can be used with spectra. 
+
+```{r}
+na.omit(sun.spct)
+na.exclude(sun.spct)
+```
 
 ## Transformations: using operators
 
