@@ -5,6 +5,9 @@
 \alias{polyester.spct}
 \title{Transmittance spectrum of clear polyester film}
 \format{A \code{filter_spct} object with 611 rows and 2 variables}
+\usage{
+polyester.spct
+}
 \description{
 A dataset containing the wavelengths at a 1 nm interval and
   fractional total transmittance for polyester film.
@@ -13,13 +16,17 @@ A dataset containing the wavelengths at a 1 nm interval and
 \itemize{ \item w.length (nm). \item Tfr
 (0..1)  }
 }
+\examples{
+polyester.spct
+
+}
 \seealso{
 Other Spectral data examples: \code{\link{A.illuminant.spct}},
   \code{\link{D65.illuminant.spct}},
   \code{\link{black_body.spct}}, \code{\link{ccd.spct}},
   \code{\link{clear.spct}}, \code{\link{clear_body.spct}},
   \code{\link{filter_cps.mspct}},
-  \code{\link{green_leaf.spct}},
+  \code{\link{green_leaf.spct}}, \code{\link{opaque.spct}},
   \code{\link{photodiode.spct}},
   \code{\link{sun.daily.data}},
   \code{\link{sun.daily.spct}}, \code{\link{sun.data}},

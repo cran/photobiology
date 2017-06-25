@@ -5,6 +5,9 @@
 \alias{sun.daily.data}
 \title{Daily solar spectral irradiance (simulated)}
 \format{A \code{data.frame} object with 511 rows and 3 variables}
+\usage{
+sun.daily.data
+}
 \description{
 A dataset containing the wavelengths at a 1 nm interval and the corresponding
 spectral (energy) irradiance. Values simulated for 2 June 2012, at Helsinki,
@@ -13,6 +16,10 @@ under clear sky conditions. The variables are as follows:
 \details{
 \itemize{ \item w.length (nm), range 290 to 800 nm. \item s.e.irrad (J d-1
 m-2 nm-1) \item s.q.irrad (mol d-1 m-2 nm-1) }
+}
+\examples{
+sun.daily.spct
+
 }
 \references{
 Lindfors, A.; Heikkilä, A.; Kaurola, J.; Koskela, T. & Lakkala,
@@ -26,7 +33,7 @@ Other Spectral data examples: \code{\link{A.illuminant.spct}},
   \code{\link{black_body.spct}}, \code{\link{ccd.spct}},
   \code{\link{clear.spct}}, \code{\link{clear_body.spct}},
   \code{\link{filter_cps.mspct}},
-  \code{\link{green_leaf.spct}},
+  \code{\link{green_leaf.spct}}, \code{\link{opaque.spct}},
   \code{\link{photodiode.spct}},
   \code{\link{polyester.spct}},
   \code{\link{sun.daily.spct}}, \code{\link{sun.data}},

@@ -5,11 +5,18 @@
 \alias{green_leaf.spct}
 \title{Green birch leaf reflectance.}
 \format{A \code{reflector_spct} object with 226 rows and 2 variables}
+\usage{
+green_leaf.spct
+}
 \description{
 A dataset of spectral reflectance expressed as a fraction of one.
 }
 \details{
 \itemize{ \item w.length (nm) \item Rfr (0..1) }
+}
+\examples{
+green_leaf.spct
+
 }
 \references{
 Aphalo, P. J. & Lehto, T. Effects of light quality on growth and N
@@ -21,7 +28,7 @@ Other Spectral data examples: \code{\link{A.illuminant.spct}},
   \code{\link{black_body.spct}}, \code{\link{ccd.spct}},
   \code{\link{clear.spct}}, \code{\link{clear_body.spct}},
   \code{\link{filter_cps.mspct}},
-  \code{\link{photodiode.spct}},
+  \code{\link{opaque.spct}}, \code{\link{photodiode.spct}},
   \code{\link{polyester.spct}},
   \code{\link{sun.daily.data}},
   \code{\link{sun.daily.spct}}, \code{\link{sun.data}},

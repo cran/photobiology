@@ -4,6 +4,10 @@
 \name{white_led.raw_spct}
 \alias{white_led.raw_spct}
 \title{White led bulb spectrum}
+\format{An object of class \code{raw_spct} (inherits from \code{generic_spct}, \code{tbl_df}, \code{tbl}, \code{data.frame}) with 2068 rows and 4 columns.}
+\usage{
+white_led.raw_spct
+}
 \description{
 A dataset containing wavelengths and the
   corresponding spectral data as raw instrument counts for an Osram warm white led lamp,
@@ -16,6 +20,7 @@ A dataset containing wavelengths and the
 }
 \examples{
 white_led.raw_spct
+
 }
 \seealso{
 Other Spectral data examples: \code{\link{A.illuminant.spct}},
@@ -23,7 +28,7 @@ Other Spectral data examples: \code{\link{A.illuminant.spct}},
   \code{\link{black_body.spct}}, \code{\link{ccd.spct}},
   \code{\link{clear.spct}}, \code{\link{clear_body.spct}},
   \code{\link{filter_cps.mspct}},
-  \code{\link{green_leaf.spct}},
+  \code{\link{green_leaf.spct}}, \code{\link{opaque.spct}},
   \code{\link{photodiode.spct}},
   \code{\link{polyester.spct}},
   \code{\link{sun.daily.data}},

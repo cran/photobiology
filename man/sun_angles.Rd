@@ -2,14 +2,17 @@
 % Please edit documentation in R/sun.calc.r
 \name{sun_angles}
 \alias{sun_angles}
+\alias{sun_angles_fast}
 \alias{sun_elevation}
 \alias{sun_zenith_angle}
 \alias{sun_azimuth}
 \title{Solar angles}
 \usage{
-sun_angles(time = lubridate::now(), tz = lubridate::tz(time),
+sun_angles(time = lubridate::now(tzone = "UTC"), tz = lubridate::tz(time),
   geocode = data.frame(lon = 0, lat = 51.5, address = "Greenwich"),
   use.refraction = FALSE)
+
+sun_angles_fast(time, tz, geocode, use.refraction)
 
 sun_elevation(time = lubridate::now(), tz = lubridate::tz(time),
   geocode = data.frame(lon = 0, lat = 51.5, address = "Greenwich"),
@@ -24,30 +27,60 @@ sun_azimuth(time = lubridate::now(), tz = lubridate::tz(time),
   use.refraction = FALSE)
 }
 \arguments{
-\item{time}{POSIXct Time, any valid time zone (TZ) is allowed, default is
-current time}
+\item{time}{A "vector" of POSIXct Time, with any valid time zone (TZ) is
+allowed, default is current time.}
 
 \item{tz}{character string indicating time zone to be used in output.}
 
 \item{geocode}{data frame with variables lon and lat as numeric values
-(degrees).}
+(degrees), nrow > 1, allowed.}
 
 \item{use.refraction}{logical Flag indicating whether to correct for
-fraction in the atmosphere}
+fraction in the atmosphere.}
 }
 \value{
 A data.frame with variables time (in same TZ as input), TZ, solartime,
-  longitude, latitude, address, azimuth, and elevation.
+  longitude, latitude, address, azimuth, and elevation. If a data frame with
+  multiple rows is passed to \code{geocode} and a vector of times longer
+  than one is passed to \code{time}, sun position for all combinations of
+  locations and times are returned are returned by \code{sun_angles}. In
+  contrast, convenience functions returning a vector, require that either
+  a single time instant or a single location are supplied---i.e. only
+  one of these two arguments can be vectorized in a given call.
 }
 \description{
 This function returns the solar angles for a given time and location.
 }
+\note{
+This function is an implementation of Meeus equations as used in NOAAs
+  on-line web calculator, which are very precise and valid for a very broad
+  range of dates. For the times of sunrise and sunset the times are affected
+  by refraction in the atmosphere, which does in turn depend on weather
+  conditions. The effect of refraction on the apparent position of the sun
+  is only an estimate based on "typical" conditions. The more tangential to
+  the horizon is the path of the sun, the larger the effect of refraction is
+  on the times of visual occusion of the sun behind the horizon---i.e. the
+  largest timing errors occur at high latitudes.
+  The computation is not defined for latitudes 90 and -90 degrees, i.e. at
+  the poles.
+  There exists a different R implementation of the same algorithms called
+  "AstroCalcPureR" available as function \code{astrocalc4r} in package
+  'fishmethods'. Although the equations used are almost all the same, the
+  function signatures and which values are returned differ. In particular,
+  the present implementation splits the calcualtion into two separate
+  functions, one returning angles at given instants in time, and a
+  separate one returning the timing of events for given dates.
+}
 \examples{
 library(lubridate)
 sun_angles()
+sun_azimuth()
+sun_elevation()
+sun_zenith_angle()
 sun_angles(ymd_hms("2014-09-23 12:00:00"))
 sun_angles(ymd_hms("2014-09-23 12:00:00"),
            geocode = data.frame(lat=60, lon=0))
+sun_angles(ymd_hms("2014-09-23 12:00:00") + minutes((0:6) * 10))
 
 }
 \seealso{

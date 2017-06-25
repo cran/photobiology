@@ -5,6 +5,9 @@
 \alias{ciev10.spct}
 \title{Linear energy CIE 2008 luminous efficiency function 10 deg data}
 \format{A chroma_spct object with 441 rows and 4 variables}
+\usage{
+ciev10.spct
+}
 \description{
 A dataset containing wavelengths at a 1 nm interval (390 nm to
   830 nm) and the corresponding response values for a 10 degrees target.
@@ -16,6 +19,10 @@ A dataset containing wavelengths at a 1 nm interval (390 nm to
   \item x
   \item y
   \item z }
+}
+\examples{
+ciev10.spct
+
 }
 \seealso{
 Other Visual response data examples: \code{\link{beesxyzCMF.spct}},

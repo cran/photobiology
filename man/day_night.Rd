@@ -2,6 +2,7 @@
 % Please edit documentation in R/sun.calc.r
 \name{day_night}
 \alias{day_night}
+\alias{day_night_fast}
 \alias{noon_time}
 \alias{sunrise_time}
 \alias{sunset_time}
@@ -9,9 +10,11 @@
 \alias{night_length}
 \title{Times for sun positions}
 \usage{
-day_night(date = lubridate::today(), tz = Sys.timezone(),
+day_night(date = lubridate::now(tzone = "UTC"), tz = lubridate::tz(date),
   geocode = data.frame(lon = 0, lat = 51.5, address = "Greenwich"),
   twilight = "none", unit.out = "hours")
+
+day_night_fast(date, tz, geocode, twilight, unit.out)
 
 noon_time(date = lubridate::today(), tz = Sys.timezone(),
   geocode = data.frame(lon = 0, lat = 51.5, address = "Greenwich"),
@@ -25,31 +28,32 @@ sunset_time(date = lubridate::today(), tz = Sys.timezone(),
   geocode = data.frame(lon = 0, lat = 51.5, address = "Greenwich"),
   twilight = "sunlight", unit.out = "datetime")
 
-day_length(date = lubridate::today(), tz = "UTC", geocode = data.frame(lon
-  = 0, lat = 51.5, address = "Greenwich"), twilight = "sunlight",
+day_length(date = lubridate::now(), tz = "UTC", geocode = data.frame(lon =
+  0, lat = 51.5, address = "Greenwich"), twilight = "sunlight",
   unit.out = "hours")
 
-night_length(date = lubridate::today(), tz = "UTC",
-  geocode = data.frame(lon = 0, lat = 51.5, address = "Greenwich"),
-  twilight = "sunlight", unit.out = "hours")
+night_length(date = lubridate::now(), tz = "UTC", geocode = data.frame(lon
+  = 0, lat = 51.5, address = "Greenwich"), twilight = "sunlight",
+  unit.out = "hours")
 }
 \arguments{
-\item{date}{vector of POSIXct times or Date objects, any valid TZ is allowed,
+\item{date}{"vector" of POSIXct times or Date objects, any valid TZ is allowed,
 default is current date}
 
-\item{tz}{vector of character string indicating time zone to be used in output.}
+\item{tz}{character vector indicating time zone to be used in output.}
 
 \item{geocode}{data frame with one or more rows and variables lon and lat as
-numeric values (degrees).}
+numeric values (degrees). If present, address will be copied to the output.}
 
 \item{twilight}{character string, one of "none", "civil", "nautical",
 "astronomical", or a \code{numeric} vector of length one, or two, giving
 solar elevation angle(s) in degrees (negative if below the horizon).}
 
-\item{unit.out}{charater string, One of "datetime", "hour", "minute", or "second".}
+\item{unit.out}{charater string, One of "datetime", "day", "hour", "minute",
+or "second".}
 }
 \value{
-A data.fraame with variables day, tz, twilight.rise, twilight.set,
+A data.frame with variables day, tz, twilight.rise, twilight.set,
   longitude, latitude, address, sunrise, noon, sunset, daylength,
   nightlength.
 
@@ -73,24 +77,59 @@ Twilight names are interpreted as follows. "none": solar elevation =
   Unit names for output are as follows: "hours" times for sunrise and sunset
   are returned as times-of-day in hours since middnight. "date" or "datetime"
   return the same times as datetime objects with TZ set (this is much slower
-  the "hours"). Day length and night length are always returned as numeric
-  values expressed in hours.
+  than the "hours"). Day length and night length are returned as numeric
+  values expressed in hours when `"datetime"' is paseed as argument to
+  \code{unit.out}. If twilight is a numeric vector of length two,
+  the element with index 1 is used for sunrise and that with index 2 for
+  sunset.
 }
 \note{
-If twilight is a numeric vector of length two, the element with index 1
-  is used for sunrise and that with index 2 for sunset.
+This function is an implementation of Meeus equations as used in NOAAs
+  on-line web calculator, which are very precise and valid for a very broad
+  range of dates. For sunrise and sunset the times are affected by refraction
+  in the atmosphere, which does in turn depend on weather conditions. The
+  effect of refraction on the apparent position of the sun is only an
+  estimate based on "typical" conditions. The more tangential to the horizon
+  is the path of the sun, the larger the effect of refraction is on the times
+  of visual occlusion of the sun behind the horizon---i.e. the largest timing
+  errors occur at high latitudes. The computation is not defined for
+  latitudes 90 and -90 degrees, i.e. at the poles.
+
+  There exists a different R implementation of the same algorithms called
+  "AstroCalcPureR" available as function \code{astrocalc4r} in package
+  'fishmethods'. Although the equations used are almost all the same, the
+  function signatures and which values are returned differ. In particular,
+  the present implementation splits the calcualtion into two separate
+  functions, one returning angles at given instants in time, and a separate
+  one returning the timing of events for given dates.
 
 \code{night_length} returns the length of night-time conditions in one
   day (00:00:00 to 23:59:59), rather than the length of the night between two
   consequtive days.
 }
+\section{Warning}{
+ Be aware that R's \code{Date} class does not save time zone
+  metadata. This can lead to ambiguities in the current implementation as
+  based on time instants. The argument passed to \code{date} should be
+  of class \code{POSIXct}, in other words an instant in time, from which
+  the correct date will be computed based on the \code{tz} argument.
+}
+
 \examples{
 library(lubridate)
 my.geocode <- data.frame(lat = 60, lon = 25)
-day_night(ymd("2015-05-30"), geocode = my.geocode, twilight = "civil")
+day_night(ymd("2015-05-30"), geocode = my.geocode)
+day_night(ymd("2015-05-30") + days(1:10), geocode = my.geocode, twilight = "civil")
+sunrise_time(ymd("2015-05-30"), geocode = my.geocode)
+noon_time(ymd("2015-05-30"), geocode = my.geocode)
+sunset_time(ymd("2015-05-30"), geocode = my.geocode)
+day_length(ymd("2015-05-30"), geocode = my.geocode)
+day_length(ymd("2015-05-30"), geocode = my.geocode, unit.out = "day")
 
 }
 \seealso{
+\code{\link{sun_angles}}.
+
 Other astronomy related functions: \code{\link{format.solar_time}},
   \code{\link{is.solar_time}},
   \code{\link{print.solar_time}}, \code{\link{solar_time}},

@@ -4,11 +4,15 @@
 \name{photodiode.spct}
 \alias{photodiode.spct}
 \title{Spectral response of a GaAsP photodiode}
-\format{A \code{response_spct} object with 311 rows and 2 variables}
+\format{A \code{response_spct} object with 94 rows and 2 variables}
+\usage{
+photodiode.spct
+}
 \description{
 A dataset containing wavelengths at a 1 nm interval and
-  spectral response as $A W^{-1} nm^{-1}$ for GaAsP photodiode type
+  spectral response as \eqn{A / (W / nm)} for GaAsP photodiode type
   G6262 from Hamamatsu. Data digitized from manufacturer's data sheet.
+  The value at the peak is 0.19 \eqn{A / W}.
 }
 \details{
 \itemize{ \item w.length (nm). \item s.e.response
@@ -26,7 +30,7 @@ Other Spectral data examples: \code{\link{A.illuminant.spct}},
   \code{\link{black_body.spct}}, \code{\link{ccd.spct}},
   \code{\link{clear.spct}}, \code{\link{clear_body.spct}},
   \code{\link{filter_cps.mspct}},
-  \code{\link{green_leaf.spct}},
+  \code{\link{green_leaf.spct}}, \code{\link{opaque.spct}},
   \code{\link{polyester.spct}},
   \code{\link{sun.daily.data}},
   \code{\link{sun.daily.spct}}, \code{\link{sun.data}},

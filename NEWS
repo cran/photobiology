@@ -1,9 +1,17 @@
-TODO
-====
+photobiology 0.9.16
+===================
 
-Add test cases for chroma_spct and improve tests for the _mspct
-classes. Add test cases for smooth_spct().
-Replace filter_cps.mspct data with newly measured data.
+Rename S3 method color() to color_of() to avoid a name clash with an S4 method.
+A function color() calling method color_of() maintains backwards compatibility,
+but use of color() is now deprecated.
+Improve performance of sun_angles(). Convenience functions returning individual
+angles, sun_azimuth(), sun_zenith_angle(), and sun_elevation(), also benefit.
+Optimize performance of day_night(). Other functions returning individual times
+for sun positions, sunsrise_time(), noon_time(), sunset_time(), day_length(),
+night_length(), also benefit.
+** Performance optimization does not alter the returned values **
+Revise the docummentation corresponding to these functions and the "astronomy"
+vignette to better describe how vectorization works for these functions.
 
 photobiology 0.9.15
 ===================

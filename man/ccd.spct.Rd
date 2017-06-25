@@ -4,17 +4,22 @@
 \name{ccd.spct}
 \alias{ccd.spct}
 \title{Spectral response of a back-thinned CCD image sensor.}
-\format{A \code{response_spct} object with 201 rows and 2 variables}
+\format{A \code{response_spct} object with 186 rows and 2 variables}
+\usage{
+ccd.spct
+}
 \description{
 A dataset containing wavelengths at a 1 nm interval and
-  spectral response as $A W^{-1} nm^{-1}$ for CCD sensor type
+  spectral response as quantum efficiency for CCD sensor type
   S11071/S10420 from Hamamatsu (measured without a quartz window). These
   arrays are frequently used as sensors in high-UV-sensitivity array
   spectrometers. Data digitized from manufacturer's data sheet.
+  The original data is expressed as percent quantum efficiency with a value
+  of 77\% at the peak. The data have been re-expressed as fractions of one.
 }
 \details{
-\itemize{ \item w.length (nm). \item s.e.response
-(A/W)  }
+\itemize{ \item w.length (nm). \item s.q.response
+(fractional quantum efficiency)  }
 }
 \references{
 Hamamatsu (2014) Datasheet: CCD Image Sensors S11071/S10420-01 Series.
@@ -28,7 +33,7 @@ Other Spectral data examples: \code{\link{A.illuminant.spct}},
   \code{\link{black_body.spct}}, \code{\link{clear.spct}},
   \code{\link{clear_body.spct}},
   \code{\link{filter_cps.mspct}},
-  \code{\link{green_leaf.spct}},
+  \code{\link{green_leaf.spct}}, \code{\link{opaque.spct}},
   \code{\link{photodiode.spct}},
   \code{\link{polyester.spct}},
   \code{\link{sun.daily.data}},

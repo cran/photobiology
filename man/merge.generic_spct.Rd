@@ -17,10 +17,10 @@
 \item{...}{other arguments passed to \code{dplyr::inner_join()}}
 }
 \description{
-Relatively quick merge of two spct objects based on w.length.
+Merge of two spct objects based on w.length.
 }
 \note{
-if the class of x and y is the same, it is preserved, but
+If the class of x and y is the same, it is preserved, but
 if it differs \code{generic_spct} is used for the returned value,
 except when x and y, are one each of classes reflector_spct and
 filter_spct in which case an object_spct is returned.

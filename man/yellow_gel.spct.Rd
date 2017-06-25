@@ -5,6 +5,9 @@
 \alias{yellow_gel.spct}
 \title{Transmittance spectrum of yellow theatrical gel.}
 \format{A \code{filter_spct} object with 611 rows and 2 variables}
+\usage{
+yellow_gel.spct
+}
 \description{
 A dataset containing the wavelengths at a 1 nm interval and
   fractional total transmittance for polyester film.
@@ -13,13 +16,17 @@ A dataset containing the wavelengths at a 1 nm interval and
 \itemize{ \item w.length (nm). \item Tfr
 (0..1)  }
 }
+\examples{
+yellow_gel.spct
+
+}
 \seealso{
 Other Spectral data examples: \code{\link{A.illuminant.spct}},
   \code{\link{D65.illuminant.spct}},
   \code{\link{black_body.spct}}, \code{\link{ccd.spct}},
   \code{\link{clear.spct}}, \code{\link{clear_body.spct}},
   \code{\link{filter_cps.mspct}},
-  \code{\link{green_leaf.spct}},
+  \code{\link{green_leaf.spct}}, \code{\link{opaque.spct}},
   \code{\link{photodiode.spct}},
   \code{\link{polyester.spct}},
   \code{\link{sun.daily.data}},

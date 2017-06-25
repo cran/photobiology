@@ -5,6 +5,9 @@
 \alias{sun.daily.spct}
 \title{Daily solar spectral irradiance (simulated)}
 \format{A \code{source_spct} object with 511 rows and 3 variables}
+\usage{
+sun.daily.spct
+}
 \description{
 A dataset containing the wavelengths at a 1 nm interval and the corresponding
 spectral (energy) irradiance. Values simulated for 2 June 2012, at Helsinki,
@@ -19,6 +22,10 @@ The simualtions are based on libRadTran using hourly mean global
 radiation measurements to estimate cloud cover. The simulations were for
 each hour and the results integrated for the whole day.
 }
+\examples{
+sun.daily.spct
+
+}
 \references{
 Lindfors, A.; Heikkilä, A.; Kaurola, J.; Koskela, T. & Lakkala,
 K. (2009) Reconstruction of Solar Spectral Surface UV Irradiances Using
@@ -31,7 +38,7 @@ Other Spectral data examples: \code{\link{A.illuminant.spct}},
   \code{\link{black_body.spct}}, \code{\link{ccd.spct}},
   \code{\link{clear.spct}}, \code{\link{clear_body.spct}},
   \code{\link{filter_cps.mspct}},
-  \code{\link{green_leaf.spct}},
+  \code{\link{green_leaf.spct}}, \code{\link{opaque.spct}},
   \code{\link{photodiode.spct}},
   \code{\link{polyester.spct}},
   \code{\link{sun.daily.data}}, \code{\link{sun.data}},

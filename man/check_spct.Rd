@@ -94,6 +94,10 @@ Check that an R object contains the expected data members.
 \examples{
 check_spct(sun.spct)
 
+check_spct(sun.spct)
+check_spct(-sun.spct)
+try(check_spct((sun.spct[1, "w.length"] <- 1000)))
+
 }
 \seealso{
 Other data validity check functions: \code{\link{check_spectrum}},

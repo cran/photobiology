@@ -55,8 +55,6 @@ Color matching functions obtained from Colour and Vision Research
 Laboratory online data respository at \url{http://www.cvrl.org/}.
 }
 \seealso{
-\url{http://www.cs.rit.edu/~ncs/color/t_spectr.html}.
-
 Other color functions: \code{\link{rgb_spct}},
   \code{\link{w_length2rgb}},
   \code{\link{w_length_range2rgb}}

@@ -5,6 +5,9 @@
 \alias{clear.spct}
 \title{Theoretical spectrum of a clear clear material}
 \format{A \code{filter_spct} object with 4 rows and 2 variables}
+\usage{
+clear.spct
+}
 \description{
 A dataset for a hypothetical object with transmittance 1/1
   (100\%)
@@ -13,13 +16,17 @@ A dataset for a hypothetical object with transmittance 1/1
 \itemize{ \item w.length (nm). \item Tfr
 (0..1)  }
 }
+\examples{
+clear.spct
+
+}
 \seealso{
 Other Spectral data examples: \code{\link{A.illuminant.spct}},
   \code{\link{D65.illuminant.spct}},
   \code{\link{black_body.spct}}, \code{\link{ccd.spct}},
   \code{\link{clear_body.spct}},
   \code{\link{filter_cps.mspct}},
-  \code{\link{green_leaf.spct}},
+  \code{\link{green_leaf.spct}}, \code{\link{opaque.spct}},
   \code{\link{photodiode.spct}},
   \code{\link{polyester.spct}},
   \code{\link{sun.daily.data}},

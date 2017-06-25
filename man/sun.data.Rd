@@ -5,6 +5,9 @@
 \alias{sun.data}
 \title{Solar spectral irradiance (simulated)}
 \format{A \code{data.frame} object with 508 rows and 3 variables}
+\usage{
+sun.data
+}
 \description{
 A dataset containing the wavelengths at a 1 nm interval and the
   corresponding spectral (energy) irradiance and spectral photon irradiance.
@@ -14,6 +17,10 @@ A dataset containing the wavelengths at a 1 nm interval and the
 \details{
 \itemize{ \item w.length (nm), range 293 to 800 nm. \item s.e.irrad
 (W m-2 nm-1) \item s.q.irrad (mol m-2 nm-1) }
+}
+\examples{
+sun.data
+
 }
 \references{
 Lindfors, A.; Heikkilä, A.; Kaurola, J.; Koskela, T. & Lakkala,
@@ -27,7 +34,7 @@ Other Spectral data examples: \code{\link{A.illuminant.spct}},
   \code{\link{black_body.spct}}, \code{\link{ccd.spct}},
   \code{\link{clear.spct}}, \code{\link{clear_body.spct}},
   \code{\link{filter_cps.mspct}},
-  \code{\link{green_leaf.spct}},
+  \code{\link{green_leaf.spct}}, \code{\link{opaque.spct}},
   \code{\link{photodiode.spct}},
   \code{\link{polyester.spct}},
   \code{\link{sun.daily.data}},

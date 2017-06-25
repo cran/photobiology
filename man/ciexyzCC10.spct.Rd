@@ -5,6 +5,9 @@
 \alias{ciexyzCC10.spct}
 \title{CIE xyz chromaticity coordinates (CC) 10 deg data}
 \format{A chroma_spct object with 441 rows and 4 variables}
+\usage{
+ciexyzCC10.spct
+}
 \description{
 A dataset containing wavelengths at a 1 nm interval (390 nm to
   830 nm) and the corresponding x, y, and z chromaticity coordinates. Derived
@@ -17,6 +20,10 @@ A dataset containing wavelengths at a 1 nm interval (390 nm to
   \item x
   \item y
   \item z }
+}
+\examples{
+ciexyzCC10.spct
+
 }
 \seealso{
 Other Visual response data examples: \code{\link{beesxyzCMF.spct}},

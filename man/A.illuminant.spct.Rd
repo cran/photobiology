@@ -5,6 +5,9 @@
 \alias{A.illuminant.spct}
 \title{CIE A illuminant data}
 \format{A source spectrum with 96 rows and 2 variables}
+\usage{
+A.illuminant.spct
+}
 \description{
 A dataset containing wavelengths at a 5 nm interval (300 nm to
   830 nm) and the corresponding spectral energy irradiance normalized to 1 at
@@ -17,12 +20,16 @@ A dataset containing wavelengths at a 5 nm interval (300 nm to
 \details{
 \itemize{ \item w.length (nm) \item s.e.irrad (rel. units) }
 }
+\examples{
+A.illuminant.spct
+
+}
 \seealso{
 Other Spectral data examples: \code{\link{D65.illuminant.spct}},
   \code{\link{black_body.spct}}, \code{\link{ccd.spct}},
   \code{\link{clear.spct}}, \code{\link{clear_body.spct}},
   \code{\link{filter_cps.mspct}},
-  \code{\link{green_leaf.spct}},
+  \code{\link{green_leaf.spct}}, \code{\link{opaque.spct}},
   \code{\link{photodiode.spct}},
   \code{\link{polyester.spct}},
   \code{\link{sun.daily.data}},

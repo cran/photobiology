@@ -5,6 +5,9 @@
 \alias{white_led.source_spct}
 \title{White led bulb spectrum}
 \format{A \code{source_spct} object with 1421 rows and 2 variables}
+\usage{
+white_led.source_spct
+}
 \description{
 A dataset containing wavelengths and the
   corresponding spectral irradiance data for an Osram warm white led lamp:
@@ -15,6 +18,7 @@ A dataset containing wavelengths and the
 }
 \examples{
 white_led.source_spct
+
 }
 \seealso{
 Other Spectral data examples: \code{\link{A.illuminant.spct}},
@@ -22,7 +26,7 @@ Other Spectral data examples: \code{\link{A.illuminant.spct}},
   \code{\link{black_body.spct}}, \code{\link{ccd.spct}},
   \code{\link{clear.spct}}, \code{\link{clear_body.spct}},
   \code{\link{filter_cps.mspct}},
-  \code{\link{green_leaf.spct}},
+  \code{\link{green_leaf.spct}}, \code{\link{opaque.spct}},
   \code{\link{photodiode.spct}},
   \code{\link{polyester.spct}},
   \code{\link{sun.daily.data}},
