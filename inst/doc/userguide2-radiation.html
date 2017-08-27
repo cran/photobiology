@@ -12,7 +12,7 @@
 
 <meta name="author" content="Pedro J. Aphalo" />
 
-<meta name="date" content="2017-06-25" />
+<meta name="date" content="2017-08-27" />
 
 <title>User Guide: 2 Radiation</title>
 
@@ -69,9 +69,9 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 
 <h1 class="title toc-ignore">User Guide: 2 Radiation</h1>
-<h3 class="subtitle"><em>Package ‘photobiology’ 0.9.16</em></h3>
+<h3 class="subtitle"><em>Package ‘photobiology’ 0.9.17</em></h3>
 <h4 class="author"><em>Pedro J. Aphalo</em></h4>
-<h4 class="date"><em>2017-06-25</em></h4>
+<h4 class="date"><em>2017-08-27</em></h4>
 
 
 <div id="TOC">
@@ -87,6 +87,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><a href="#collections-of-spectra">Collections of spectra</a><ul>
 <li><a href="#classes-1">Classes</a></li>
 <li><a href="#construction-1">Construction</a></li>
+<li><a href="#conversion-into-a-wide-data-frame">Conversion into a “wide” data frame</a></li>
 <li><a href="#querying-the-class-1">Querying the class</a></li>
 <li><a href="#extract-replace-and-combine">Extract, replace and combine</a></li>
 <li><a href="#transform-or-apply-functions">Transform or <em>apply</em> functions</a></li>
@@ -531,7 +532,7 @@ s.e.irrad &lt;-<span class="st"> </span><span class="dv">1</span>
 <p>Argument <code>strict.range</code> can be used to override or make more strict the validation of the data values.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">source_spct</span>(<span class="dt">w.length =</span> <span class="dv">300</span><span class="op">:</span><span class="dv">305</span>, <span class="dt">s.e.irrad =</span> <span class="op">-</span><span class="dv">1</span>)</code></pre></div>
 <pre><code>## Warning in range_check(x, strict.range = strict.range): Negative spectral
-## energy irradiance values; minimun s.e.irrad = -1</code></pre>
+## energy irradiance values; minimun s.e.irrad = -1.00</code></pre>
 <pre><code>## Object: source_spct [6 x 2]
 ## Wavelength range 300 to 305 nm, step 1 nm 
 ## Time unit 1s
@@ -932,6 +933,8 @@ test1.df</code></pre></div>
 <p>Data frame containing <em>untidy</em> or <em>wide</em> spectral data (class is determined by the function used, columns which are not <code>numeric</code> are skipped.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">test2.df &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">w.length =</span> <span class="dv">200</span><span class="op">:</span><span class="dv">210</span>, <span class="dt">A =</span> <span class="dv">1</span>, <span class="dt">B =</span> <span class="dv">2</span>, <span class="dt">z =</span> <span class="st">&quot;A&quot;</span>)
 <span class="kw">split2source_mspct</span>(test2.df)</code></pre></div>
+<pre><code>## Warning in split2mspct(x = x, member.class = &quot;source_spct&quot;, spct.data.var =
+## spct.data.var, : Skipping non-numeric column in x: z</code></pre>
 <pre><code>## Object: source_mspct [2 x 1]
 ## --- Member: A ---
 ## Object: source_spct [11 x 2]
@@ -962,6 +965,8 @@ test1.df</code></pre></div>
 ## 
 ## --- END ---</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">split2source_mspct</span>(test2.df, <span class="dt">spct.data.var =</span> <span class="st">&quot;s.q.irrad&quot;</span>)</code></pre></div>
+<pre><code>## Warning in split2mspct(x = x, member.class = &quot;source_spct&quot;, spct.data.var =
+## spct.data.var, : Skipping non-numeric column in x: z</code></pre>
 <pre><code>## Object: source_mspct [2 x 1]
 ## --- Member: A ---
 ## Object: source_spct [11 x 2]
@@ -993,6 +998,8 @@ test1.df</code></pre></div>
 ## --- END ---</code></pre>
 <p>Also in this case, it is possible to pass additional named arguments to the constructor of spectral objects.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">split2source_mspct</span>(test2.df, <span class="dt">spct.data.var =</span> <span class="st">&quot;s.q.irrad&quot;</span>, <span class="dt">time.unit =</span> <span class="st">&quot;day&quot;</span>)</code></pre></div>
+<pre><code>## Warning in split2mspct(x = x, member.class = &quot;source_spct&quot;, spct.data.var =
+## spct.data.var, : Skipping non-numeric column in x: z</code></pre>
 <pre><code>## Object: source_mspct [2 x 1]
 ## --- Member: A ---
 ## Object: source_spct [11 x 2]
@@ -1023,6 +1030,20 @@ test1.df</code></pre></div>
 ## 
 ## --- END ---</code></pre>
 </div>
+</div>
+<div id="conversion-into-a-wide-data-frame" class="section level3">
+<h3>Conversion into a “wide” data frame</h3>
+<p>Sometimes, when exporting spectral data we may need to convert a collection of spectra into a data frame. In the example below we use a collection with only two member spectra, but <code>join_mspct()</code> can handle collections of any length.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my.mspct &lt;-<span class="st"> </span><span class="kw">source_mspct</span>(<span class="kw">list</span>(<span class="dt">sun1 =</span> sun.spct, <span class="dt">sun2 =</span> sun.spct <span class="op">*</span><span class="st"> </span><span class="dv">2</span>))
+my.df &lt;-<span class="st"> </span><span class="kw">join_mspct</span>(my.mspct)
+<span class="kw">head</span>(my.df)</code></pre></div>
+<pre><code>##   w.length sun1 sun2
+## 1 280.0000    0    0
+## 2 280.9231    0    0
+## 3 281.8462    0    0
+## 4 282.7692    0    0
+## 5 283.6923    0    0
+## 6 284.6154    0    0</code></pre>
 </div>
 <div id="querying-the-class-1" class="section level3">
 <h3>Querying the class</h3>
@@ -1609,7 +1630,7 @@ UV_bands.lst &lt;-<span class="st"> </span><span class="kw">list</span>(UVC.wb, 
 }</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">CIE.wb &lt;-<span class="st"> </span><span class="kw">waveband</span>(<span class="kw">c</span>(<span class="dv">250</span>, <span class="dv">400</span>), <span class="dt">weight =</span> <span class="st">&quot;SWF&quot;</span>,
                    <span class="dt">SWF.e.fun =</span> CIE_e_fun, <span class="dt">SWF.norm =</span> <span class="dv">298</span>)</code></pre></div>
-<p>The first argument to <code>waveband()</code> does not need to be a numeric vector of length two. Any R object of a class that supplies a <code>range()</code> method definition that can be interpreted as a range of wavelengths in nanometres can be used. As a consequence, when wanting to construct a waveband covering the whole range of a spectrum one can simply supply the spectrum as argument, or to construct an unweighted waveband which covers exactly the same range of wavelengths as an existing effective (weighted) waveband, one can supply a waveband object as an argument.</p>
+<p>The first argument to <code>waveband()</code> does not need to be a numeric vector of length two. Any R object of a class that supplies a <code>range()</code> method definition that can be interpreted as a range of wavelengths in nanometres can be used. As a consequence, when wanting to construct a waveband covering the whole range of a spectrum one can simply supply the spectrum as argument, or to construct an non-weighed waveband which covers exactly the same range of wavelengths as an existing effective (weighted) waveband, one can supply a waveband object as an argument.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">waveband</span>(sun.spct)</code></pre></div>
 <pre><code>## Total 
 ## low (nm) 280 
@@ -1660,7 +1681,7 @@ wavebands</code></pre></div>
 </div>
 <div id="special-constructor" class="section level4">
 <h4>Special constructor</h4>
-<p>The function <code>split_bands</code> can be used to generate lists of unweighted wavebands in two different ways: a) it can be used to split a range of wavelengths given by an R object into a series of adjacent wavebands, or b) with a list of objects returning ranges, it can be used to create non-adjacent and even overlapping wavebands.</p>
+<p>The function <code>split_bands</code> can be used to generate lists of non-weighed wavebands in two different ways: a) it can be used to split a range of wavelengths given by an R object into a series of adjacent wavebands, or b) with a list of objects returning ranges, it can be used to create non-adjacent and even overlapping wavebands.</p>
 <p>The code chunk bellow shows an example of two variations of case a). With the default value for <code>length.out</code> of <code>NULL</code> each numerical value in the input is taken as a wavelength (nm) at the boundary between adjacent wavebands. If a numerical value is supplied to <code>length.out</code>, then the whole wavelength range of the input is split into this number of equally spaced adjacent wavebands.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">split_bands</span>(<span class="kw">c</span>(<span class="dv">200</span>, <span class="dv">225</span>, <span class="dv">300</span>))</code></pre></div>
 <pre><code>## $wb1
@@ -2395,17 +2416,19 @@ wavebands</code></pre></div>
 <p>Table 7 lists all the recognized options affecting maths operators and functions, and their default values. Within the suite all functions have a default value which is used when the options are undefined. Options are set using base R’s function <code>options</code>, and queried with functions <code>options</code> and <code>getOption</code>.</p>
 <hr>
 <p><strong>Table 7. Options used in the ‘r4photobiology suite’ and recognized by methods, operators and functions in the ‘photobiology’ package.</strong> Option names, accepted and default values, and the purpose of the options are given.</p>
-<table style="width:96%;">
+<table>
 <colgroup>
-<col width="11%"></col>
-<col width="31%"></col>
-<col width="52%"></col>
+<col width="9%"></col>
+<col width="26%"></col>
+<col width="43%"></col>
+<col width="21%"></col>
 </colgroup>
 <thead>
 <tr class="header">
 <th align="left">Option</th>
 <th align="left"><code>values</code>, <strong>default</strong></th>
-<th align="left"><em>function</em></th>
+<th align="left">purpose, <em>unit</em></th>
+<th><em>convenience function</em></th>
 </tr>
 </thead>
 <tbody>
@@ -2413,111 +2436,131 @@ wavebands</code></pre></div>
 <td align="left"><strong>Base R</strong></td>
 <td align="left"></td>
 <td align="left"></td>
+<td></td>
 </tr>
 <tr class="even">
 <td align="left"><code>digits</code></td>
 <td align="left">7</td>
 <td align="left"><span class="math inline">\(d - 3\)</span> used by <code>summary</code></td>
+<td></td>
 </tr>
 <tr class="odd">
 <td align="left"><strong>tibble</strong></td>
 <td align="left"></td>
 <td align="left"></td>
+<td></td>
 </tr>
 <tr class="even">
 <td align="left">tibble.print_max</td>
 <td align="left"><strong>20</strong></td>
 <td align="left">Maximum number of rows printed</td>
+<td></td>
 </tr>
 <tr class="odd">
 <td align="left">tibble.print_min</td>
 <td align="left"><strong>10</strong></td>
 <td align="left">Number of rows printed if row number threshold is exceeded</td>
+<td></td>
 </tr>
 <tr class="even">
 <td align="left">tibble.width</td>
 <td align="left"><strong>NULL</strong></td>
 <td align="left">Output width</td>
+<td></td>
 </tr>
 <tr class="odd">
 <td align="left"><strong>r4photobiology</strong></td>
 <td align="left"></td>
 <td align="left"></td>
+<td></td>
 </tr>
 <tr class="even">
 <td align="left">photobiology.radiation.unit</td>
 <td align="left"><strong>“energy”</strong></td>
-<td align="left">output (<span class="math inline">\(W\,m^{-2}\,nm^{-1}\)</span>)</td>
+<td align="left"><span class="math inline">\(W\,m^{-2}\,nm^{-1}\)</span></td>
+<td><code>using_energy()</code>, <code>energy_as_default()</code></td>
 </tr>
 <tr class="odd">
 <td align="left"></td>
 <td align="left"><code>&quot;photon&quot;</code></td>
-<td align="left">output ()</td>
+<td align="left"><span class="math inline">\(\mu mol\,m^{-2}\,nm^{-1}\)</span></td>
+<td><code>using_photon()</code>, <code>photon_as_default()</code></td>
 </tr>
 <tr class="even">
 <td align="left">photobiology.filter.qty</td>
 <td align="left"><strong>“transmittance”</strong></td>
-<td align="left">output (<span class="math inline">\(/1\)</span>)</td>
+<td align="left"><span class="math inline">\(/1\)</span></td>
+<td><code>using_Tfr()</code>, <code>Tfr_as_default()</code></td>
 </tr>
 <tr class="odd">
 <td align="left"></td>
 <td align="left"><code>&quot;absorptance&quot;</code></td>
-<td align="left">output (<span class="math inline">\(/1\)</span>)</td>
+<td align="left"><span class="math inline">\(/1\)</span></td>
+<td><code>using_Afr()</code>, <code>Afr_as_default()</code></td>
 </tr>
 <tr class="even">
 <td align="left"></td>
 <td align="left"><code>&quot;absorbance&quot;</code></td>
-<td align="left">output (a.u. <span class="math inline">\(\log_{10}\)</span> base)</td>
+<td align="left">a.u. <span class="math inline">\(\log_{10}\)</span> base</td>
+<td><code>using_A()</code>, <code>A_as_default()</code></td>
 </tr>
 <tr class="odd">
 <td align="left">photobiology.strict.range</td>
 <td align="left"><code>NA</code></td>
 <td align="left">skip range test</td>
+<td><code>strict_range_as_default(NA)</code></td>
 </tr>
 <tr class="even">
 <td align="left"></td>
 <td align="left"><code>TRUE</code></td>
 <td align="left">trigger an error</td>
+<td><code>strict_range_as_default(TRUE)</code></td>
 </tr>
 <tr class="odd">
 <td align="left"></td>
 <td align="left"><strong>FALSE</strong></td>
 <td align="left">trigger a warning</td>
+<td><code>strict_range_as_default(FALSE)</code></td>
 </tr>
 <tr class="even">
 <td align="left">photobiology.waveband.trim</td>
 <td align="left"><code>FALSE</code></td>
 <td align="left">exclude</td>
+<td><code>wb_trim_as_default(FALSE)</code></td>
 </tr>
 <tr class="odd">
 <td align="left"></td>
 <td align="left"><strong>TRUE</strong></td>
 <td align="left">trim or exclude</td>
+<td><code>wb_trim_as_default(TRUE)</code></td>
 </tr>
 <tr class="even">
 <td align="left">photobiology.use.cached.mult</td>
 <td align="left"><strong>FALSE</strong></td>
 <td align="left">do not cache intermediate results</td>
+<td><code>use_cached_mult_as_default(FALSE)</code></td>
 </tr>
 <tr class="odd">
 <td align="left"></td>
 <td align="left"><code>TRUE</code></td>
 <td align="left">cache intermediate results</td>
+<td><code>use_cached_mult_as_default(TRUE)</code></td>
 </tr>
 <tr class="even">
 <td align="left">photobiology.verbose</td>
 <td align="left"><strong>FALSE</strong></td>
 <td align="left">minimal warnings and messages</td>
+<td><code>verbose_as_default(FALSE)</code></td>
 </tr>
 <tr class="odd">
 <td align="left"></td>
 <td align="left"><code>TRUE</code></td>
 <td align="left">all warnings and messages</td>
+<td><code>verbose_as_default(TRUE)</code></td>
 </tr>
 </tbody>
 </table>
-<hr>
-<p>The behaviour of the operators defined in this package depends on the value of two global options. For example, if we would like the operators to operate on spectral photon irradiance and return spectral photon irradiance instead of spectral energy irradiance, this behaviour can be set, and will remain active until unset or reset.</p>
+<p>The behaviour of the operators defined in this package depends on the value of two global options. For example, if we would like the operators to operate on spectral photon irradiance and return spectral photon irradiance instead of spectral energy irradiance, this behaviour can be set, and will remain active until unset or reset. It is possible to change options using base R’s function <code>options()</code> as shown in the next code chunk. The other options listed in the Table above can be set similarly, while to unset any option, they can be given a <code>NULL</code> value.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">options</span>(<span class="dt">photobiology.radiation.unit =</span> <span class="st">&quot;photon&quot;</span>)
 sun.spct <span class="op">*</span><span class="st"> </span>UVB.wb</code></pre></div>
 <pre><code>## Object: source_spct [37 x 2]
@@ -2546,7 +2589,62 @@ sun.spct <span class="op">*</span><span class="st"> </span>UVB.wb</code></pre></
 ## 3 281.8462         0
 ## 4 282.7692         0
 ## # ... with 33 more rows</code></pre>
-<p>The other options listed in the Table above can be set similarly, to unset any option, they can be given a <code>NULL</code> value.</p>
+<p>However using convenience functions is easier. The chunk above can be rewritten as below.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">photon_as_default</span>()
+sun.spct <span class="op">*</span><span class="st"> </span>UVB.wb</code></pre></div>
+<pre><code>## Object: source_spct [37 x 2]
+## Wavelength range 280 to 315 nm, step 0.9230769 to 1 nm 
+## Time unit 1s
+## 
+## # A tibble: 37 x 2
+##   w.length s.q.irrad
+##      &lt;dbl&gt;     &lt;dbl&gt;
+## 1 280.0000         0
+## 2 280.9231         0
+## 3 281.8462         0
+## 4 282.7692         0
+## # ... with 33 more rows</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">energy_as_default</span>()
+sun.spct <span class="op">*</span><span class="st"> </span>UVB.wb</code></pre></div>
+<pre><code>## Object: source_spct [37 x 2]
+## Wavelength range 280 to 315 nm, step 0.9230769 to 1 nm 
+## Time unit 1s
+## 
+## # A tibble: 37 x 2
+##   w.length s.e.irrad
+##      &lt;dbl&gt;     &lt;dbl&gt;
+## 1 280.0000         0
+## 2 280.9231         0
+## 3 281.8462         0
+## 4 282.7692         0
+## # ... with 33 more rows</code></pre>
+<p>Furthermore, it is possible to temporarily change the options for the evaluation of a single, possibly compound, R expression using a different syntax, reminiscent of that of R’s <code>with()</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">using_photon</span>(sun.spct <span class="op">*</span><span class="st"> </span>UVB.wb)</code></pre></div>
+<pre><code>## Object: source_spct [37 x 2]
+## Wavelength range 280 to 315 nm, step 0.9230769 to 1 nm 
+## Time unit 1s
+## 
+## # A tibble: 37 x 2
+##   w.length s.q.irrad
+##      &lt;dbl&gt;     &lt;dbl&gt;
+## 1 280.0000         0
+## 2 280.9231         0
+## 3 281.8462         0
+## 4 282.7692         0
+## # ... with 33 more rows</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">using_energy</span>(sun.spct <span class="op">*</span><span class="st"> </span>UVB.wb)</code></pre></div>
+<pre><code>## Object: source_spct [37 x 2]
+## Wavelength range 280 to 315 nm, step 0.9230769 to 1 nm 
+## Time unit 1s
+## 
+## # A tibble: 37 x 2
+##   w.length s.e.irrad
+##      &lt;dbl&gt;     &lt;dbl&gt;
+## 1 280.0000         0
+## 2 280.9231         0
+## 3 281.8462         0
+## 4 282.7692         0
+## # ... with 33 more rows</code></pre>
 </div>
 </div>
 <div id="transformations-methods-and-functions" class="section level2">
@@ -3358,8 +3456,8 @@ shade.spct &lt;-<span class="st"> </span>sun.spct</code></pre></div>
 ## 4 282.7692     -0.01
 ## # ... with 518 more rows</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">clean</span>(polyester.spct <span class="op">-</span><span class="st"> </span><span class="fl">0.053</span>)</code></pre></div>
-<pre><code>## Warning in range_check(x, strict.range = strict.range): Off-range
-## transmittance values [-0.05...0.87] instead of [0..1]</code></pre>
+<pre><code>## Warning in range_check_Tfr(x, strict.range = strict.range): Off-range
+## transmittance values [-0.050..0.873] instead of [0..1]</code></pre>
 <pre><code>## Object: filter_spct [611 x 2]
 ## Wavelength range 190 to 800 nm, step 1 nm 
 ## 
@@ -3687,10 +3785,10 @@ shade.spct &lt;-<span class="st"> </span>sun.spct</code></pre></div>
 ## # A tibble: 524 x 6
 ##   w.length s.e.irrad s.q.irrad wl.color wb.color   wb.f
 ##      &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;chr&gt;    &lt;chr&gt; &lt;fctr&gt;
-## 1 280.0000         0         0  #000000     &lt;NA&gt;     NA
-## 2 280.9231         0         0  #000000     &lt;NA&gt;     NA
-## 3 281.8462         0         0  #000000     &lt;NA&gt;     NA
-## 4 282.7692         0         0  #000000     &lt;NA&gt;     NA
+## 1 280.0000         0         0  #000000     &lt;NA&gt;   &lt;NA&gt;
+## 2 280.9231         0         0  #000000     &lt;NA&gt;   &lt;NA&gt;
+## 3 281.8462         0         0  #000000     &lt;NA&gt;   &lt;NA&gt;
+## 4 282.7692         0         0  #000000     &lt;NA&gt;   &lt;NA&gt;
 ## # ... with 520 more rows</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">tag</span>(sun.spct, UV_bands.lst)</code></pre></div>
 <pre><code>## Object: source_spct [524 x 6]
@@ -3771,10 +3869,10 @@ shade.spct &lt;-<span class="st"> </span>sun.spct</code></pre></div>
 ## # A tibble: 524 x 6
 ##   w.length s.e.irrad s.q.irrad wl.color wb.color   wb.f
 ##      &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;chr&gt;    &lt;chr&gt; &lt;fctr&gt;
-## 1 280.0000         0         0  #000000     &lt;NA&gt;     NA
-## 2 280.9231         0         0  #000000     &lt;NA&gt;     NA
-## 3 281.8462         0         0  #000000     &lt;NA&gt;     NA
-## 4 282.7692         0         0  #000000     &lt;NA&gt;     NA
+## 1 280.0000         0         0  #000000     &lt;NA&gt;   &lt;NA&gt;
+## 2 280.9231         0         0  #000000     &lt;NA&gt;   &lt;NA&gt;
+## 3 281.8462         0         0  #000000     &lt;NA&gt;   &lt;NA&gt;
+## 4 282.7692         0         0  #000000     &lt;NA&gt;   &lt;NA&gt;
 ## # ... with 520 more rows</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">is_tagged</span>(tg.sun.spct)</code></pre></div>
 <pre><code>## [1] TRUE</code></pre>

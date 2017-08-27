@@ -131,6 +131,11 @@ split2source_mspct(test2.df, spct.data.var = "s.q.irrad")
 ## ---- split-2------------------------------------------------------------
 split2source_mspct(test2.df, spct.data.var = "s.q.irrad", time.unit = "day")
 
+## ---- join-mspct-01------------------------------------------------------
+my.mspct <- source_mspct(list(sun1 = sun.spct, sun2 = sun.spct * 2))
+my.df <- join_mspct(my.mspct)
+head(my.df)
+
 ## ---- col-query-class-1--------------------------------------------------
 is.source_mspct(two_suns.mspct)
 class(two_suns.mspct)
@@ -317,6 +322,16 @@ options(photobiology.radiation.unit = "photon")
 sun.spct * UVB.wb
 options(photobiology.radiation.unit = "energy")
 sun.spct * UVB.wb
+
+## ---- options-2----------------------------------------------------------
+photon_as_default()
+sun.spct * UVB.wb
+energy_as_default()
+sun.spct * UVB.wb
+
+## ---- options-3----------------------------------------------------------
+using_photon(sun.spct * UVB.wb)
+using_energy(sun.spct * UVB.wb)
 
 ## ---- manip-1------------------------------------------------------------
 # STOPGAP

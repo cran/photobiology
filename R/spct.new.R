@@ -198,9 +198,10 @@ response_spct <- function(w.length = NULL,
 #'
 #' @param Tfr numeric vector with spectral transmittance as fraction of one
 #' @param Tpc numeric vector with spectral transmittance as percent values
-#' @param A   numeric vector of absorbance values (log10 based)
-#' @param Tfr.type character string indicating whether transmittance values are
-#'   "total" or "internal" values
+#' @param Afr numeric vector of absorptance as fraction of one
+#' @param A   numeric vector of absorbance values (log10 based a.u.)
+#' @param Tfr.type,Afr.type character string indicating whether transmittance
+#'   and absorptance values are "total" or "internal" values
 #'
 #' @note "internal" transmittance is defined as the transmittance of the
 #'   material body itself, while "total" transmittance includes the effects of
@@ -208,32 +209,37 @@ response_spct <- function(w.length = NULL,
 #'
 #' @export
 #'
-filter_spct <- function(w.length=NULL,
-                        Tfr=NULL,
-                        Tpc=NULL,
-                        A=NULL,
-                        Tfr.type=c("total", "internal"),
-                        comment=NULL,
+filter_spct <- function(w.length = NULL,
+                        Tfr = NULL,
+                        Tpc = NULL,
+                        Afr = NULL,
+                        A = NULL,
+                        Tfr.type = c("total", "internal"),
+                        Afr.type = Tfr.type,
+                        comment = NULL,
                         strict.range = getOption("photobiology.strict.range", default = FALSE),
                         multiple.wl = 1L,
                         ...) {
   if (length(w.length) == 0) {
     z <- tibble::tibble(w.length = numeric(), Tfr = numeric())
-  } else if (is.null(Tpc) && is.null(A) && is.numeric(Tfr)) {
+  } else if (is.null(Tpc) && is.null(A) && is.null(Afr) && is.numeric(Tfr)) {
     z <- tibble::tibble(w.length, Tfr, ...)
-  } else if (is.null(Tfr) && is.null(A) && is.numeric(Tpc)) {
+  } else if (is.null(Tfr) && is.null(A) && is.null(Afr) && is.numeric(Tpc)) {
     z <- tibble::tibble(w.length, Tpc, ...)
-  } else if (is.null(Tpc) && is.null(Tfr) && is.numeric(A)) {
+  } else if (is.null(Tpc) && is.null(Tfr) && is.null(Afr) && is.numeric(A)) {
     z <- tibble::tibble(w.length, A, ...)
+  } else if (is.null(Tpc) && is.null(Tfr) && is.null(A) && is.numeric(Afr)) {
+    z <- tibble::tibble(w.length, Afr, ...)
+    Tfr.type <- Afr.type
   } else {
-    warning("Only one of Tfr, Tpc or A should be different from NULL.")
+    warning("Only one of Tfr, Tpc, Afr, or A should be different from NULL.")
     z <- tibble::tibble(w.length, ...)
   }
   if (!is.null(comment)) {
     comment(z) <- comment
   }
-  setFilterSpct(z,
-                Tfr.type,
+  setFilterSpct(x = z,
+                Tfr.type = Tfr.type,
                 strict.range = strict.range,
                 multiple.wl = multiple.wl)
   z
@@ -268,7 +274,7 @@ reflector_spct <- function(w.length = NULL,
   if (!is.null(comment)) {
     comment(z) <- comment
   }
-  setReflectorSpct(z,
+  setReflectorSpct(x = z,
                    Rfr.type = Rfr.type,
                    strict.range = strict.range,
                    multiple.wl = multiple.wl)
@@ -279,20 +285,24 @@ reflector_spct <- function(w.length = NULL,
 #'
 #' @export
 #'
-object_spct <- function(w.length=NULL,
-                        Rfr=NULL,
-                        Tfr=NULL,
-                        Tfr.type=c("total", "internal"),
-                        Rfr.type=c("total", "specular"),
-                        comment=NULL,
+object_spct <- function(w.length = NULL,
+                        Rfr = NULL,
+                        Tfr = NULL,
+                        Afr = NULL,
+                        Tfr.type = c("total", "internal"),
+                        Rfr.type = c("total", "specular"),
+                        Afr.type = c("total", "internal"),
+                        comment = NULL,
                         strict.range = getOption("photobiology.strict.range", default = FALSE),
                         multiple.wl = 1L,
                         ...) {
   if (length(w.length) == 0) {
     z <- tibble::tibble(w.length = numeric(),
                            Rfr = numeric(), Tfr = numeric(), ...)
-  } else {
+  } else if (is.null(Afr)) {
     z <- tibble::tibble(w.length, Rfr, Tfr, ...)
+  } else if (is.null(Tfr)) {
+    z <- tibble::tibble(w.length, Rfr, Afr, ...)
   }
   if (!is.null(comment)) {
     comment(z) <- comment
@@ -460,46 +470,75 @@ as.chroma_spct <- function(x, ...) {
 # merge -------------------------------------------------------------------
 
 
-#' Merge two generic_spct objects
+#' Merge into object_spct
 #'
-#' Merge of two spct objects based on w.length.
+#' Merge a filter_spct with a reflector_spct returning an object_spct object,
+#' even if wavelength values are missmatched.
 #'
-#' @param x generic_spct (or derived) objects to be merged
-#' @param y generic_spct (or derived) objects to be merged
-#' @param by a vector of shared column names in \code{x} and \code{y} to merge on;
-#' \code{by} defaults to \code{w.length}.
+#' @param x,y a filter_spct object and a reflector_spct object.
+#' @param by a vector of shared column names in \code{x} and \code{y} to merge
+#'   on; \code{by} defaults to \code{w.length}.
 #' @param ... other arguments passed to \code{dplyr::inner_join()}
+#' @param w.length.out numeric array of wavelengths to be used for the returned
+#'   object (nm).
+#' @param Tfr.type.out character string indicating whether transmittance
+#'   values in the returned object should be expressed as "total" or "internal".
+#'   This applies only to the case when an object_spct is returned.
 #'
-#' @note If the class of x and y is the same, it is preserved, but
-#' if it differs \code{generic_spct} is used for the returned value,
-#' except when x and y, are one each of classes reflector_spct and
-#' filter_spct in which case an object_spct is returned.
-#' In the current implementation only wavelengths values shared
-#' by x and y are preserved.
+#' @note If a numeric vector is supplied as argument for \code{w.length.out},
+#'   the two spectra are interpolated to the new wavelength values before
+#'   merging. The default argument for \code{w.length.out} is x[[w.length]].
+#'
+#' @return An object_spct is returned as the result of merging a filter_spct and
+#'   a reflector_spct object.
 #'
 #' @seealso \code{\link[dplyr]{join}}
 #'
 #' @export
 #'
-merge.generic_spct <- function(x, y, by = "w.length", ...) {
+merge2object_spct <- function(x, y,
+                              by = "w.length", ...,
+                              w.length.out =  x[["w.length"]],
+                              Tfr.type.out = "total") {
   class.x <- class(x)
   class.y <- class(y)
-  if (identical(class.x, class.y)) {
-    z <- dplyr::inner_join(x, y, by = by, ...)
-    class(z) <- class.x
-    warning("Attributes lost when merging two objects of class '", class.x, "'.")
-  } else if ("filter_spct" %in% class.x && "reflector_spct" %in% class.y) {
-    xx <- A2T(x, action = "replace", byref = FALSE)
-    z <- dplyr::inner_join(xx, y, by = "w.length", ...)
-    setObjectSpct(z, Tfr.type = getTfrType(x), Rfr.type = getRfrType(y))
-  } else if ("reflector_spct" %in% class.x && "filter_spct" %in% class.y) {
-    yy <- A2T(y, action = "replace", byref = FALSE)
-    z <- dplyr::inner_join(xx, yy, by = "w.length", ...)
-    setObjectSpct(z, Tfr.type = getTfrType(y), Rfr.type = getRfrType(x))
+  stopifnot(("filter_spct" %in% class.x && "reflector_spct" %in% class.y) ||
+              ("reflector_spct" %in% class.x && "filter_spct" %in% class.y))
+  stopifnot(!is.unsorted(w.length.out, strictly = TRUE))
+
+  if ("filter_spct" %in% class.x && "reflector_spct" %in% class.y) {
+    xx <- x
+    yy <- y
   } else {
-    z <- dplyr::inner_join(x, y, by = "w.length", ...)
-    setGenericSpct(z)
+    xx <- y
+    yy <- x
   }
+
+  xx <- A2T(xx, action = "replace", byref = FALSE)
+  xx <- interpolate_spct(spct = xx,
+                         w.length.out = w.length.out,
+                         fill = NA,
+                         length.out = NULL)
+  yy <- interpolate_spct(spct = yy,
+                         w.length.out = w.length.out,
+                         fill = NA,
+                         length.out = NULL)
+
+  z <- dplyr::inner_join(xx, yy, by = "w.length", ...)
+  Tfr.type <- getTfrType(xx)
+  Rfr.type <- getRfrType(yy)
+  if (Tfr.type.out == "internal" && Tfr.type == "total") {
+    stopifnot(Rfr.type == "total")
+    z <- dplyr::mutate(z, Tfr = .data$Tfr / (1 - .data$Rfr))
+    Tfr.type <- "internal"
+  }
+  if (Tfr.type.out == "total" && Tfr.type == "internal") {
+    stopifnot(Rfr.type == "total")
+    z <- dplyr::mutate(z, Tfr = .data$Tfr * (1 - .data$Rfr))
+    Tfr.type <- "total"
+  }
+  setObjectSpct(z, Tfr.type = Tfr.type, Rfr.type = Rfr.type)
+
   comment(z) <- paste("Merged spectrum\ncomment(x):\n",
                       comment(x),
                       "\nclass: ",

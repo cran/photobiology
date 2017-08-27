@@ -42,6 +42,6 @@ A non-null value for \code{member.class} is mandatory only when
   \code{x} is a data frame.
 }
 \seealso{
-Other collections of spectra classes family: \code{\link{generic_mspct}},
-  \code{\link{split2mspct}}
+Other conversion of collections of spectra: \code{\link{as.generic_mspct}},
+  \code{\link{join_mspct}}, \code{\link{split2mspct}}
 }

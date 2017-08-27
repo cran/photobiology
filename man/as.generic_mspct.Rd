@@ -68,6 +68,6 @@ Members of \code{generic_mspct} objects can be heterogeneous: they can
   \code{force.spct.class = TRUE} needs to be supplied.
 }
 \seealso{
-Other creation of spectral objects functions: \code{\link{as.generic_spct}},
-  \code{\link{source_spct}}
+Other conversion of collections of spectra: \code{\link{join_mspct}},
+  \code{\link{split2mspct}}, \code{\link{subset2mspct}}
 }

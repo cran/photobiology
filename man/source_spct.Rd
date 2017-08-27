@@ -30,20 +30,21 @@ response_spct(w.length = NULL, s.e.response = NULL, s.q.response = NULL,
   time.unit = c("second", "day", "exposure"), comment = NULL,
   multiple.wl = 1L, ...)
 
-filter_spct(w.length = NULL, Tfr = NULL, Tpc = NULL, A = NULL,
-  Tfr.type = c("total", "internal"), comment = NULL,
-  strict.range = getOption("photobiology.strict.range", default = FALSE),
-  multiple.wl = 1L, ...)
+filter_spct(w.length = NULL, Tfr = NULL, Tpc = NULL, Afr = NULL,
+  A = NULL, Tfr.type = c("total", "internal"), Afr.type = Tfr.type,
+  comment = NULL, strict.range = getOption("photobiology.strict.range",
+  default = FALSE), multiple.wl = 1L, ...)
 
 reflector_spct(w.length = NULL, Rfr = NULL, Rpc = NULL,
   Rfr.type = c("total", "specular"), comment = NULL,
   strict.range = getOption("photobiology.strict.range", default = FALSE),
   multiple.wl = 1L, ...)
 
-object_spct(w.length = NULL, Rfr = NULL, Tfr = NULL,
+object_spct(w.length = NULL, Rfr = NULL, Tfr = NULL, Afr = NULL,
   Tfr.type = c("total", "internal"), Rfr.type = c("total", "specular"),
-  comment = NULL, strict.range = getOption("photobiology.strict.range",
-  default = FALSE), multiple.wl = 1L, ...)
+  Afr.type = c("total", "internal"), comment = NULL,
+  strict.range = getOption("photobiology.strict.range", default = FALSE),
+  multiple.wl = 1L, ...)
 
 chroma_spct(w.length = NULL, x, y, z, comment = NULL,
   strict.range = getOption("photobiology.strict.range", default = FALSE),
@@ -94,10 +95,12 @@ m-2 nm-1 or mol d-1 m-2 nm-1}
 
 \item{Tpc}{numeric vector with spectral transmittance as percent values}
 
-\item{A}{numeric vector of absorbance values (log10 based)}
+\item{Afr}{numeric vector of absorptance as fraction of one}
 
-\item{Tfr.type}{character string indicating whether transmittance values are
-"total" or "internal" values}
+\item{A}{numeric vector of absorbance values (log10 based a.u.)}
+
+\item{Tfr.type, Afr.type}{character string indicating whether transmittance
+and absorptance values are "total" or "internal" values}
 
 \item{Rfr}{numeric vector with spectral refletance as fraction of one}
 
@@ -129,6 +132,5 @@ The functions can be used to add only one spectral quantity to a
   surface reflectance on the ammount of light transmitted.
 }
 \seealso{
-Other creation of spectral objects functions: \code{\link{as.generic_mspct}},
-  \code{\link{as.generic_spct}}
+Other creation of spectral objects functions: \code{\link{as.generic_spct}}
 }

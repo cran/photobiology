@@ -77,7 +77,3 @@ Setting class = source_spct or class = source_mspct makes no difference
 filter_mspct(list(polyester.spct, yellow_gel.spct))
 
 }
-\seealso{
-Other collections of spectra classes family: \code{\link{split2mspct}},
-  \code{\link{subset2mspct}}
-}

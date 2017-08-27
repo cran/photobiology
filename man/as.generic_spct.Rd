@@ -61,6 +61,5 @@ These functions return a copy of \code{x} converted into a given
 Return a copy of an R object with its class set to a given type of spectrum.
 }
 \seealso{
-Other creation of spectral objects functions: \code{\link{as.generic_mspct}},
-  \code{\link{source_spct}}
+Other creation of spectral objects functions: \code{\link{source_spct}}
 }

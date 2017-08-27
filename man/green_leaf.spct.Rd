@@ -25,6 +25,10 @@ accumulation in birch seedlings Tree Physiology, 1997, 17, 125-132
 \seealso{
 Other Spectral data examples: \code{\link{A.illuminant.spct}},
   \code{\link{D65.illuminant.spct}},
+  \code{\link{Ler_leaf.spct}},
+  \code{\link{Ler_leaf_rflt.spct}},
+  \code{\link{Ler_leaf_trns.spct}},
+  \code{\link{Ler_leaf_trns_i.spct}},
   \code{\link{black_body.spct}}, \code{\link{ccd.spct}},
   \code{\link{clear.spct}}, \code{\link{clear_body.spct}},
   \code{\link{filter_cps.mspct}},

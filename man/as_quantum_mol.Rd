@@ -25,7 +25,8 @@ with(sun.data, as_quantum_mol(w.length, s.e.irrad))
 }
 \seealso{
 Other quantity conversion functions: \code{\link{A2T}},
-  \code{\link{T2A}}, \code{\link{as_energy}},
+  \code{\link{T2Afr}}, \code{\link{T2A}},
+  \code{\link{T2T}}, \code{\link{as_energy}},
   \code{\link{as_quantum}},
   \code{\link{e2qmol_multipliers}},
   \code{\link{e2quantum_multipliers}}, \code{\link{e2q}},

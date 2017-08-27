@@ -18,6 +18,10 @@ A dataset containing wavelengths at a 1 nm interval and
 \itemize{ \item w.length (nm). \item s.e.response
 (A/W)  }
 }
+\examples{
+photodiode.spct
+
+}
 \references{
 Hamamatsu (2011) Datasheet: GaAsP Photodiodes G5645 G5842 G6262. Hamamatsu
 Photonics KK, Hamamatsu, City.
@@ -27,6 +31,10 @@ Visited 2016-02-01.
 \seealso{
 Other Spectral data examples: \code{\link{A.illuminant.spct}},
   \code{\link{D65.illuminant.spct}},
+  \code{\link{Ler_leaf.spct}},
+  \code{\link{Ler_leaf_rflt.spct}},
+  \code{\link{Ler_leaf_trns.spct}},
+  \code{\link{Ler_leaf_trns_i.spct}},
   \code{\link{black_body.spct}}, \code{\link{ccd.spct}},
   \code{\link{clear.spct}}, \code{\link{clear_body.spct}},
   \code{\link{filter_cps.mspct}},
