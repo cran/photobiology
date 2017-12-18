@@ -10,7 +10,8 @@
 #' spct_classes()
 #'
 spct_classes <- function() {
-  c("raw_spct", "cps_spct",
+  c("calibration_spct",
+    "raw_spct", "cps_spct",
     "filter_spct", "reflector_spct",
     "source_spct", "object_spct",
     "response_spct", "chroma_spct", "generic_spct")
@@ -36,8 +37,8 @@ spct_classes <- function() {
 #'
 #' @examples
 #' check_spct(sun.spct)
-#' check_spct(-sun.spct)
-#' try(check_spct((sun.spct[1, "w.length"] <- 1000)))
+#' # try(check_spct(-sun.spct))
+#' # try(check_spct((sun.spct[1, "w.length"] <- 1000)))
 #'
 check_spct <- function(x, byref, strict.range, ...) UseMethod("check_spct")
 
@@ -107,7 +108,30 @@ check_spct.generic_spct <-
   x
 }
 
-#' @describeIn check_spct Specialization for cps_spct.
+#' @describeIn check_spct Specialization for calibration_spct.
+#' @export
+check_spct.calibration_spct <- function(x,
+                                byref = TRUE,
+                                strict.range = getOption("photobiology.strict.range", default = FALSE),
+                                multiple.wl = getMultipleWl(x),
+                                ...) {
+
+  x <- check_spct.generic_spct(x, multiple.wl = multiple.wl)
+
+  mult.cols <- grep("^irrad.mult$", names(x))
+
+  if (length(mult.cols) == 1 &&
+      is.numeric(x[["irrad.mult"]]) &&
+      all(na.omit(x[["irrad.mult"]]) >= 0)) {
+    return(x)
+  } else {
+    warning("No valid 'irrad.mult' data found in calibration_spct")
+    x[["irrad.mult"]] = NA_real_
+    return(x)
+  }
+}
+
+#' @describeIn check_spct Specialization for raw_spct.
 #' @export
 check_spct.raw_spct <- function(x,
                            byref = TRUE,
@@ -731,7 +755,31 @@ setGenericSpct <-
     invisible(x)
   }
 
-#' @describeIn setGenericSpct Set class of a an object to "cps_spct".
+#' @describeIn setGenericSpct Set class of a an object to "calibration_spct".
+#'
+#' @export
+#' @exportClass calibration_spct
+#'
+setCalibrationSpct <-
+  function(x,
+           strict.range = getOption("photobiology.strict.range", default = FALSE),
+           multiple.wl = 1L) {
+    name <- substitute(x)
+    rmDerivedSpct(x)
+    if (!is.data.frame(x) || inherits(x, "data.table")) {
+      x <- tibble::as_tibble(x)
+    }
+    setGenericSpct(x, multiple.wl = multiple.wl)
+    class(x) <- c("calibration_spct", class(x))
+    x <- check_spct(x, strict.range = strict.range)
+    if (is.name(name)) {
+      name <- as.character(name)
+      assign(name, x, parent.frame(), inherits = TRUE)
+    }
+    invisible(x)
+  }
+
+#' @describeIn setGenericSpct Set class of a an object to "raw_spct".
 #'
 #' @export
 #' @exportClass cps_spct
@@ -997,7 +1045,7 @@ setChromaSpct <-
 #' is.source_spct(sun.spct)
 #' is.filter_spct(sun.spct)
 #' is.generic_spct(sun.spct)
-#' is.any_spct(sun.spct)
+#' is.generic_spct(sun.spct)
 #'
 #' @export is.generic_spct
 #' @rdname is.generic_spct
@@ -1005,7 +1053,7 @@ setChromaSpct <-
 #' is.source_spct(sun.spct)
 #' is.filter_spct(sun.spct)
 #' is.generic_spct(sun.spct)
-#' is.any_spct(sun.spct)
+#' is.generic_spct(sun.spct)
 #'
 is.generic_spct <- function(x) inherits(x, "generic_spct")
 
@@ -1013,6 +1061,11 @@ is.generic_spct <- function(x) inherits(x, "generic_spct")
 #' @export
 #'
 is.raw_spct <- function(x) inherits(x, "raw_spct")
+
+#' @rdname is.generic_spct
+#' @export
+#'
+is.calibration_spct <- function(x) inherits(x, "calibration_spct")
 
 #' @rdname is.generic_spct
 #' @export
@@ -1094,7 +1147,7 @@ class_spct <- function(x) {
 #' is_tagged(sun.spct)
 #'
 is_tagged <- function(x) {
-  if (!is.any_spct(x)) {
+  if (!is.generic_spct(x)) {
     return(NA)
   } else {
     tags <- attr(x, "spct.tags", exact=TRUE)
@@ -1351,7 +1404,7 @@ getTimeUnit <- function(x, force.duration = FALSE) {
 #'
 convertTimeUnit <- function(x, time.unit = NULL, byref = FALSE) {
   #  if (!byref) x.out <- x else x.out <- copy(x) # needs fixing!
-  if (is.null(time.unit) || !is.any_spct(x)) {
+  if (is.null(time.unit) || !is.generic_spct(x)) {
     return(invisible(x))
   }
   x.out <- checkTimeUnit(x)
@@ -1762,7 +1815,7 @@ getAfrType <- function(x) {
 #' @export
 #'
 getSpctVersion <- function(x) {
-  if (is.any_spct(x) || is.old_spct(x)) {
+  if (is.generic_spct(x) || is.old_spct(x)) {
     version <- attr(x, "spct.version", exact = TRUE)
     if (is.null(version)) {
       # need to handle objects created with old versions
@@ -1819,7 +1872,7 @@ checkSpctVersion <- function(x) {
 #' @family multiple.wl attribute functions
 #'
 setMultipleWl <- function(x, multiple.wl = NULL) {
-  stopifnot(is.any_spct(x) || is.any_summary_spct(x))
+  stopifnot(is.generic_spct(x) || is.summary_generic_spct(x))
   name <- substitute(x)
   if (is.null(multiple.wl)) {
     multiple.wl <- getMultipleWl(x)
@@ -1852,7 +1905,7 @@ setMultipleWl <- function(x, multiple.wl = NULL) {
 #' getMultipleWl(sun.spct)
 #'
 getMultipleWl <- function(x) {
-  if (is.any_spct(x) || is.any_summary_spct(x)) {
+  if (is.generic_spct(x) || is.summary_generic_spct(x)) {
     multiple.wl <- attr(x, "multiple.wl", exact = TRUE)
     if (is.null(multiple.wl) || is.na(multiple.wl) || !is.numeric(multiple.wl)) {
       # need to handle objects created with old versions
@@ -2294,7 +2347,7 @@ getWhereMeasured.generic_mspct <- function(x,
 #'
 setInstrDesc <- function(x, instr.desc) {
   name <- substitute(x)
-  if (is.any_spct(x) || is.any_summary_spct(x)) {
+  if (is.generic_spct(x) || is.summary_generic_spct(x)) {
     attr(x, "instr.desc") <- instr.desc
     if (is.name(name)) {
       name <- as.character(name)
@@ -2317,7 +2370,7 @@ setInstrDesc <- function(x, instr.desc) {
 #' @family measurement metadata functions
 #'
 getInstrDesc <- function(x) {
-  if (is.any_spct(x) || is.any_summary_spct(x)) {
+  if (is.generic_spct(x) || is.summary_generic_spct(x)) {
     if (isValidInstrDesc(x)) {
       instr.desc <- attr(x, "instr.desc", exact = TRUE)
     } else {
@@ -2364,7 +2417,7 @@ trimInstrDesc <- function(x,
                                      "bench.slit")
                           ) {
   name <- substitute(x)
-  if ((is.any_spct(x) || is.any_summary_spct(x)) &&
+  if ((is.generic_spct(x) || is.summary_generic_spct(x)) &&
       fields[1] != "*") {
     instr.desc <- attr(x, "instr.desc", exact = TRUE)
     if (inherits(instr.desc, "instr_desc") ||
@@ -2412,7 +2465,7 @@ trimInstrDesc <- function(x,
 #' @family measurement metadata functions
 #'
 isValidInstrDesc <- function(x) {
-  if (is.any_spct(x) || is.any_summary_spct(x)) {
+  if (is.generic_spct(x) || is.summary_generic_spct(x)) {
     instr.desc <- attr(x, "instr.desc", exact = TRUE)
     if (is.null(instr.desc)) {
       return(FALSE)
@@ -2425,7 +2478,7 @@ isValidInstrDesc <- function(x) {
     }
     valid <- TRUE
     for (desc in instr.desc) {
-      if (length(desc) == 0 || is.na(desc)) {
+      if (length(desc) == 0 || (length(desc) == 1 && is.na(desc))) {
         # need to handle objects created with old versions
         valid <- FALSE
       } else if (is.list(desc)) {
@@ -2460,7 +2513,7 @@ isValidInstrDesc <- function(x) {
 #'
 setInstrSettings <- function(x, instr.settings) {
   name <- substitute(x)
-  if (is.any_spct(x) || is.any_summary_spct(x)) {
+  if (is.generic_spct(x) || is.summary_generic_spct(x)) {
     attr(x, "instr.settings") <- instr.settings
     if (is.name(name)) {
       name <- as.character(name)
@@ -2484,7 +2537,7 @@ setInstrSettings <- function(x, instr.settings) {
 #' @family measurement metadata functions
 #'
 getInstrSettings <- function(x) {
-  if (is.any_spct(x) || is.any_summary_spct(x)) {
+  if (is.generic_spct(x) || is.summary_generic_spct(x)) {
     if (isValidInstrSettings(x)) {
       instr.settings <- attr(x, "instr.settings", exact = TRUE)
     } else {
@@ -2525,7 +2578,7 @@ getInstrSettings <- function(x) {
 trimInstrSettings <- function(x,
                               fields = "*" ) {
   name <- substitute(x)
-  if ((is.any_spct(x) || is.any_summary_spct(x)) &&
+  if ((is.generic_spct(x) || is.summary_generic_spct(x)) &&
       fields[1] != "*") {
     instr.settings <- attr(x, "instr.settings", exact = TRUE)
     if (inherits(instr.settings, "instr_settings") ||
@@ -2573,7 +2626,7 @@ trimInstrSettings <- function(x,
 #' @family measurement metadata functions
 #'
 isValidInstrSettings <- function(x) {
-  if (is.any_spct(x) || is.any_summary_spct(x)) {
+  if (is.generic_spct(x) || is.summary_generic_spct(x)) {
     instr.settings <- attr(x, "instr.settings", exact = TRUE)
     if (is.null(instr.settings)) {
       return(FALSE)
@@ -2586,7 +2639,7 @@ isValidInstrSettings <- function(x) {
     }
     valid <- TRUE
     for (setting in instr.settings) {
-      if (length(setting) == 0 || is.na(setting)) {
+      if (length(setting) == 0 || (length(setting) == 1 && is.na(setting))) {
         # need to handle objects created with old versions
         valid <- FALSE
       } else if (is.list(setting)) {
@@ -2624,7 +2677,7 @@ isValidInstrSettings <- function(x) {
 #'
 setWhatMeasured <- function(x, what.measured) {
   name <- substitute(x)
-  if (is.any_spct(x) || is.any_summary_spct(x)) {
+  if (is.generic_spct(x) || is.summary_generic_spct(x)) {
     attr(x, "what.measured") <- what.measured
     if (is.name(name)) {
       name <- as.character(name)
@@ -2648,7 +2701,7 @@ setWhatMeasured <- function(x, what.measured) {
 #' @family measurement metadata functions
 #'
 getWhatMeasured <- function(x) {
-  if (is.any_spct(x) || is.any_summary_spct(x)) {
+  if (is.generic_spct(x) || is.summary_generic_spct(x)) {
     what.measured <- attr(x, "what.measured", exact = TRUE)
     if (is.null(what.measured) || is.na(what.measured)) {
       # need to handle objects created with old versions

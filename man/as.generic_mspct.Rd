@@ -2,6 +2,7 @@
 % Please edit documentation in R/zmspct.classes.R
 \name{as.generic_mspct}
 \alias{as.generic_mspct}
+\alias{as.calibration_mspct}
 \alias{as.raw_mspct}
 \alias{as.cps_mspct}
 \alias{as.source_mspct}
@@ -13,6 +14,8 @@
 \title{Collection-of-spectra copy-constructor}
 \usage{
 as.generic_mspct(x, force.spct.class = FALSE)
+
+as.calibration_mspct(x)
 
 as.raw_mspct(x)
 

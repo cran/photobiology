@@ -8,6 +8,7 @@ options(tibble.print_max = 6, tibble.print_min = 4)
 ## ---- pkg-load, eval=TRUE------------------------------------------------
 library(photobiology)
 library(lubridate)
+library(magrittr)
 
 ## ---- example-1, eval=FALSE----------------------------------------------
 #  # not run
@@ -219,6 +220,24 @@ setWhenMeasured(two.mspct,
                      ymd_hm("2015-10-31 11:00", tz = "EET")))
 getWhenMeasured(two.mspct)
 two.mspct
+
+## ------------------------------------------------------------------------
+when_measured2tb(two.mspct)
+
+## ------------------------------------------------------------------------
+when_measured2tb(two.mspct, col.names = c(when.measured = "time"))
+
+## ------------------------------------------------------------------------
+q_irrad(two.mspct) %>%
+  add_attr2tb(two.mspct, 
+              col.names = c("lon", "lat", "when.measured"))
+
+## ------------------------------------------------------------------------
+q_irrad(two.mspct) %>%
+  add_attr2tb(two.mspct, 
+              col.names = c(lon = "longitude", 
+                            lat = "latitude", 
+                            when.measured = "time"))
 
 ## ---- wb-1---------------------------------------------------------------
 PAR.wb <- waveband(c(400, 700), wb.name = "PAR")
@@ -519,6 +538,12 @@ irrad(sun.spct, UV_bands.lst, quantity = "average")
 ## ---- col-names-1--------------------------------------------------------
 names(filters.mspct)
 
+## ------------------------------------------------------------------------
+two_suns.mspct <- source_mspct(list(sun1 = sun.spct, sun2 = sun.spct))
+q_irrad(two_suns.mspct, 
+        w.band = list(PAR = waveband(c(400,700))),
+        attr2tb = c(when.measured = "time", lon = "lon", lat = "lat"))
+
 ## ---- col-convolve-1-----------------------------------------------------
 filtered_sun <- convolve_each(filters.mspct, sun.spct)
 irrad(filtered_sun, list(UVA.wb, PAR.wb))
@@ -564,7 +589,17 @@ irrad(sun.spct * polyester.spct, list(UVB.wb, UVA.wb, PAR.wb, wb.trim = TRUE)) /
   irrad(sun.spct, list(UVB.wb, UVA.wb, PAR.wb, wb.trim = TRUE))
 
 ## ------------------------------------------------------------------------
-transmittance(filters.mspct, list(UVA.wb, PAR.wb))
+transmittance(filters.mspct, w.band = list("Tfr(UVA)" = UVA.wb, "Tfr(PAR)" = PAR.wb))
+
+## ------------------------------------------------------------------------
+transmittance(filters.mspct,
+              w.band = list(Tfr = waveband(c(350, 550))),
+              attr2tb = "what.measured")
+
+## ------------------------------------------------------------------------
+transmittance(filters.mspct, 
+              list("Tfr(UVA)" = UVA.wb, "Tfr(PAR)" = PAR.wb),
+              attr2tb = "what.measured")
 
 ## ------------------------------------------------------------------------
 response(photodiode.spct)

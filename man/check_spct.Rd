@@ -4,6 +4,7 @@
 \alias{check_spct}
 \alias{check_spct.default}
 \alias{check_spct.generic_spct}
+\alias{check_spct.calibration_spct}
 \alias{check_spct.raw_spct}
 \alias{check_spct.cps_spct}
 \alias{check_spct.filter_spct}
@@ -19,6 +20,10 @@ check_spct(x, byref, strict.range, ...)
 \method{check_spct}{default}(x, byref = FALSE, strict.range = NA, ...)
 
 \method{check_spct}{generic_spct}(x, byref = TRUE, strict.range = NA,
+  multiple.wl = getMultipleWl(x), ...)
+
+\method{check_spct}{calibration_spct}(x, byref = TRUE,
+  strict.range = getOption("photobiology.strict.range", default = FALSE),
   multiple.wl = getMultipleWl(x), ...)
 
 \method{check_spct}{raw_spct}(x, byref = TRUE,
@@ -74,7 +79,9 @@ Check that an R object contains the expected data members.
 
 \item \code{generic_spct}: Specialization for generic_spct.
 
-\item \code{raw_spct}: Specialization for cps_spct.
+\item \code{calibration_spct}: Specialization for calibration_spct.
+
+\item \code{raw_spct}: Specialization for raw_spct.
 
 \item \code{cps_spct}: Specialization for cps_spct.
 
@@ -95,8 +102,8 @@ Check that an R object contains the expected data members.
 check_spct(sun.spct)
 
 check_spct(sun.spct)
-check_spct(-sun.spct)
-try(check_spct((sun.spct[1, "w.length"] <- 1000)))
+# try(check_spct(-sun.spct))
+# try(check_spct((sun.spct[1, "w.length"] <- 1000)))
 
 }
 \seealso{

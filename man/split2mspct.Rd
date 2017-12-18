@@ -8,6 +8,7 @@
 \alias{split2reflector_mspct}
 \alias{split2cps_mspct}
 \alias{split2raw_mspct}
+\alias{split2calibration_mspct}
 \title{Convert a 'wide' or untidy data frame into a collection of spectra}
 \usage{
 split2mspct(x, member.class = NULL, spct.data.var = NULL,
@@ -33,6 +34,10 @@ split2cps_mspct(x, spct.data.var = "cps", w.length.var = "w.length",
 
 split2raw_mspct(x, spct.data.var = "count", w.length.var = "w.length",
   idx.var = NULL, ncol = 1, byrow = FALSE, ...)
+
+split2calibration_mspct(x, spct.data.var = "irrad.mult",
+  w.length.var = "w.length", idx.var = NULL, ncol = 1, byrow = FALSE,
+  ...)
 }
 \arguments{
 \item{x}{data frame}

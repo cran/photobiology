@@ -20,7 +20,7 @@ qe_ratio(spct, w.band, wb.trim, use.cached.mult, use.hinges, ...)
 \method{qe_ratio}{source_mspct}(spct, w.band = NULL,
   wb.trim = getOption("photobiology.waveband.trim", default = TRUE),
   use.cached.mult = FALSE,
-  use.hinges = getOption("photobiology.use.hinges"), ...,
+  use.hinges = getOption("photobiology.use.hinges"), ..., attr2tb = NULL,
   idx = !is.null(names(spct)))
 }
 \arguments{
@@ -39,13 +39,26 @@ interpolation errors}
 
 \item{...}{other arguments (possibly ignored)}
 
+\item{attr2tb}{character vector, see \code{\link{add_attr2tb}} for the syntax for \code{attr2tb} passed as is to formal parameter \code{col.names}.}
+
 \item{idx}{logical whether to add a column with the names of the elements of spct}
 }
 \value{
-A vector of \code{numeric} values giving number of moles of photons
-  per Joule for each waveband, with name attribute set to the name of each
-  waveband unless a named list of wavebands is supplied in which case the
-  names of the list elements are used, with "q:e" prepended..
+Computed values are ratios between photon irradiance and energy
+  irradiance for a given waveband. A named \code{numeric} vector in the case
+  of methods for individual spectra, with one value for each \code{waveband}
+  passed to parameter \code{w.band}. A \code{data.frame} in the case of
+  collections of spectra, containing one column for each \code{waveband}
+  object, an index column with the names of the spectra, and optionally
+  additional columns with metadata values retrieved from the attributes of
+  the member spectra.
+
+  By default values are only integrated, but depending on the argument passed
+  to parameter \code{quantity} they can be re-expressed as relative fractions
+  or percentages. In the case of vector output, \code{names} attribute is set
+  to the name of the corresponding waveband unless a named list is supplied
+  in which case the names of the list members are used, with "q:e" prepended.
+  Units [mol J-1].
 }
 \description{
 This function returns the photon to energy ratio for each waveband of a light

@@ -85,5 +85,5 @@ e2q(tmp.spct[ , c("w.length", "s.e.irrad")]) # restore data consistency!
 
 }
 \seealso{
-\code{\link[base]{subset.data.frame}} and \code{\link{trim_spct}}
+\code{\link[base]{subset}} and \code{\link{trim_spct}}
 }

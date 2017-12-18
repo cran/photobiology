@@ -3,6 +3,7 @@
 \name{generic_mspct}
 \alias{generic_mspct}
 \alias{raw_mspct}
+\alias{raw_mspct}
 \alias{cps_mspct}
 \alias{source_mspct}
 \alias{filter_mspct}
@@ -14,6 +15,8 @@
 \usage{
 generic_mspct(l = NULL, class = "generic_spct", ncol = 1, byrow = FALSE,
   dim = c(length(l)\%/\%ncol, ncol))
+
+raw_mspct(l = NULL, ncol = 1, byrow = FALSE, ...)
 
 raw_mspct(l = NULL, ncol = 1, byrow = FALSE, ...)
 
@@ -53,6 +56,8 @@ Converts a list of spectral objects into a "multi spectrum"
 }
 \section{Functions}{
 \itemize{
+\item \code{raw_mspct}: Specialization for collections of \code{calibration_spct} objects.
+
 \item \code{raw_mspct}: Specialization for collections of \code{raw_spct} objects.
 
 \item \code{cps_mspct}: Specialization for collections of \code{cps_spct} objects.

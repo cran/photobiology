@@ -2,6 +2,7 @@
 % Please edit documentation in R/spct.classes.r
 \name{setGenericSpct}
 \alias{setGenericSpct}
+\alias{setCalibrationSpct}
 \alias{setRawSpct}
 \alias{setCpsSpct}
 \alias{setFilterSpct}
@@ -13,6 +14,9 @@
 \title{Convert an R object into a spectrum object.}
 \usage{
 setGenericSpct(x, multiple.wl = 1L)
+
+setCalibrationSpct(x, strict.range = getOption("photobiology.strict.range",
+  default = FALSE), multiple.wl = 1L)
 
 setRawSpct(x, strict.range = getOption("photobiology.strict.range", default =
   FALSE), multiple.wl = 1L)
@@ -65,7 +69,9 @@ class to "generic_spct".
 }
 \section{Functions}{
 \itemize{
-\item \code{setRawSpct}: Set class of a an object to "cps_spct".
+\item \code{setCalibrationSpct}: Set class of a an object to "calibration_spct".
+
+\item \code{setRawSpct}: Set class of a an object to "raw_spct".
 
 \item \code{setCpsSpct}: Set class of a an object to "cps_spct".
 

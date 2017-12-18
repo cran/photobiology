@@ -53,7 +53,7 @@ solar elevation angle(s) in degrees (negative if below the horizon).}
 or "second".}
 }
 \value{
-A data.frame with variables day, tz, twilight.rise, twilight.set,
+A \code{data.frame} with variables day, tz, twilight.rise, twilight.set,
   longitude, latitude, address, sunrise, noon, sunset, daylength,
   nightlength.
 

@@ -156,7 +156,7 @@ sun_angles_fast <- function(time,
 
   z <- data.frame(time = lubridate::with_tz(time, tz),
                       tz = rep(tz, length(time)),
-                      solartime = solar.time,
+                      solartime = solar.time %% 24, # needed for DST
                       longitude = rep(lon, length(time)),
                       latitude = rep(lat, length(time)),
                       address = rep(address, length(time)),
@@ -231,6 +231,8 @@ sun_azimuth <- function(time = lubridate::now(),
 #' @param tz.target,tz.reference character Two time zones using names
 #' recognized by functions from package 'lubridate'
 #'
+#' @return A \code{numeric} value.
+#'
 #' @export
 #'
 tz_time_diff <- function(when = lubridate::now(),
@@ -261,7 +263,7 @@ tz_time_diff <- function(when = lubridate::now(),
 #' @param unit.out charater string, One of "datetime", "day", "hour", "minute",
 #'   or "second".
 #'
-#' @return A data.frame with variables day, tz, twilight.rise, twilight.set,
+#' @return A \code{data.frame} with variables day, tz, twilight.rise, twilight.set,
 #'   longitude, latitude, address, sunrise, noon, sunset, daylength,
 #'   nightlength.
 #'

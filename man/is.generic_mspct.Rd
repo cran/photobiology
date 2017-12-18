@@ -2,6 +2,7 @@
 % Please edit documentation in R/zmspct.classes.R
 \name{is.generic_mspct}
 \alias{is.generic_mspct}
+\alias{is.calibration_mspct}
 \alias{is.raw_mspct}
 \alias{is.cps_mspct}
 \alias{is.source_mspct}
@@ -14,6 +15,8 @@
 \title{Query class of spectrum objects}
 \usage{
 is.generic_mspct(x)
+
+is.calibration_mspct(x)
 
 is.raw_mspct(x)
 

@@ -16,6 +16,19 @@
 #'   interpolation errors
 #' @param ... other arguments (possibly ignored)
 #'
+#' @return A named \code{numeric} vector in the case of methods for individual
+#'   spectra, with one value for each \code{waveband} passed to parameter
+#'   \code{w.band}. A \code{data.frame} in the case of collections of spectra,
+#'   containing one column for each \code{waveband} object, an index column with
+#'   the names of the spectra, and optionally additional columns with metadata
+#'   values retrieved from the attributes of the member spectra.
+#'
+#'   By default values are only integrated, but depending on the argument passed
+#'   to parameter \code{quantity} they can be re-expressed as relative fractions
+#'   or percentages. In the case of vector output, \code{names} attribute is set
+#'   to the name of the corresponding waveband unless a named list is supplied
+#'   in which case the names of the list members are used.
+#'
 #' @note The \code{use.hinges} parameter controls speed optimization. The
 #'   defaults should be suitable in most cases. Only the range of wavelengths in
 #'   the wavebands is used and all BSWFs are ignored.
@@ -208,6 +221,7 @@ absorbance_spct <-
 
 #' @describeIn absorbance Calculates absorbance from a \code{filter_mspct}
 #'
+#' @param attr2tb character vector, see \code{\link{add_attr2tb}} for the syntax for \code{attr2tb} passed as is to formal parameter \code{col.names}.
 #' @param idx logical whether to add a column with the names of the elements of
 #'   spct
 #'
@@ -218,17 +232,23 @@ absorbance.filter_mspct <-
            quantity = "average",
            wb.trim = getOption("photobiology.waveband.trim", default = TRUE),
            use.hinges = getOption("photobiology.use.hinges", default = NULL),
-           ..., idx = !is.null(names(spct))) {
-    msdply(
-      mspct = spct,
-      .fun = absorbance,
-      w.band = w.band,
-      quantity = quantity,
-      wb.trim = wb.trim,
-      use.hinges = use.hinges,
-      idx = idx,
-      col.names = names(w.band)
-    )
+           ...,
+           attr2tb = NULL,
+           idx = !is.null(names(spct))) {
+    z <-
+      msdply(
+        mspct = spct,
+        .fun = absorbance,
+        w.band = w.band,
+        quantity = quantity,
+        wb.trim = wb.trim,
+        use.hinges = use.hinges,
+        idx = idx,
+        col.names = names(w.band)
+      )
+    add_attr2tb(tb = z,
+                mspct = spct,
+                col.names = attr2tb)
   }
 
 # object_mspct methods -----------------------------------------------
@@ -242,15 +262,21 @@ absorbance.object_mspct <-
            quantity="average",
            wb.trim = getOption("photobiology.waveband.trim", default = TRUE),
            use.hinges=getOption("photobiology.use.hinges", default = NULL),
-           ..., idx = !is.null(names(spct))) {
-    msdply(
-      mspct = spct,
-      .fun = absorbance,
-      w.band = w.band,
-      quantity = quantity,
-      wb.trim = wb.trim,
-      use.hinges = use.hinges,
-      col.names = names(w.band),
-      idx = idx
-    )
+           ...,
+           attr2tb = NULL,
+           idx = !is.null(names(spct))) {
+    z <-
+      msdply(
+        mspct = spct,
+        .fun = absorbance,
+        w.band = w.band,
+        quantity = quantity,
+        wb.trim = wb.trim,
+        use.hinges = use.hinges,
+        col.names = names(w.band),
+        idx = idx
+      )
+    add_attr2tb(tb = z,
+                mspct = spct,
+                col.names = attr2tb)
   }

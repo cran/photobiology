@@ -21,7 +21,7 @@ e_ratio(spct, w.band.num, w.band.denom, wb.trim, use.cached.mult, use.hinges,
 \method{e_ratio}{source_mspct}(spct, w.band.num = NULL, w.band.denom = NULL,
   wb.trim = getOption("photobiology.waveband.trim", default = TRUE),
   use.cached.mult = FALSE,
-  use.hinges = getOption("photobiology.use.hinges"), ...,
+  use.hinges = getOption("photobiology.use.hinges"), ..., attr2tb = NULL,
   idx = !is.null(names(spct)))
 }
 \arguments{
@@ -42,13 +42,26 @@ interpolation errors}
 
 \item{...}{other arguments (possibly ignored)}
 
+\item{attr2tb}{character vector, see \code{\link{add_attr2tb}} for the syntax for \code{attr2tb} passed as is to formal parameter \code{col.names}.}
+
 \item{idx}{logical whether to add a column with the names of the elements of spct}
 }
 \value{
-A single numeric nondimensional value giving an energy ratio between
-  pairs of wavebands, with name attribute set to the name of each waveband
-  unless a named list of wavebands is supplied in which case the names of the
-  list elements are used, with "(e:e)" appended.
+In the case of methods for individual spectra, a \code{numeric}
+  vector of nondimensional values giving a energy ratio between between
+  integrated energy irradiances for pairs of wavebands, with name attribute
+  set to the name of the wavebands unless a named list of wavebands is
+  supplied in which case the names of the list elements are used, with
+  "(e:e)" appended. A \code{data.frame} in the case of collections of
+  spectra, containing one column for each ratio definition, an index column
+  with the names of the spectra, and optionally additional columns with
+  metadata values retrieved from the attributes of the member spectra.
+
+  Ratio definitions are "assembled" from the arguments passed to
+  \code{w.band.num} and \code{w.band.denom}. If both arguments are of equal
+  length, then the wavebands are paired to obtain as many ratios as the
+  number of wavebands in each list. Recycling for wavebands takes place when
+  the number of denominator and numerator wavebands differ.
 }
 \description{
 This function returns the photon ratio for a given pair of wavebands of a

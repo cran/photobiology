@@ -1,3 +1,24 @@
+TO DO: add tests cases for the attr2tb formal parameter of summary functions.
+
+photobiology 0.9.18
+===================
+
+* Add calibration_spct class and its methods. Update all operators and maths.
+functions to support this new class. Add corresponding test cases.
+* Add calibration_mspct class and its methods.
+* Add functions add_attr2tb(), when_measured2tb(), lon2tb(), lat2tb(),
+geocode2tb() and what_measured2tb().
+* Add a formal parameter "attr2tb" to all summary methods for collections of
+spectra, used to automatically call add_attr2tb() to add attributes to their
+output.
+* Fix bug in calculation of solar time of day which could result in values > 24 h.
+* Fix a bug in the extraction operator for spectral objects (could lead to
+infinite recursion in rare occasions).
+* Fix wrong value returned in some cases by is_tagged() due to a bug in the
+definition of tag().
+* Revise vignettes and documentation.
+* Rebuild some of the example data objects adding metadata attributes.
+
 photobiology 0.9.17
 ===================
 
@@ -7,10 +28,10 @@ Add methods T2Afr() and Afr2T() for converting transmittance to absorptance and
 vice versa.
 * Add method T2T() for converting between internal and total transmittance when
 total reflectance is available.
-* Implement math operators and functions for absorptance (Afr).
+* Implement maths operators and functions for absorptance (Afr).
 * Add convenience functions for setting options for the evaluation of an
 expression: using_photon(), using_energy(), using_Tfr(), using_Afr(), using_A().
-* Add convenience functions for setting options for math: photon_as_default(),
+* Add convenience functions for setting options for maths: photon_as_default(),
 energy_as_default(), Tfr_as_default(), Afr_as_default(), A_as_default().
 *Add convenience functions for setting options for diagnosis:
 verbose_as_default(), strict_range_as_default().

@@ -13,6 +13,9 @@ tz_time_diff(when = lubridate::now(), tz.target = Sys.timezone(),
 \item{tz.target, tz.reference}{character Two time zones using names
 recognized by functions from package 'lubridate'}
 }
+\value{
+A \code{numeric} value.
+}
 \description{
 Returns the time difference in hours between two time zones at a given
 instant in time.

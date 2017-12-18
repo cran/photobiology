@@ -3,6 +3,7 @@
 \name{is.generic_spct}
 \alias{is.generic_spct}
 \alias{is.raw_spct}
+\alias{is.calibration_spct}
 \alias{is.cps_spct}
 \alias{is.source_spct}
 \alias{is.response_spct}
@@ -16,6 +17,8 @@
 is.generic_spct(x)
 
 is.raw_spct(x)
+
+is.calibration_spct(x)
 
 is.cps_spct(x)
 
@@ -52,11 +55,11 @@ Derived types also return TRUE for a query for a base type such as
 is.source_spct(sun.spct)
 is.filter_spct(sun.spct)
 is.generic_spct(sun.spct)
-is.any_spct(sun.spct)
+is.generic_spct(sun.spct)
 
 is.source_spct(sun.spct)
 is.filter_spct(sun.spct)
 is.generic_spct(sun.spct)
-is.any_spct(sun.spct)
+is.generic_spct(sun.spct)
 
 }
