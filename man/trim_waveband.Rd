@@ -9,20 +9,21 @@ trim_waveband(w.band, range = NULL, low.limit = 0, high.limit = Inf,
   use.hinges = TRUE)
 }
 \arguments{
-\item{w.band}{an object of class "waveband" or a list of such objects}
+\item{w.band}{an object of class "waveband" or a list of such objects.}
 
 \item{range}{a numeric vector of length two, or any other object for which
-function range() will return a numeric vector of two wavelengths (nm)}
+function range() will return a numeric vector of two wavelengths (nm).}
 
-\item{low.limit}{shortest wavelength to be kept (defaults to 0 nm)}
+\item{low.limit}{shortest wavelength to be kept (defaults to 0 nm).}
 
-\item{high.limit}{longest wavelength to be kept (defaults to Inf nm)}
+\item{high.limit}{longest wavelength to be kept (defaults to Inf nm).}
 
 \item{trim}{logical (default is TRUE which trims the wavebands at the
 boundary, while FALSE discards wavebands that are partly off-boundary).}
 
-\item{use.hinges}{logical, if TRUE (the default) hinges are inserted when
-trimming.}
+\item{use.hinges}{logical Flag indicating whether to insert "hinges" into the
+spectral data before integration so as to reduce interpolation errors at
+the boundaries of the wavebands.}
 }
 \value{
 A waveband object or a list of waveband objects trimmed or filtered
@@ -43,6 +44,5 @@ trim_waveband(VIS, high.limit = 700)
 }
 \seealso{
 Other trim functions: \code{\link{clip_wl}},
-  \code{\link{trim_spct}}, \code{\link{trim_tails}},
-  \code{\link{trim_wl}}
+  \code{\link{trim_spct}}, \code{\link{trim_wl}}
 }

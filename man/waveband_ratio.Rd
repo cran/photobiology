@@ -12,30 +12,32 @@ waveband_ratio(w.length, s.irrad, w.band.num = NULL, w.band.denom = NULL,
 \arguments{
 \item{w.length}{numeric Vector of wavelengths (nm)}
 
-\item{s.irrad}{numeric Corresponding vector of spectral (energy) irradiances
-(W m-2 nm-1)}
+\item{s.irrad}{numeric vector of spectral (energy or photon) irradiances (W
+m-2 nm-1) or (mol s-1 m-2 nm-1).}
 
-\item{w.band.num}{waveband}
+\item{w.band.num}{waveband object used to compute the numerator of the ratio.}
 
-\item{w.band.denom}{waveband}
+\item{w.band.denom}{waveband object used to compute the denominator of the
+ratio.}
 
 \item{unit.out.num}{character Allowed values "energy", and "photon", or its
-alias "quantum"}
+alias "quantum".}
 
 \item{unit.out.denom}{character Allowed values "energy", and "photon", or its
-alias "quantum"}
+alias "quantum".}
 
 \item{unit.in}{character Allowed values "energy", and "photon", or its alias
-"quantum"}
+"quantum".}
 
 \item{check.spectrum}{logical Flag indicating whether to sanity check input
-data, default is TRUE}
+data, default is TRUE.}
 
 \item{use.cached.mult}{logical Flag indicating whether multiplier values
-should be cached between calls}
+should be cached between calls.}
 
-\item{use.hinges}{logical Flag indicating whether to use hinges to reduce
-interpolation errors}
+\item{use.hinges}{logical Flag indicating whether to insert "hinges" into the
+spectral data before integration so as to reduce interpolation errors at
+the boundaries of the wavebands.}
 }
 \value{
 a single numeric value giving the ratio
@@ -43,6 +45,11 @@ a single numeric value giving the ratio
 \description{
 This function gives the (energy or photon) irradiance ratio between two given
 wavebands of a radiation spectrum.
+}
+\note{
+The default for both \code{w.band} parameters is a waveband covering
+  the whole range of \code{w.length}. From version 9.19 onwards use of this
+  default does not trigger a warning, but instead is used silently.
 }
 \examples{
 # photon:photon ratio

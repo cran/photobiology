@@ -27,7 +27,6 @@ rgb_spct(sun.spct)
 
 }
 \seealso{
-Other color functions: \code{\link{s_e_irrad2rgb}},
-  \code{\link{w_length2rgb}},
+Other color functions: \code{\link{w_length2rgb}},
   \code{\link{w_length_range2rgb}}
 }

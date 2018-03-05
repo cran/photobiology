@@ -14,7 +14,7 @@ setTimeUnit(x, time.unit = c("second", "hour", "day", "exposure", "none"),
 "exposure" or "none", or a lubridate::duration}
 
 \item{override.ok}{logical Flag that can be used to silence warning when
-overwritting an existing attribute value (used internally)}
+overwriting an existing attribute value (used internally)}
 }
 \value{
 x

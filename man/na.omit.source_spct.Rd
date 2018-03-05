@@ -47,7 +47,7 @@ If \code{na.omit} removes cases, the row numbers of the cases form
 }
 \note{
 \code{na.fail} and \code{na.pass} do not require a specialisation
-  for spectral objetcs. R's definitions work as expected with no need to
+  for spectral objects. R's definitions work as expected with no need to
   override them.
 }
 \examples{

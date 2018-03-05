@@ -48,50 +48,61 @@ fscale(x, ...)
 
 \method{fscale}{source_mspct}(x, range = NULL, f = "mean", target = 1,
   unit.out = getOption("photobiology.radiation.unit", default = "energy"),
-  ...)
+  ..., .parallel = FALSE, .paropts = NULL)
 
 \method{fscale}{response_mspct}(x, range = NULL, f = "mean", target = 1,
   unit.out = getOption("photobiology.radiation.unit", default = "energy"),
-  ...)
+  ..., .parallel = FALSE, .paropts = NULL)
 
 \method{fscale}{filter_mspct}(x, range = NULL, f = "mean", target = 1,
   qty.out = getOption("photobiology.filter.qty", default = "transmittance"),
-  ...)
+  ..., .parallel = FALSE, .paropts = NULL)
 
 \method{fscale}{reflector_mspct}(x, range = NULL, f = "mean", target = 1,
-  qty.out = NULL, ...)
+  qty.out = NULL, ..., .parallel = FALSE, .paropts = NULL)
 
-\method{fscale}{raw_mspct}(x, range = NULL, f = "mean", target = 1, ...)
+\method{fscale}{raw_mspct}(x, range = NULL, f = "mean", target = 1, ...,
+  .parallel = FALSE, .paropts = NULL)
 
-\method{fscale}{cps_mspct}(x, range = NULL, f = "mean", target = 1, ...)
+\method{fscale}{cps_mspct}(x, range = NULL, f = "mean", target = 1, ...,
+  .parallel = FALSE, .paropts = NULL)
 
 \method{fscale}{generic_mspct}(x, range = NULL, f = "mean", target = 1,
-  col.names, ...)
+  col.names, ..., .parallel = FALSE, .paropts = NULL)
 
 \method{fshift}{default}(x, ...)
 }
 \arguments{
 \item{x}{An R object}
 
-\item{...}{additonal named arguments passed down to \code{f}.}
+\item{...}{additional named arguments passed down to \code{f}.}
 
 \item{range}{An R object on which \code{range()} returns a numeric vector of
-length 2 with the limits of a range of wavelengths in nm, with min annd max
+length 2 with the limits of a range of wavelengths in nm, with min and max
 wavelengths (nm)}
 
-\item{f}{character string "mean" or "total" for scaling so taht this summary
+\item{f}{character string "mean" or "total" for scaling so that this summary
 value becomes 1 for the returned object, or the name of a function taking
 \code{x} as first argument and returning a numeric value.}
 
 \item{target}{numeric A constant used as target value for scaling.}
 
-\item{unit.out}{character Alowed values "energy", and "photon", or its alias
+\item{unit.out}{character Allowed values "energy", and "photon", or its alias
 "quantum"}
 
 \item{qty.out}{character Allowed values "transmittance", and "absorbance"}
 
 \item{col.names}{character vector containing the names of columns or
 variables to which to apply the scaling.}
+
+\item{.parallel}{if TRUE, apply function in parallel, using parallel backend
+provided by foreach}
+
+\item{.paropts}{a list of additional options passed into the foreach function
+when parallel computation is enabled. This is important if (for example)
+your code relies on external data or packages: use the .export and
+.packages arguments to supply them so that all cluster nodes have the
+correct environment set up for computing.}
 }
 \value{
 A copy of \code{x} with the original spectral data values replaced

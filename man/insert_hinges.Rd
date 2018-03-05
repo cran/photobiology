@@ -7,16 +7,18 @@
 insert_hinges(x, y, h)
 }
 \arguments{
-\item{x}{numeric array (sorted in increasing order)}
+\item{x}{numeric vector (sorted in increasing order)}
 
-\item{y}{numeric array}
+\item{y}{numeric vector}
 
-\item{h}{a numeric array giving the wavelengths at which the y values
+\item{h}{a numeric vector giving the wavelengths at which the y values
 should be inserted by interpolation, no interpolation is indicated by an
-empty array (numeric(0))}
+empty vector (numeric(0))}
 }
 \value{
-a data.frame with variables \code{x} and \code{y}
+a data.frame with variables \code{x} and \code{y}. Unless the hinge
+  values were already present in \code{y}, each inserted hinge, expands the
+  vectors returned in the data frame by one value.
 }
 \description{
 Inserting wavelengths values immediately before and after a discontinuity in
@@ -34,8 +36,24 @@ using R.
 with(sun.data,
     insert_hinges(w.length, s.e.irrad,
        c(399.99, 400.00, 699.99, 700.00)))
-with(sun.data,
-    insert_hinges(w.length, s.e.irrad,
-      c(100, 399.50, 399.99, 400.00, 699.99, 700.00, 799.99, 1000)))
 
+}
+\seealso{
+Other low-level functions operating on numeric vectors.: \code{\link{as_energy}},
+  \code{\link{as_quantum_mol}},
+  \code{\link{calc_multipliers}},
+  \code{\link{div_spectra}},
+  \code{\link{energy_irradiance}},
+  \code{\link{energy_ratio}}, \code{\link{integrate_xy}},
+  \code{\link{interpolate_spectrum}},
+  \code{\link{irradiance}}, \code{\link{l_insert_hinges}},
+  \code{\link{oper_spectra}},
+  \code{\link{photon_irradiance}},
+  \code{\link{photon_ratio}},
+  \code{\link{photons_energy_ratio}},
+  \code{\link{prod_spectra}}, \code{\link{s_e_irrad2rgb}},
+  \code{\link{split_energy_irradiance}},
+  \code{\link{split_photon_irradiance}},
+  \code{\link{subt_spectra}}, \code{\link{sum_spectra}},
+  \code{\link{trim_tails}}, \code{\link{v_insert_hinges}}
 }

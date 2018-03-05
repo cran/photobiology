@@ -7,28 +7,37 @@
 as_quantum_mol(w.length, s.e.irrad)
 }
 \arguments{
-\item{w.length}{numeric Vector of wavelengths (nm)}
+\item{w.length}{numeric vector of wavelengths (nm).}
 
-\item{s.e.irrad}{numeric Corresponding vector of spectral (energy)
-irradiances}
+\item{s.e.irrad}{numeric vector of spectral (energy) irradiance values.}
 }
 \value{
-a numeric array of spectral photon irradiances
+a numeric vector of spectral photon irradiances.
 }
 \description{
-For example an spectrum [W m-2 nm-1] is converted into a spectrum [mol s-1
-m-2 nm-1]
+Convert spectral energy irradiance [W m-2 nm-1] into a spectral photon
+irradiance expressed in number of molds of photons [mol s-1 m-2 nm-1].
 }
 \examples{
 with(sun.data, as_quantum_mol(w.length, s.e.irrad))
 
 }
 \seealso{
-Other quantity conversion functions: \code{\link{A2T}},
-  \code{\link{T2Afr}}, \code{\link{T2A}},
-  \code{\link{T2T}}, \code{\link{as_energy}},
-  \code{\link{as_quantum}},
-  \code{\link{e2qmol_multipliers}},
-  \code{\link{e2quantum_multipliers}}, \code{\link{e2q}},
-  \code{\link{q2e}}
+Other low-level functions operating on numeric vectors.: \code{\link{as_energy}},
+  \code{\link{calc_multipliers}},
+  \code{\link{div_spectra}},
+  \code{\link{energy_irradiance}},
+  \code{\link{energy_ratio}}, \code{\link{insert_hinges}},
+  \code{\link{integrate_xy}},
+  \code{\link{interpolate_spectrum}},
+  \code{\link{irradiance}}, \code{\link{l_insert_hinges}},
+  \code{\link{oper_spectra}},
+  \code{\link{photon_irradiance}},
+  \code{\link{photon_ratio}},
+  \code{\link{photons_energy_ratio}},
+  \code{\link{prod_spectra}}, \code{\link{s_e_irrad2rgb}},
+  \code{\link{split_energy_irradiance}},
+  \code{\link{split_photon_irradiance}},
+  \code{\link{subt_spectra}}, \code{\link{sum_spectra}},
+  \code{\link{trim_tails}}, \code{\link{v_insert_hinges}}
 }

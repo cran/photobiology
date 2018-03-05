@@ -8,7 +8,7 @@ split_bands(x, list.names = NULL, short.names = is.null(list.names),
   length.out = NULL)
 }
 \arguments{
-\item{x}{a numeric array of wavelengths to split at (nm), or a range of
+\item{x}{a numeric vector of wavelengths to split at (nm), or a range of
 wavelengths or a generic_spct or a waveband.}
 
 \item{list.names}{character vector with names for the component wavebands in
@@ -21,10 +21,10 @@ wavebands}
 into (ignored if w.length is not numeric).}
 }
 \value{
-an un-named list of wabeband objects
+an un-named list of waveband objects
 }
 \description{
-Build a list of unweighted "waveband" objects that can be used as imput when
+Build a list of unweighted "waveband" objects that can be used as input when
 calculating irradiances.
 }
 \note{

@@ -9,47 +9,59 @@ energy_ratio(w.length, s.irrad, w.band.num = NULL, w.band.denom = NULL,
   use.hinges = NULL)
 }
 \arguments{
-\item{w.length}{numeric Vector of wavelengths (nm)}
+\item{w.length}{numeric vector of wavelengths (nm).}
 
-\item{s.irrad}{numeric Corresponding of spectral (energy) irradiances (W m-2
-nm-1)}
+\item{s.irrad}{numeric vector of spectral (energy) irradiances (W m-2
+nm-1).}
 
-\item{w.band.num}{waveband}
+\item{w.band.num}{waveband object used to compute the numerator of the ratio.}
 
-\item{w.band.denom}{waveband}
+\item{w.band.denom}{waveband object used to compute the denominator of the ratio.}
 
 \item{unit.in}{character Allowed values "energy", and "photon", or its alias
-"quantum"}
+"quantum".}
 
 \item{check.spectrum}{logical Flag indicating whether to sanity check input
-data, default is TRUE}
+data, default is TRUE.}
 
 \item{use.cached.mult}{logical Flag indicating whether multiplier values
-should be cached between calls}
+should be cached between calls.}
 
-\item{use.hinges}{logical Flag indicating whether to use hinges to reduce
-interpolation errors}
+\item{use.hinges}{logical Flag indicating whether to insert "hinges" into the
+spectral data before integration so as to reduce interpolation errors at
+the boundaries of the wavebands.}
 }
 \value{
-a single numeric value giving the unitless ratio
+a single numeric value giving the unitless ratio.
 }
 \description{
-This function gives the energy ratio between two given wavebands of a
-radiation spectrum.
+Energy irradiance ratio between two wavebands for a radiation spectrum.
+}
+\note{
+The default for both \code{w.band} parameters is a waveband covering
+  the whole range of \code{w.length}.
 }
 \examples{
-# energy:energy ratio
 with(sun.data,
      energy_ratio(w.length, s.e.irrad, new_waveband(400,500), new_waveband(400,700)))
-# energy:energy ratio waveband : whole spectrum
-with(sun.data, energy_ratio(w.length, s.e.irrad, new_waveband(400,500)))
-# energy:energy ratio of whole spectrum should be equal to 1.0
-with(sun.data, energy_ratio(w.length, s.e.irrad))
 
 }
 \seealso{
-Other photon and energy ratio functions: \code{\link{e_ratio}},
-  \code{\link{eq_ratio}}, \code{\link{photon_ratio}},
+Other low-level functions operating on numeric vectors.: \code{\link{as_energy}},
+  \code{\link{as_quantum_mol}},
+  \code{\link{calc_multipliers}},
+  \code{\link{div_spectra}},
+  \code{\link{energy_irradiance}},
+  \code{\link{insert_hinges}}, \code{\link{integrate_xy}},
+  \code{\link{interpolate_spectrum}},
+  \code{\link{irradiance}}, \code{\link{l_insert_hinges}},
+  \code{\link{oper_spectra}},
+  \code{\link{photon_irradiance}},
+  \code{\link{photon_ratio}},
   \code{\link{photons_energy_ratio}},
-  \code{\link{q_ratio}}, \code{\link{qe_ratio}}
+  \code{\link{prod_spectra}}, \code{\link{s_e_irrad2rgb}},
+  \code{\link{split_energy_irradiance}},
+  \code{\link{split_photon_irradiance}},
+  \code{\link{subt_spectra}}, \code{\link{sum_spectra}},
+  \code{\link{trim_tails}}, \code{\link{v_insert_hinges}}
 }

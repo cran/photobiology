@@ -15,7 +15,7 @@ T2A(x, action, byref, clean, ...)
   ...)
 
 \method{T2A}{filter_mspct}(x, action = "add", byref = FALSE, clean = TRUE,
-  ...)
+  ..., .parallel = FALSE, .paropts = NULL)
 }
 \arguments{
 \item{x}{an R object}
@@ -27,9 +27,18 @@ T2A(x, action, byref, clean, ...)
 \item{clean}{logical replace off-boundary values before conversion}
 
 \item{...}{not used in current version}
+
+\item{.parallel}{if TRUE, apply function in parallel, using parallel backend
+provided by foreach}
+
+\item{.paropts}{a list of additional options passed into the foreach function
+when parallel computation is enabled. This is important if (for example)
+your code relies on external data or packages: use the .export and
+.packages arguments to supply them so that all cluster nodes have the
+correct environment set up for computing.}
 }
 \description{
-Function that coverts transmittance (fraction) into absorbance (a.u.).
+Function that converts transmittance (fraction) into absorbance (a.u.).
 }
 \section{Methods (by class)}{
 \itemize{
@@ -43,7 +52,6 @@ Function that coverts transmittance (fraction) into absorbance (a.u.).
 \seealso{
 Other quantity conversion functions: \code{\link{A2T}},
   \code{\link{T2Afr}}, \code{\link{T2T}},
-  \code{\link{as_energy}}, \code{\link{as_quantum_mol}},
   \code{\link{as_quantum}},
   \code{\link{e2qmol_multipliers}},
   \code{\link{e2quantum_multipliers}}, \code{\link{e2q}},

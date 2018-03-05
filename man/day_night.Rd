@@ -49,7 +49,7 @@ numeric values (degrees). If present, address will be copied to the output.}
 "astronomical", or a \code{numeric} vector of length one, or two, giving
 solar elevation angle(s) in degrees (negative if below the horizon).}
 
-\item{unit.out}{charater string, One of "datetime", "day", "hour", "minute",
+\item{unit.out}{character string, One of "datetime", "day", "hour", "minute",
 or "second".}
 }
 \value{
@@ -75,10 +75,10 @@ Twilight names are interpreted as follows. "none": solar elevation =
   correction. "sunlight": upper rim of solar disk corrected for refraction.
   "civil": -6 degrees, "naval": -12 degrees, and "astronomical": -18 degrees.
   Unit names for output are as follows: "hours" times for sunrise and sunset
-  are returned as times-of-day in hours since middnight. "date" or "datetime"
+  are returned as times-of-day in hours since midnight. "date" or "datetime"
   return the same times as datetime objects with TZ set (this is much slower
   than the "hours"). Day length and night length are returned as numeric
-  values expressed in hours when `"datetime"' is paseed as argument to
+  values expressed in hours when `"datetime"' is passed as argument to
   \code{unit.out}. If twilight is a numeric vector of length two,
   the element with index 1 is used for sunrise and that with index 2 for
   sunset.
@@ -99,13 +99,13 @@ This function is an implementation of Meeus equations as used in NOAAs
   "AstroCalcPureR" available as function \code{astrocalc4r} in package
   'fishmethods'. Although the equations used are almost all the same, the
   function signatures and which values are returned differ. In particular,
-  the present implementation splits the calcualtion into two separate
+  the present implementation splits the calculation into two separate
   functions, one returning angles at given instants in time, and a separate
   one returning the timing of events for given dates.
 
 \code{night_length} returns the length of night-time conditions in one
   day (00:00:00 to 23:59:59), rather than the length of the night between two
-  consequtive days.
+  consecutive days.
 }
 \section{Warning}{
  Be aware that R's \code{Date} class does not save time zone

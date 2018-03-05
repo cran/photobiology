@@ -7,7 +7,7 @@
 transmittance_spct(spct, w.band, quantity, wb.trim, use.hinges)
 }
 \arguments{
-\item{spct}{an object of class "generic_spct"}
+\item{spct}{an object of class "generic_spct".}
 
 \item{w.band}{waveband or list of waveband objects or a numeric vector of
 length two. The waveband(s) determine the region(s) of the spectrum that
@@ -15,24 +15,24 @@ are summarized. If a numeric range is supplied a waveband object is
 constructed on the fly from it.}
 
 \item{quantity}{character string One of "total", "average" or "mean",
-"contribution", "contribution.pc", "relative" or "relative.pc"}
+"contribution", "contribution.pc", "relative" or "relative.pc".}
 
 \item{wb.trim}{logical Flag indicating if wavebands crossing spectral data boundaries
-are trimmed or ignored}
+are trimmed or ignored.}
 
-\item{use.hinges}{logical Flag indicating whether to use hinges to reduce
-interpolation errors}
+\item{use.hinges}{logical Flag indicating whether to insert "hinges" into the
+spectral data before integration so as to reduce interpolation errors at
+the boundaries of the wavebands.}
 }
 \value{
 a single numeric value
 }
 \description{
-This function returns the mean transmittance for a given waveband of a
-transmittance spectrum.
+Mean transmittance for one or more wavebands of a filter or object spectrum.
 }
 \note{
 The last parameter controls speed optimization. The defaults should be
-  suitable in mosts cases. Only the range of wavelengths in the wavebands is
+  suitable in most cases. Only the range of wavelengths in the wavebands is
   used and all BSWFs are ignored.
 }
 \keyword{internal}

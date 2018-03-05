@@ -10,32 +10,34 @@ split_photon_irradiance(w.length, s.irrad, cut.w.length = range(w.length),
   default = NULL))
 }
 \arguments{
-\item{w.length}{numeric Vector of wavelengths (nm)}
+\item{w.length}{numeric vector of wavelengths (nm).}
 
-\item{s.irrad}{numeric Corresponding vector of spectral (energy) irradiances
-(W m-2 nm-1)}
+\item{s.irrad}{numeric vector of spectral (energy or photon) irradiance values
+(W m-2 nm-1).}
 
-\item{cut.w.length}{numeric Vector of wavelengths (nm)}
+\item{cut.w.length}{numeric vector of wavelengths (nm).}
 
 \item{unit.in}{character Allowed values "energy", and "photon", or its alias
-"quantum"}
+"quantum".}
 
 \item{scale}{a character A string indicating the scale used for the returned
-values ("absolute", "relative", "percent")}
+values ("absolute", "relative", "percent").}
 
 \item{check.spectrum}{logical Flag indicating whether to sanity check input
-data, default is TRUE}
+data, default is TRUE.}
 
 \item{use.cached.mult}{logical Flag indicating whether multiplier values
-should be cached between calls}
+should be cached between calls.}
 
-\item{use.hinges}{logical Falg indicating whether to use hinges to reduce
-interpolation errors}
+\item{use.hinges}{logical Flag indicating whether to insert "hinges" into the
+spectral data before integration so as to reduce interpolation errors at
+the boundaries of the wavebands.}
 }
 \value{
-a numeric array of photon irradiances with no change in scale factor:
-  [W m-2 nm-1] -> [mol s-1 m-2] or relative values (fraction of one) if scale
-  = "relative" or scale = "percent"
+a numeric vector of photon irradiances with no change in scale factor:
+  [W m-2 nm-1] -> [mol s-1 m-2], [mol s-1 m-2 nm-1] -> [mol s-1 m-2] or
+  relative values (fraction of one based on photon units) if scale
+  = "relative" or scale = "percent".
 }
 \description{
 This function returns the photon irradiance for a series of contiguous
@@ -44,7 +46,7 @@ absolute or relative to their sum.
 }
 \note{
 The last three parameters control speed optimizations. The defaults
-  should be suitable in mosts cases. If you set \code{check.spectrum=FALSE}
+  should be suitable in most cases. If you set \code{check.spectrum=FALSE}
   then you should call \code{\link{check_spectrum}} at least once for your
   spectrum before using any of the other functions. If you will use
   repeatedly the same SWFs on many spectra measured at exactly the same
@@ -58,16 +60,25 @@ with(sun.data,
      split_photon_irradiance(w.length, s.e.irrad,
              cut.w.length = c(300, 400, 500, 600, 700)))
 with(sun.data,
-     split_photon_irradiance(w.length, s.e.irrad,
-             cut.w.length = c(200, 400, 500, 600, 900)))
-with(sun.data,
-     split_photon_irradiance(w.length, s.e.irrad,
-             cut.w.length = c(300, 400, 500)))
-with(sun.data,
      split_photon_irradiance(w.length, s.e.irrad))
 
 }
 \seealso{
-Other split a spectrum into regions functions: \code{\link{split_energy_irradiance}},
-  \code{\link{split_irradiance}}
+Other low-level functions operating on numeric vectors.: \code{\link{as_energy}},
+  \code{\link{as_quantum_mol}},
+  \code{\link{calc_multipliers}},
+  \code{\link{div_spectra}},
+  \code{\link{energy_irradiance}},
+  \code{\link{energy_ratio}}, \code{\link{insert_hinges}},
+  \code{\link{integrate_xy}},
+  \code{\link{interpolate_spectrum}},
+  \code{\link{irradiance}}, \code{\link{l_insert_hinges}},
+  \code{\link{oper_spectra}},
+  \code{\link{photon_irradiance}},
+  \code{\link{photon_ratio}},
+  \code{\link{photons_energy_ratio}},
+  \code{\link{prod_spectra}}, \code{\link{s_e_irrad2rgb}},
+  \code{\link{split_energy_irradiance}},
+  \code{\link{subt_spectra}}, \code{\link{sum_spectra}},
+  \code{\link{trim_tails}}, \code{\link{v_insert_hinges}}
 }

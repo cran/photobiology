@@ -11,30 +11,36 @@
 \alias{join_mspct.object_mspct}
 \title{Join all spectra in a collection}
 \usage{
-join_mspct(x, ...)
+join_mspct(x, type, ...)
 
-\method{join_mspct}{default}(x, ...)
+\method{join_mspct}{default}(x, type = "full", ...)
 
-\method{join_mspct}{generic_mspct}(x, col.name, ...)
+\method{join_mspct}{generic_mspct}(x, type = "full", col.name, ...)
 
-\method{join_mspct}{source_mspct}(x, unit.out = "energy", ...)
+\method{join_mspct}{source_mspct}(x, type = "full", unit.out = "energy",
+  ...)
 
-\method{join_mspct}{response_mspct}(x, unit.out = "energy", ...)
+\method{join_mspct}{response_mspct}(x, type = "full", unit.out = "energy",
+  ...)
 
-\method{join_mspct}{filter_mspct}(x, qty.out = "transmittance", ...)
+\method{join_mspct}{filter_mspct}(x, type = "full",
+  qty.out = "transmittance", ...)
 
-\method{join_mspct}{reflector_mspct}(x, ...)
+\method{join_mspct}{reflector_mspct}(x, type = "full", ...)
 
-\method{join_mspct}{object_mspct}(x, qty.out, ...)
+\method{join_mspct}{object_mspct}(x, type = "full", qty.out, ...)
 }
 \arguments{
 \item{x}{A generic_mspct object, or an object of a class derived from
 generic_mspct.}
 
-\item{...}{currently ignored.}
+\item{type}{character Type of join: "left", "right", "inner" or "full"
+(default). See details for more information.}
+
+\item{...}{ignored (possibly used by derived methods).}
 
 \item{col.name}{character, name of the column in the spectra to be preserved,
-in addtion to "w.length".}
+in addition to "w.length".}
 
 \item{unit.out}{character Allowed values "energy", and "photon", or its alias
 "quantum".}
@@ -42,12 +48,14 @@ in addtion to "w.length".}
 \item{qty.out}{character Allowed values "transmittance", and "absorbance".}
 }
 \value{
-A object of class dataframe, with the spectra joined by wavelength.
+An object of class dataframe, with the spectra joined by wave length,
+  with rows in addition sorted by wave length (variable \code{w.length}).
 }
 \description{
-Join all the spectra contained in a homegenous collection, returning a data
+Join all the spectra contained in a homogenous collection, returning a data
 frame with spectral-data columns named according to the names of the spectra
-in the collection.
+in the collection. By default a full join is done, filling the spectral
+data for missing wave lengths in individual spectra with \code{NA}.
 }
 \section{Methods (by class)}{
 \itemize{
@@ -67,8 +75,9 @@ in the collection.
 }}
 
 \note{
-Currently only source_mspct, response_mspct, filter_mspct, and
-  reflector_mspct classes have this method implemented.
+Currently only generic_spct, source_mspct, response_mspct,
+  filter_mspct, reflector_mspct and object_mspct classes have this method
+  implemented.
 }
 \seealso{
 Other conversion of collections of spectra: \code{\link{as.generic_mspct}},

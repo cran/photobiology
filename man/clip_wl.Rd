@@ -22,21 +22,21 @@ clip_wl(x, range, ...)
 \method{clip_wl}{list}(x, range = NULL, ...)
 }
 \arguments{
-\item{x}{an R object}
+\item{x}{an R object.}
 
 \item{range}{a numeric vector of length two, or any other object for which
-function \code{range()} will return range of walengths expressed in
+function \code{range()} will return range of wavelengths expressed in
 nanometres.}
 
-\item{...}{not used}
+\item{...}{ignored (possibly used by derived methods).}
 }
 \value{
 A copy of \code{x}, most frequently of a shorter length, and never
   longer.
 }
 \description{
-Clipping of head and tail of a spectrum based on wavelength limits, no
-interpolation used.
+Clip head and tail of a spectrum based on wavelength limits, no
+interpolation used at range boundaries.
 }
 \section{Methods (by class)}{
 \itemize{
@@ -62,6 +62,5 @@ clip_wl(sun.spct, range = c(400, NA))
 }
 \seealso{
 Other trim functions: \code{\link{trim_spct}},
-  \code{\link{trim_tails}}, \code{\link{trim_waveband}},
-  \code{\link{trim_wl}}
+  \code{\link{trim_waveband}}, \code{\link{trim_wl}}
 }

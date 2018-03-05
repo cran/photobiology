@@ -23,10 +23,11 @@ response(spct, w.band, unit.out, quantity, time.unit, wb.trim, use.hinges, ...)
   quantity = "total", time.unit = NULL,
   wb.trim = getOption("photobiology.waveband.trim", default = TRUE),
   use.hinges = getOption("photobiology.use.hinges", default = NULL), ...,
-  attr2tb = NULL, idx = !is.null(names(spct)))
+  attr2tb = NULL, idx = !is.null(names(spct)), .parallel = FALSE,
+  .paropts = NULL)
 }
 \arguments{
-\item{spct}{an R object of class "generic_spct"}
+\item{spct}{an R object of class "generic_spct".}
 
 \item{w.band}{waveband or list of waveband objects or a numeric vector of
 length two. The waveband(s) determine the region(s) of the spectrum that
@@ -34,25 +35,35 @@ are summarized. If a numeric range is supplied a waveband object is
 constructed on the fly from it.}
 
 \item{unit.out}{character Allowed values "energy", and "photon", or its alias
-"quantum"}
+"quantum".}
 
 \item{quantity}{character string One of "total", "average" or "mean",
-"contribution", "contribution.pc", "relative" or "relative.pc"}
+"contribution", "contribution.pc", "relative" or "relative.pc".}
 
-\item{time.unit}{character or lubridate::duration}
+\item{time.unit}{character or lubridate::duration object.}
 
 \item{wb.trim}{logical Flag telling if wavebands crossing spectral data boundaries
-are trimmed or ignored}
+are trimmed or ignored.}
 
-\item{use.hinges}{logical indicating whether to use hinges to reduce
-interpolation errors}
+\item{use.hinges}{logical Flag indicating whether to insert "hinges" into the
+spectral data before integration so as to reduce interpolation errors at
+the boundaries of the wavebands.}
 
-\item{...}{other arguments}
+\item{...}{other arguments (possibly used by derived methods).}
 
 \item{attr2tb}{character vector, see \code{\link{add_attr2tb}} for the syntax for \code{attr2tb} passed as is to formal parameter \code{col.names}.}
 
 \item{idx}{logical whether to add a column with the names of the elements of
 spct}
+
+\item{.parallel}{if TRUE, apply function in parallel, using parallel backend
+provided by foreach}
+
+\item{.paropts}{a list of additional options passed into the foreach function
+when parallel computation is enabled. This is important if (for example)
+your code relies on external data or packages: use the .export and
+.packages arguments to supply them so that all cluster nodes have the
+correct environment set up for computing.}
 }
 \value{
 A named \code{numeric} vector in the case of methods for individual
@@ -62,7 +73,7 @@ A named \code{numeric} vector in the case of methods for individual
   the names of the spectra, and optionally additional columns with metadata
   values retrieved from the attributes of the member spectra.
 
-  Whether returnes values are expressed in energy-based or photon-based units
+  Whether returned values are expressed in energy-based or photon-based units
   depends on \code{unit.out}. By default values are only integrated, but
   depending on the argument passed to parameter \code{quantity} they can be
   re-expressed as relative fractions or percentages. In the case of vector
@@ -84,7 +95,7 @@ Calculate average photon- or energy-based photo-response.
 
 \note{
 The parameter \code{use.hinges} controls speed optimization. The
-  defaults should be suitable in mosts cases. Only the range of wavelengths
+  defaults should be suitable in most cases. Only the range of wavelengths
   in the wavebands is used and all BSWFs are ignored.
 }
 \seealso{

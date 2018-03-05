@@ -9,7 +9,7 @@ as_tod(x, unit.out = "hours", tz = NULL)
 \arguments{
 \item{x}{a datetime object accepted by lubridate functions}
 
-\item{unit.out}{charater string, One of "datetime", "hour", "minute", or "second".}
+\item{unit.out}{character string, One of "datetime", "hour", "minute", or "second".}
 
 \item{tz}{character string indicating time zone to be used in output.}
 }

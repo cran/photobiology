@@ -14,10 +14,10 @@ new_waveband(w.low, w.high, weight = NULL, SWF.e.fun = NULL,
   wb.name = NULL, wb.label = wb.name)
 }
 \arguments{
-\item{x}{any R object on which applying the function range yields an array of
-two numeric values, describimg a range of wavelengths (nm)}
+\item{x}{any R object on which applying the function range yields an vector of
+two numeric values, describing a range of wavelengths (nm)}
 
-\item{weight}{a character string "SWF" or "BSWF", use NULL (the defalt) to
+\item{weight}{a character string "SWF" or "BSWF", use NULL (the default) to
 indicate no weighting used when calculating irradiance}
 
 \item{SWF.e.fun}{a function giving multipliers for a spectral weighting
@@ -32,16 +32,16 @@ should be normalized to 1.0, in nm. "NULL" means no normalization.}
 \item{SWF.norm}{a numeric value giving the native normalization wavelength
 (nm) used by SWF.e.fun and SWF.q.fun}
 
-\item{hinges}{a numeric array giving the wavelengths at which the s.irrad
+\item{hinges}{a numeric vector giving the wavelengths at which the s.irrad
 should be inserted by interpolation, no interpolation is indicated by an
-empty array (numeric(0)), if NULL then interpolation will take place at
+empty vector (numeric(0)), if NULL then interpolation will take place at
 both ends of the band.}
 
 \item{wb.name}{character string giving the name for the waveband defined,
 default is NULL}
 
 \item{wb.label}{character string giving the label of the waveband to be used
-for ploting, default is wb.name}
+for plotting, default is wb.name}
 
 \item{w.low}{numeric value, wavelength at the short end of the band (nm)}
 
@@ -51,7 +51,7 @@ for ploting, default is wb.name}
 a \code{waveband} object
 }
 \description{
-Constructor for "waveband" objects that can be used as imput when calculating
+Constructor for "waveband" objects that can be used as input when calculating
 irradiances.
 }
 \section{Functions}{

@@ -11,7 +11,7 @@ is_tagged(x)
 }
 \value{
 is_tagged returns TRUE if its argument is a an spectrum
-that contains tags and FALSE if it is an untagged spectrun, but
+that contains tags and FALSE if it is an untagged spectrum, but
 returns NA for any other R object.
 }
 \description{

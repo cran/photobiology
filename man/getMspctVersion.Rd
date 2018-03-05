@@ -13,7 +13,7 @@ getMspctVersion(x)
 numeric value
 }
 \description{
-Funtion to read the "mspct.version" attribute of an existing generic_mspct
+Function to read the "mspct.version" attribute of an existing generic_mspct
 object.
 }
 \note{

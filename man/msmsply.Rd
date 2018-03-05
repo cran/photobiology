@@ -7,13 +7,14 @@
 \alias{msaply}
 \title{Multi-spct transform methods}
 \usage{
-msmsply(mspct, .fun, ...)
+msmsply(mspct, .fun, ..., .parallel = FALSE, .paropts = NULL)
 
-msdply(mspct, .fun, ..., idx = NULL, col.names = NULL)
+msdply(mspct, .fun, ..., idx = NULL, col.names = NULL, .parallel = FALSE,
+  .paropts = NULL)
 
-mslply(mspct, .fun, ...)
+mslply(mspct, .fun, ..., .parallel = FALSE, .paropts = NULL)
 
-msaply(mspct, .fun, ..., .drop = TRUE)
+msaply(mspct, .fun, ..., .drop = TRUE, .parallel = FALSE, .paropts = NULL)
 }
 \arguments{
 \item{mspct}{an object of class generic_mspct or a derived class}
@@ -21,6 +22,15 @@ msaply(mspct, .fun, ..., .drop = TRUE)
 \item{.fun}{a function}
 
 \item{...}{other arguments passed to .fun}
+
+\item{.parallel}{if TRUE, apply function in parallel, using parallel backend
+provided by foreach}
+
+\item{.paropts}{a list of additional options passed into the foreach function
+when parallel computation is enabled. This is important if (for example)
+your code relies on external data or packages: use the .export and
+.packages arguments to supply them so that all cluster nodes have the
+correct environment set up for computing.}
 
 \item{idx}{logical whether to add a column with the names of the elements of
 mspct, if \code{NULL}, the default, a column is added only if all members
@@ -38,7 +48,7 @@ a data frame in the case of \code{msdply}
 
 a list in the case of \code{mslply}
 
-an array in the case of \code{msaply}
+an vector in the case of \code{msaply}
 }
 \description{
 Apply a function or operator to a collection of spectra.

@@ -59,7 +59,7 @@ This function is an implementation of Meeus equations as used in NOAAs
   conditions. The effect of refraction on the apparent position of the sun
   is only an estimate based on "typical" conditions. The more tangential to
   the horizon is the path of the sun, the larger the effect of refraction is
-  on the times of visual occusion of the sun behind the horizon---i.e. the
+  on the times of visual occlusion of the sun behind the horizon---i.e. the
   largest timing errors occur at high latitudes.
   The computation is not defined for latitudes 90 and -90 degrees, i.e. at
   the poles.
@@ -67,7 +67,7 @@ This function is an implementation of Meeus equations as used in NOAAs
   "AstroCalcPureR" available as function \code{astrocalc4r} in package
   'fishmethods'. Although the equations used are almost all the same, the
   function signatures and which values are returned differ. In particular,
-  the present implementation splits the calcualtion into two separate
+  the present implementation splits the calculation into two separate
   functions, one returning angles at given instants in time, and a
   separate one returning the timing of events for given dates.
 }

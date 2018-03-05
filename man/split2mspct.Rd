@@ -44,7 +44,7 @@ split2calibration_mspct(x, spct.data.var = "irrad.mult",
 
 \item{member.class}{character Class of the collection members}
 
-\item{spct.data.var}{character Name of the spctral data argument in the
+\item{spct.data.var}{character Name of the spectral data argument in the
 object constructor for \code{member.class}}
 
 \item{w.length.var}{character Name of column containing wavelength data in

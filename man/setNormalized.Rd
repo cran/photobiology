@@ -12,7 +12,7 @@ setNormalized(x, norm = FALSE)
 \item{norm}{numeric or logical}
 }
 \description{
-Funtion to write the "normalized" attribute of an existing generic_spct
+Function to write the "normalized" attribute of an existing generic_spct
 object.
 }
 \note{

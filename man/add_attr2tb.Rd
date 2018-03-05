@@ -7,7 +7,7 @@
 \alias{lat2tb}
 \alias{geocode2tb}
 \alias{what_measured2tb}
-\title{Copy atributes from members of a generic_mspct}
+\title{Copy attributes from members of a generic_mspct}
 \usage{
 add_attr2tb(tb, mspct, col.names = NULL)
 
@@ -24,7 +24,7 @@ what_measured2tb(mspct, tb = NULL, col.names = "what.measured")
 \arguments{
 \item{tb}{tibble or data.frame to which to add the data (optional).}
 
-\item{mspct}{generir_mspct Any collection of spectra.}
+\item{mspct}{generic_mspct Any collection of spectra.}
 
 \item{col.names}{character Name(s) of column(s) to create.}
 }
@@ -43,8 +43,8 @@ The attributes are copied to a column in a tibble or data frame. If
   the number of rows in the argument passed to \code{tb} must match the
   number of spectra in the argument passed to \code{mspct}. If the argument
   to \code{col.names} is aa named vector, with the names of members matching
-  the names of attibutes, then the values are used as names for the columns
-  created. This permits setting any valid name fro the new columns.
+  the names of attributes, then the values are used as names for the columns
+  created. This permits setting any valid name for the new columns.
   If the vector passed to \code{col.names} has no names, then the
   values are interpreted as the names of the attributes to add, and also
   used as names for the new columns.

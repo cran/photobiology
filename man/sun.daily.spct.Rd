@@ -18,7 +18,7 @@ under clear sky conditions. The variables are as follows:
 m-2 nm-1) \item s.q.irrad (mol d-1 m-2 nm-1) }
 }
 \note{
-The simualtions are based on libRadTran using hourly mean global
+The simulations are based on libRadTran using hourly mean global
 radiation measurements to estimate cloud cover. The simulations were for
 each hour and the results integrated for the whole day.
 }

@@ -2,26 +2,28 @@
 % Please edit documentation in R/calc.source.output.r
 \name{calc_source_output}
 \alias{calc_source_output}
-\title{Light-source spectral output}
+\title{Scaled and/or interpolated light-source spectral output}
 \usage{
 calc_source_output(w.length.out, w.length.in, s.irrad.in, unit.in = "energy",
-  scaled = NULL, fill = NA)
+  scaled = NULL, fill = NA, ...)
 }
 \arguments{
-\item{w.length.out}{numeric vector of wavelengths (nm) for output}
+\item{w.length.out}{numeric vector of wavelengths (nm) for output.}
 
-\item{w.length.in}{numeric vector of wavelengths (nm) for input}
+\item{w.length.in}{numeric vector of wavelengths (nm) for input.}
 
 \item{s.irrad.in}{numeric vector of spectral transmittance value (fractions
-or percent)}
+or percent).}
 
-\item{unit.in}{a character string "energy" or "photon"}
+\item{unit.in}{a character string "energy" or "photon".}
 
-\item{scaled}{NULL, "peak", "area"; div ignored if !is.null(scaled)}
+\item{scaled}{NULL, "peak", "area"; div ignored if !is.null(scaled).}
 
 \item{fill}{if NA, no extrapolation is done, and NA is returned for
 wavelengths outside the range of the input. If NULL then the tails are
 deleted. If 0 then the tails are set to zero.}
+
+\item{...}{Additional arguments passed to \code{spline} if called.}
 }
 \value{
 a source_spct with three numeric vectors with wavelength values
@@ -29,10 +31,10 @@ a source_spct with three numeric vectors with wavelength values
   scaled and interpolated spectral photon irradiance values (s.q.irrad).
 }
 \description{
-Calculate interpolated values by interpolation from
-user-supplied spectral emission data or by name for light source data
-included in the packages photobiologySun, photobiologyLamps, or
-photobiologyLEDs, scaling the values.
+Values calculated by interpolation from user-supplied spectral emission data
+or by name for light source data included in the packages photobiologySun,
+photobiologyLamps, or photobiologyLEDs, optionally re-scaling the spectral
+data values.
 }
 \note{
 This is a convenience function that adds no new functionality but makes
@@ -40,6 +42,11 @@ This is a convenience function that adds no new functionality but makes
   automates interpolation, extrapolation/trimming and scaling.
 }
 \examples{
-with(sun.data, calc_source_output(290:1100, w.length.in=w.length, s.irrad.in=s.e.irrad))
+
+with(sun.data,
+     calc_source_output(290:1100,
+                        w.length.in = w.length,
+                        s.irrad.in = s.e.irrad)
+    )
 
 }

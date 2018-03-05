@@ -21,10 +21,10 @@ T2Afr(x, action, byref, clean, ...)
   clean = FALSE, ...)
 
 \method{T2Afr}{filter_mspct}(x, action = "add", byref = FALSE,
-  clean = FALSE, ...)
+  clean = FALSE, ..., .parallel = FALSE, .paropts = NULL)
 
 \method{T2Afr}{object_mspct}(x, action = "add", byref = FALSE,
-  clean = FALSE, ...)
+  clean = FALSE, ..., .parallel = FALSE, .paropts = NULL)
 }
 \arguments{
 \item{x}{an R object}
@@ -36,9 +36,18 @@ T2Afr(x, action, byref, clean, ...)
 \item{clean}{logical replace off-boundary values before conversion}
 
 \item{...}{not used in current version}
+
+\item{.parallel}{if TRUE, apply function in parallel, using parallel backend
+provided by foreach}
+
+\item{.paropts}{a list of additional options passed into the foreach function
+when parallel computation is enabled. This is important if (for example)
+your code relies on external data or packages: use the .export and
+.packages arguments to supply them so that all cluster nodes have the
+correct environment set up for computing.}
 }
 \description{
-Function that coverts transmittance (fraction) into absorptance (fraction).
+Function that converts transmittance (fraction) into absorptance (fraction).
 If reflectance (fraction) is available, it allows conversions between
 internal and total absorptance.
 }
@@ -62,7 +71,6 @@ T2Afr(Ler_leaf.spct)
 \seealso{
 Other quantity conversion functions: \code{\link{A2T}},
   \code{\link{T2A}}, \code{\link{T2T}},
-  \code{\link{as_energy}}, \code{\link{as_quantum_mol}},
   \code{\link{as_quantum}},
   \code{\link{e2qmol_multipliers}},
   \code{\link{e2quantum_multipliers}}, \code{\link{e2q}},

@@ -15,12 +15,12 @@ cps2Tfr(x.sample, x.clear, x.opaque = NULL, dyn.range = NULL)
 \arguments{
 \item{x.sample, x.clear, x.opaque, x.white, x.black}{cps_spct objects.}
 
-\item{pre.fun}{function A function applied to x.sample before converison.}
+\item{pre.fun}{function A function applied to x.sample before conversion.}
 
 \item{...}{Additional arguments passed to \code{pre.fun}.}
 
 \item{dyn.range}{numeric The effective dynamic range of the instrument,
-if \code{NULL} it is automatically set based on integartion time
+if \code{NULL} it is automatically set based on integration time
 bracketing.}
 }
 \value{

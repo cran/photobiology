@@ -14,7 +14,7 @@ current time}
 \item{geocode}{data frame with variables lon and lat as numeric values
 (degrees).}
 
-\item{unit.out}{charater string, One of "datetime", "hour", "minute", or "second".}
+\item{unit.out}{character string, One of "datetime", "hour", "minute", or "second".}
 }
 \value{
 For \code{solar_time()} numeric value in seconds from midnight but
@@ -25,21 +25,21 @@ For \code{solar_time()} numeric value in seconds from midnight but
 in seconds since midnight. \code{solar_date} returns the same instant in time
 as a date-time object. Solar time is useful when we want to plot data
 according to the local solar time of day, irrespective of the date. Solar
-date is useful when we want to plot a time series streching for several days
+date is useful when we want to plot a time series stretching for several days
 using the local solar time but distinguishing between days.
 }
 \note{
 The algorithm is approximate, it calculates the difference between
   local solar noon and noon in the time zone of \code{time} and uses this
   value for the whole day when converting times into solar time. Days are not
-  exactly 24 h long. Between succesive days the shift is only a few seconds,
+  exactly 24 h long. Between successive days the shift is only a few seconds,
   and this leads to a small jump at midnight.
 }
 \section{Warning!}{
 
   Returned values are computed based on the time zone of the argument for
   parameter time. In the case of solar time, this timezone does not affect
-  the result. However, in the case of solar dates the date part may be be
+  the result. However, in the case of solar dates the date part may be
   off by one day, if the time zone does not match the coordinates of the
   goecode value provided as argument.
 }

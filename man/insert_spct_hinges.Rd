@@ -11,7 +11,7 @@ insert_spct_hinges(spct, hinges = NULL, byref = FALSE)
 
 \item{hinges}{numeric vector of wavelengths (nm) at which the
 s.irrad should be inserted by interpolation, no interpolation is indicated
-by an empty array (numeric(0))}
+by an empty vector (numeric(0))}
 
 \item{byref}{logical indicating if new object will be created by reference or
 by copy of spct}

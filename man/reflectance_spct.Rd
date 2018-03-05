@@ -20,8 +20,9 @@ constructed on the fly from it.}
 \item{wb.trim}{logical if TRUE wavebands crossing spectral data boundaries
 are trimmed, if FALSE, they are discarded}
 
-\item{use.hinges}{logical indicating whether to use hinges to reduce
-interpolation errors}
+\item{use.hinges}{logical Flag indicating whether to insert "hinges" into the
+spectral data before integration so as to reduce interpolation errors at
+the boundaries of the wavebands.}
 }
 \value{
 A single numeric value expressed as a fraction of one

@@ -13,7 +13,7 @@ as.solar_date(x, time)
 }
 \value{
 For method \code{as.solar_date()} a date-time object with the class attr
-  set to "solar.time". This is needed only for unambiguous formating and
+  set to "solar.time". This is needed only for unambiguous formatting and
   printing.
 }
 \description{

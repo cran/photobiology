@@ -31,9 +31,9 @@ colour_of(x, ...)
 color(x, ...)
 }
 \arguments{
-\item{x}{an R object}
+\item{x}{an R object.}
 
-\item{...}{not used in current version}
+\item{...}{ignored (possibly used by derived methods).}
 
 \item{type}{character telling whether "CMF", "CC", or "both" should be returned.}
 
@@ -46,15 +46,14 @@ spct}
 \value{
 A color definition in hexadecimal format as a \code{character} string
   of 7 characters, "#" followed by the red, blue, and green values in
-  hexadecimal (scaled to 0 ... 255). In the case of the especialization for
+  hexadecimal (scaled to 0 ... 255). In the case of the specialization for
   \code{list}, a list of such definitions is returned. In the case of a
   collection of spectra, a \code{data.frame} with one column with such
   definitions and by default an additional column with names of the spectra
   as index.
 }
 \description{
-A function that returns the equivalent RGB color of an object such as a
-spectrum or wavelength.
+Equivalent RGB color of an object such as a spectrum, wavelength or waveband.
 }
 \section{Methods (by class)}{
 \itemize{
@@ -79,7 +78,8 @@ When \code{x} is a list but not a waveband, if a method  \code{color_of}
 }
 \section{Deprecated}{
  Use of color() is deprecated as this wrapper function
-  may be removed in future versions of the package. Use color_of() instead.
+  may be removed in future versions of the package because of name clashes.
+  Use color_of() instead.
 }
 
 \examples{

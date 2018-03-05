@@ -13,7 +13,7 @@ getScaled(x)
 logical
 }
 \description{
-Funtion to read the "scaled" attribute of an existing generic_spct
+Function to read the "scaled" attribute of an existing generic_spct
 object.
 }
 \note{

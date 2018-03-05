@@ -12,7 +12,7 @@
 \alias{mean_obliq_eclip}
 \alias{obliq_corr}
 \alias{sun_rt_ascen}
-\alias{sun_declin}
+\alias{sun_decline}
 \alias{var_y}
 \alias{eq_of_time}
 \alias{ha_sunrise}
@@ -51,13 +51,13 @@ obliq_corr(x, eclip)
 
 sun_rt_ascen(app.lon, obliq.corr)
 
-sun_declin(app.lon, obliq.corr)
+sun_decline(app.lon, obliq.corr)
 
 var_y(obliq.corr)
 
 eq_of_time(mean.lon, eccent.earth, anom.mean, var.y)
 
-ha_sunrise(lat, declin, ang = 0)
+ha_sunrise(lat, decline, nag = 0)
 
 solar_noon(lon, eq.of.time)
 
@@ -73,13 +73,13 @@ solar_tod(time, lat, lon, eq.of.time)
 
 hour_angle(solar.time)
 
-zenith_angle(lat, hour.angle, declin)
+zenith_angle(lat, hour.angle, decline)
 
-elevation_angle(lat, hour.angle, declin)
+elevation_angle(lat, hour.angle, decline)
 
 atm_refraction_approx(elevation.angle)
 
-azimuth_angle(lat, hour.angle, zenith.angle, declin)
+azimuth_angle(lat, hour.angle, zenith.angle, decline)
 }
 \arguments{
 \item{time}{dateTime}
@@ -88,11 +88,11 @@ azimuth_angle(lat, hour.angle, zenith.angle, declin)
 
 \item{anom}{numeric Solar anomaly in degrees}
 
-\item{eccent}{numric Eccentricity of Earth orbit}
+\item{eccent}{numeric Eccentricity of Earth orbit}
 
 \item{eclip}{numeric Ecliptic}
 
-\item{app.lon, obliq.corr, mean.lon, ang, declin}{numeric Angles in degrees}
+\item{app.lon, obliq.corr, mean.lon, nag, decline}{numeric Angles in degrees}
 
 \item{lat, lon}{numeric Geographic coordinates in degrees}
 
@@ -106,6 +106,6 @@ datetime
 numeric
 }
 \description{
-Low level functions based on NOAA's Excell worksheet
+Low level functions based on NOAA's Excel worksheet
 }
 \keyword{internal}

@@ -13,7 +13,7 @@ getNormalized(x)
 character or numeric or logical
 }
 \description{
-Funtion to read the "normalized" attribute of an existing generic_spct
+Function to read the "normalized" attribute of an existing generic_spct
 object.
 }
 \note{

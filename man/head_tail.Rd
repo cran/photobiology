@@ -25,7 +25,7 @@ head_tail(x, ...)
 \method{head_tail}{ftable}(x, n = 6L, ...)
 }
 \arguments{
-\item{x}{an object.}
+\item{x}{an R object.}
 
 \item{...}{arguments to be passed to or from other methods.}
 
@@ -39,8 +39,9 @@ An object (usually) like x but generally smaller. For ftable objects
  \code{x}, a transformed \code{format(x)}.
 }
 \description{
-Returns the first and last parts of a spectrum, dataframe, vector, function,
-table or ftable.
+Returns the first and last "parts" (rows or members) of a spectrum,
+dataframe, vector, function, table or ftable. In other words, the combined
+output from methods \code{head} and \code{tail}.
 }
 \details{
 The value returned by head_tail() is equivalent to row binding the
@@ -66,7 +67,7 @@ The value returned by head_tail() is equivalent to row binding the
 \note{
 For some types of input, like functions, the output may be confusing,
  however, we have opted for consistency with existing functions. The code
- is in part a revision of that of head() and tail() from package utils. I
+ is in part a revision of that of head() and tail() from package 'utils'. I
  have been missing this method especially when checking spectral data, as
  both ends are of interest.
 

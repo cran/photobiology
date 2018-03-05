@@ -5,7 +5,7 @@
 \alias{trim_mspct}
 \alias{trim2overlap}
 \alias{extend2extremes}
-\title{Trim (or expand) head and/or tail}
+\title{Trim (or expand) head and/or tail of a spectrum}
 \usage{
 trim_spct(spct, range = NULL, low.limit = NULL, high.limit = NULL,
   use.hinges = TRUE, fill = NULL, byref = FALSE,
@@ -13,44 +13,58 @@ trim_spct(spct, range = NULL, low.limit = NULL, high.limit = NULL,
 
 trim_mspct(mspct, range = NULL, low.limit = NULL, high.limit = NULL,
   use.hinges = TRUE, fill = NULL, byref = FALSE,
-  verbose = getOption("photobiology.verbose", default = TRUE))
+  verbose = getOption("photobiology.verbose", default = TRUE),
+  .parallel = FALSE, .paropts = NULL)
 
 trim2overlap(mspct, use.hinges = TRUE,
-  verbose = getOption("photobiology.verbose", default = TRUE))
+  verbose = getOption("photobiology.verbose", default = TRUE),
+  .parallel = FALSE, .paropts = NULL)
 
 extend2extremes(mspct, use.hinges = TRUE, fill = NA,
-  verbose = getOption("photobiology.verbose", default = TRUE))
+  verbose = getOption("photobiology.verbose", default = TRUE),
+  .parallel = FALSE, .paropts = NULL)
 }
 \arguments{
-\item{spct}{an object of class "generic_spct"}
+\item{spct}{an object of class "generic_spct".}
 
 \item{range}{a numeric vector of length two, or any other object for which
-function range() will return a numeric vector of length two}
+method range() will return a numeric vector of length two.}
 
 \item{low.limit}{shortest wavelength to be kept (defaults to shortest
-w.length value)}
+w.length value).}
 
 \item{high.limit}{longest wavelength to be kept (defaults to longest w.length
-value)}
+value).}
 
-\item{use.hinges}{logical, if TRUE (the default) wavelengths in nm.}
+\item{use.hinges}{logical Flag indicating whether to insert "hinges" into the
+spectral data before integration so as to reduce interpolation errors at
+the boundaries of the wavebands.}
 
 \item{fill}{if fill==NULL then tails are deleted, otherwise tails or s.irrad
-are filled with the value of fill}
+are filled with the value of fill.}
 
 \item{byref}{logical indicating if new object will be created by reference or
-by copy of spct}
+by copy of spct.}
 
-\item{verbose}{logical}
+\item{verbose}{logical.}
 
 \item{mspct}{an object of class "generic_mspct"}
+
+\item{.parallel}{if TRUE, apply function in parallel, using parallel backend
+provided by foreach}
+
+\item{.paropts}{a list of additional options passed into the foreach function
+when parallel computation is enabled. This is important if (for example)
+your code relies on external data or packages: use the .export and
+.packages arguments to supply them so that all cluster nodes have the
+correct environment set up for computing.}
 }
 \value{
-a spectrum of same class as input with its tails trimmed or expanded
+a spectrum of same class as input with its tails trimmed or expanded.
 }
 \description{
-Trimming of head and tail of a spectrum based on wavelength limits,
-interpolating the values at the boundaries. Trimming is needed for example to
+Trim head and tail of a spectrum based on wavelength limits, interpolating
+the values at the boundaries of the range. Trimming is needed for example to
 remove short wavelength noise when the measured spectrum extends beyond the
 known emission spectrum of the measured light source. Occasionally one may
 want also to expand the wavelength range.
@@ -59,7 +73,7 @@ want also to expand the wavelength range.
 When expanding an spectrum, if fill==NULL, then expansion is not
   performed. Range can be "waveband" object, a numeric vector or a list of
   numeric vectors, or any other user-defined or built-in object for which
-  \code{range()} returns a numeric vector of legth two, that can be
+  \code{range()} returns a numeric vector of length two, that can be
   interpreted as wavelengths expressed in nm.
 }
 \examples{
@@ -73,6 +87,5 @@ trim_spct(sun.spct, range = c(NA, 400))
 }
 \seealso{
 Other trim functions: \code{\link{clip_wl}},
-  \code{\link{trim_tails}}, \code{\link{trim_waveband}},
-  \code{\link{trim_wl}}
+  \code{\link{trim_waveband}}, \code{\link{trim_wl}}
 }

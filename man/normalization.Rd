@@ -16,7 +16,7 @@ normalization(x)
 \item{x}{an R object}
 }
 \description{
-Normalization wavelength of an R object, retireved from the object's
+Normalization wavelength of an R object, retrieved from the object's
 attributes.
 }
 \section{Methods (by class)}{

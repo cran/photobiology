@@ -10,10 +10,10 @@ e2qmol_multipliers(w.length)
 \item{w.length}{numeric Vector of wavelengths (nm)}
 }
 \value{
-A numeric array of multipliers
+A numeric vector of multipliers
 }
 \description{
-Gives multipliers as a function of wavelength, for converting from energy to
+Multipliers as a function of wavelength, for converting from energy to
 photon (quantum) molar units.
 }
 \examples{
@@ -23,8 +23,7 @@ with(sun.data, e2qmol_multipliers(w.length))
 \seealso{
 Other quantity conversion functions: \code{\link{A2T}},
   \code{\link{T2Afr}}, \code{\link{T2A}},
-  \code{\link{T2T}}, \code{\link{as_energy}},
-  \code{\link{as_quantum_mol}}, \code{\link{as_quantum}},
+  \code{\link{T2T}}, \code{\link{as_quantum}},
   \code{\link{e2quantum_multipliers}}, \code{\link{e2q}},
   \code{\link{q2e}}
 }

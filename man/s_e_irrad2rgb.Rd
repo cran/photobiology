@@ -2,23 +2,23 @@
 % Please edit documentation in R/s.e.irrad2rgb.r
 \name{s_e_irrad2rgb}
 \alias{s_e_irrad2rgb}
-\title{Spectrum to rgb color conversion}
+\title{Spectral irradiance to rgb color conversion}
 \usage{
 s_e_irrad2rgb(w.length, s.e.irrad, sens = photobiology::ciexyzCMF2.spct,
   color.name = NULL, check = TRUE)
 }
 \arguments{
-\item{w.length}{numeric array of wavelengths (nm)}
+\item{w.length}{numeric vector of wavelengths (nm).}
 
-\item{s.e.irrad}{numeric array of spectral irradiance values}
+\item{s.e.irrad}{numeric vector of spectral irradiance values.}
 
 \item{sens}{a chroma_spct object with variables w.length, x, y, and z, giving
 the CC or CMF definition (default is the proposed human CMF according to
-CIE 2006.)}
+CIE 2006.).}
 
-\item{color.name}{character string for naming the rgb color definition}
+\item{color.name}{character string for naming the rgb color definition.}
 
-\item{check}{logical indicating whether to check or not spectral data}
+\item{check}{logical indicating whether to check or not spectral data.}
 }
 \value{
 A color defined using \code{\link[grDevices]{rgb}}. The numeric
@@ -52,10 +52,25 @@ CIE(1932). Commission Internationale de l'Eclairage Proceedings,
   1931. Cambridge: Cambridge University Press.
 
 Color matching functions obtained from Colour and Vision Research
-Laboratory online data respository at \url{http://www.cvrl.org/}.
+Laboratory online data repository at \url{http://www.cvrl.org/}.
 }
 \seealso{
-Other color functions: \code{\link{rgb_spct}},
-  \code{\link{w_length2rgb}},
-  \code{\link{w_length_range2rgb}}
+Other low-level functions operating on numeric vectors.: \code{\link{as_energy}},
+  \code{\link{as_quantum_mol}},
+  \code{\link{calc_multipliers}},
+  \code{\link{div_spectra}},
+  \code{\link{energy_irradiance}},
+  \code{\link{energy_ratio}}, \code{\link{insert_hinges}},
+  \code{\link{integrate_xy}},
+  \code{\link{interpolate_spectrum}},
+  \code{\link{irradiance}}, \code{\link{l_insert_hinges}},
+  \code{\link{oper_spectra}},
+  \code{\link{photon_irradiance}},
+  \code{\link{photon_ratio}},
+  \code{\link{photons_energy_ratio}},
+  \code{\link{prod_spectra}},
+  \code{\link{split_energy_irradiance}},
+  \code{\link{split_photon_irradiance}},
+  \code{\link{subt_spectra}}, \code{\link{sum_spectra}},
+  \code{\link{trim_tails}}, \code{\link{v_insert_hinges}}
 }

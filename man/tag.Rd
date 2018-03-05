@@ -17,27 +17,38 @@ tag(x, ...)
 
 \method{tag}{generic_mspct}(x, w.band = NULL,
   wb.trim = getOption("photobiology.waveband.trim", default = TRUE),
-  use.hinges = TRUE, short.names = TRUE, byref = FALSE, ...)
+  use.hinges = TRUE, short.names = TRUE, byref = FALSE, ...,
+  .parallel = FALSE, .paropts = NULL)
 }
 \arguments{
-\item{x}{an R object}
+\item{x}{an R object.}
 
-\item{...}{not used in current version}
+\item{...}{ignored (possibly used by derived methods).}
 
-\item{w.band}{waveband or list of waveband objects The waveband(s) determine
+\item{w.band}{waveband or list of waveband objects. The waveband(s) determine
 the region(s) of the spectrum that are tagged}
 
 \item{wb.trim}{logical Flag telling if wavebands crossing spectral data
 boundaries are trimmed or ignored}
 
-\item{use.hinges}{logical Flag indicating whether to use hinges to reduce
-interpolation errors}
+\item{use.hinges}{logical Flag indicating whether to insert "hinges" into the
+spectral data before integration so as to reduce interpolation errors at
+the boundaries of the wavebands.}
 
 \item{short.names}{logical Flag indicating whether to use short or long names
 for wavebands}
 
 \item{byref}{logical Flag indicating if new object will be created \emph{by
 reference} or \emph{by copy} of \code{x}}
+
+\item{.parallel}{if TRUE, apply function in parallel, using parallel backend
+provided by foreach}
+
+\item{.paropts}{a list of additional options passed into the foreach function
+when parallel computation is enabled. This is important if (for example)
+your code relies on external data or packages: use the .export and
+.packages arguments to supply them so that all cluster nodes have the
+correct environment set up for computing.}
 }
 \value{
 A copy of \code{x} expanded with additional columns with

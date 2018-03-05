@@ -1,11 +1,11 @@
 Package: photobiology
 Type: Package
 Title: Photobiological Calculations
-Version: 0.9.18-1
-Date: 2017-12-16
+Version: 0.9.19
+Date: 2018-03-02
 Authors@R: 
    c(
-    person("Pedro J.", "Aphalo", email = "pedro.aphalo@helsinki.fi", role = c("aut", "cre")),
+    person("Pedro J.", "Aphalo", email = "pedro.aphalo@helsinki.fi", role = c("aut", "cre"), comment = c(ORCID = "https://orcid.org/0000-0003-3385-972X")),
     person("Titta K.", "Kotilainen", role = "ctb")
     )
 Description: Definitions of classes, methods, operators and functions for use in
@@ -15,7 +15,8 @@ Description: Definitions of classes, methods, operators and functions for use in
     ratios and other derived quantities from spectral data. Local maxima and
     minima. Conversion between energy- and photon-based units. Wavelength
     interpolation. Astronomical calculations related solar angles and day
-    length. Colours and vision.
+    length. Colours and vision. This package is part of the
+    'r4photobiology' suite, Aphalo P. J. (2015) <doi:10.19232/uv4pb.2015.1.14>.
 License: GPL (>= 2)
 Depends: R (>= 3.3.0)
 Imports: stats, polynom (>= 1.3-9), tibble (>= 1.3.4), lubridate (>=
@@ -33,9 +34,9 @@ Encoding: UTF-8
 RoxygenNote: 6.0.1
 VignetteBuilder: knitr
 NeedsCompilation: no
-Packaged: 2017-12-18 11:26:42 UTC; aphalo
-Author: Pedro J. Aphalo [aut, cre],
+Packaged: 2018-03-04 20:11:37 UTC; aphalo
+Author: Pedro J. Aphalo [aut, cre] (<https://orcid.org/0000-0003-3385-972X>),
   Titta K. Kotilainen [ctb]
 Maintainer: Pedro J. Aphalo <pedro.aphalo@helsinki.fi>
 Repository: CRAN
-Date/Publication: 2017-12-18 19:06:19 UTC
+Date/Publication: 2018-03-05 11:28:34 UTC

@@ -18,9 +18,11 @@ T2T(x, y, byref, Tfr.type.out, ...)
 \method{T2T}{object_spct}(x, y = NULL, byref = FALSE,
   Tfr.type.out = "total", ...)
 
-\method{T2T}{filter_mspct}(x, y, byref = FALSE, Tfr.type.out = "total", ...)
+\method{T2T}{filter_mspct}(x, y, byref = FALSE, Tfr.type.out = "total", ...,
+  .parallel = FALSE, .paropts = NULL)
 
-\method{T2T}{object_mspct}(x, y, byref = FALSE, Tfr.type.out = "total", ...)
+\method{T2T}{object_mspct}(x, y, byref = FALSE, Tfr.type.out = "total", ...,
+  .parallel = FALSE, .paropts = NULL)
 }
 \arguments{
 \item{x, y}{R objects}
@@ -30,13 +32,22 @@ T2T(x, y, byref, Tfr.type.out, ...)
 \item{Tfr.type.out}{character One of "total" or "internal"}
 
 \item{...}{not used in current version}
+
+\item{.parallel}{if TRUE, apply function in parallel, using parallel backend
+provided by foreach}
+
+\item{.paropts}{a list of additional options passed into the foreach function
+when parallel computation is enabled. This is important if (for example)
+your code relies on external data or packages: use the .export and
+.packages arguments to supply them so that all cluster nodes have the
+correct environment set up for computing.}
 }
 \description{
 Function that allows conversion between internal and total transmittance.
 }
 \section{Methods (by class)}{
 \itemize{
-\item \code{default}: Defauly method
+\item \code{default}: Default method
 
 \item \code{filter_spct}: Method for filter spectra
 
@@ -50,7 +61,6 @@ Function that allows conversion between internal and total transmittance.
 \seealso{
 Other quantity conversion functions: \code{\link{A2T}},
   \code{\link{T2Afr}}, \code{\link{T2A}},
-  \code{\link{as_energy}}, \code{\link{as_quantum_mol}},
   \code{\link{as_quantum}},
   \code{\link{e2qmol_multipliers}},
   \code{\link{e2quantum_multipliers}}, \code{\link{e2q}},

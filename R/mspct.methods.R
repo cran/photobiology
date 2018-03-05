@@ -7,12 +7,20 @@
 #' @param mspct an object of class generic_mspct or a derived class
 #' @param .fun a function
 #' @param ... other arguments passed to .fun
+#' @param .parallel	if TRUE, apply function in parallel, using parallel backend
+#'   provided by foreach
+#' @param .paropts a list of additional options passed into the foreach function
+#'   when parallel computation is enabled. This is important if (for example)
+#'   your code relies on external data or packages: use the .export and
+#'   .packages arguments to supply them so that all cluster nodes have the
+#'   correct environment set up for computing.
 #'
 #' @return a collection of spectra in the case of \code{msmsply}
 #'
 #' @export
 #'
-msmsply <- function(mspct, .fun, ...) {
+msmsply <- function(mspct, .fun, ...,
+                    .parallel = FALSE, .paropts = NULL) {
   stopifnot(is.any_mspct(mspct))
   mspct.class <- class(mspct)
   byrow <- attr(mspct, "mspct.byrow", exact = TRUE)
@@ -21,7 +29,11 @@ msmsply <- function(mspct, .fun, ...) {
   # llply returns a matrix for classes derived from list
   #
   rmDerivedMspct(mspct)
-  y <- plyr::llply(mspct, .fun, ...)
+  y <- plyr::llply(.data = mspct,
+                   .fun = .fun,
+                   ...,
+                   .parallel = .parallel,
+                   .paropts = .paropts)
 
   stopifnot(length(y) == length(mspct))
 
@@ -50,7 +62,8 @@ msmsply <- function(mspct, .fun, ...) {
 #'
 #' @export
 #'
-msdply <- function(mspct, .fun, ..., idx = NULL, col.names = NULL) {
+msdply <- function(mspct, .fun, ..., idx = NULL, col.names = NULL,
+                   .parallel = FALSE, .paropts = NULL) {
   stopifnot(is.any_mspct(mspct))
 
   if ( (is.logical(idx) && idx) ||
@@ -65,7 +78,9 @@ msdply <- function(mspct, .fun, ..., idx = NULL, col.names = NULL) {
   z <- plyr::ldply(.data = mspct,
                    .fun = .fun,
                    ...,
-                   .id = .idx )
+                   .id = .idx,
+                   .parallel = .parallel,
+                   .paropts = .paropts)
 
   f.name <- as.character( substitute(.fun))
 
@@ -136,7 +151,8 @@ msdply <- function(mspct, .fun, ..., idx = NULL, col.names = NULL) {
 #'
 #' @export
 #'
-mslply <- function(mspct, .fun, ...) {
+mslply <- function(mspct, .fun, ...,
+                   .parallel = FALSE, .paropts = NULL) {
   stopifnot(is.any_mspct(mspct))
 
   # llply returns a matrix for classes derived from list
@@ -144,7 +160,9 @@ mslply <- function(mspct, .fun, ...) {
   rmDerivedMspct(mspct)
   z <- plyr::llply(.data = mspct,
                    .fun = .fun,
-                   ...)
+                   ...,
+                   .parallel = .parallel,
+                   .paropts = .paropts )
 
   names(z) <- names(mspct)
 
@@ -160,14 +178,15 @@ mslply <- function(mspct, .fun, ...) {
 #'
 #' @param .drop should extra dimensions of length 1 in the output be dropped,
 #'   simplifying the output. Defaults to TRUE
-#' @return an array in the case of \code{msaply}
+#' @return an vector in the case of \code{msaply}
 #'
 #' @export
 #'
-msaply <- function(mspct, .fun, ..., .drop = TRUE) {
+msaply <- function(mspct, .fun, ..., .drop = TRUE,
+                   .parallel = FALSE, .paropts = NULL) {
   stopifnot(is.any_mspct(mspct))
 
-  # As many of our summary functions return nuneric values with names and other
+  # As many of our summary functions return numeric values with names and other
   # attributes they need to be removed for dply::lapply to accept them.
   .ffun <- function(mspct, ...) {
     z <- .fun(mspct, ...)
@@ -180,7 +199,9 @@ msaply <- function(mspct, .fun, ..., .drop = TRUE) {
   z <- plyr::laply(.data = mspct,
                    .fun = .ffun,
                    ...,
-                   .drop = .drop)
+                   .drop = .drop,
+                   .parallel = .parallel,
+                   .paropts = .paropts)
 
   f.name <- as.character(substitute(.fun))
 
@@ -193,7 +214,7 @@ msaply <- function(mspct, .fun, ..., .drop = TRUE) {
 
 #' Get the "mspct.version" attribute
 #'
-#' Funtion to read the "mspct.version" attribute of an existing generic_mspct
+#' Function to read the "mspct.version" attribute of an existing generic_mspct
 #' object.
 #'
 #' @param x a generic_mspct object
@@ -220,7 +241,7 @@ getMspctVersion <- function(x) {
 
 #' Check that the "mspct.version" attribute is set
 #'
-#' Funtion to check the "mspct.version" attribute of an existing generic_spct
+#' Function to check the "mspct.version" attribute of an existing generic_spct
 #' object.
 #'
 #' @param x a generic_mspct object
@@ -254,7 +275,7 @@ checkMspctVersion <- function(x) {
 #'   \code{numeric}
 #' @param e2 an object of class \code{generic_mspct} or \code{generic_scpt} or
 #'   \code{numeric}
-#' @param oper function, usually but not necesarily an operator with two
+#' @param oper function, usually but not necessarily an operator with two
 #'   arguments.
 #' @param ... additional arguments passed to \code{oper} if present.
 #'
@@ -301,12 +322,12 @@ convolve_each <- function(e1, e2, oper = `*`, ...) {
 
 # utility functions for attributes ----------------------------------------
 
-#' Copy atributes from members of a generic_mspct
+#' Copy attributes from members of a generic_mspct
 #'
 #' Copy the when.measured, where.measured or what.measured attribute from
 #' members of a generic_mspct object into a tibble or data.frame.
 #'
-#' @param mspct generir_mspct Any collection of spectra.
+#' @param mspct generic_mspct Any collection of spectra.
 #' @param tb tibble or data.frame to which to add the data (optional).
 #' @param col.names character Name(s) of column(s) to create.
 #'
@@ -319,8 +340,8 @@ convolve_each <- function(e1, e2, oper = `*`, ...) {
 #'   the number of rows in the argument passed to \code{tb} must match the
 #'   number of spectra in the argument passed to \code{mspct}. If the argument
 #'   to \code{col.names} is aa named vector, with the names of members matching
-#'   the names of attibutes, then the values are used as names for the columns
-#'   created. This permits setting any valid name fro the new columns.
+#'   the names of attributes, then the values are used as names for the columns
+#'   created. This permits setting any valid name for the new columns.
 #'   If the vector passed to \code{col.names} has no names, then the
 #'   values are interpreted as the names of the attributes to add, and also
 #'   used as names for the new columns.

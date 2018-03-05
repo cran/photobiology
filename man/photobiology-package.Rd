@@ -13,7 +13,8 @@ transmittance, reflectance, absorptance, absorbance and diverse
 ratios and other derived quantities from spectral data. Local maxima and
 minima. Conversion between energy- and photon-based units. Wavelength
 interpolation. Astronomical calculations related solar angles and day
-length. Colours and vision.
+length. Colours and vision. This package is part of the
+'r4photobiology' suite, Aphalo P. J. (2015) <doi:10.19232/uv4pb.2015.1.14>.
 }
 \details{
 Package 'photobiology' is at the core of a suite of packages for
@@ -25,7 +26,7 @@ Package 'photobiology' is at the core of a suite of packages for
   and meteorology. Package 'photobiology' has its main focus in the
   characterization of the light environment in a biologically relevant manner
   and in the manipulation of spectral data to simulate photo-physical,
-  photo-chemical and photo-biological interactions and reponses. The focus of
+  photo-chemical and photo-biological interactions and responses. The focus of
   package 'pavo' (Maia et al., 2003) is in colour perception by animals and
   assessment of animal coloration. In spite of the different focus, there is
   some degree of overlap.
@@ -38,7 +39,7 @@ Code for some of the astronomical calculations has been adapted from
  This work was funded by the Academy of Finland
   (decision 252548). COST Action FA9604 'UV4Growth' facilitated discussions
   and exchanges of ideas that lead to the development of this package. The
-  contributins of Andy McLeod, Lars Olof Björn, Nigel Paul, Lasse Ylianttila,
+  contributions of Andy McLeod, Lars Olof Björn, Nigel Paul, Lasse Ylianttila,
   T. Matthew Robson and Titta Kotilainen were specially significant.
   Tutorials by Hadley Wickham and comments on my presentation at UseR!2015
   allowed me to significantly improve the coding and functionality.
@@ -70,15 +71,18 @@ transmittance(yellow_gel.spct, waveband(c(500,700)))
 \references{
 Aphalo, P. J., Albert, A., Björn, L. O., McLeod, A. R., Robson, T. M.,
 Rosenqvist, E. (Eds.). (2012). Beyond the Visible: A handbook of best
-practice in plant UV photobiology (1st ed., p. xxx + 174). Helsinki:
+practice in plant UV photobiology (1st ed., p. xx + 174). Helsinki:
 University of Helsinki, Department of Biosciences, Division of Plant Biology.
 ISBN 978-952-10-8363-1 (PDF), 978-952-10-8362-4 (paperback). Open access PDF
 download available at http://hdl.handle.net/10138/37558
 
+Aphalo, Pedro J. (2015) The r4photobiology suite. UV4Plants Bulletin, 2015:1,
+21-29. \url{http://doi.org/10.19232/uv4pb.2015.1.14}.
+
 Maia, R., Eliason, C. M., Bitton, P. P., Doucet, S. M., Shawkey, M. D. (2013)
 pavo: an R package for the analysis, visualization and organization of
-spectral data. Methods in Ecology and Evolution, 4(10):906-913. doi:
-10.1111/2041-210X.12069
+spectral data. Methods in Ecology and Evolution, 4(10):906-913.
+\url{http://doi.org/10.1111/2041-210X.12069}.
 }
 \seealso{
 Useful links:
@@ -90,7 +94,7 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Pedro J. Aphalo \email{pedro.aphalo@helsinki.fi}
+\strong{Maintainer}: Pedro J. Aphalo \email{pedro.aphalo@helsinki.fi} (https://orcid.org/0000-0003-3385-972X)
 
 Other contributors:
 \itemize{

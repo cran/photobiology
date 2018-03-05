@@ -10,7 +10,7 @@ fshift_spct(spct, range, col.names, f, ...)
 \item{spct}{generic_spct The spectrum to be normalized}
 
 \item{range}{an R object on which range() returns a vector of length 2, with
-min annd max wavelengths (nm)}
+min and max wavelengths (nm)}
 
 \item{col.names}{character The name of the variable to fscale}
 

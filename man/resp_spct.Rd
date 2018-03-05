@@ -7,7 +7,7 @@
 resp_spct(spct, w.band, unit.out, quantity, time.unit, wb.trim, use.hinges, ...)
 }
 \arguments{
-\item{spct}{an object of class response_spct"}
+\item{spct}{an object of class response_spct".}
 
 \item{w.band}{waveband or list of waveband objects or a numeric vector of
 length two. The waveband(s) determine the region(s) of the spectrum that
@@ -15,22 +15,24 @@ are summarized. If a numeric range is supplied a waveband object is
 constructed on the fly from it.}
 
 \item{unit.out}{character with allowed values "energy", and "photon", or its
-alias "quantum"}
+alias "quantum".}
 
 \item{quantity}{character string One of "total", "average" or "mean",
-"contribution", "contribution.pc", "relative" or "relative.pc"}
+"contribution", "contribution.pc", "relative" or "relative.pc".}
 
 \item{wb.trim}{logical if TRUE wavebands crossing spectral data boundaries
-are trimmed, if FALSE, they are discarded}
+are trimmed, if FALSE, they are discarded.}
 
-\item{use.hinges}{logical indicating whether to use hinges to reduce
-interpolation errors}
+\item{use.hinges}{logical Flag indicating whether to insert "hinges" into the
+spectral data before integration so as to reduce interpolation errors at
+the boundaries of the wavebands.}
 
-\item{...}{other arguments}
+\item{...}{other arguments (possibly used by derived methods).}
 }
 \value{
 a single numeric value expressed either as a fraction of one or a
-  percentage, or a vector of the same length as the list of wave.bands.
+  percentage, or a vector of the same length as the list of \code{waveband}
+  objects.
 }
 \description{
 This function returns the mean response for a given waveband and a response
@@ -38,7 +40,7 @@ spectrum.
 }
 \note{
 The parameter \code{use.hinges} controls speed optimization. The
-  defaults should be suitable in mosts cases. Only the range of wavelengths
+  defaults should be suitable in most cases. Only the range of wavelengths
   in the wavebands is used and all BSWFs are ignored.
 }
 \keyword{internal}

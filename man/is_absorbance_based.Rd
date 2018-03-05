@@ -18,7 +18,7 @@ object that contains spectral absorbance data and FALSE if it does not contain
 such data, but returns NA for any other R object, including those belonging
 other \code{generic_spct}-derived classes.
 
-\code{is_transmittance_based} returns TRUE if its argument is a a \code{filter_spct}
+\code{is_transmittance_based} returns TRUE if its argument is a \code{filter_spct}
 object that contains spectral transmittance data and FALSE if it does not contain
 such data, but returns NA for any other R object, including those belonging
 other \code{generic_spct}-derived classes.

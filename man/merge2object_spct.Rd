@@ -15,7 +15,7 @@ on; \code{by} defaults to \code{w.length}.}
 
 \item{...}{other arguments passed to \code{dplyr::inner_join()}}
 
-\item{w.length.out}{numeric array of wavelengths to be used for the returned
+\item{w.length.out}{numeric vector of wavelengths to be used for the returned
 object (nm).}
 
 \item{Tfr.type.out}{character string indicating whether transmittance
@@ -28,7 +28,7 @@ An object_spct is returned as the result of merging a filter_spct and
 }
 \description{
 Merge a filter_spct with a reflector_spct returning an object_spct object,
-even if wavelength values are missmatched.
+even if wavelength values are mismatched.
 }
 \note{
 If a numeric vector is supplied as argument for \code{w.length.out},

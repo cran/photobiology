@@ -13,13 +13,13 @@ is_energy_based(x)
 \item{x}{any R object}
 }
 \value{
-\code{is_photon_based} returns \code{TRUE} if its argument is a a
+\code{is_photon_based} returns \code{TRUE} if its argument is a
   \code{source_spct} or a \code{response_spct} object that contains photon
   base data and \code{FALSE} if such an object does not contain such data,
   but returns \code{NA} for any other R object, including those belonging
   other \code{generic_spct}-derived classes.
 
-\code{is_energy_based} returns \code{TRUE} if its argument is a a \code{source_spct} or
+\code{is_energy_based} returns \code{TRUE} if its argument is a \code{source_spct} or
 a \code{response_spct} object that contains energy base data and \code{FALSE} if such an
 object does not contain such data, but returns \code{NA} for any other R object,
 including those belonging other \code{generic_spct}-derived classes

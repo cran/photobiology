@@ -41,7 +41,7 @@ valleys(x, span, ignore_threshold, strict, ...)
   strict = TRUE, ...)
 
 \method{valleys}{generic_mspct}(x, span = 5, ignore_threshold = 0,
-  strict = TRUE, ...)
+  strict = TRUE, ..., .parallel = FALSE, .paropts = NULL)
 }
 \arguments{
 \item{x}{an R object}
@@ -52,7 +52,7 @@ element. The default value is 3, meaning that a peak is bigger than both of
 its neighbors. Default: 3.}
 
 \item{ignore_threshold}{numeric value between 0.0 and 1.0 indicating the
-relative size compared to talelst peakthreshold below which valleys will be
+relative size compared to tallest peak threshold below which valleys will be
 ignored.}
 
 \item{strict}{logical flag: if TRUE, an element must be strictly greater than
@@ -63,6 +63,15 @@ all other values in its window to be considered a peak. Default: TRUE.}
 \item{unit.out}{character One of "energy" or "photon"}
 
 \item{filter.qty}{character One of "transmittance" or "absorbance"}
+
+\item{.parallel}{if TRUE, apply function in parallel, using parallel backend
+provided by foreach}
+
+\item{.paropts}{a list of additional options passed into the foreach function
+when parallel computation is enabled. This is important if (for example)
+your code relies on external data or packages: use the .export and
+.packages arguments to supply them so that all cluster nodes have the
+correct environment set up for computing.}
 }
 \value{
 A subset of \code{x} with rows corresponding to local minima.

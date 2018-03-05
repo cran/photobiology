@@ -14,14 +14,14 @@ A character vector containing the removed class attribute values.
   This is different to the behaviour of function \code{unlist} in base R!
 }
 \description{
-Removes from an spectrum object the class attibutes "generic_mspct" and any
+Removes from an spectrum object the class attributes "generic_mspct" and any
 derived class attribute such as "source_mspct". \strong{This operation is done
 by reference!}
 }
 \note{
 If \code{x} is an object of any of the multi spectral classes defined
   in this package, this function changes by reference the multi spectrum
-  object into the underlying lis object. Otherwise, it just leaves \code{x}
+  object into the underlying list object. Otherwise, it just leaves \code{x}
   unchanged. The modified \code{x} is also returned invisibly.
 }
 \seealso{

@@ -30,7 +30,7 @@ A numeric vector of length 2 with min and maximum stepsize values.
 }
 \description{
 Function that returns the range of step sizes in an object. Range of
-differences between succesive sorted values.
+differences between successive sorted values.
 }
 \section{Methods (by class)}{
 \itemize{

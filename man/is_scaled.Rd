@@ -15,7 +15,7 @@ A \code{logical} value. If \code{x} is not scaled or \code{x} is
 }
 \description{
 This function tests a \code{generic_spct} object for an attribute that
-signals whether the spectral data has been rescled or not after the object
+signals whether the spectral data has been rescaled or not after the object
 was created.
 }
 \seealso{

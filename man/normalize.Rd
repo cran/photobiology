@@ -42,20 +42,25 @@ normalize(x, ...)
   col.names)
 
 \method{normalize}{source_mspct}(x, ..., range = NULL, norm = "max",
-  unit.out = getOption("photobiology.radiation.unit", default = "energy"))
+  unit.out = getOption("photobiology.radiation.unit", default = "energy"),
+  .parallel = FALSE, .paropts = NULL)
 
 \method{normalize}{response_mspct}(x, ..., range = NULL, norm = "max",
-  unit.out = getOption("photobiology.radiation.unit", default = "energy"))
+  unit.out = getOption("photobiology.radiation.unit", default = "energy"),
+  .parallel = FALSE, .paropts = NULL)
 
 \method{normalize}{filter_mspct}(x, ..., range = NULL, norm = "max",
-  qty.out = getOption("photobiology.filter.qty", default = "transmittance"))
+  qty.out = getOption("photobiology.filter.qty", default = "transmittance"),
+  .parallel = FALSE, .paropts = NULL)
 
 \method{normalize}{reflector_mspct}(x, ..., range = x, norm = "max",
-  qty.out = NULL)
+  qty.out = NULL, .parallel = FALSE, .paropts = NULL)
 
-\method{normalize}{raw_mspct}(x, ..., range = x, norm = "max")
+\method{normalize}{raw_mspct}(x, ..., range = x, norm = "max",
+  .parallel = FALSE, .paropts = NULL)
 
-\method{normalize}{cps_mspct}(x, ..., range = x, norm = "max")
+\method{normalize}{cps_mspct}(x, ..., range = x, norm = "max",
+  .parallel = FALSE, .paropts = NULL)
 }
 \arguments{
 \item{x}{An R object}
@@ -63,11 +68,11 @@ normalize(x, ...)
 \item{...}{not used in current version}
 
 \item{range}{An R object on which \code{range()} returns a numeric vector of
-length 2 with the limits of a range of wavelengths in nm, with min annd max
+length 2 with the limits of a range of wavelengths in nm, with min and max
 wavelengths (nm)}
 
 \item{norm}{numeric Normalization wavelength (nm) or character string "max",
-or "min" for normalization at the corresponding wavelngth, or "integral" or
+or "min" for normalization at the corresponding wavelength, or "integral" or
 "mean" for rescaling by dividing by these values.}
 
 \item{unit.out}{character Allowed values "energy", and "photon",
@@ -78,6 +83,15 @@ or its alias "quantum"}
 
 \item{col.names}{character vector containing the names of columns or
 variables to which to apply the normalization.}
+
+\item{.parallel}{if TRUE, apply function in parallel, using parallel backend
+provided by foreach}
+
+\item{.paropts}{a list of additional options passed into the foreach function
+when parallel computation is enabled. This is important if (for example)
+your code relies on external data or packages: use the .export and
+.packages arguments to supply them so that all cluster nodes have the
+correct environment set up for computing.}
 }
 \value{
 A copy of \code{x}, with spectral data values normalized to one for

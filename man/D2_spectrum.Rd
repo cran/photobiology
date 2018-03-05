@@ -2,7 +2,7 @@
 % Please edit documentation in R/d2.spectrum.r
 \name{D2_spectrum}
 \alias{D2_spectrum}
-\title{Calculate deuterim lamp output spectrum from fitted constants}
+\title{Calculate deuterium lamp output spectrum from fitted constants}
 \usage{
 D2_spectrum(w.length, k = photobiology::D2.UV653, fill = NA_real_)
 }
@@ -22,7 +22,7 @@ a dataframe with four numeric vectors with wavelength values
 }
 \description{
 Calculate values by means of a nth degree polynomial from
-user-supplied constants (for example from a lamp calibartion certificate).
+user-supplied constants (for example from a lamp calibration certificate).
 }
 \note{
 This is function is valid for wavelengths in the range 180 nm to 495

@@ -108,7 +108,7 @@ m-2 nm-1 or mol d-1 m-2 nm-1}
 \item{Tfr.type, Afr.type}{character string indicating whether transmittance
 and absorptance values are "total" or "internal" values}
 
-\item{Rfr}{numeric vector with spectral refletance as fraction of one}
+\item{Rfr}{numeric vector with spectral reflectance as fraction of one}
 
 \item{Rpc}{numeric vector with spectral reflectance as percent values}
 
@@ -122,7 +122,7 @@ A object of class generic_spct or a class derived from it, depending
   name as the constructor function.
 }
 \description{
-These fucntions can be used to create spectral objects derived from
+These functions can be used to create spectral objects derived from
 \code{generic_spct}. They take as arguments numeric vectors for the data
 character scalars for attributes, and a logical flag.
 }
@@ -135,7 +135,7 @@ The functions can be used to add only one spectral quantity to a
 
 "internal" transmittance is defined as the transmittance of the
   material body itself, while "total" transmittance includes the effects of
-  surface reflectance on the ammount of light transmitted.
+  surface reflectance on the amount of light transmitted.
 }
 \seealso{
 Other creation of spectral objects functions: \code{\link{as.generic_spct}}

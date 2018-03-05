@@ -17,9 +17,11 @@ e2q(x, action, byref, ...)
 
 \method{e2q}{response_spct}(x, action = "add", byref = FALSE, ...)
 
-\method{e2q}{source_mspct}(x, action = "add", byref = FALSE, ...)
+\method{e2q}{source_mspct}(x, action = "add", byref = FALSE, ...,
+  .parallel = FALSE, .paropts = NULL)
 
-\method{e2q}{response_mspct}(x, action = "add", byref = FALSE, ...)
+\method{e2q}{response_mspct}(x, action = "add", byref = FALSE, ...,
+  .parallel = FALSE, .paropts = NULL)
 }
 \arguments{
 \item{x}{an R object}
@@ -29,9 +31,18 @@ e2q(x, action, byref, ...)
 \item{byref}{logical indicating if new object will be created by reference or by copy of x}
 
 \item{...}{not used in current version}
+
+\item{.parallel}{if TRUE, apply function in parallel, using parallel backend
+provided by foreach}
+
+\item{.paropts}{a list of additional options passed into the foreach function
+when parallel computation is enabled. This is important if (for example)
+your code relies on external data or packages: use the .export and
+.packages arguments to supply them so that all cluster nodes have the
+correct environment set up for computing.}
 }
 \description{
-Function that coverts spectral energy irradiance into spectral photon irradiance (molar).
+Function that converts spectral energy irradiance into spectral photon irradiance (molar).
 }
 \section{Methods (by class)}{
 \itemize{
@@ -43,14 +54,13 @@ Function that coverts spectral energy irradiance into spectral photon irradiance
 
 \item \code{source_mspct}: Method for collections of (light) source spectra
 
-\item \code{response_mspct}: Method for for collections of response spectra
+\item \code{response_mspct}: Method for collections of response spectra
 }}
 
 \seealso{
 Other quantity conversion functions: \code{\link{A2T}},
   \code{\link{T2Afr}}, \code{\link{T2A}},
-  \code{\link{T2T}}, \code{\link{as_energy}},
-  \code{\link{as_quantum_mol}}, \code{\link{as_quantum}},
+  \code{\link{T2T}}, \code{\link{as_quantum}},
   \code{\link{e2qmol_multipliers}},
   \code{\link{e2quantum_multipliers}}, \code{\link{q2e}}
 }

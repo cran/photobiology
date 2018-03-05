@@ -12,7 +12,7 @@ average_spct(spct)
 \value{
 One or more numeric values with no change in scale factor: e.g. [W
   m-2 nm-1] -> [W m-2 nm-1]. Each value in the returned vector corresponds to a
-  variable in the spectral object, except for wavelenght.
+  variable in the spectral object, except for wavelength.
 }
 \description{
 This function gives the result of integrating spectral data over

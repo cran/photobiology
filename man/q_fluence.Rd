@@ -22,44 +22,54 @@ q_fluence(spct, w.band, exposure.time, wb.trim, use.cached.mult, use.hinges,
   wb.trim = getOption("photobiology.waveband.trim", default = TRUE),
   use.cached.mult = getOption("photobiology.use.cached.mult", default =
   FALSE), use.hinges = NULL, allow.scaled = FALSE, ..., attr2tb = NULL,
-  idx = !is.null(names(spct)))
+  idx = !is.null(names(spct)), .parallel = FALSE, .paropts = NULL)
 }
 \arguments{
-\item{spct}{an R object}
+\item{spct}{an R object.}
 
 \item{w.band}{a list of \code{waveband} objects or a \code{waveband} object}
 
-\item{exposure.time}{lubridate::duration}
+\item{exposure.time}{lubridate::duration object.}
 
 \item{wb.trim}{logical if TRUE wavebands crossing spectral data boundaries
-are trimmed, if FALSE, they are discarded}
+are trimmed, if FALSE, they are discarded.}
 
 \item{use.cached.mult}{logical indicating whether multiplier values should be
-cached between calls}
+cached between calls.}
 
-\item{use.hinges}{logical indicating whether to use hinges to reduce
-interpolation errors}
+\item{use.hinges}{logical Flag indicating whether to insert "hinges" into the
+spectral data before integration so as to reduce interpolation errors at
+the boundaries of the wavebands.}
 
 \item{allow.scaled}{logical indicating whether scaled or normalized spectra
-as argument to spct are flagged as an error}
+as argument to spct are flagged as an error.}
 
-\item{...}{other arguments (possibly ignored)}
+\item{...}{other arguments (possibly ignored).}
 
 \item{attr2tb}{character vector, see \code{\link{add_attr2tb}} for the syntax for \code{attr2tb} passed as is to formal parameter \code{col.names}.}
 
 \item{idx}{logical whether to add a column with the names of the elements of
 spct}
+
+\item{.parallel}{if TRUE, apply function in parallel, using parallel backend
+provided by foreach}
+
+\item{.paropts}{a list of additional options passed into the foreach function
+when parallel computation is enabled. This is important if (for example)
+your code relies on external data or packages: use the .export and
+.packages arguments to supply them so that all cluster nodes have the
+correct environment set up for computing.}
 }
 \value{
 One numeric value for each waveband with no change in scale factor,
   with name attribute set to the name of each waveband unless a named list is
   supplied in which case the names of the list elements are used. The
-  exposure.time is copied from the spectrum object to the output as an attibute.
+  exposure.time is copied from the spectrum object to the output as an attribute.
   Units are as follows: moles of photons per exposure.
 }
 \description{
-This function returns the photon irradiance (or quantum irradiance) for a
-given waveband of a light source spectrum.
+Photon irradiance (i.e. quantum irradiance) for one or more waveband of a
+light source spectrum.
 }
 \section{Methods (by class)}{
 \itemize{
@@ -74,7 +84,7 @@ object and the duration of the exposure
 
 \note{
 The last two parameters control speed optimizations. The defaults
-  should be suitable in mosts cases. If you will use repeatedly the same SWFs
+  should be suitable in most cases. If you will use repeatedly the same SWFs
   on many spectra measured at exactly the same wavelengths you may obtain
   some speed up by setting \code{use.cached.mult=TRUE}. However, be aware
   that you are responsible for ensuring that the wavelengths are the same in
@@ -90,8 +100,6 @@ q_fluence(sun.spct,
 }
 \seealso{
 Other irradiance functions: \code{\link{e_fluence}},
-  \code{\link{e_irrad}}, \code{\link{energy_irradiance}},
-  \code{\link{fluence}}, \code{\link{irradiance}},
-  \code{\link{irrad}}, \code{\link{photon_irradiance}},
-  \code{\link{q_irrad}}
+  \code{\link{e_irrad}}, \code{\link{fluence}},
+  \code{\link{irrad}}, \code{\link{q_irrad}}
 }

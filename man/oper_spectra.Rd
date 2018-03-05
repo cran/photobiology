@@ -8,13 +8,13 @@ oper_spectra(w.length1, w.length2 = NULL, s.irrad1, s.irrad2,
   trim = "union", na.rm = FALSE, bin.oper = NULL, ...)
 }
 \arguments{
-\item{w.length1}{numeric array of wavelength (nm)}
+\item{w.length1}{numeric vector of wavelength (nm)}
 
-\item{w.length2}{numeric array of wavelength (nm)}
+\item{w.length2}{numeric vector of wavelength (nm)}
 
-\item{s.irrad1}{a numeric array of spectral values}
+\item{s.irrad1}{a numeric vector of spectral values}
 
-\item{s.irrad2}{a numeric array of spectral values}
+\item{s.irrad2}{a numeric vector of spectral values}
 
 \item{trim}{a character string with value "union" or "intersection"}
 
@@ -43,7 +43,7 @@ If trim=="union" spectral values are calculated for the whole range
   of wavelengths covered by at least one of the input spectra, and missing
   values are set in each input spectrum to zero before addition. If
   trim=="intersection" then the range of wavelengths covered by both input
-  spectra is returned, and the non-overlaping regions discarded. If
+  spectra is returned, and the non-overlapping regions discarded. If
   w.length2==NULL, it is assumed that both spectra are measured at the same
   wavelengths, and a simple addition is used, ensuring fast calculation.
 }
@@ -62,4 +62,23 @@ result.data <-
 head(result.data)
 tail(result.data)
 
+}
+\seealso{
+Other low-level functions operating on numeric vectors.: \code{\link{as_energy}},
+  \code{\link{as_quantum_mol}},
+  \code{\link{calc_multipliers}},
+  \code{\link{div_spectra}},
+  \code{\link{energy_irradiance}},
+  \code{\link{energy_ratio}}, \code{\link{insert_hinges}},
+  \code{\link{integrate_xy}},
+  \code{\link{interpolate_spectrum}},
+  \code{\link{irradiance}}, \code{\link{l_insert_hinges}},
+  \code{\link{photon_irradiance}},
+  \code{\link{photon_ratio}},
+  \code{\link{photons_energy_ratio}},
+  \code{\link{prod_spectra}}, \code{\link{s_e_irrad2rgb}},
+  \code{\link{split_energy_irradiance}},
+  \code{\link{split_photon_irradiance}},
+  \code{\link{subt_spectra}}, \code{\link{sum_spectra}},
+  \code{\link{trim_tails}}, \code{\link{v_insert_hinges}}
 }

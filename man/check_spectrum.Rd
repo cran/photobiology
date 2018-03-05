@@ -2,22 +2,22 @@
 % Please edit documentation in R/check.spectrum.r
 \name{check_spectrum}
 \alias{check_spectrum}
-\title{Sanity check of a spectrum.}
+\title{Sanity check a spectrum}
 \usage{
 check_spectrum(w.length, s.irrad)
 }
 \arguments{
-\item{w.length}{numeric Vector of wavelengths (nm)}
+\item{w.length}{numeric vector of wavelengths (nm).}
 
 \item{s.irrad}{numeric Corresponding vector of spectral (energy) irradiances
-(W m-2 nm-1)}
+(W m-2 nm-1).}
 }
 \value{
 A single \code{logical} value indicating whether test was passed or
   not
 }
 \description{
-This function checks a spectral radiation data in \code{numeric} vectors for
+Checks spectral irradiance data in \code{numeric} vectors for
 compliance with assumptions used in calculations.
 }
 \examples{

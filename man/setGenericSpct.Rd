@@ -64,7 +64,7 @@ error instead of a warning.}
 x
 }
 \description{
-Sets the class attibute of a data.frame or an object of a derived
+Sets the class attribute of a data.frame or an object of a derived
 class to "generic_spct".
 }
 \section{Functions}{

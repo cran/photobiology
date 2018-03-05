@@ -25,12 +25,14 @@ reflectance(spct, w.band, quantity, wb.trim, use.hinges, ...)
 \method{reflectance}{reflector_mspct}(spct, w.band = NULL,
   quantity = "average", wb.trim = getOption("photobiology.waveband.trim",
   default = TRUE), use.hinges = getOption("photobiology.use.hinges", default =
-  NULL), ..., attr2tb = NULL, idx = !is.null(names(spct)))
+  NULL), ..., attr2tb = NULL, idx = !is.null(names(spct)),
+  .parallel = FALSE, .paropts = NULL)
 
 \method{reflectance}{object_mspct}(spct, w.band = NULL,
   quantity = "average", wb.trim = getOption("photobiology.waveband.trim",
   default = TRUE), use.hinges = getOption("photobiology.use.hinges", default =
-  NULL), ..., attr2tb = NULL, idx = !is.null(names(spct)))
+  NULL), ..., attr2tb = NULL, idx = !is.null(names(spct)),
+  .parallel = FALSE, .paropts = NULL)
 }
 \arguments{
 \item{spct}{an R object}
@@ -46,8 +48,9 @@ constructed on the fly from it.}
 \item{wb.trim}{logical Flag telling if wavebands crossing spectral data boundaries
 are trimmed or ignored}
 
-\item{use.hinges}{logical Flag indicating whether to use hinges to reduce
-interpolation errors}
+\item{use.hinges}{logical Flag indicating whether to insert "hinges" into the
+spectral data before integration so as to reduce interpolation errors at
+the boundaries of the wavebands.}
 
 \item{...}{other arguments}
 
@@ -55,6 +58,15 @@ interpolation errors}
 
 \item{idx}{logical whether to add a column with the names of the elements of
 spct}
+
+\item{.parallel}{if TRUE, apply function in parallel, using parallel backend
+provided by foreach}
+
+\item{.paropts}{a list of additional options passed into the foreach function
+when parallel computation is enabled. This is important if (for example)
+your code relies on external data or packages: use the .export and
+.packages arguments to supply them so that all cluster nodes have the
+correct environment set up for computing.}
 }
 \value{
 A named \code{numeric} vector in the case of methods for individual

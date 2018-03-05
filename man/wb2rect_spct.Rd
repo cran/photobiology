@@ -16,7 +16,7 @@ for wavebands}
 \value{
 A \code{generic.spectrum} object, with columns w.length, wl.low,
   wl.hi, wl.color, wb.color and wb.name. The w.length values are the
-  midppoint of the wavebands, wl.low and wl.high give the boundaries of the
+  midpoint of the wavebands, wl.low and wl.high give the boundaries of the
   wavebands, wl.color the color definition corresponding to the wavelength at
   the center of the waveband and wb.color the color of the waveband as a
   whole (assuming a flat energy irradiance spectrum). Different spectral data

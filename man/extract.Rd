@@ -72,7 +72,7 @@ These methods are just wrappers on the method for data.frame objects
   which copy the additional attributes used by these classes, and validate
   the extracted object as a spectral object. When drop is TRUE and the
   returned object has only one column, then a vector is returned. If the
-  extrated columns are more than one but do not include \code{w.length}, a
+  extracted columns are more than one but do not include \code{w.length}, a
   data frame is returned instead of a spectral object.
 }
 \examples{

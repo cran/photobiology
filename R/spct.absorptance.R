@@ -4,18 +4,19 @@
 #' spectral data stored in a \code{filter_spct} or in an \code{object_spct}.
 #' Absorptance is a different quantity than absorbance.
 #'
-#' @param spct an R object
+#' @param spct an R object.
 #' @param w.band waveband or list of waveband objects or a numeric vector of
 #'   length two. The waveband(s) determine the region(s) of the spectrum that
 #'   are summarized. If a numeric range is supplied a waveband object is
 #'   constructed on the fly from it.
 #' @param quantity character string One of "average" or "mean", "total",
-#'   "contribution", "contribution.pc", "relative" or "relative.pc"
+#'   "contribution", "contribution.pc", "relative" or "relative.pc".
 #' @param wb.trim logical Flag if wavebands crossing spectral data boundaries
-#'   are trimmed or ignored
-#' @param use.hinges logical Flag indicating whether to use hinges to reduce
-#'   interpolation errors
-#' @param ... other arguments (possibly ignored)
+#'   are trimmed or ignored.
+#' @param use.hinges logical Flag indicating whether to insert "hinges" into the
+#'   spectral data before integration so as to reduce interpolation errors at
+#'   the boundaries of the wavebands.
+#' @param ... other arguments (possibly used by derived methods).
 #'
 #' @note The \code{use.hinges} parameter controls speed optimization. The
 #'   defaults should be suitable in most cases. Only the range of wavelengths
@@ -74,7 +75,7 @@ absorptance.filter_spct <-
            wb.trim = getOption("photobiology.waveband.trim", default = TRUE),
            use.hinges = getOption("photobiology.use.hinges", default = NULL), ... ) {
     if (getTfrType(spct) != "internal") {
-      warning("Internal absorptance cannot be calculed from total transmittance alone")
+      warning("Internal absorptance cannot be calculated from total transmittance alone")
       return(NA)
     } else {
       absorptance_spct(spct = spct, w.band = w.band, quantity = quantity,
@@ -175,7 +176,7 @@ absorptance_spct <-
     if (is.waveband(w.band)) {
       # if the argument is a single w.band, we enclose it in a list
       # so that the for loop works as expected.This is a bit of a
-      # cludge but let's us avoid treating it as a special case
+      # kludge but let's us avoid treating it as a special case
       w.band <- list(w.band)
     }
     w.band <- trim_waveband(w.band = w.band, range = spct, trim = wb.trim)
@@ -298,6 +299,14 @@ absorptance.filter_mspct <-
 
 #' @describeIn absorptance Calculates absorptance from a \code{object_mspct}
 #'
+#' @param .parallel	if TRUE, apply function in parallel, using parallel backend
+#'   provided by foreach
+#' @param .paropts a list of additional options passed into the foreach function
+#'   when parallel computation is enabled. This is important if (for example)
+#'   your code relies on external data or packages: use the .export and
+#'   .packages arguments to supply them so that all cluster nodes have the
+#'   correct environment set up for computing.
+#'
 #' @export
 #'
 absorptance.object_mspct <-
@@ -307,7 +316,9 @@ absorptance.object_mspct <-
            use.hinges=getOption("photobiology.use.hinges", default = NULL),
            ...,
            attr2tb = NULL,
-           idx = !is.null(names(spct)) ) {
+           idx = !is.null(names(spct)),
+           .parallel = FALSE,
+           .paropts = NULL) {
     z <-
       msdply(
         mspct = spct,
@@ -317,7 +328,9 @@ absorptance.object_mspct <-
         wb.trim = wb.trim,
         use.hinges = use.hinges,
         idx = idx,
-        col.names = names(w.band)
+        col.names = names(w.band),
+        .parallel = .parallel,
+        .paropts = .paropts
       )
     add_attr2tb(tb = z,
                 mspct = spct,

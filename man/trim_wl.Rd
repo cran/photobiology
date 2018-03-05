@@ -17,7 +17,7 @@ trim_wl(x, range, use.hinges, fill, ...)
   fill = NULL, ...)
 
 \method{trim_wl}{generic_mspct}(x, range = NULL, use.hinges = TRUE,
-  fill = NULL, ...)
+  fill = NULL, ..., .parallel = FALSE, .paropts = NULL)
 
 \method{trim_wl}{waveband}(x, range = NULL, use.hinges = TRUE,
   fill = NULL, trim = getOption("photobiology.waveband.trim", default =
@@ -27,17 +27,28 @@ trim_wl(x, range, use.hinges, fill, ...)
   trim = getOption("photobiology.waveband.trim", default = TRUE), ...)
 }
 \arguments{
-\item{x}{an R object}
+\item{x}{an R object.}
 
 \item{range}{a numeric vector of length two, or any other object for which
-function range() will return two}
+function range() will return two.}
 
-\item{use.hinges}{logical, if TRUE (the default) wavelengths in nm.}
+\item{use.hinges}{logical Flag indicating whether to insert "hinges" into the
+spectral data before integration so as to reduce interpolation errors at
+the boundaries of the wavebands.}
 
 \item{fill}{if \code{fill == NULL} then tails are deleted, otherwise tails
 are filled with the value of fill.}
 
-\item{...}{not used}
+\item{...}{ignored (possibly used by derived methods).}
+
+\item{.parallel}{if TRUE, apply function in parallel, using parallel backend
+provided by foreach}
+
+\item{.paropts}{a list of additional options passed into the foreach function
+when parallel computation is enabled. This is important if (for example)
+your code relies on external data or packages: use the .export and
+.packages arguments to supply them so that all cluster nodes have the
+correct environment set up for computing.}
 
 \item{trim}{logical (default is TRUE which trims the wavebands at the
 boundary, while FALSE discards wavebands that are partly off-boundary).}
@@ -48,8 +59,9 @@ A copy of \code{x}, usually trimmed or expanded to a different
   spectral data values replaced with \code{fill}.
 }
 \description{
-Triming of head and tail of a spectrum based on wavelength limits,
-interpolation used by default. Expansion is also possible.
+Trim head and tail of a spectrum based on wavelength limits, with
+interpolation at range boundaries used by default. Expansion is also
+possible.
 }
 \section{Methods (by class)}{
 \itemize{
@@ -82,6 +94,5 @@ trim_wl(sun.spct, range = c(400, NA))
 }
 \seealso{
 Other trim functions: \code{\link{clip_wl}},
-  \code{\link{trim_spct}}, \code{\link{trim_tails}},
-  \code{\link{trim_waveband}}
+  \code{\link{trim_spct}}, \code{\link{trim_waveband}}
 }

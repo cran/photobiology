@@ -7,23 +7,46 @@
 v_insert_hinges(x, y, h)
 }
 \arguments{
-\item{x}{numeric array (sorted in increasing order)}
+\item{x}{numeric vector (sorted in increasing order).}
 
-\item{y}{numeric array}
+\item{y}{numeric vector.}
 
-\item{h}{a numeric array giving the wavelengths at which the y values
-should be inserted by interpolation, no interpolation is indicated by an
-empty array (numeric(0))}
+\item{h}{a numeric vector giving the wavelengths at which the y values should
+be inserted by interpolation, no interpolation is indicated by an empty
+numeric vector (\code{numeric(0)}).}
 }
 \value{
-a numeric vector of \code{y} values
+A numeric vector with the numeric values of \code{y}, but longer.
+  Unless the hinge values were already present in \code{y}, each inserted
+  hinge, expands the vector by two values.
 }
 \description{
 Inserting wavelengths values immediately before and after a discontinuity in
 the SWF, greatly reduces the errors caused by interpolating the weighted
 irradiance during integration of the effective spectral irradiance. This is
-specially true when data have a large wavelength step size. This fucntion
-differs from \code{insert_hinges()} in that it returns a vector of \code{y}
-values instead of a \code{tibble}.
+specially true when data have a relatively large wavelength step size and/or
+when the weighting function used has discontinuities in its value or slope.
+This function differs from \code{insert_hinges()} in that it returns a vector
+of \code{y} values instead of a \code{tibble}.
 }
-\keyword{internal}
+\seealso{
+Other low-level functions operating on numeric vectors.: \code{\link{as_energy}},
+  \code{\link{as_quantum_mol}},
+  \code{\link{calc_multipliers}},
+  \code{\link{div_spectra}},
+  \code{\link{energy_irradiance}},
+  \code{\link{energy_ratio}}, \code{\link{insert_hinges}},
+  \code{\link{integrate_xy}},
+  \code{\link{interpolate_spectrum}},
+  \code{\link{irradiance}}, \code{\link{l_insert_hinges}},
+  \code{\link{oper_spectra}},
+  \code{\link{photon_irradiance}},
+  \code{\link{photon_ratio}},
+  \code{\link{photons_energy_ratio}},
+  \code{\link{prod_spectra}}, \code{\link{s_e_irrad2rgb}},
+  \code{\link{split_energy_irradiance}},
+  \code{\link{split_photon_irradiance}},
+  \code{\link{subt_spectra}}, \code{\link{sum_spectra}},
+  \code{\link{trim_tails}}
+}
+\keyword{internal.}

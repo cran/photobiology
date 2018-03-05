@@ -13,7 +13,7 @@ checkMspctVersion(x)
 numeric value
 }
 \description{
-Funtion to check the "mspct.version" attribute of an existing generic_spct
+Function to check the "mspct.version" attribute of an existing generic_spct
 object.
 }
 \note{

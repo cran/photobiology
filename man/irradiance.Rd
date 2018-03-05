@@ -2,47 +2,47 @@
 % Please edit documentation in R/irradiance.r
 \name{irradiance}
 \alias{irradiance}
-\title{Photon (quantum) irradiance from spectral (energy) irradiance.}
+\title{Photon or energy irradiance from spectral energy or photon irradiance.}
 \usage{
 irradiance(w.length, s.irrad, w.band = NULL, unit.out = NULL,
   unit.in = "energy", check.spectrum = TRUE, use.cached.mult = FALSE,
   use.hinges = getOption("photobiology.use.hinges", default = NULL))
 }
 \arguments{
-\item{w.length}{numeric Vector of wavelength (nm)}
+\item{w.length}{numeric Vector of wavelength (nm).}
 
-\item{s.irrad}{numeric Corresponding vector of spectral (energy) irradiances
-(W m-2 nm-1)}
+\item{s.irrad}{numeric vector of spectral (energy) irradiances (W m-2 nm-1).}
 
 \item{w.band}{waveband or list of waveband objects The waveband(s) determine
 the region(s) of the spectrum that are summarized.}
 
 \item{unit.out}{character Allowed values "energy", and "photon", or its alias
-"quantum"}
+"quantum".}
 
 \item{unit.in}{character Allowed values "energy", and "photon", or its alias
-"quantum"}
+"quantum".}
 
 \item{check.spectrum}{logical Flag indicating whether to sanity check input
-data, default is TRUE}
+data, default is TRUE.}
 
 \item{use.cached.mult}{logical Flag indicating whether multiplier values
-should be cached between calls}
+should be cached between calls.}
 
-\item{use.hinges}{logical Flag indicating whether to use hinges to reduce
-interpolation errors}
+\item{use.hinges}{logical Flag indicating whether to insert "hinges" into the
+spectral data before integration so as to reduce interpolation errors at
+the boundaries of the wavebands.}
 }
 \value{
-a single numeric value with no change in scale factor: [W m-2 nm-1]
-  -> [mol s-1 m-2]
+A single numeric value or a vector of numeric values with no change
+  in scale factor: [W m-2 nm-1] -> [mol s-1 m-2]
 }
 \description{
-This function returns the energy irradiance for a given waveband of a
-radiation spectrum.
+Energy or photon irradiance for one or more wavebands of a radiation
+spectrum.
 }
 \note{
 The last three parameters control speed optimizations. The defaults
-  should be suitable in mosts cases. If you set \code{check.spectrum=FALSE}
+  should be suitable in most cases. If you set \code{check.spectrum=FALSE}
   then you should call \code{check_spectrum()} at least once for your
   spectrum before using any of the other functions. If you will use
   repeatedly the same SWFs on many spectra measured at exactly the same
@@ -59,9 +59,22 @@ The last three parameters control speed optimizations. The defaults
 with(sun.data, irradiance(w.length, s.e.irrad, new_waveband(400,700), "photon"))
 }
 \seealso{
-Other irradiance functions: \code{\link{e_fluence}},
-  \code{\link{e_irrad}}, \code{\link{energy_irradiance}},
-  \code{\link{fluence}}, \code{\link{irrad}},
-  \code{\link{photon_irradiance}}, \code{\link{q_fluence}},
-  \code{\link{q_irrad}}
+Other low-level functions operating on numeric vectors.: \code{\link{as_energy}},
+  \code{\link{as_quantum_mol}},
+  \code{\link{calc_multipliers}},
+  \code{\link{div_spectra}},
+  \code{\link{energy_irradiance}},
+  \code{\link{energy_ratio}}, \code{\link{insert_hinges}},
+  \code{\link{integrate_xy}},
+  \code{\link{interpolate_spectrum}},
+  \code{\link{l_insert_hinges}},
+  \code{\link{oper_spectra}},
+  \code{\link{photon_irradiance}},
+  \code{\link{photon_ratio}},
+  \code{\link{photons_energy_ratio}},
+  \code{\link{prod_spectra}}, \code{\link{s_e_irrad2rgb}},
+  \code{\link{split_energy_irradiance}},
+  \code{\link{split_photon_irradiance}},
+  \code{\link{subt_spectra}}, \code{\link{sum_spectra}},
+  \code{\link{trim_tails}}, \code{\link{v_insert_hinges}}
 }

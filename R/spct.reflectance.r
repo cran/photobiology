@@ -12,8 +12,9 @@
 #'   "contribution", "contribution.pc", "relative" or "relative.pc"
 #' @param wb.trim logical Flag telling if wavebands crossing spectral data boundaries
 #'   are trimmed or ignored
-#' @param use.hinges logical Flag indicating whether to use hinges to reduce
-#'   interpolation errors
+#' @param use.hinges logical Flag indicating whether to insert "hinges" into the
+#'   spectral data before integration so as to reduce interpolation errors at
+#'   the boundaries of the wavebands.
 #' @param ... other arguments
 #'
 #' @note The \code{use.hinges} parameter controls speed optimization. The
@@ -92,8 +93,9 @@ reflectance.object_spct <-
 #'   "contribution", "contribution.pc", "relative" or "relative.pc"
 #' @param wb.trim logical if TRUE wavebands crossing spectral data boundaries
 #'   are trimmed, if FALSE, they are discarded
-#' @param use.hinges logical indicating whether to use hinges to reduce
-#'   interpolation errors
+#' @param use.hinges logical Flag indicating whether to insert "hinges" into the
+#'   spectral data before integration so as to reduce interpolation errors at
+#'   the boundaries of the wavebands.
 #'
 #' @return A single numeric value expressed as a fraction of one
 #' @keywords internal
@@ -121,7 +123,7 @@ reflectance_spct <-
     if (is.waveband(w.band)) {
       # if the argument is a single w.band, we enclose it in a list
       # so that the for loop works as expected.This is a bit of a
-      # cludge but let's us avoid treating it as a special case
+      # kludge but let's us avoid treating it as a special case
       w.band <- list(w.band)
     }
     w.band <- trim_waveband(w.band = w.band, range = spct, trim = wb.trim)
@@ -216,6 +218,13 @@ reflectance_spct <-
 #' @param attr2tb character vector, see \code{\link{add_attr2tb}} for the syntax for \code{attr2tb} passed as is to formal parameter \code{col.names}.
 #' @param idx logical whether to add a column with the names of the elements of
 #'   spct
+#' @param .parallel	if TRUE, apply function in parallel, using parallel backend
+#'   provided by foreach
+#' @param .paropts a list of additional options passed into the foreach function
+#'   when parallel computation is enabled. This is important if (for example)
+#'   your code relies on external data or packages: use the .export and
+#'   .packages arguments to supply them so that all cluster nodes have the
+#'   correct environment set up for computing.
 #'
 #' @export
 #'
@@ -226,7 +235,9 @@ reflectance.reflector_mspct <-
            use.hinges = getOption("photobiology.use.hinges", default = NULL),
            ...,
            attr2tb = NULL,
-           idx = !is.null(names(spct))) {
+           idx = !is.null(names(spct)),
+           .parallel = FALSE,
+           .paropts = NULL) {
     z <-
       msdply(
         mspct = spct,
@@ -236,7 +247,9 @@ reflectance.reflector_mspct <-
         wb.trim = wb.trim,
         use.hinges = use.hinges,
         idx = idx,
-        col.names = names(w.band)
+        col.names = names(w.band),
+        .parallel = .parallel,
+        .paropts = .paropts
       )
     add_attr2tb(tb = z,
                 mspct = spct,
@@ -256,7 +269,9 @@ reflectance.object_mspct <-
            use.hinges= getOption("photobiology.use.hinges", default = NULL),
            ...,
            attr2tb = NULL,
-           idx = !is.null(names(spct))) {
+           idx = !is.null(names(spct)),
+           .parallel = FALSE,
+           .paropts = NULL) {
     z <-
       msdply(
         mspct = spct,
@@ -266,7 +281,9 @@ reflectance.object_mspct <-
         wb.trim = wb.trim,
         use.hinges = use.hinges,
         idx = idx,
-        col.names = names(w.band)
+        col.names = names(w.band),
+        .parallel = .parallel,
+        .paropts = .paropts
       )
     add_attr2tb(tb = z,
                 mspct = spct,

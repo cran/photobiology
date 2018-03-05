@@ -58,7 +58,7 @@ in an error instead of a warning}
 \value{
 These functions return a copy of \code{x} converted into a given
   class of spectral object, if \code{x} is a valid argument to the
-  correcponding set function.
+  corresponding set function.
 }
 \description{
 Return a copy of an R object with its class set to a given type of spectrum.

@@ -9,15 +9,16 @@ wb2tagged_spct(w.band, use.hinges = TRUE, short.names = TRUE, ...)
 \arguments{
 \item{w.band}{waveband or list of waveband objects The waveband(s) determine
 the region(s) of the spectrum that are tagged and the wavelengths returned
-in variable \code{w.length}}
+in variable \code{w.length}.}
 
-\item{use.hinges}{logical Flag indicating whether to use hinges to reduce
-interpolation errors}
+\item{use.hinges}{logical Flag indicating whether to insert "hinges" into the
+spectral data before integration so as to reduce interpolation errors at
+the boundaries of the wavebands.}
 
 \item{short.names}{logical Flag indicating whether to use short or long names
-for wavebands}
+for wavebands.}
 
-\item{...}{not used in current version}
+\item{...}{ignored (possibly used by derived methods).}
 }
 \value{
 A spectrum as returned by \code{\link{wb2spct}} but additionally

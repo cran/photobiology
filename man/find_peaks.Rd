@@ -7,7 +7,7 @@
 find_peaks(x, ignore_threshold = 0, span = 3, strict = TRUE)
 }
 \arguments{
-\item{x}{numeric array}
+\item{x}{numeric vector}
 
 \item{ignore_threshold}{numeric value between 0.0 and 1.0 indicating the size
 threshold below which peaks will be ignored.}
@@ -17,7 +17,7 @@ than all other elements within a window of width span centered at that
 element. The default value is 3, meaning that a peak is bigger than both of
 its neighbors. Default: 3.}
 
-\item{strict}{ogical flag: if TRUE, an element must be strictly greater than
+\item{strict}{logical flag: if TRUE, an element must be strictly greater than
 all other values in its window to be considered a peak. Default: TRUE.}
 }
 \value{

@@ -22,14 +22,16 @@ q_ratio(spct, w.band.num, w.band.denom, wb.trim, use.cached.mult, use.hinges,
   wb.trim = getOption("photobiology.waveband.trim", default = TRUE),
   use.cached.mult = FALSE,
   use.hinges = getOption("photobiology.use.hinges"), ..., attr2tb = NULL,
-  idx = !is.null(names(spct)))
+  idx = !is.null(names(spct)), .parallel = FALSE, .paropts = NULL)
 }
 \arguments{
-\item{spct}{an object of class "source_spct"}
+\item{spct}{an object of class "source_spct".}
 
-\item{w.band.num}{waveband definition created with new_waveband()}
+\item{w.band.num}{waveband object or a list of waveband objects used to
+compute the numerator(s) of the ratio(s).}
 
-\item{w.band.denom}{waveband definition created with new_waveband()}
+\item{w.band.denom}{waveband object or a list of waveband objects used to
+compute the denominator(s) of the ratio(s).}
 
 \item{wb.trim}{logical if TRUE wavebands crossing spectral data boundaries
 are trimmed, if FALSE, they are discarded}
@@ -37,19 +39,29 @@ are trimmed, if FALSE, they are discarded}
 \item{use.cached.mult}{logical indicating whether multiplier values should be
 cached between calls}
 
-\item{use.hinges}{logical indicating whether to use hinges to reduce
-interpolation errors}
+\item{use.hinges}{logical Flag indicating whether to insert "hinges" into the
+spectral data before integration so as to reduce interpolation errors at
+the boundaries of the wavebands.}
 
 \item{...}{other arguments (possibly ignored)}
 
 \item{attr2tb}{character vector, see \code{\link{add_attr2tb}} for the syntax for \code{attr2tb} passed as is to formal parameter \code{col.names}.}
 
 \item{idx}{logical whether to add a column with the names of the elements of spct}
+
+\item{.parallel}{if TRUE, apply function in parallel, using parallel backend
+provided by foreach}
+
+\item{.paropts}{a list of additional options passed into the foreach function
+when parallel computation is enabled. This is important if (for example)
+your code relies on external data or packages: use the .export and
+.packages arguments to supply them so that all cluster nodes have the
+correct environment set up for computing.}
 }
 \value{
 In the case of methods for individual spectra, a \code{numeric}
   vector of nondimensional values giving a photon ratio between integrated
-  photon irradiances for for pairs of wavebands, with name attribute set to
+  photon irradiances for pairs of wavebands, with name attribute set to
   the name of the wavebands unless a named list of wavebands is supplied in
   which case the names of the list elements are used, with "(q:q)" appended.
   A \code{data.frame} in the case of collections of spectra, containing one
@@ -79,7 +91,7 @@ object.
 
 \note{
 The last two parameters control speed
-  optimizations. The defaults should be suitable in mosts cases. If you will
+  optimizations. The defaults should be suitable in most cases. If you will
   use repeatedly the same SWFs on many spectra measured at exactly the same
   wavelengths you may obtain some speed up by setting
   \code{use.cached.mult=TRUE}. However, be aware that you are responsible for
@@ -92,8 +104,5 @@ q_ratio(sun.spct, new_waveband(400,500), new_waveband(400,700))
 }
 \seealso{
 Other photon and energy ratio functions: \code{\link{e_ratio}},
-  \code{\link{energy_ratio}}, \code{\link{eq_ratio}},
-  \code{\link{photon_ratio}},
-  \code{\link{photons_energy_ratio}},
-  \code{\link{qe_ratio}}
+  \code{\link{eq_ratio}}, \code{\link{qe_ratio}}
 }

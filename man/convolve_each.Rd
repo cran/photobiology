@@ -13,7 +13,7 @@ convolve_each(e1, e2, oper = `*`, ...)
 \item{e2}{an object of class \code{generic_mspct} or \code{generic_scpt} or
 \code{numeric}}
 
-\item{oper}{function, usually but not necesarily an operator with two
+\item{oper}{function, usually but not necessarily an operator with two
 arguments.}
 
 \item{...}{additional arguments passed to \code{oper} if present.}

@@ -12,7 +12,7 @@ setScaled(x, scaled = FALSE)
 \item{scaled}{logical}
 }
 \description{
-Funtion to write the "scaled" attribute of an existing generic_spct
+Function to write the "scaled" attribute of an existing generic_spct
 object.
 }
 \note{

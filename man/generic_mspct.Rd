@@ -44,13 +44,13 @@ for the elements of l}
 
 \item{byrow}{logical If \code{ncol > 1} how to read in the data}
 
-\item{dim}{integer Array of dimensions}
+\item{dim}{integer vector of dimensions}
 
 \item{...}{ignored}
 }
 \description{
 Converts a list of spectral objects into a "multi spectrum"
-  object by setting the class attibute of the list of spectra to the
+  object by setting the class attribute of the list of spectra to the
   corresponding multi-spct class, check that components of the list belong to
   the expected class.
 }

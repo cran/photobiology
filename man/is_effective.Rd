@@ -31,7 +31,7 @@ is_effective(x)
 A \code{logical}.
 }
 \description{
-A generic function for quering if a biological spectral weighting function
+A generic function for querying if a biological spectral weighting function
 (BSWF) has been applied to an object or is included in its definition.
 }
 \section{Methods (by class)}{
@@ -39,7 +39,7 @@ A generic function for quering if a biological spectral weighting function
 \item \code{default}: Default method.
 
 \item \code{waveband}: Is a \code{waveband} object defining a method for
-calcualtaing effective irradiance.
+calculating effective irradiance.
 
 \item \code{generic_spct}: Does a \code{source_spct} object contain effective
 spectral irradiance values.

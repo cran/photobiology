@@ -1256,7 +1256,7 @@ f_dispatcher_spct <- function(x, .fun, ...) {
 #'
 #' Logarithms and Exponentials for Spectra. The functions are applied to the
 #' spectral data, not the wavelengths. The quantity in the spectrum to which the
-#' function is appled depends on the class of \code{x} and the current value of
+#' function is applied depends on the class of \code{x} and the current value of
 #' output options
 #'
 #' @name log
@@ -1300,7 +1300,7 @@ exp.generic_spct <- function(x) {
 #' \code{abs(x)} computes the absolute value of \code{x}, \code{sqrt(x)}
 #' computes the (principal) square root of \code{x}. The functions are applied
 #' to the spectral data, not the wavelengths. The quantity in the spectrum to
-#' which the function is appled depends on the class of \code{x} and the current
+#' which the function is applied depends on the class of \code{x} and the current
 #' value of output options.
 #'
 #' @name MathFun
@@ -1354,7 +1354,7 @@ sign.generic_spct <- function(x) {
 #' \code{signif} rounds the values in its first argument to the specified number of
 #' significant digits. \\
 #' The functions are applied to the spectral data, not the wavelengths. The
-#' quantity in the spectrum to which the function is appled depends on the class
+#' quantity in the spectrum to which the function is applied depends on the class
 #' of \code{x} and the current value of output options.
 #'
 #' @param x an object of class "generic_spct" or a derived class.
@@ -1409,7 +1409,7 @@ trunc.generic_spct <- function(x, ...) {
 #' Trigonometric functions for object of \code{generic_spct} and derived
 #' classes.  \\
 #' The functions are applied to the spectral data, not the wavelengths. The
-#' quantity in the spectrum to which the function is appled depends on the class
+#' quantity in the spectrum to which the function is applied depends on the class
 #' of \code{x} and the current value of output options.
 #'
 #' @name Trig
@@ -1494,7 +1494,7 @@ tanpi.generic_spct <- function(x) {
 
 #' Convert absorbance into transmittance
 #'
-#' Function that coverts absorbance (a.u.) into transmittance (fraction).
+#' Function that converts absorbance (a.u.) into transmittance (fraction).
 #'
 #' @param x an R object
 #' @param action a character string
@@ -1541,10 +1541,29 @@ A2T.filter_spct <- function(x, action="add", byref = FALSE, ...) {
 
 #' @describeIn A2T Method for collections of filter spectra
 #'
+#' @param .parallel	if TRUE, apply function in parallel, using parallel backend
+#'   provided by foreach
+#' @param .paropts a list of additional options passed into the foreach function
+#'   when parallel computation is enabled. This is important if (for example)
+#'   your code relies on external data or packages: use the .export and
+#'   .packages arguments to supply them so that all cluster nodes have the
+#'   correct environment set up for computing.
+#'
 #' @export
 #'
-A2T.filter_mspct <- function(x, action = "add", byref = FALSE, ...) {
-  msmsply(x, A2T, action = action, byref = byref, ...)
+A2T.filter_mspct <- function(x,
+                             action = "add",
+                             byref = FALSE,
+                             ...,
+                             .parallel = FALSE,
+                             .paropts = NULL) {
+  msmsply(x,
+          .fun = A2T,
+          action = action,
+          byref = byref,
+          ...,
+          .parallel = .parallel,
+          .paropts = .paropts)
 }
 
 
@@ -1553,7 +1572,7 @@ A2T.filter_mspct <- function(x, action = "add", byref = FALSE, ...) {
 
 #' Convert transmittance into absorbance.
 #'
-#' Function that coverts transmittance (fraction) into absorbance (a.u.).
+#' Function that converts transmittance (fraction) into absorbance (a.u.).
 #'
 #' @param x an R object
 #' @param action character Allowed values "replace" and "add"
@@ -1616,17 +1635,38 @@ T2A.filter_spct <- function(x, action="add", byref = FALSE, clean = TRUE, ...) {
 
 #' @describeIn T2A Method for collections of filter spectra
 #'
+#' @param .parallel	if TRUE, apply function in parallel, using parallel backend
+#'   provided by foreach
+#' @param .paropts a list of additional options passed into the foreach function
+#'   when parallel computation is enabled. This is important if (for example)
+#'   your code relies on external data or packages: use the .export and
+#'   .packages arguments to supply them so that all cluster nodes have the
+#'   correct environment set up for computing.
+#'
 #' @export
 #'
-T2A.filter_mspct <- function(x, action = "add", byref = FALSE, clean = TRUE, ...) {
-  msmsply(x, T2A, action = action, byref = byref, clean = clean, ...)
+T2A.filter_mspct <- function(x,
+                             action = "add",
+                             byref = FALSE,
+                             clean = TRUE,
+                             ...,
+                             .parallel = FALSE,
+                             .paropts = NULL) {
+  msmsply(x,
+          .fun = T2A,
+          action = action,
+          byref = byref,
+          clean = clean,
+          ...,
+          .parallel = .parallel,
+          .paropts = .paropts)
 }
 
 # T2Afr ---------------------------------------------------------------------
 
 #' Convert transmittance into absorptance.
 #'
-#' Function that coverts transmittance (fraction) into absorptance (fraction).
+#' Function that converts transmittance (fraction) into absorptance (fraction).
 #' If reflectance (fraction) is available, it allows conversions between
 #' internal and total absorptance.
 #'
@@ -1734,10 +1774,31 @@ T2Afr.object_spct <- function(x,
 
 #' @describeIn T2Afr Method for collections of filter spectra
 #'
+#' @param .parallel	if TRUE, apply function in parallel, using parallel backend
+#'   provided by foreach
+#' @param .paropts a list of additional options passed into the foreach function
+#'   when parallel computation is enabled. This is important if (for example)
+#'   your code relies on external data or packages: use the .export and
+#'   .packages arguments to supply them so that all cluster nodes have the
+#'   correct environment set up for computing.
+#'
 #' @export
 #'
-T2Afr.filter_mspct <- function(x, action = "add", byref = FALSE, clean = FALSE, ...) {
-  msmsply(x, T2Afr, action = action, byref = byref, clean = FALSE, ...)
+T2Afr.filter_mspct <- function(x,
+                               action = "add",
+                               byref = FALSE,
+                               clean = FALSE,
+                               ...,
+                               .parallel = FALSE,
+                               .paropts = NULL) {
+  msmsply(x,
+          .fun = T2Afr,
+          action = action,
+          byref = byref,
+          clean = FALSE,
+          ...,
+          .parallel = .parallel,
+          .paropts = .paropts)
 }
 
 #' @describeIn T2Afr Method for collections of object spectra
@@ -1762,7 +1823,7 @@ T2Afr.object_mspct <- T2Afr.filter_mspct
 #'
 T2T <- function(x, y, byref, Tfr.type.out, ...) UseMethod("T2T")
 
-#' @describeIn T2T Defauly method
+#' @describeIn T2T Default method
 #'
 #' @export
 #'
@@ -1853,13 +1914,30 @@ T2T.object_spct <- function(x, y = NULL,
 
 #' @describeIn T2T Method for collections of filter spectra
 #'
+#' @param .parallel	if TRUE, apply function in parallel, using parallel backend
+#'   provided by foreach
+#' @param .paropts a list of additional options passed into the foreach function
+#'   when parallel computation is enabled. This is important if (for example)
+#'   your code relies on external data or packages: use the .export and
+#'   .packages arguments to supply them so that all cluster nodes have the
+#'   correct environment set up for computing.
+#'
 #' @export
 #'
 T2T.filter_mspct <- function(x, y,
                              byref = FALSE,
                              Tfr.type.out = "total",
-                             ...) {
-  msmsply(x, T2T, y = y, byref = byref, Tfr.type.out = Tfr.type.out, ...)
+                             ...,
+                             .parallel = FALSE,
+                             .paropts = NULL) {
+  msmsply(x,
+          .fun = T2T,
+          y = y,
+          byref = byref,
+          Tfr.type.out = Tfr.type.out,
+          ...,
+          .parallel = .parallel,
+          .paropts = .paropts)
 }
 
 #' @describeIn T2T Method for collections of object spectra
@@ -1875,7 +1953,7 @@ T2T.object_mspct <- T2T.filter_mspct
 
 #' Convert energy-based quantities into photon-based quantities.
 #'
-#' Function that coverts spectral energy irradiance into spectral photon irradiance (molar).
+#' Function that converts spectral energy irradiance into spectral photon irradiance (molar).
 #'
 #' @param x an R object
 #' @param action a character string
@@ -1947,25 +2025,55 @@ e2q.response_spct <- function(x, action="add", byref = FALSE, ...) {
 
 #' @describeIn e2q Method for collections of (light) source spectra
 #'
+#' @param .parallel	if TRUE, apply function in parallel, using parallel backend
+#'   provided by foreach
+#' @param .paropts a list of additional options passed into the foreach function
+#'   when parallel computation is enabled. This is important if (for example)
+#'   your code relies on external data or packages: use the .export and
+#'   .packages arguments to supply them so that all cluster nodes have the
+#'   correct environment set up for computing.
+#'
 #' @export
 #'
-e2q.source_mspct <- function(x, action = "add", byref = FALSE, ...) {
-  msmsply(x, e2q, action = action, byref = byref, ...)
+e2q.source_mspct <- function(x,
+                             action = "add",
+                             byref = FALSE,
+                             ...,
+                             .parallel = FALSE,
+                             .paropts = NULL) {
+  msmsply(x,
+          .fun = e2q,
+          action = action,
+          byref = byref,
+          ...,
+          .parallel = .parallel,
+          .paropts = .paropts)
 }
 
-#' @describeIn e2q Method for for collections of response spectra
+#' @describeIn e2q Method for collections of response spectra
 #'
 #' @export
 #'
-e2q.response_mspct <- function(x, action = "add", byref = FALSE, ...) {
-  msmsply(x, e2q, action = action, byref = byref, ...)
+e2q.response_mspct <- function(x,
+                               action = "add",
+                               byref = FALSE,
+                               ...,
+                               .parallel = FALSE,
+                               .paropts = NULL) {
+  msmsply(x,
+          .fun = e2q,
+          action = action,
+          byref = byref,
+          ...,
+          .parallel = .parallel,
+          .paropts = .paropts)
 }
 
 # photon to energy ---------------------------------------------------------------------
 
 #' Convert photon-based quantities into energy-based quantities
 #'
-#' Function that coverts spectral photon irradiance (molar) into spectral energy irradiance.
+#' Function that converts spectral photon irradiance (molar) into spectral energy irradiance.
 #'
 #' @param x an R object
 #' @param action a character string
@@ -2037,10 +2145,29 @@ q2e.response_spct <- function(x, action="add", byref = FALSE, ...) {
 
 #' @describeIn q2e Method for collections of (light) source spectra
 #'
+#' @param .parallel	if TRUE, apply function in parallel, using parallel backend
+#'   provided by foreach
+#' @param .paropts a list of additional options passed into the foreach function
+#'   when parallel computation is enabled. This is important if (for example)
+#'   your code relies on external data or packages: use the .export and
+#'   .packages arguments to supply them so that all cluster nodes have the
+#'   correct environment set up for computing.
+#'
 #' @export
 #'
-q2e.source_mspct <- function(x, action = "add", byref = FALSE, ...) {
-  msmsply(x, q2e, action = action, byref = byref, ...)
+q2e.source_mspct <- function(x,
+                             action = "add",
+                             byref = FALSE,
+                             ...,
+                             .parallel = FALSE,
+                             .paropts = NULL) {
+  msmsply(x,
+          q2e,
+          action = action,
+          byref = byref,
+          ...,
+          .parallel = .parallel,
+          .paropts = .paropts)
 }
 
 
@@ -2048,8 +2175,19 @@ q2e.source_mspct <- function(x, action = "add", byref = FALSE, ...) {
 #'
 #' @export
 #'
-q2e.response_mspct <- function(x, action = "add", byref = FALSE, ...) {
-  msmsply(x, q2e, action = action, byref = byref, ...)
+q2e.response_mspct <- function(x,
+                               action = "add",
+                               byref = FALSE,
+                               ...,
+                               .parallel = FALSE,
+                               .paropts = NULL) {
+  msmsply(x,
+          q2e,
+          action = action,
+          byref = byref,
+          ...,
+          .parallel = .parallel,
+          .paropts = .paropts)
 }
 
 

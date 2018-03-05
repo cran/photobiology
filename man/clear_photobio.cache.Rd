@@ -2,7 +2,7 @@
 % Please edit documentation in R/calc.multipliers.r
 \name{clear_photobio.cache}
 \alias{clear_photobio.cache}
-\title{clear the spectral weights cache}
+\title{Clear the spectral weights cache}
 \usage{
 clear_photobio.cache(pattern = "*")
 }

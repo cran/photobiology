@@ -16,16 +16,16 @@ untag(x, ...)
 \method{untag}{generic_mspct}(x, byref = FALSE, ...)
 }
 \arguments{
-\item{x}{an R object}
+\item{x}{an R object.}
 
-\item{...}{not used in current version}
+\item{...}{ignored (possibly used by derived methods).}
 
 \item{byref}{logical indicating if new object will be created by reference or
 by copy of x}
 }
 \value{
 if \code{x} contains tag data they are removed and the "spct.tags"
-  atrribute is set to \code{NA}, while if \code{x} has no tags, it is not
+  attribute is set to \code{NA}, while if \code{x} has no tags, it is not
   modified. In either case, the byref argument is respected: in all cases if
   \code{byref = FALSE} a copy of \code{x} is returned.
 }

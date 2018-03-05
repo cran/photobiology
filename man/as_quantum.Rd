@@ -7,17 +7,16 @@
 as_quantum(w.length, s.e.irrad)
 }
 \arguments{
-\item{w.length}{numeric Vector of wavelengths (nm)}
+\item{w.length}{numeric vector of wavelengths (nm).}
 
-\item{s.e.irrad}{numeric Corresponding vector of spectral (energy)
-irradiances}
+\item{s.e.irrad}{numeric vector of spectral (energy) irradiance values.}
 }
 \value{
-A numeric array of spectral photon irradiances
+A numeric vector of spectral photon irradiances.
 }
 \description{
-For example an spectrum [W m-2 nm-1] is converted into a spectrum [s-1 m-2
-nm-1]
+Convert spectral energy irradiance [W m-2 nm-1] into spectral photon
+irradiance expressed as number of photons [s-1 m-2 nm-1]
 }
 \examples{
 with(sun.data, as_quantum(w.length, s.e.irrad))
@@ -26,9 +25,7 @@ with(sun.data, as_quantum(w.length, s.e.irrad))
 \seealso{
 Other quantity conversion functions: \code{\link{A2T}},
   \code{\link{T2Afr}}, \code{\link{T2A}},
-  \code{\link{T2T}}, \code{\link{as_energy}},
-  \code{\link{as_quantum_mol}},
-  \code{\link{e2qmol_multipliers}},
+  \code{\link{T2T}}, \code{\link{e2qmol_multipliers}},
   \code{\link{e2quantum_multipliers}}, \code{\link{e2q}},
   \code{\link{q2e}}
 }

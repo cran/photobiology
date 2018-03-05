@@ -50,31 +50,31 @@ fshift(x, ...)
 
 \method{fshift}{response_mspct}(x, range = c(min(x), min(x) + 10),
   f = "mean", unit.out = getOption("photobiology.radiation.unit", default =
-  "energy"), ...)
+  "energy"), ..., .parallel = FALSE, .paropts = NULL)
 
 \method{fshift}{filter_mspct}(x, range = c(min(x), min(x) + 10), f = "min",
   qty.out = getOption("photobiology.filter.qty", default = "transmittance"),
-  ...)
+  ..., .parallel = FALSE, .paropts = NULL)
 
 \method{fshift}{reflector_mspct}(x, range = c(min(x), min(x) + 10),
-  f = "min", qty.out = NULL, ...)
+  f = "min", qty.out = NULL, ..., .parallel = FALSE, .paropts = NULL)
 
 \method{fshift}{raw_mspct}(x, range = c(min(x), min(x) + 10), f = "min",
-  ...)
+  ..., .parallel = FALSE, .paropts = NULL)
 
 \method{fshift}{cps_mspct}(x, range = c(min(x), min(x) + 10), f = "min",
-  ...)
+  ..., .parallel = FALSE, .paropts = NULL)
 
 \method{fshift}{generic_mspct}(x, range = c(min(x), min(x) + 10), f = "min",
-  col.names, ...)
+  col.names, ..., .parallel = FALSE, .paropts = NULL)
 }
 \arguments{
 \item{x}{An R object}
 
-\item{...}{additonal named arguments passed down to \code{f}.}
+\item{...}{additional named arguments passed down to \code{f}.}
 
 \item{range}{An R object on which \code{range()} returns a numeric vector of
-length 2 with the limits of a range of wavelengths in nm, with min annd max
+length 2 with the limits of a range of wavelengths in nm, with min and max
 wavelengths (nm)}
 
 \item{f}{character string "mean", "min" or "max" for scaling so that this
@@ -89,6 +89,15 @@ returning a numeric value.}
 
 \item{col.names}{character vector containing the names of columns or
 variables to which to apply the scale shift.}
+
+\item{.parallel}{if TRUE, apply function in parallel, using parallel backend
+provided by foreach}
+
+\item{.paropts}{a list of additional options passed into the foreach function
+when parallel computation is enabled. This is important if (for example)
+your code relies on external data or packages: use the .export and
+.packages arguments to supply them so that all cluster nodes have the
+correct environment set up for computing.}
 }
 \value{
 A copy of \code{x} with the spectral data values replaced with values
@@ -97,7 +106,7 @@ A copy of \code{x} with the spectral data values replaced with values
 \description{
 These functions return a spectral object of the same class as the one
 supplied as argument but with the spectral data on a shifted scale. A range
-of wavlengths is taken a reference (zero or another numeric constant) and a
+of wavelengths is taken a reference (zero or another numeric constant) and a
 summary is calculated for this waveband. The difference between the computed
 and reference value are used to shift the scale so that these two values
 match in the returned object.

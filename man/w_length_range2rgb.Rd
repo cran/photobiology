@@ -8,16 +8,18 @@ w_length_range2rgb(w.length, sens = photobiology::ciexyzCMF2.spct,
   color.name = NULL)
 }
 \arguments{
-\item{w.length}{numeric Vector of wavelengths (nm) of length 2. If longer,
+\item{w.length}{numeric vector of wavelengths (nm) of length 2. If longer,
 its range is used.}
 
-\item{sens}{chroma_spct Used as the chromaticity definition}
+\item{sens}{chroma_spct Used as the chromaticity definition.}
 
-\item{color.name}{character Used for naming the rgb color definition}
+\item{color.name}{character Used for naming the rgb color definition(s)
+returned.}
 }
 \value{
 A vector of colors defined using \code{rgb()}. The numeric values of
-  the RGB components can be obtained using function \code{col2rgb()}.
+  the RGB components can be obtained by calling function
+  \code{\link[grDevices]{col2rgb}}.
 }
 \description{
 Calculates rgb values from spectra based on human color matching functions
@@ -30,5 +32,5 @@ col2rgb(w_length_range2rgb(500:600))
 }
 \seealso{
 Other color functions: \code{\link{rgb_spct}},
-  \code{\link{s_e_irrad2rgb}}, \code{\link{w_length2rgb}}
+  \code{\link{w_length2rgb}}
 }

@@ -34,7 +34,7 @@ A collection of spectral objects, each with attributes set if x is a
 }
 \description{
 Convert a data frame object or spectral object into a collection
-  of soectra object of the corresponding class. For data frames converting
+  of spectra object of the corresponding class. For data frames converting
   numeric columns other than wavelength into individual spct objects.
 }
 \note{

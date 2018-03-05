@@ -25,7 +25,7 @@ computed. Defaults to e=exp(1).}
 \description{
 Logarithms and Exponentials for Spectra. The functions are applied to the
 spectral data, not the wavelengths. The quantity in the spectrum to which the
-function is appled depends on the class of \code{x} and the current value of
+function is applied depends on the class of \code{x} and the current value of
 output options
 }
 \seealso{

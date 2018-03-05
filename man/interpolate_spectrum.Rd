@@ -4,23 +4,27 @@
 \alias{interpolate_spectrum}
 \title{Calculate spectral values at a different set of wavelengths}
 \usage{
-interpolate_spectrum(w.length.in, s.irrad, w.length.out, fill = NA)
+interpolate_spectrum(w.length.in, s.irrad, w.length.out, fill = NA, ...)
 }
 \arguments{
-\item{w.length.in}{numeric array of wavelengths (nm)}
+\item{w.length.in}{numeric vector of wavelengths (nm).}
 
-\item{s.irrad}{a numeric array of spectral values}
+\item{s.irrad}{a numeric vector of spectral values.}
 
-\item{w.length.out}{numeric array of wavelengths (nm)}
+\item{w.length.out}{numeric vector of wavelengths (nm).}
 
-\item{fill}{a value to be assigned to out of range wavelengths}
+\item{fill}{a value to be assigned to out of range wavelengths.}
+
+\item{...}{additional arguments passed to \code{spline()}.}
 }
 \value{
-a numeric array of interpolated spectral values
+a numeric vector of interpolated spectral values.
 }
 \description{
-For example interpolate spectral irradiance (or spectral transmittance)
-values at new wavelengths values.
+Interpolate/re-express spectral irradiance (or other spectral quantity)
+values at new wavelengths values. This is a low-level function operating
+on numeric vectors and called by higher level functions in the package,
+such as mathematical operators for classes for spectral data.
 }
 \note{
 The current version of interpolate uses \code{spline} if fewer than 25
@@ -31,9 +35,27 @@ be faster.
 \examples{
 
 my.w.length <- 300:700
-my.s.e.irrad <-
-  with(sun.data, interpolate_spectrum(w.length, s.e.irrad, my.w.length))
-plot(my.s.e.irrad ~ my.w.length)
-lines(s.e.irrad ~ w.length, data=sun.data)
+with(sun.data, interpolate_spectrum(w.length, s.e.irrad, my.w.length))
 
+}
+\seealso{
+\code{\link[stats]{splinefun}}.
+
+Other low-level functions operating on numeric vectors.: \code{\link{as_energy}},
+  \code{\link{as_quantum_mol}},
+  \code{\link{calc_multipliers}},
+  \code{\link{div_spectra}},
+  \code{\link{energy_irradiance}},
+  \code{\link{energy_ratio}}, \code{\link{insert_hinges}},
+  \code{\link{integrate_xy}}, \code{\link{irradiance}},
+  \code{\link{l_insert_hinges}},
+  \code{\link{oper_spectra}},
+  \code{\link{photon_irradiance}},
+  \code{\link{photon_ratio}},
+  \code{\link{photons_energy_ratio}},
+  \code{\link{prod_spectra}}, \code{\link{s_e_irrad2rgb}},
+  \code{\link{split_energy_irradiance}},
+  \code{\link{split_photon_irradiance}},
+  \code{\link{subt_spectra}}, \code{\link{sum_spectra}},
+  \code{\link{trim_tails}}, \code{\link{v_insert_hinges}}
 }

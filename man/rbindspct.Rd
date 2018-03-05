@@ -50,11 +50,11 @@ Each item of \code{l} should be a spectrum, including \code{NULL}
 Note that any additional 'user added' attributes that might exist on
   individual items of the input list will not be preserved in the result.
   The attributes used by the \code{photobiology} package are preserved, and
-  if they are not consistent accross the bound spectral objetcs, a warning is
+  if they are not consistent across the bound spectral objects, a warning is
   issued.
 
 \code{dplyr::rbind_fill} is called internally and the result returned is
-  the highest class in the inheritance hierachy which is common to all
+  the highest class in the inheritance hierarchy which is common to all
   elements in the list. If not all members of the list belong to one of the
   \code{_spct} classes, an error is triggered. The function sets all data in
   \code{source_spct} and \code{response_spct} objects supplied as arguments

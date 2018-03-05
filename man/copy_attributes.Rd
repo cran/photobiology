@@ -29,7 +29,8 @@ copy_attributes(x, y, which, ...)
 A copy of \code{y} with additional attributes set.
 }
 \description{
-Copy attributes from \code{x} to \code{y}.
+Copy attributes from \code{x} to \code{y}. Methods defined for spectral
+and waveband objects of classes from package 'photobiology'.
 }
 \section{Methods (by class)}{
 \itemize{

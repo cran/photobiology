@@ -49,27 +49,28 @@ clean(x, range, range.s.data, fill, ...)
 
 \method{clean}{source_mspct}(x, range = NULL, range.s.data = c(0, NA),
   fill = range.s.data, unit.out = getOption("photobiology.radiation.unit",
-  default = "energy"), ...)
+  default = "energy"), ..., .parallel = FALSE, .paropts = NULL)
 
 \method{clean}{filter_mspct}(x, range = NULL, range.s.data = NULL,
   fill = range.s.data, qty.out = getOption("photobiology.filter.qty",
-  default = "transmittance"), ...)
+  default = "transmittance"), ..., .parallel = FALSE, .paropts = NULL)
 
 \method{clean}{reflector_mspct}(x, range = NULL, range.s.data = c(0, 1),
-  fill = range.s.data, ...)
+  fill = range.s.data, ..., .parallel = FALSE, .paropts = NULL)
 
 \method{clean}{response_mspct}(x, range = NULL, range.s.data = c(0, NA),
   fill = range.s.data, unit.out = getOption("photobiology.radiation.unit",
-  default = "energy"), ...)
+  default = "energy"), ..., .parallel = FALSE, .paropts = NULL)
 
 \method{clean}{cps_mspct}(x, range = NULL, range.s.data = c(0, NA),
-  fill = range.s.data, ...)
+  fill = range.s.data, ..., .parallel = FALSE, .paropts = NULL)
 
 \method{clean}{raw_mspct}(x, range = NULL, range.s.data = c(0, NA),
-  fill = range.s.data, ...)
+  fill = range.s.data, ..., .parallel = FALSE, .paropts = NULL)
 
 \method{clean}{generic_mspct}(x, range = x, range.s.data = c(NA_real_,
-  NA_real_), fill = range.s.data, col.names, ...)
+  NA_real_), fill = range.s.data, col.names, ..., .parallel = FALSE,
+  .paropts = NULL)
 }
 \arguments{
 \item{x}{an R object}
@@ -91,6 +92,15 @@ or its alias "quantum"}
 or its alias "quantum"}
 
 \item{col.names}{character The name of the variable to clean}
+
+\item{.parallel}{if TRUE, apply function in parallel, using parallel backend
+provided by foreach}
+
+\item{.paropts}{a list of additional options passed into the foreach function
+when parallel computation is enabled. This is important if (for example)
+your code relies on external data or packages: use the .export and
+.packages arguments to supply them so that all cluster nodes have the
+correct environment set up for computing.}
 }
 \value{
 A copy of \code{x}, possibly with some of the spectral data values

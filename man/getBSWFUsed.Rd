@@ -16,7 +16,7 @@ character string
 Function to read the "time.unit" attribute of an existing source_spct object
 }
 \note{
-if x is not a \code{source_spct} object, NA is retruned
+if x is not a \code{source_spct} object, NA is returned
 }
 \examples{
 getBSWFUsed(sun.spct)

@@ -23,13 +23,13 @@ smooth_spct(x, method, strength, ...)
 \method{smooth_spct}{response_spct}(x, method = "custom", strength = 1, ...)
 }
 \arguments{
-\item{x}{an R object}
+\item{x}{an R object.}
 
-\item{method}{a character string "custom", "lowess", "supsmu"}
+\item{method}{a character string "custom", "lowess", "supsmu".}
 
-\item{strength}{numeric value to adjust the degree of smoothing}
+\item{strength}{numeric value to adjust the degree of smoothing.}
 
-\item{...}{other parameters passed to the underlying smoothing functions}
+\item{...}{other parameters passed to the underlying smoothing functions.}
 }
 \value{
 A copy of \code{x} with spectral data values replaced by smoothed
@@ -59,7 +59,7 @@ Method "custom" is our home-brewed method which applies strong
   smoothing to low signal regions of the spectral data, and weaker or no
   smoothing to the high signal areas. Values very close to zero are set to
   zero with a limit which depends on the local variation. This method is an
-  ad-hock method suitable for smoothing spectral data obtained with array
+  ad-hock method suitable for smoothing spectral data obtained with
   spectrometers. In the cased of methods "lowess" and "supsmu" the current
   function behaves like a wrapper of the functions of the same names from
   base R.

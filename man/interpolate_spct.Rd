@@ -8,18 +8,27 @@
 interpolate_spct(spct, w.length.out = NULL, fill = NA, length.out = NULL)
 
 interpolate_mspct(mspct, w.length.out = NULL, fill = NA,
-  length.out = NULL)
+  length.out = NULL, .parallel = FALSE, .paropts = NULL)
 }
 \arguments{
 \item{spct}{generic_spct}
 
-\item{w.length.out}{numeric array of wavelengths (nm)}
+\item{w.length.out}{numeric vector of wavelengths (nm)}
 
 \item{fill}{a value to be assigned to out of range wavelengths}
 
 \item{length.out}{numeric value}
 
 \item{mspct}{an object of class "generic_mspct"}
+
+\item{.parallel}{if TRUE, apply function in parallel, using parallel backend
+provided by foreach}
+
+\item{.paropts}{a list of additional options passed into the foreach function
+when parallel computation is enabled. This is important if (for example)
+your code relies on external data or packages: use the .export and
+.packages arguments to supply them so that all cluster nodes have the
+correct environment set up for computing.}
 }
 \value{
 A new spectral object of the same class as argument \code{spct}.
@@ -39,7 +48,7 @@ If \code{length.out} it is a numeric value, then gives the number of
   rows from the input are returned.
 }
 \note{
-The default \code{fill = NA} fills extrpolated values with NA. Giving NULL as
+The default \code{fill = NA} fills extrapolated values with NA. Giving NULL as
 argument for \code{fill} deletes wavelengths outside the input data range from the
 returned spectrum. A numerical value can be also be provided as fill. This function calls
 \code{interpolate_spectrum} for each non-wavelength column in the input spectra object.

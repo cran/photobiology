@@ -13,7 +13,7 @@ e2quantum_multipliers(w.length, molar = FALSE)
 numbers}
 }
 \value{
-A numeric array of multipliers
+A numeric vector of multipliers
 }
 \description{
 Gives multipliers as a function of wavelength, for converting from energy to
@@ -27,8 +27,7 @@ with(sun.data, e2quantum_multipliers(w.length, molar = TRUE))
 \seealso{
 Other quantity conversion functions: \code{\link{A2T}},
   \code{\link{T2Afr}}, \code{\link{T2A}},
-  \code{\link{T2T}}, \code{\link{as_energy}},
-  \code{\link{as_quantum_mol}}, \code{\link{as_quantum}},
+  \code{\link{T2T}}, \code{\link{as_quantum}},
   \code{\link{e2qmol_multipliers}}, \code{\link{e2q}},
   \code{\link{q2e}}
 }
