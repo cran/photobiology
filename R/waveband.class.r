@@ -30,17 +30,33 @@ labels.generic_spct <- function(object, ...) {
 
 # range -------------------------------------------------------------------
 
+#' @rdname range
+#'
+#' @param x generic_spct, generic_mspct or waveband object.
+#'
+#' @export
+#'
+wl_range <- function(x, na.rm = FALSE) {
+  stopifnot(is.any_spct(x) || is.any_mspct(x) || is.waveband(x))
+  range(x, na.rm = na.rm)
+}
+
 #' Wavelength range
 #'
-#' A function that returns the wavelength range.
+#' A method specialization that returns the wavelength range from objects of
+#' classes "waveband" or of class "generic_spct" or derived.
 #'
-#' @param ... not used in current version
+#' @param ... a single R object
 #' @param na.rm ignored
 #' @export
 #'
 #' @name range
 #'
 #' @family wavelength summaries
+#'
+#' @examples
+#' range(sun.spct)
+#' wl_range(sun.spct)
 #'
 range.waveband <- function(..., na.rm = FALSE) {
   x <- c(...)
@@ -78,9 +94,21 @@ range.generic_mspct <- function(..., na.rm = FALSE, idx = NULL) {
 
 # min ---------------------------------------------------------------------
 
+#' @rdname min
+#'
+#' @param x generic_spct, generic_mspct or waveband object.
+#'
+#' @export
+#'
+wl_min <- function(x, na.rm = FALSE) {
+  stopifnot(is.any_spct(x) || is.any_mspct(x) || is.waveband(x))
+  min(x, na.rm = na.rm)
+}
+
 #' Wavelength minimum
 #'
-#' A function that returns the wavelength minimum.
+#' A method specialization that returns the wavelength minimum from objects of
+#' classes "waveband" or of class "generic_spct" or derived.
 #'
 #' @param ... not used in current version
 #' @param na.rm ignored
@@ -90,6 +118,10 @@ range.generic_mspct <- function(..., na.rm = FALSE, idx = NULL) {
 #'
 #' @family wavelength summaries
 #'
+#' @examples
+#' min(sun.spct)
+#' wl_min(sun.spct)
+#'
 min.waveband <- function(..., na.rm = FALSE) {
   x <- c(...)
     return(x$low)
@@ -98,9 +130,6 @@ min.waveband <- function(..., na.rm = FALSE) {
 #' @describeIn min
 #'
 #' @export
-#'
-#' @examples
-#' min(sun.spct)
 #'
 min.generic_spct <- function(..., na.rm = FALSE) {
   wl <- list(...)[[1]][["w.length"]]
@@ -125,15 +154,31 @@ min.generic_mspct <- function(..., na.rm = FALSE, idx = NULL) {
 
 # max ---------------------------------------------------------------------
 
+#' @rdname max
+#'
+#' @param x generic_spct, generic_mspct or waveband object.
+#'
+#' @export
+#'
+wl_max <- function(x, na.rm = FALSE) {
+  stopifnot(is.any_spct(x) || is.any_mspct(x) || is.waveband(x))
+  max(x, na.rm = na.rm)
+}
+
 #' Wavelength maximum
 #'
-#' A function that returns the wavelength maximum from objects of class "waveband".
+#' A method specialization that returns the wavelength maximum from objects of
+#' classes "waveband" or of class "generic_spct" or derived.
 #'
 #' @param ... not used in current version
 #' @param na.rm ignored
 #' @export
 #'
 #' @name max
+#'
+#' @examples
+#' max(sun.spct)
+#' wl_max(sun.spct)
 #'
 max.waveband <- function(..., na.rm = FALSE) {
   x <- c(...)
@@ -143,9 +188,6 @@ max.waveband <- function(..., na.rm = FALSE) {
 #' @describeIn max
 #'
 #' @export
-#'
-#' @examples
-#' max(sun.spct)
 #'
 max.generic_spct <- function(..., na.rm=FALSE) {
   wl <- list(...)[[1]][["w.length"]]
@@ -171,9 +213,19 @@ max.generic_mspct <- function(..., na.rm = FALSE, idx = NULL) {
 
 # midpoint ------------------------------------------------------------------
 
-#' Central wavelength value
+#' @rdname midpoint
 #'
-#' A function that returns the wavelength at the center of the wavelength range.
+#' @export
+#'
+wl_midpoint <- function(x, ...) {
+  stopifnot(is.any_spct(x) || is.any_mspct(x) || is.waveband(x))
+  midpoint(x, ...)
+}
+
+#' Midpoint
+#'
+#' A function that returns the wavelength (or value) at the center of the
+#' of the wavelength range of a waveband or spectrum object (or numeric vector).
 #'
 #' @param x an R object
 #' @param ... not used in current version
@@ -184,6 +236,11 @@ max.generic_mspct <- function(..., na.rm = FALSE, idx = NULL) {
 #' definitions of \code{\link{min}} and \code{\link{max}}.
 #'
 #' @family wavelength summaries
+#'
+#' @examples
+#' midpoint(10:20)
+#' midpoint(sun.spct)
+#' wl_midpoint(sun.spct)
 #'
 midpoint <- function(x, ...) UseMethod("midpoint")
 
@@ -242,11 +299,30 @@ midpoint.generic_mspct <- function(x, ..., idx = !is.null(names(x))) {
   msdply(mspct = x, .fun = midpoint, ..., idx = idx)
 }
 
-# spread ------------------------------------------------------------------
+# expanse ------------------------------------------------------------------
 
-#' Length of object in wavelength units
+#' @rdname expanse
 #'
-#' A function that returns the spread (max(x) - min(x)) for R objects.
+#' @export
+#'
+spread <- function(x, ...) {
+  message("Use of method photobiology::spread() is deprecated. It has been ",
+          "renamed into expanse() to avoid a name clash with 'tidyr::spread()'.")
+  expanse(x, ...)
+}
+
+#' @rdname expanse
+#'
+#' @export
+#'
+wl_expanse <- function(x, ...) {
+  stopifnot(is.any_spct(x) || is.any_mspct(x) || is.waveband(x))
+  expanse(x, ...)
+}
+
+#' Expanse
+#'
+#' A function that returns the expanse (max(x) - min(x)) for R objects.
 #'
 #' @param x an R object
 #' @param ... not used in current version
@@ -255,24 +331,29 @@ midpoint.generic_mspct <- function(x, ..., idx = !is.null(names(x))) {
 #'   objects wavelength difference in nm. For any other R object, according to
 #'   available definitions of \code{\link{min}} and \code{\link{max}}.
 #'
-#' @export spread
+#' @export expanse
 #'
-spread <- function(x, ...) UseMethod("spread")
+#' @examples
+#' expanse(10:20)
+#' expanse(sun.spct)
+#' wl_expanse(sun.spct)
+#'
+expanse <- function(x, ...) UseMethod("expanse")
 
-#' @describeIn spread Default method for generic function
+#' @describeIn expanse Default method for generic function
 #'
 #' @export
 #'
-spread.default <- function(x, ...) {
-  warning("'spread()' not defined for class '", paste(class(x), collapse = " "), "'")
+expanse.default <- function(x, ...) {
+  warning("'expanse()' not defined for class '", paste(class(x), collapse = " "), "'")
   NA
 }
 
-#' @describeIn spread Method for "numeric"
+#' @describeIn expanse Method for "numeric"
 #'
 #' @export
 #'
-spread.numeric <- function(x, ...) {
+expanse.numeric <- function(x, ...) {
   if (length(x) > 0) {
     return(max(x) - min(x))
   } else {
@@ -280,34 +361,34 @@ spread.numeric <- function(x, ...) {
   }
 }
 
-#' @describeIn spread Method for "waveband"
+#' @describeIn expanse Method for "waveband"
 #'
 #' @export
 #'
-spread.waveband <- function(x, ...) {
+expanse.waveband <- function(x, ...) {
   return(x$high - x$low)
 }
 
-#' @describeIn spread  Method for "generic_spct"
+#' @describeIn expanse  Method for "generic_spct"
 #'
 #' @export
 #'
 #' @examples
-#' spread(sun.spct)
+#' expanse(sun.spct)
 #'
-spread.generic_spct <- function(x, ...) {
+expanse.generic_spct <- function(x, ...) {
   wl <- x[["w.length"]]
   wl[length(wl)] - wl[1]
 }
 
-#' @describeIn spread  Method for "generic_mspct" objects.
+#' @describeIn expanse  Method for "generic_mspct" objects.
 #'
 #' @param idx logical whether to add a column with the names of the elements of spct
 #'
 #' @export
 #'
-spread.generic_mspct <- function(x, ..., idx = !is.null(names(x))) {
-  msdply(mspct = x, .fun = spread, ..., idx = idx)
+expanse.generic_mspct <- function(x, ..., idx = !is.null(names(x))) {
+  msdply(mspct = x, .fun = expanse, ..., idx = idx)
 }
 
 # normalization -----------------------------------------------------------
@@ -416,6 +497,15 @@ is_effective.summary_source_spct <- function(x) {
 
 # w.length summaries ------------------------------------------------------
 
+#' @rdname stepsize
+#'
+#' @export
+#'
+wl_stepsize <- function(x, ...) {
+  stopifnot(is.any_spct(x) || is.any_mspct(x) || is.waveband(x))
+  stepsize(x, ...)
+}
+
 #' Stepsize
 #'
 #' Function that returns the range of step sizes in an object. Range of
@@ -427,8 +517,10 @@ is_effective.summary_source_spct <- function(x) {
 #' @return A numeric vector of length 2 with min and maximum stepsize values.
 #' @export
 #' @family wavelength summaries
+#'
 #' @examples
 #' stepsize(sun.spct)
+#' wl_stepsize(sun.spct)
 #'
 stepsize <- function(x, ...) UseMethod("stepsize")
 
@@ -442,6 +534,7 @@ stepsize.default <- function(x, ...) {
 #' @describeIn stepsize Method for numeric vectors.
 #' @export
 stepsize.numeric <- function(x, ...) {
+  stopifnot(!is.unsorted(x))
   if (length(x) > 1) {
     range(diff(x))
   } else {

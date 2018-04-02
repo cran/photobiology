@@ -64,7 +64,7 @@ rmDerivedMspct <- function(x) {
 #' Finds the set intersection among the class attributes of all collection
 #' member as a target set of class names.
 #'
-#' @param l a list or a generic_mscpt object or of a derived class.
+#' @param l a list or a generic_mspct object or of a derived class.
 #' @param target.set character The target set of classes within which to search
 #'   for classes common to all members.
 #' @export
@@ -158,7 +158,7 @@ generic_mspct <- function(l = NULL, class = "generic_spct",
 #' @export
 #' @exportClass calibration_mspct
 #'
-raw_mspct <- function(l = NULL, ncol = 1, byrow = FALSE, ...) {
+calibration_mspct <- function(l = NULL, ncol = 1, byrow = FALSE, ...) {
   generic_mspct(l, class = "calibration_spct", ncol = ncol, byrow = byrow)
 }
 
@@ -312,9 +312,9 @@ is.any_mspct <- function(x) {
   inherits(x, "generic_mspct")
 }
 
-# as functions for mspct classes --------------------------------------------
+# as Coercion methods for mspct classes -------------------------------------
 
-#' @title Collection-of-spectra copy-constructor
+#' @title Coerce to a collection-of-spectra
 #'
 #' @description Return a copy of an R object with its class set to a given type
 #'   of spectrum.
@@ -323,151 +323,1086 @@ is.any_mspct <- function(x) {
 #'   that can be converted into spectral objects.
 #' @param force.spct.class logical indicating whether to change the class
 #'   of members to \code{generic_spct} or retain the existing class.
+#' @param ... passed to individual spectrum object constructor
+#' @param w.length numeric A vector of wavelengthvalues sorted in strictly ascending
+#'   order (nm).
+#' @param spct.data.var character The name of the variable that will contain the
+#'   spectral data. This indicates what physical quantity is stored in the matrix
+#'   and the units of expression used.
+#' @param member.class character The name of the class of the individual spectra
+#'   to be constructed.
+#' @param multiplier numeric A multiplier to be applied to the values in \code{x} to do
+#'   unit or scale conversion.
+#' @param ncol integer Number of 'virtual' columns in data
+#' @param byrow logical If \code{ncol > 1} how to read in the data
+#' @param spct.names character Vector of names to be assigned to collection members,
+#'   either of length 1, or with length equal to the number of spectra.
 #'
-#' @return These functions return a copy of \code{x} converted into a given
-#'   class of spectral collection object, if \code{x} is a valid argument to the
-#'   corresponding set function.
+#' @return A copy of \code{x} converted into a \code{generic_mspct} object.
 #'
 #' @note Members of \code{generic_mspct} objects can be heterogeneous: they can
-#'   belong any class derived from \code{generic_spct} and class is not
-#'   enforced. In this case when \code{x} is a list of data frames,
-#'   \code{force.spct.class = TRUE} needs to be supplied.
+#'   belong to any class derived from \code{generic_spct} and class is not
+#'   enforced. When \code{x} is a list of data frames
+#'   \code{force.spct.class = TRUE} needs to be supplied. When \code{x} is a
+#'   square matrix an explicit argument is needed for \code{byrow} to indicate
+#'   how data in \code{x} should be read. In every case the length of the
+#'   \code{w.length} vector must match one of the dimensions of \code{x}.
 #'
 #' @export
 #'
-#' @family conversion of collections of spectra
+#' @family Coercion methods for collections of spectra
 #'
-#' @rdname as.generic_mspct
+as.generic_mspct <- function(x, ...) UseMethod("as.generic_mspct")
+
+#' @describeIn as.generic_mspct
 #'
-as.generic_mspct <- function(x, force.spct.class = FALSE) {
+#' @export
+#'
+as.generic_mspct.default <- function(x, ...) {
+  message("'as.generic_mspct' not implemented for class: ", class(x)[1])
+  generic_mspct()
+}
+
+#' @describeIn as.generic_mspct
+#'
+#' @export
+#'
+as.generic_mspct.data.frame <- function(x, force.spct.class = FALSE, ...) {
+  as.generic_mspct(list(x),
+                   force.spct.class = force.spct.class,
+                   ...)
+}
+
+#' @describeIn as.generic_mspct
+#'
+#' @export
+#'
+as.generic_mspct.generic_spct <- function(x, force.spct.class = FALSE, ...) {
+  generic_mspct(list(x),
+                class = "generic_spct",
+                ...)
+}
+
+#' @describeIn as.generic_mspct
+#'
+#' @export
+#'
+as.generic_mspct.list <- function(x,
+                                  force.spct.class = FALSE,
+                                  ...,
+                                  ncol = 1,
+                                  byrow = FALSE) {
   y <- x
   rmDerivedMspct(y)
   if (force.spct.class) {
-    y <- plyr::llply(y, setGenericSpct)
+    y <- plyr::llply(y, setGenericSpct, ...)
   }
-  generic_mspct(y)
+  generic_mspct(y, ncol = ncol, byrow = byrow)
+}
+
+#' @describeIn as.generic_mspct
+#'
+#' @export
+#'
+as.generic_mspct.matrix <- function(x,
+                                    w.length,
+                                    member.class,
+                                    spct.data.var,
+                                    multiplier = 1,
+                                    byrow = NULL,
+                                    spct.names = "spct_",
+                                    ...) {
+  mat2mspct(x = x,
+            w.length = w.length,
+            member.class = member.class,
+            spct.data.var = spct.data.var,
+            multiplier = multiplier,
+            byrow = byrow,
+            spct.names = spct.names,
+            ...)
 }
 
 #' @rdname as.generic_mspct
 #'
 #' @export
 #'
-as.calibration_mspct <- function(x) {
-  y <- x
-  rmDerivedMspct(y)
-  z <- plyr::llply(y, setCalibrationSpct)
-  raw_mspct(z)
+mat2mspct <- function(x,
+                      w.length,
+                      member.class,
+                      spct.data.var,
+                      multiplier = 1,
+                      byrow = NULL,
+                      spct.names = "spct_",
+                      ...) {
+  stopifnot(is.matrix(x))
+  if (length(spct.names) == 0) {
+    spct.names = "spct"
+  }
+  if (is.null(byrow)) {
+    if (nrow(x) == ncol(x)) {
+      stop("For square matrices an argument for 'byrow' is mandatory")
+    } else if (nrow(x) == length(w.length)) {
+      byrow <- FALSE
+    } else if (ncol(x) == length(w.length)) {
+      byrow <- TRUE
+    } else {
+      stop("Length of 'w.length' vector is different to that of spectral data.")
+    }
+  }
+  # spc data (spectra) can be stored as rows or as colums in a matrix,
+  # consequently if stored by rows we transpose the matrix.
+  if (byrow) {
+    x <- t(x)
+  }
+  ncol <- ncol(x)
+  stopifnot(nrow(x) == length(w.length))
+  y <- cbind(w.length, x * multiplier)
+  y <- tibble::as_data_frame(y)
+  if (length(spct.names) == ncol) {
+    colnames(y) <- c("w.length", spct.names)
+  } else {
+    colnames(y) <- c("w.length", paste(spct.names[1], 1:ncol, sep = ""))
+  }
+  z <- split2mspct(x = y,
+                   member.class = member.class,
+                   spct.data.var = spct.data.var,
+                   ncol = ncol,
+                   ...)
+  comment(z) <- paste('Converted from an R "matrix" object\n',
+                      'with ', length(z), ' spectra stored ',
+                      ifelse(byrow, "in rows.", "in columns."),
+                      sep = "")
+  z
 }
 
-#' @rdname as.generic_mspct
+#' @title Coerce to a collection-of-spectra
+#'
+#' @description Return a copy of an R object with its class set to a given type
+#'   of spectrum.
+#'
+#' @param x a list of spectral objects or a list of objects such as data frames
+#'   that can be converted into spectral objects.
+#' @param ... passed to individual spectrum object constructor
+#' @param w.length numeric A vector of wavelengthvalues sorted in strictly ascending
+#'   order (nm).
+#' @param spct.data.var character The name of the variable that will contain the
+#'   spectral data. This indicates what physical quantity is stored in the matrix
+#'   and the units of expression used.
+#' @param multiplier numeric A multiplier to be applied to the values in \code{x} to do
+#'   unit or scale conversion.
+#' @param ncol integer Number of 'virtual' columns in data
+#' @param byrow logical If \code{ncol > 1} how to read in the data
+#' @param spct.names character Vector of names to be assigned to collection members,
+#'   either of length 1, or with length equal to the number of spectra.
+#'
+#' @note When \code{x} is a square matrix an explicit argument is needed for
+#'   \code{byrow} to indicate how data in \code{x} should be read. In every case
+#'   the length of the \code{w.length} vector must match one of the dimensions
+#'   of \code{x}.
+#'
+#' @return A copy of \code{x} converted into a \code{calibration_mspctt} object.
 #'
 #' @export
 #'
-as.raw_mspct <- function(x) {
-  y <- x
-  rmDerivedMspct(y)
-  z <- plyr::llply(y, setRawSpct)
-  raw_mspct(z)
-}
+#' @family Coercion methods for collections of spectra
+#'
+as.calibration_mspct <- function(x, ...) UseMethod("as.calibration_mspct")
 
-#' @rdname as.generic_mspct
+#' @describeIn as.calibration_mspct
 #'
 #' @export
 #'
-as.cps_mspct <- function(x) {
-  y <- x
-  rmDerivedMspct(y)
-  z <- plyr::llply(y, setCpsSpct)
-  cps_mspct(z)
+as.calibration_mspct.default <- function(x, ...) {
+  message("'as.calibration_mspct' not implemented for class: ", class(x)[1])
+  calibration_mspct()
 }
 
-#' @rdname as.generic_mspct
+#' @describeIn as.calibration_mspct
 #'
+#' @export
+#'
+as.calibration_mspct.data.frame <- function(x, ...) {
+  as.calibration_mspct(x = list(x), ...)
+}
+
+#' @describeIn as.calibration_mspct
+#'
+#' @export
+#'
+as.calibration_mspct.calibration_spct <- function(x,
+                                                  ...) {
+  calibration_mspct(list(x))
+}
+
+#' @describeIn as.calibration_mspct
+#'
+#' @export
+#'
+as.calibration_mspct.list <- function(x,
+                                      ...,
+                                      ncol = 1,
+                                      byrow = FALSE) {
+  y <- x
+  rmDerivedMspct(y)
+  z <- plyr::llply(y, setCalibrationSpct, ...)
+  calibration_mspct(z, ncol = ncol, byrow = byrow)
+}
+
+#' @describeIn as.calibration_mspct
+#'
+#' @export
+#'
+as.calibration_mspct.matrix <- function(x,
+                                        w.length,
+                                        spct.data.var = "irrad.mult",
+                                        multiplier = 1,
+                                        byrow = NULL,
+                                        spct.names = "spct_",
+                                        ...) {
+  mat2mspct(x = x,
+            w.length = w.length,
+            member.class = "calibration_spct",
+            spct.data.var = spct.data.var,
+            multiplier = multiplier,
+            byrow = byrow,
+            spct.names = spct.names,
+            ...)
+}
+
+#' @title Coerce to a collection-of-spectra
+#'
+#' @description Return a copy of an R object with its class set to a given type
+#'   of spectrum.
+#'
+#' @param x a list of spectral objects or a list of objects such as data frames
+#'   that can be converted into spectral objects.
+#' @param ... passed to individual spectrum object constructor
+#' @param w.length numeric A vector of wavelengthvalues sorted in strictly ascending
+#'   order (nm).
+#' @param spct.data.var character The name of the variable that will contain the
+#'   spectral data. This indicates what physical quantity is stored in the matrix
+#'   and the units of expression used.
+#' @param multiplier numeric A multiplier to be applied to the values in \code{x} to do
+#'   unit or scale conversion.
+#' @param ncol integer Number of 'virtual' columns in data
+#' @param byrow logical If \code{ncol > 1} how to read in the data
+#' @param spct.names character Vector of names to be assigned to collection members,
+#'   either of length 1, or with length equal to the number of spectra.
+#'
+#' @note When \code{x} is a square matrix an explicit argument is needed for
+#'   \code{byrow} to indicate how data in \code{x} should be read. In every case
+#'   the length of the \code{w.length} vector must match one of the dimensions
+#'   of \code{x}.
+#'
+#'
+#' @return A copy of \code{x} converted into a \code{raw_mspct} object.
+#'
+#' @export
+#'
+#' @family Coercion methods for collections of spectra
+#'
+as.raw_mspct <- function(x, ...) UseMethod("as.raw_mspct")
+
+#' @describeIn as.raw_mspct
+#'
+#' @export
+#'
+as.raw_mspct.default <- function(x, ...) {
+  message("'as.raw_mspct' not implemented for class: ", class(x)[1])
+  raw_mspct()
+}
+
+#' @describeIn as.raw_mspct
+#'
+#' @export
+#'
+as.raw_mspct.data.frame <- function(x, ...) {
+  as.raw_mspct(x = list(x), ...)
+}
+
+#' @describeIn as.raw_mspct
+#'
+#' @export
+#'
+as.raw_mspct.raw_spct <- function(x, ...) {
+  raw_mspct(list(x), ...)
+}
+
+#' @describeIn as.raw_mspct
+#'
+#' @export
+#'
+as.raw_mspct.list <- function(x,
+                              ...,
+                              ncol = 1,
+                              byrow = FALSE) {
+  y <- x
+  rmDerivedMspct(y)
+  z <- plyr::llply(y, setRawSpct, ...)
+  raw_mspct(z, ncol = ncol, byrow = byrow)
+}
+
+#' @describeIn as.raw_mspct
+#'
+#' @export
+#'
+as.raw_mspct.matrix <- function(x,
+                                w.length,
+                                spct.data.var = "counts",
+                                multiplier = 1,
+                                byrow = NULL,
+                                spct.names = "spct_",
+                                ...) {
+  mat2mspct(x = x,
+            w.length = w.length,
+            member.class = "raw_spct",
+            spct.data.var = spct.data.var,
+            multiplier = multiplier,
+            byrow = byrow,
+            spct.names = spct.names,
+            ...)
+}
+
+#' @title Coerce to a collection-of-spectra
+#'
+#' @description Return a copy of an R object with its class set to a given type
+#'   of spectrum.
+#'
+#' @param x a list of spectral objects or a list of objects such as data frames
+#'   that can be converted into spectral objects.
+#' @param ... passed to individual spectrum object constructor
+#' @param w.length numeric A vector of wavelengthvalues sorted in strictly ascending
+#'   order (nm).
+#' @param spct.data.var character The name of the variable that will contain the
+#'   spectral data. This indicates what physical quantity is stored in the matrix
+#'   and the units of expression used.
+#' @param multiplier numeric A multiplier to be applied to the values in \code{x} to do
+#'   unit or scale conversion.
+#' @param ncol integer Number of 'virtual' columns in data
+#' @param byrow logical If \code{ncol > 1} how to read in the data
+#' @param spct.names character Vector of names to be assigned to collection members,
+#'   either of length 1, or with length equal to the number of spectra.
+#'
+#' @note When \code{x} is a square matrix an explicit argument is needed for
+#'   \code{byrow} to indicate how data in \code{x} should be read. In every case
+#'   the length of the \code{w.length} vector must match one of the dimensions
+#'   of \code{x}.
+#'
+#' @return A copy of \code{x} converted into a \code{cps_mspct} object.
+#'
+#' @export
+#'
+#' @family Coercion methods for collections of spectra
+#'
+as.cps_mspct <- function(x, ...) UseMethod("as.cps_mspct")
+
+#' @describeIn as.cps_mspct
+#'
+#' @export
+#'
+as.cps_mspct.default <- function(x, ...) {
+  message("'as.cps_mspct' not implemented for class: ", class(x)[1])
+  cps_mspct()
+}
+
+#' @describeIn as.cps_mspct
+#'
+#' @export
+#'
+as.cps_mspct.data.frame <- function(x, ...) {
+  as.cps_mspct(x = list(x), ...)
+}
+
+#' @describeIn as.cps_mspct
+#'
+#' @export
+#'
+as.cps_mspct.cps_spct <- function(x, ...) {
+  cps_mspct(list(x), ...)
+}
+
+#' @describeIn as.cps_mspct
+#'
+#' @export
+#'
+as.cps_mspct.list <- function(x,
+                              ...,
+                              ncol = 1,
+                              byrow = FALSE) {
+  y <- x
+  rmDerivedMspct(y)
+  z <- plyr::llply(y, setCpsSpct, ...)
+  cps_mspct(z, ncol = ncol, byrow = byrow)
+}
+
+#' @describeIn as.cps_mspct
+#'
+#' @export
+#'
+as.cps_mspct.matrix <- function(x,
+                                w.length,
+                                spct.data.var = "cps",
+                                multiplier = 1,
+                                byrow = NULL,
+                                spct.names = "spct_",
+                                ...) {
+  mat2mspct(x = x,
+            w.length = w.length,
+            member.class = "cps_spct",
+            spct.data.var = spct.data.var,
+            multiplier = multiplier,
+            byrow = byrow,
+            spct.names = spct.names,
+            ...)
+}
+
+#' @title Coerce to a collection-of-spectra
+#'
+#' @description Return a copy of an R object with its class set to a given type
+#'   of spectrum.
+#'
+#' @param x a list of spectral objects or a list of objects such as data frames
+#'   that can be converted into spectral objects.
 #' @param time.unit character A string, "second", "day" or "exposure"
 #' @param bswf.used character
-#' @param strict.range logical Flag indicating whether off-range values result
-#'   in an error instead of a warning
+#' @param strict.range logical Flag indicating how off-range values are handled
+#' @param ... passed to individual spectrum object constructor
+#' @param w.length numeric A vector of wavelengthvalues sorted in strictly ascending
+#'   order (nm).
+#' @param spct.data.var character The name of the variable that will contain the
+#'   spectral data. This indicates what physical quantity is stored in the matrix
+#'   and the units of expression used.
+#' @param multiplier numeric A multiplier to be applied to the values in \code{x} to do
+#'   unit or scale conversion.
+#' @param ncol integer Number of 'virtual' columns in data
+#' @param byrow logical If \code{ncol > 1} how to read in the data
+#' @param spct.names character Vector of names to be assigned to collection members,
+#'   either of length 1, or with length equal to the number of spectra.
+#'
+#' @note When \code{x} is a square matrix an explicit argument is needed for
+#'   \code{byrow} to indicate how data in \code{x} should be read. In every case
+#'   the length of the \code{w.length} vector must match one of the dimensions
+#'   of \code{x}.
+#'
+#'
+#' @return A copy of \code{x} converted into a \code{source_mspct} object.
 #'
 #' @export
 #'
-as.source_mspct <- function(x,
-                            time.unit=c("second", "day", "exposure"),
-                            bswf.used=c("none", "unknown"),
-                            strict.range = getOption("photobiology.strict.range", default = FALSE)) {
-  y <- x
-  rmDerivedMspct(y)
-  z <- plyr::llply(y, setSourceSpct, time.unit = time.unit,
-                   strict.range = strict.range, bswf.used = bswf.used)
-  source_mspct(z)
-}
+#' @family Coercion methods for collections of spectra
+#'
+as.source_mspct <- function(x, ...) UseMethod("as.source_mspct")
 
-#' @rdname as.generic_mspct
+#' @describeIn as.source_mspct
 #'
 #' @export
 #'
-as.response_mspct <- function(x, time.unit = "second") {
-  y <- x
-  rmDerivedMspct(y)
-  z <- plyr::llply(y, setResponseSpct, time.unit = time.unit)
-  response_mspct(z)
+as.source_mspct.default <- function(x, ...) {
+  message("'as.source_mspct' not implemented for class: ", class(x)[1])
+  source_mspct()
 }
 
-#' @rdname as.generic_mspct
+#' @describeIn as.source_mspct
 #'
+#' @export
+#'
+as.source_mspct.data.frame <-
+  function(x,
+           time.unit=c("second", "day", "exposure"),
+           bswf.used=c("none", "unknown"),
+           strict.range = getOption("photobiology.strict.range", default = FALSE),
+           ...) {
+    as.source_mspct(x = list(x),
+                    time.unit = time.unit,
+                    bswf.used = bswf.used,
+                    strict.range = strict.range,
+                    ...)
+  }
+
+#' @describeIn as.source_mspct
+#'
+#' @export
+#'
+as.source_mspct.source_spct <- function(x, ...) {
+  source_mspct(list(x), ...)
+}
+
+#' @describeIn as.source_mspct
+#'
+#' @export
+#'
+as.source_mspct.list <-
+  function(x,
+           time.unit=c("second", "day", "exposure"),
+           bswf.used=c("none", "unknown"),
+           strict.range = getOption("photobiology.strict.range", default = FALSE),
+           ...,
+           ncol = 1,
+           byrow = FALSE) {
+    y <- x
+    rmDerivedMspct(y)
+    z <- plyr::llply(y, setSourceSpct, time.unit = time.unit,
+                     strict.range = strict.range, bswf.used = bswf.used, ...)
+    source_mspct(z, ncol = ncol, byrow = byrow)
+  }
+
+#' @describeIn as.source_mspct
+#'
+#' @export
+#'
+as.source_mspct.matrix <- function(x,
+                                   w.length,
+                                   spct.data.var = "s.e.irrad",
+                                   multiplier = 1,
+                                   byrow = NULL,
+                                   spct.names = "spct_",
+                                   ...) {
+  mat2mspct(x = x,
+            w.length = w.length,
+            member.class = "source_spct",
+            spct.data.var = spct.data.var,
+            multiplier = multiplier,
+            byrow = byrow,
+            spct.names = spct.names,
+            ...)
+}
+
+#' @title Coerce to a collection-of-spectra
+#'
+#' @description Return a copy of an R object with its class set to a given type
+#'   of spectrum.
+#'
+#' @param x a list of spectral objects or a list of objects such as data frames
+#'   that can be converted into spectral objects.
+#' @param time.unit character A string, "second", "day" or "exposure"
+#' @param ... passed to individual spectrum object constructor
+#' @param w.length numeric A vector of wavelengthvalues sorted in strictly ascending
+#'   order (nm).
+#' @param spct.data.var character The name of the variable that will contain the
+#'   spectral data. This indicates what physical quantity is stored in the matrix
+#'   and the units of expression used.
+#' @param multiplier numeric A multiplier to be applied to the values in \code{x} to do
+#'   unit or scale conversion.
+#' @param ncol integer Number of 'virtual' columns in data
+#' @param byrow logical If \code{ncol > 1} how to read in the data
+#' @param spct.names character Vector of names to be assigned to collection members,
+#'   either of length 1, or with length equal to the number of spectra.
+#'
+#' @note When \code{x} is a square matrix an explicit argument is needed for
+#'   \code{byrow} to indicate how data in \code{x} should be read. In every case
+#'   the length of the \code{w.length} vector must match one of the dimensions
+#'   of \code{x}.
+#'
+#' @return A copy of \code{x} converted into a \code{response_mspct} object.
+#'
+#' @export
+#'
+#' @family Coercion methods for collections of spectra
+#'
+as.response_mspct <- function(x, ...) UseMethod("as.response_mspct")
+
+#' @describeIn as.response_mspct
+#'
+#' @export
+#'
+as.response_mspct.default <- function(x, ...) {
+  message("'as.response_mspct' not implemented for class: ", class(x)[1])
+  response_mspct()
+}
+
+#' @describeIn as.response_mspct
+#'
+#' @export
+#'
+as.response_mspct.data.frame <-
+  function(x,
+           time.unit= "second",
+           ...) {
+    as.source_mspct(x = list(x),
+                    time.unit = time.unit,
+                    ...)
+  }
+
+#' @describeIn as.response_mspct
+#'
+#' @export
+#'
+as.response_mspct.response_spct <- function(x, ...) {
+  response_mspct(list(x), ...)
+}
+
+#' @describeIn as.response_mspct
+#'
+#' @export
+#'
+as.response_mspct.list <- function(x,
+                                   time.unit = "second",
+                                   ...,
+                                   ncol = 1,
+                                   byrow = FALSE) {
+  y <- x
+  rmDerivedMspct(y)
+  z <- plyr::llply(y, setResponseSpct, time.unit = time.unit, ...)
+  response_mspct(z, ncol = ncol, byrow = byrow)
+}
+
+#' @describeIn as.response_mspct
+#'
+#' @export
+#'
+as.response_mspct.matrix <- function(x,
+                                     w.length,
+                                     spct.data.var = "s.e.response",
+                                     multiplier = 1,
+                                     byrow = NULL,
+                                     spct.names = "spct_",
+                                     ...) {
+  mat2mspct(x = x,
+            w.length = w.length,
+            member.class = "response_spct",
+            spct.data.var = spct.data.var,
+            multiplier = multiplier,
+            byrow = byrow,
+            spct.names = spct.names,
+            ...)
+}
+
+
+#' @title Coerce to a collection-of-spectra
+#'
+#' @description Return a copy of an R object with its class set to a given type
+#'   of spectrum.
+#'
+#' @param x a list of spectral objects or a list of objects such as data frames
+#'   that can be converted into spectral objects.
 #' @param Tfr.type a character string, either "total" or "internal"
+#' @param strict.range logical Flag indicating how off-range values are handled
+#' @param ... passed to individual spectrum object constructor
+#' @param w.length numeric A vector of wavelengthvalues sorted in strictly ascending
+#'   order (nm).
+#' @param spct.data.var character The name of the variable that will contain the
+#'   spectral data. This indicates what physical quantity is stored in the matrix
+#'   and the units of expression used.
+#' @param multiplier numeric A multiplier to be applied to the values in \code{x} to do
+#'   unit or scale conversion.
+#' @param ncol integer Number of 'virtual' columns in data
+#' @param byrow logical If \code{ncol > 1} how to read in the data
+#' @param spct.names character Vector of names to be assigned to collection members,
+#'   either of length 1, or with length equal to the number of spectra.
+#'
+#' @note When \code{x} is a square matrix an explicit argument is needed for
+#'   \code{byrow} to indicate how data in \code{x} should be read. In every case
+#'   the length of the \code{w.length} vector must match one of the dimensions
+#'   of \code{x}.
+#'
+#' @return A copy of \code{x} converted into a \code{filter_mspct} object.
 #'
 #' @export
 #'
-as.filter_mspct <- function(x,
-                            Tfr.type=c("total", "internal"),
-                            strict.range = TRUE) {
-  y <- x
-  rmDerivedMspct(y)
-  z <- plyr::llply(y, setFilterSpct, Tfr.type = Tfr.type,
-                   strict.range = strict.range)
-  filter_mspct(z)
+#' @family Coercion methods for collections of spectra
+#'
+as.filter_mspct <- function(x, ...) UseMethod("as.filter_mspct")
+
+#' @describeIn as.filter_mspct
+#'
+#' @export
+#'
+as.filter_mspct.default <- function(x, ...) {
+  message("'as.filter_mspct' not implemented for class: ", class(x)[1])
+  filter_mspct()
 }
 
-#' @rdname as.generic_mspct
+#' @describeIn as.filter_mspct
 #'
+#' @export
+#'
+as.filter_mspct.data.frame <-
+  function(x,
+           Tfr.type = c("total", "internal"),
+           strict.range = TRUE,
+           ...) {
+    as.filter_mspct(x = list(x),
+                    Tfr.type = Tfr.type,
+                    strict.range = strict.range,
+                    ...)
+  }
+
+#' @describeIn as.filter_mspct
+#'
+#' @export
+#'
+as.filter_mspct.filter_spct <- function(x, ...) {
+  filter_mspct(list(x), ...)
+}
+
+#' @describeIn as.filter_mspct
+#'
+#' @export
+#'
+as.filter_mspct.list <- function(x,
+                            Tfr.type = c("total", "internal"),
+                            strict.range = TRUE,
+                            ...,
+                            ncol = 1,
+                            byrow = FALSE) {
+  y <- x
+  rmDerivedMspct(y)
+  z <- plyr::llply(y, setFilterSpct,
+                   Tfr.type = Tfr.type,
+                   strict.range = strict.range,
+                   ...)
+  filter_mspct(z, ncol = ncol, byrow = byrow)
+}
+
+#' @describeIn as.filter_mspct
+#'
+#' @export
+#'
+as.filter_mspct.matrix <- function(x,
+                                   w.length,
+                                   spct.data.var = "Tfr",
+                                   multiplier = 1,
+                                   byrow = NULL,
+                                   spct.names = "spct_",
+                                   ...) {
+  mat2mspct(x = x,
+            w.length = w.length,
+            member.class = "filter_spct",
+            spct.data.var = spct.data.var,
+            multiplier = multiplier,
+            byrow = byrow,
+            spct.names = spct.names,
+            ...)
+}
+
+#' @title Coerce to a collection-of-spectra
+#'
+#' @description Return a copy of an R object with its class set to a given type
+#'   of spectrum.
+#'
+#' @param x a list of spectral objects or a list of objects such as data frames
+#'   that can be converted into spectral objects.
 #' @param Rfr.type a character string, either "total" or "specular"
+#' @param strict.range logical Flag indicating how off-range values are handled
+#' @param ... passed to individual spectrum object constructor
+#' @param w.length numeric A vector of wavelengthvalues sorted in strictly ascending
+#'   order (nm).
+#' @param spct.data.var character The name of the variable that will contain the
+#'   spectral data. This indicates what physical quantity is stored in the matrix
+#'   and the units of expression used.
+#' @param multiplier numeric A multiplier to be applied to the values in \code{x} to do
+#'   unit or scale conversion.
+#' @param ncol integer Number of 'virtual' columns in data
+#' @param byrow logical If \code{ncol > 1} how to read in the data
+#' @param spct.names character Vector of names to be assigned to collection members,
+#'   either of length 1, or with length equal to the number of spectra.
+#'
+#' @note When \code{x} is a square matrix an explicit argument is needed for
+#'   \code{byrow} to indicate how data in \code{x} should be read. In every case
+#'   the length of the \code{w.length} vector must match one of the dimensions
+#'   of \code{x}.
+#'
+#' @return A copy of \code{x} converted into a \code{reflector_mspct} object.
 #'
 #' @export
 #'
-as.reflector_mspct <- function(x,
-                               Rfr.type = c("total", "specular"),
-                               strict.range = TRUE) {
-  y <- x
-  rmDerivedMspct(y)
-  z <- plyr::llply(y, setReflectorSpct, Rfr.type = Rfr.type,
-                   strict.range = strict.range)
-  reflector_mspct(z)
+#' @family Coercion methods for collections of spectra
+#'
+as.reflector_mspct <- function(x, ...) UseMethod("as.reflector_mspct")
+
+#' @describeIn as.reflector_mspct
+#'
+#' @export
+#'
+as.reflector_mspct.default <- function(x, ...) {
+  message("'as.reflector_mspct' not implemented for class: ", class(x)[1])
+  reflector_mspct()
 }
 
-#' @rdname as.generic_mspct
+#' @describeIn as.reflector_mspct
 #'
 #' @export
 #'
-as.object_mspct <- function(x,
+as.reflector_mspct.data.frame <-
+  function(x,
+           Rfr.type = c("total", "specular"),
+           strict.range = TRUE,
+           ...) {
+    as.filter_mspct(x = list(x),
+                    Rfr.type = Rfr.type,
+                    strict.range = strict.range,
+                    ...)
+  }
+
+#' @describeIn as.reflector_mspct
+#'
+#' @export
+#'
+as.reflector_mspct.reflector_spct <- function(x, ...) {
+  reflector_mspct(list(x), ...)
+}
+
+#' @describeIn as.reflector_mspct
+#'
+#' @export
+#'
+as.reflector_mspct.list <- function(x,
+                                    Rfr.type = c("total", "specular"),
+                                    strict.range = TRUE,
+                                    ...,
+                                    ncol = 1,
+                                    byrow = FALSE) {
+  y <- x
+  rmDerivedMspct(y)
+  z <- plyr::llply(y,
+                   setReflectorSpct,
+                   Rfr.type = Rfr.type,
+                   strict.range = strict.range,
+                   ...)
+  reflector_mspct(z, ncol = ncol, byrow = byrow)
+}
+
+#' @describeIn as.reflector_mspct
+#'
+#' @export
+#'
+as.reflector_mspct.matrix <- function(x,
+                                      w.length,
+                                      spct.data.var = "Rfr",
+                                      multiplier = 1,
+                                      byrow = NULL,
+                                      spct.names = "spct_",
+                                      ...) {
+  mat2mspct(x = x,
+            w.length = w.length,
+            member.class = "reflector_spct",
+            spct.data.var = spct.data.var,
+            multiplier = multiplier,
+            byrow = byrow,
+            spct.names = spct.names,
+            ...)
+}
+
+#' @title Coerce to a collection-of-spectra
+#'
+#' @description Return a copy of an R object with its class set to a given type
+#'   of spectrum.
+#'
+#' @param x a list of spectral objects or a list of objects such as data frames
+#'   that can be converted into spectral objects.
+#' @param Tfr.type a character string, either "total" or "internal"
+#' @param Rfr.type a character string, either "total" or "specular"
+#' @param strict.range logical Flag indicating how off-range values are handled
+#' @param ... passed to individual spectrum object constructor
+#' @param ncol integer Number of 'virtual' columns in data
+#' @param byrow logical If \code{ncol > 1} how to read in the data
+#'
+#'
+#' @return A copy of \code{x} converted into a \code{object_mspct} object.
+#'
+#' @export
+#'
+#' @family Coercion methods for collections of spectra
+#'
+as.object_mspct <- function(x, ...) UseMethod("as.object_mspct")
+
+#' @describeIn as.object_mspct
+#'
+#' @export
+#'
+as.object_mspct.default <- function(x, ...) {
+  message("'as.object_mspct' not implemented for class: ", class(x)[1])
+  object_mspct()
+}
+
+#' @describeIn as.object_mspct
+#'
+#' @export
+#'
+as.object_mspct.data.frame <-
+  function(x,
+           Tfr.type=c("total", "internal"),
+           Rfr.type=c("total", "specular"),
+           strict.range = TRUE,
+           ...) {
+    as.object_mspct(x = list(x),
+                    Tfr.type = Tfr.type,
+                    Rfr.type = Rfr.type,
+                    strict.range = strict.range,
+                    ...)
+  }
+
+#' @describeIn as.object_mspct
+#'
+#' @export
+#'
+as.object_mspct.object_spct <- function(x, ...) {
+  object_mspct(list(x), ...)
+}
+
+#' @describeIn as.object_mspct
+#'
+#' @export
+#'
+as.object_mspct.list <- function(x,
                             Tfr.type=c("total", "internal"),
                             Rfr.type=c("total", "specular"),
-                            strict.range = TRUE) {
+                            strict.range = TRUE,
+                            ...,
+                            ncol = 1,
+                            byrow = FALSE) {
   y <- x
   rmDerivedMspct(y)
-  z <- plyr::llply(y, setObjectSpct, Tfr.type = Tfr.type, Rfr.type = Rfr.type,
-                   strict.range = strict.range)
-  object_mspct(z)
+  z <- plyr::llply(y,
+                   setObjectSpct,
+                   Tfr.type = Tfr.type,
+                   Rfr.type = Rfr.type,
+                   strict.range = strict.range,
+                   ...)
+  object_mspct(z, ncol = ncol, byrow = byrow)
 }
 
-#' @rdname as.generic_mspct
+#' @title Coerce to a collection-of-spectra
+#'
+#' @description Return a copy of an R object with its class set to a given type
+#'   of spectrum.
+#'
+#' @param x a list of spectral objects or a list of objects such as data frames
+#'   that can be converted into spectral objects.
+#' @param ... passed to individual spectrum object constructor
+#' @param ncol integer Number of 'virtual' columns in data
+#' @param byrow logical If \code{ncol > 1} how to read in the data
+#'
+#'
+#' @return A copy of \code{x} converted into a \code{chroma_mspct} object.
 #'
 #' @export
 #'
-as.chroma_mspct <- function(x) {
+#' @family Coercion methods for collections of spectra
+#'
+as.chroma_mspct <- function(x, ...) UseMethod("as.chroma_mspct")
+
+#' @describeIn as.chroma_mspct
+#'
+#' @export
+#'
+as.chroma_mspct.default <- function(x, ...) {
+  message("'as.chroma_mspct' not implemented for class: ", class(x)[1])
+  chroma_mspct()
+}
+
+#' @describeIn as.chroma_mspct
+#'
+#' @export
+#'
+as.chroma_mspct.data.frame <- function(x, ...) {
+  as.chroma_mspct(x = list(x), ...)
+}
+
+#' @describeIn as.chroma_mspct
+#'
+#' @export
+#'
+as.chroma_mspct.chroma_spct <- function(x, ...) {
+  chroma_mspct(list(x), ...)
+}
+
+#' @describeIn as.chroma_mspct
+#'
+#' @export
+#'
+as.chroma_mspct.list <- function(x,
+                                 ...,
+                                 ncol = 1,
+                                 byrow = FALSE) {
   y <- x
   rmDerivedMspct(y)
-  z <- plyr::llply(y, setChromaSpct)
-  chroma_mspct(z)
+  z <- plyr::llply(y, setChromaSpct, ...)
+  chroma_mspct(z, ncol = ncol, byrow = byrow)
+}
+
+
+# coerce to matrix --------------------------------------------------------
+
+#' Coerce a collection of spectra into a matrix
+#'
+#' Convert an object of class \code{generic_mspct} or a derived class into an R
+#' matrix with wavelengths saved as an attribute and spectral data in rows
+#' or columns.
+#'
+#' @note Only collections of spectra containing spectra with exactly the same
+#' \code{w.length} values can by converted. If needed, the spectra can be
+#' re-expressed before attempting the conversion to a matrix.
+#'
+#' @param x generic_mspct object.
+#' @param spct.data.var character The name of the variable containing the spectral data.
+#' @param byrow logical. If FALSE (the default) the matrix is filled with the
+#'   spectra stored by columns, otherwise the matrix is filled by rows.
+#' @param ... currently ignored.
+#'
+#' @section Warning!: This conversion preserves the spectral data but discards
+#'   almost all the metadata contained in the spectral objects. In other words a
+#'   matrix created with this function cannot be used to recreate the original
+#'   object unless the same metadata is explicitly supplied when converting the
+#'   matrix into new collection of spectra.
+#'
+#' @export
+#'
+#' @name as.matrix-mspct
+#'
+as.matrix.generic_mspct <- function(x,
+                                    spct.data.var,
+                                    byrow = attr(x, "mspct.byrow"),
+                                    ...) {
+  mspct2mat(x = x,
+            spct.data.var = spct.data.var,
+            byrow = byrow,
+            ...)
+}
+
+#' @rdname as.matrix-mspct
+#'
+#' @export
+#'
+mspct2mat <- function(x,
+                      spct.data.var,
+                      byrow = attr(x, "mspct.byrow"),
+                      ...) {
+  stopifnot(is.any_mspct(x))
+  if (length(x) == 0L) {
+    return(matrix(numeric()))
+  }
+  spct.names <- names(x)
+  spct.selector <- rep(TRUE, length(x))
+  mat <- numeric()
+  for (i in seq_along(x)) {
+    temp <- x[[i]]
+    s.column <- temp[[spct.data.var]]
+    wl.current <- temp[["w.length"]]
+    if (i == 1L) {
+      wl.prev <- wl.current
+    }
+    if (!all(wl.current == wl.prev) || length(s.column) == 0L) {
+      spct.selector[i] <- FALSE
+      next()
+    }
+    mat <- c(mat, s.column) # one long numeric vector
+  }
+  if (any(!spct.selector)) {
+    warning("Spectra dropped: ", sum(!spct.selector), " out of ", length(spct.selector), ".")
+  }
+  if (byrow) {
+    z <- matrix(mat, nrow = sum(spct.selector), byrow = byrow,
+                dimnames = list(spct = c(spct.names[spct.selector]),
+                                w.length = wl.prev))
+  } else {
+    z <- matrix(mat, ncol = sum(spct.selector), byrow = byrow,
+                dimnames = list(w.length = wl.prev,
+                                spct = c(spct.names[spct.selector])))
+  }
+  attr(z, "w.length") <- wl.prev
+  comment(z) <- comment(x)
+  z
 }
 
 # constructor methods for data frames --------------------------------------
@@ -493,7 +1428,7 @@ as.chroma_mspct <- function(x) {
 #'
 #' @export
 #'
-#' @family conversion of collections of spectra
+#' @family Coercion methods for collections of spectra
 #'
 split2mspct <- function(x,
                         member.class = NULL,
@@ -672,7 +1607,7 @@ split2calibration_mspct <- function(x,
 #'
 #' @export
 #'
-#' @family conversion of collections of spectra
+#' @family Coercion methods for collections of spectra
 #'
 subset2mspct <- function(x,
                          member.class = NULL,
@@ -807,7 +1742,7 @@ subset2mspct <- function(x,
 #'
 #' Retrieve or set the dimension of an object.
 #'
-#' @param x A \code{generic_mscpt} object or of a derived class.
+#' @param x A \code{generic_mspct} object or of a derived class.
 #'
 #' @return Either NULL or a numeric vector, which is coerced to integer (by
 #'   truncation).

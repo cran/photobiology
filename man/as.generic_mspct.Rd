@@ -2,75 +2,98 @@
 % Please edit documentation in R/zmspct.classes.R
 \name{as.generic_mspct}
 \alias{as.generic_mspct}
-\alias{as.calibration_mspct}
-\alias{as.raw_mspct}
-\alias{as.cps_mspct}
-\alias{as.source_mspct}
-\alias{as.response_mspct}
-\alias{as.filter_mspct}
-\alias{as.reflector_mspct}
-\alias{as.object_mspct}
-\alias{as.chroma_mspct}
-\title{Collection-of-spectra copy-constructor}
+\alias{as.generic_mspct.default}
+\alias{as.generic_mspct.data.frame}
+\alias{as.generic_mspct.generic_spct}
+\alias{as.generic_mspct.list}
+\alias{as.generic_mspct.matrix}
+\alias{mat2mspct}
+\title{Coerce to a collection-of-spectra}
 \usage{
-as.generic_mspct(x, force.spct.class = FALSE)
+as.generic_mspct(x, ...)
 
-as.calibration_mspct(x)
+\method{as.generic_mspct}{default}(x, ...)
 
-as.raw_mspct(x)
+\method{as.generic_mspct}{data.frame}(x, force.spct.class = FALSE, ...)
 
-as.cps_mspct(x)
+\method{as.generic_mspct}{generic_spct}(x, force.spct.class = FALSE, ...)
 
-as.source_mspct(x, time.unit = c("second", "day", "exposure"),
-  bswf.used = c("none", "unknown"),
-  strict.range = getOption("photobiology.strict.range", default = FALSE))
+\method{as.generic_mspct}{list}(x, force.spct.class = FALSE, ..., ncol = 1,
+  byrow = FALSE)
 
-as.response_mspct(x, time.unit = "second")
+\method{as.generic_mspct}{matrix}(x, w.length, member.class, spct.data.var,
+  multiplier = 1, byrow = NULL, spct.names = "spct_", ...)
 
-as.filter_mspct(x, Tfr.type = c("total", "internal"), strict.range = TRUE)
-
-as.reflector_mspct(x, Rfr.type = c("total", "specular"),
-  strict.range = TRUE)
-
-as.object_mspct(x, Tfr.type = c("total", "internal"), Rfr.type = c("total",
-  "specular"), strict.range = TRUE)
-
-as.chroma_mspct(x)
+mat2mspct(x, w.length, member.class, spct.data.var, multiplier = 1,
+  byrow = NULL, spct.names = "spct_", ...)
 }
 \arguments{
 \item{x}{a list of spectral objects or a list of objects such as data frames
 that can be converted into spectral objects.}
 
+\item{...}{passed to individual spectrum object constructor}
+
 \item{force.spct.class}{logical indicating whether to change the class
 of members to \code{generic_spct} or retain the existing class.}
 
-\item{time.unit}{character A string, "second", "day" or "exposure"}
+\item{ncol}{integer Number of 'virtual' columns in data}
 
-\item{bswf.used}{character}
+\item{byrow}{logical If \code{ncol > 1} how to read in the data}
 
-\item{strict.range}{logical Flag indicating whether off-range values result
-in an error instead of a warning}
+\item{w.length}{numeric A vector of wavelengthvalues sorted in strictly ascending
+order (nm).}
 
-\item{Tfr.type}{a character string, either "total" or "internal"}
+\item{member.class}{character The name of the class of the individual spectra
+to be constructed.}
 
-\item{Rfr.type}{a character string, either "total" or "specular"}
+\item{spct.data.var}{character The name of the variable that will contain the
+spectral data. This indicates what physical quantity is stored in the matrix
+and the units of expression used.}
+
+\item{multiplier}{numeric A multiplier to be applied to the values in \code{x} to do
+unit or scale conversion.}
+
+\item{spct.names}{character Vector of names to be assigned to collection members,
+either of length 1, or with length equal to the number of spectra.}
 }
 \value{
-These functions return a copy of \code{x} converted into a given
-  class of spectral collection object, if \code{x} is a valid argument to the
-  corresponding set function.
+A copy of \code{x} converted into a \code{generic_mspct} object.
 }
 \description{
 Return a copy of an R object with its class set to a given type
   of spectrum.
 }
+\section{Methods (by class)}{
+\itemize{
+\item \code{default}: 
+
+\item \code{data.frame}: 
+
+\item \code{generic_spct}: 
+
+\item \code{list}: 
+
+\item \code{matrix}: 
+}}
+
 \note{
 Members of \code{generic_mspct} objects can be heterogeneous: they can
-  belong any class derived from \code{generic_spct} and class is not
-  enforced. In this case when \code{x} is a list of data frames,
-  \code{force.spct.class = TRUE} needs to be supplied.
+  belong to any class derived from \code{generic_spct} and class is not
+  enforced. When \code{x} is a list of data frames
+  \code{force.spct.class = TRUE} needs to be supplied. When \code{x} is a
+  square matrix an explicit argument is needed for \code{byrow} to indicate
+  how data in \code{x} should be read. In every case the length of the
+  \code{w.length} vector must match one of the dimensions of \code{x}.
 }
 \seealso{
-Other conversion of collections of spectra: \code{\link{join_mspct}},
-  \code{\link{split2mspct}}, \code{\link{subset2mspct}}
+Other Coercion methods for collections of spectra: \code{\link{as.calibration_mspct}},
+  \code{\link{as.chroma_mspct}},
+  \code{\link{as.cps_mspct}},
+  \code{\link{as.filter_mspct}},
+  \code{\link{as.object_mspct}},
+  \code{\link{as.raw_mspct}},
+  \code{\link{as.reflector_mspct}},
+  \code{\link{as.response_mspct}},
+  \code{\link{as.source_mspct}}, \code{\link{split2mspct}},
+  \code{\link{subset2mspct}}
 }

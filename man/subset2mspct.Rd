@@ -42,6 +42,14 @@ A non-null value for \code{member.class} is mandatory only when
   \code{x} is a data frame.
 }
 \seealso{
-Other conversion of collections of spectra: \code{\link{as.generic_mspct}},
-  \code{\link{join_mspct}}, \code{\link{split2mspct}}
+Other Coercion methods for collections of spectra: \code{\link{as.calibration_mspct}},
+  \code{\link{as.chroma_mspct}},
+  \code{\link{as.cps_mspct}},
+  \code{\link{as.filter_mspct}},
+  \code{\link{as.generic_mspct}},
+  \code{\link{as.object_mspct}},
+  \code{\link{as.raw_mspct}},
+  \code{\link{as.reflector_mspct}},
+  \code{\link{as.response_mspct}},
+  \code{\link{as.source_mspct}}, \code{\link{split2mspct}}
 }

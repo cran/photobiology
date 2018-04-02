@@ -2,7 +2,7 @@
 % Please edit documentation in R/zmspct.classes.R
 \name{generic_mspct}
 \alias{generic_mspct}
-\alias{raw_mspct}
+\alias{calibration_mspct}
 \alias{raw_mspct}
 \alias{cps_mspct}
 \alias{source_mspct}
@@ -16,7 +16,7 @@
 generic_mspct(l = NULL, class = "generic_spct", ncol = 1, byrow = FALSE,
   dim = c(length(l)\%/\%ncol, ncol))
 
-raw_mspct(l = NULL, ncol = 1, byrow = FALSE, ...)
+calibration_mspct(l = NULL, ncol = 1, byrow = FALSE, ...)
 
 raw_mspct(l = NULL, ncol = 1, byrow = FALSE, ...)
 
@@ -56,7 +56,7 @@ Converts a list of spectral objects into a "multi spectrum"
 }
 \section{Functions}{
 \itemize{
-\item \code{raw_mspct}: Specialization for collections of \code{calibration_spct} objects.
+\item \code{calibration_mspct}: Specialization for collections of \code{calibration_spct} objects.
 
 \item \code{raw_mspct}: Specialization for collections of \code{raw_spct} objects.
 

@@ -138,5 +138,12 @@ The functions can be used to add only one spectral quantity to a
   surface reflectance on the amount of light transmitted.
 }
 \seealso{
-Other creation of spectral objects functions: \code{\link{as.generic_spct}}
+Other constructors of spectral objects: \code{\link{as.calibration_spct}},
+  \code{\link{as.chroma_spct}}, \code{\link{as.cps_spct}},
+  \code{\link{as.filter_spct}},
+  \code{\link{as.generic_spct}},
+  \code{\link{as.object_spct}}, \code{\link{as.raw_spct}},
+  \code{\link{as.reflector_spct}},
+  \code{\link{as.response_spct}},
+  \code{\link{as.source_spct}}
 }

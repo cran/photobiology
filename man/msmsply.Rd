@@ -34,7 +34,7 @@ correct environment set up for computing.}
 
 \item{idx}{logical whether to add a column with the names of the elements of
 mspct, if \code{NULL}, the default, a column is added only if all members
-of \code{mscpt} are named.}
+of \code{mspct} are named.}
 
 \item{col.names}{character Names to be used for data columns.}
 

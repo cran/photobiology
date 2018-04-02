@@ -21,9 +21,9 @@ Functions listed here have been removed or deleted, and temporarily replaced
 by stubs that report this when they are called.
 }
 \note{
-Function \code{f_mscpt} has been renamed \code{msdply()}.
+Function \code{f_mspct} has been renamed \code{msdply()}.
 
-Function \code{mutate_mscpt} has been renamed \code{msmsply()}.
+Function \code{mutate_mspct} has been renamed \code{msmsply()}.
 
 Function \code{calc_filter_multipliers} has been removed.
 }

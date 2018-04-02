@@ -66,6 +66,14 @@ Convert a data frame object into a "multi spectrum" object by
   other than wavelength into individual spct objects.
 }
 \seealso{
-Other conversion of collections of spectra: \code{\link{as.generic_mspct}},
-  \code{\link{join_mspct}}, \code{\link{subset2mspct}}
+Other Coercion methods for collections of spectra: \code{\link{as.calibration_mspct}},
+  \code{\link{as.chroma_mspct}},
+  \code{\link{as.cps_mspct}},
+  \code{\link{as.filter_mspct}},
+  \code{\link{as.generic_mspct}},
+  \code{\link{as.object_mspct}},
+  \code{\link{as.raw_mspct}},
+  \code{\link{as.reflector_mspct}},
+  \code{\link{as.response_mspct}},
+  \code{\link{as.source_mspct}}, \code{\link{subset2mspct}}
 }

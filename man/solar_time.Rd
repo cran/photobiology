@@ -41,7 +41,7 @@ The algorithm is approximate, it calculates the difference between
   parameter time. In the case of solar time, this timezone does not affect
   the result. However, in the case of solar dates the date part may be
   off by one day, if the time zone does not match the coordinates of the
-  goecode value provided as argument.
+  geocode value provided as argument.
 }
 
 \examples{

@@ -77,12 +77,12 @@ ISBN 978-952-10-8363-1 (PDF), 978-952-10-8362-4 (paperback). Open access PDF
 download available at http://hdl.handle.net/10138/37558
 
 Aphalo, Pedro J. (2015) The r4photobiology suite. UV4Plants Bulletin, 2015:1,
-21-29. \url{http://doi.org/10.19232/uv4pb.2015.1.14}.
+21-29. \url{https://doi.org/10.19232/uv4pb.2015.1.14}.
 
 Maia, R., Eliason, C. M., Bitton, P. P., Doucet, S. M., Shawkey, M. D. (2013)
 pavo: an R package for the analysis, visualization and organization of
 spectral data. Methods in Ecology and Evolution, 4(10):906-913.
-\url{http://doi.org/10.1111/2041-210X.12069}.
+\url{https://doi.org/10.1111/2041-210X.12069}.
 }
 \seealso{
 Useful links:
@@ -98,7 +98,8 @@ Useful links:
 
 Other contributors:
 \itemize{
-  \item Titta K. Kotilainen [contributor]
+  \item Titta K. Kotilainen (http://orcid.org/0000-0002-2822-9734) [contributor]
+  \item Glenn Davis \email{gdavis@gluonics.com} [contributor]
 }
 
 }

@@ -10,7 +10,7 @@
 \method{dim}{generic_mspct}(x) <- value
 }
 \arguments{
-\item{x}{A \code{generic_mscpt} object or of a derived class.}
+\item{x}{A \code{generic_mspct} object or of a derived class.}
 
 \item{value}{Either NULL or a numeric vector, which is coerced to integer (by truncation).}
 }

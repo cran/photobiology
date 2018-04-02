@@ -7,7 +7,7 @@
 shared_member_class(l, target.set = spct_classes())
 }
 \arguments{
-\item{l}{a list or a generic_mscpt object or of a derived class.}
+\item{l}{a list or a generic_mspct object or of a derived class.}
 
 \item{target.set}{character The target set of classes within which to search
 for classes common to all members.}

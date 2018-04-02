@@ -2,67 +2,52 @@
 % Please edit documentation in R/spct.new.r
 \name{as.generic_spct}
 \alias{as.generic_spct}
-\alias{as.calibration_spct}
-\alias{as.raw_spct}
-\alias{as.cps_spct}
-\alias{as.source_spct}
-\alias{as.response_spct}
-\alias{as.filter_spct}
-\alias{as.reflector_spct}
-\alias{as.object_spct}
-\alias{as.chroma_spct}
-\title{Spectral-object copy constructor}
+\alias{as.generic_spct.default}
+\alias{as.calibration_spct.default}
+\alias{as.raw_spct.default}
+\alias{as.chroma_spct.default}
+\title{Coerce to a spectrum}
 \usage{
 as.generic_spct(x, ...)
 
-as.calibration_spct(x, ...)
+\method{as.generic_spct}{default}(x, ...)
 
-as.raw_spct(x, ...)
+\method{as.calibration_spct}{default}(x, ...)
 
-as.cps_spct(x, ...)
+\method{as.raw_spct}{default}(x, ...)
 
-as.source_spct(x, time.unit = c("second", "day", "exposure"),
-  bswf.used = c("none", "unknown"),
-  strict.range = getOption("photobiology.strict.range", default = FALSE), ...)
-
-as.response_spct(x, time.unit = "second", ...)
-
-as.filter_spct(x, Tfr.type = c("total", "internal"),
-  strict.range = getOption("photobiology.strict.range", default = FALSE), ...)
-
-as.reflector_spct(x, Rfr.type = c("total", "specular"),
-  strict.range = getOption("photobiology.strict.range", default = FALSE), ...)
-
-as.object_spct(x, Tfr.type = c("total", "internal"), Rfr.type = c("total",
-  "specular"), strict.range = getOption("photobiology.strict.range", default =
-  FALSE), ...)
-
-as.chroma_spct(x, ...)
+\method{as.chroma_spct}{default}(x, ...)
 }
 \arguments{
 \item{x}{an R object}
 
 \item{...}{other arguments passed to "set" functions}
-
-\item{time.unit}{character A string, "second", "day" or "exposure"}
-
-\item{bswf.used}{character}
-
-\item{strict.range}{logical Flag indicating whether off-range values result
-in an error instead of a warning}
-
-\item{Tfr.type}{a character string, either "total" or "internal"}
-
-\item{Rfr.type}{a character string, either "total" or "specular"}
 }
 \value{
-These functions return a copy of \code{x} converted into a given
-  class of spectral object, if \code{x} is a valid argument to the
-  corresponding set function.
+A copy of \code{x} converted into a \code{generic_spct} object.
 }
 \description{
 Return a copy of an R object with its class set to a given type of spectrum.
 }
+\section{Methods (by class)}{
+\itemize{
+\item \code{default}: 
+
+\item \code{default}: 
+
+\item \code{default}: 
+
+\item \code{default}: 
+}}
+
 \seealso{
-Other creation of spectral objects functions: \code{\link{source_spct}}
+\code{\link{setGenericSpct}}
+
+Other constructors of spectral objects: \code{\link{as.calibration_spct}},
+  \code{\link{as.chroma_spct}}, \code{\link{as.cps_spct}},
+  \code{\link{as.filter_spct}},
+  \code{\link{as.object_spct}}, \code{\link{as.raw_spct}},
+  \code{\link{as.reflector_spct}},
+  \code{\link{as.response_spct}},
+  \code{\link{as.source_spct}}, \code{\link{source_spct}}
 }

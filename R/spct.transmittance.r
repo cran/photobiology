@@ -126,7 +126,6 @@ transmittance_spct <-
       spct <- as.filter_spct(spct)
     }
     spct <- A2T(spct, action = "replace", byref = FALSE)
-    Tfr.type <- getTfrType(spct)
     spct <- spct[ , c("w.length", "Tfr")]
     # if the waveband is undefined then use all data
     if (length(w.band) == 0) {
@@ -194,8 +193,11 @@ transmittance_spct <-
     }
 
     if (quantity %in% c("contribution", "contribution.pc")) {
-      total <- transmittance_spct(spct, w.band = NULL, wb.trim = wb.trim,
-                                quantity = "total", use.hinges = use.hinges)
+      total <- transmittance_spct(spct,
+                                  w.band = NULL,
+                                  wb.trim = wb.trim,
+                                  quantity = "total",
+                                  use.hinges = use.hinges)
       transmittance <- transmittance / total
       if (quantity == "contribution.pc") {
         transmittance <- transmittance * 1e2
@@ -207,7 +209,7 @@ transmittance_spct <-
         transmittance <- transmittance * 1e2
       }
     } else if (quantity %in% c("average", "mean")) {
-      transmittance <- transmittance / sapply(w.band, spread)
+      transmittance <- transmittance / sapply(w.band, wl_expanse)
     } else if (quantity == "total") {
       NULL
     } else if (quantity != "total") {

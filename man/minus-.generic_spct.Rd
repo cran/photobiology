@@ -13,7 +13,7 @@
 \item{e2}{an object of class "generic_spct"}
 }
 \description{
-Substraction operator for generic spectra.
+Subtraction operator for generic spectra.
 }
 \seealso{
 Other math operators and functions: \code{\link{MathFun}},

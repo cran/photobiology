@@ -60,7 +60,7 @@ correct environment set up for computing.}
 }
 \value{
 In the case of methods for individual spectra, a \code{numeric}
-  vector of nondimensional values giving a energy ratio between
+  vector of adimensional values giving a energy ratio between
   integrated energy irradiances for pairs of wavebands, with name attribute
   set to the name of the wavebands unless a named list of wavebands is
   supplied in which case the names of the list elements are used, with

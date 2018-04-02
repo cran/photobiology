@@ -2,24 +2,30 @@
 % Please edit documentation in R/waveband.class.r
 \name{spread}
 \alias{spread}
-\alias{spread.default}
-\alias{spread.numeric}
-\alias{spread.waveband}
-\alias{spread.generic_spct}
-\alias{spread.generic_mspct}
-\title{Length of object in wavelength units}
+\alias{wl_expanse}
+\alias{expanse}
+\alias{expanse.default}
+\alias{expanse.numeric}
+\alias{expanse.waveband}
+\alias{expanse.generic_spct}
+\alias{expanse.generic_mspct}
+\title{Expanse}
 \usage{
 spread(x, ...)
 
-\method{spread}{default}(x, ...)
+wl_expanse(x, ...)
 
-\method{spread}{numeric}(x, ...)
+expanse(x, ...)
 
-\method{spread}{waveband}(x, ...)
+\method{expanse}{default}(x, ...)
 
-\method{spread}{generic_spct}(x, ...)
+\method{expanse}{numeric}(x, ...)
 
-\method{spread}{generic_mspct}(x, ..., idx = !is.null(names(x)))
+\method{expanse}{waveband}(x, ...)
+
+\method{expanse}{generic_spct}(x, ...)
+
+\method{expanse}{generic_mspct}(x, ..., idx = !is.null(names(x)))
 }
 \arguments{
 \item{x}{an R object}
@@ -34,7 +40,7 @@ A numeric value equal to max(x) - min(x). In the case of spectral
   available definitions of \code{\link{min}} and \code{\link{max}}.
 }
 \description{
-A function that returns the spread (max(x) - min(x)) for R objects.
+A function that returns the expanse (max(x) - min(x)) for R objects.
 }
 \section{Methods (by class)}{
 \itemize{
@@ -50,6 +56,10 @@ A function that returns the spread (max(x) - min(x)) for R objects.
 }}
 
 \examples{
-spread(sun.spct)
+expanse(10:20)
+expanse(sun.spct)
+wl_expanse(sun.spct)
+
+expanse(sun.spct)
 
 }

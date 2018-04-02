@@ -79,7 +79,3 @@ Currently only generic_spct, source_mspct, response_mspct,
   filter_mspct, reflector_mspct and object_mspct classes have this method
   implemented.
 }
-\seealso{
-Other conversion of collections of spectra: \code{\link{as.generic_mspct}},
-  \code{\link{split2mspct}}, \code{\link{subset2mspct}}
-}

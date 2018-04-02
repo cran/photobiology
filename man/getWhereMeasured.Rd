@@ -27,7 +27,7 @@ getWhereMeasured(x, ...)
 spct}
 }
 \value{
-a data.frane with a single row and at least columns "lon" and "lat".
+a data.frame with a single row and at least columns "lon" and "lat".
 }
 \description{
 Function to read the "where.measured" attribute of an existing generic_spct.

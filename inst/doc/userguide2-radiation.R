@@ -99,9 +99,41 @@ class(mixed.mspct)
 lapply(mixed.mspct, class_spct)
 
 ## ---- col-construction-3-------------------------------------------------
-two_gen.mscpt <- as.generic_mspct(two_suns.mspct)
-class(two_gen.mscpt)
-lapply(two_gen.mscpt, class_spct)
+two_gen.mspct <- as.generic_mspct(two_suns.mspct)
+class(two_gen.mspct)
+str(two_gen.mspct, max.level = 1, give.attr = FALSE)
+
+## ---- col-construction-4-------------------------------------------------
+one_sun.mspct <- as.source_mspct(sun.spct)
+class(one_sun.mspct)
+str(one_sun.mspct, max.level = 1, give.attr = FALSE)
+
+## ---- col-construction-5-------------------------------------------------
+x <- matrix(1:100, ncol = 2)
+wl <- 501:550 # wavelengths in nanometres
+as.filter_mspct(x, wl, "Tpc")
+
+## ---- col-construction-6-------------------------------------------------
+as.filter_mspct(x, wl, "Tpc", spct.names = c("A", "B"))
+
+## ---- col-construction-7-------------------------------------------------
+xrow <- matrix(1:100, nrow = 2, byrow = TRUE)
+as.filter_mspct(xrow, wl, "Tpc")
+
+## ---- col-construction-8-------------------------------------------------
+two_suns.mat <- as.matrix(two_suns.mspct, "s.e.irrad")
+class(two_suns.mat)
+dim(two_suns.mat)
+head(dimnames(two_suns.mat)$spct)
+head(dimnames(two_suns.mat)$w.length)
+head(attr(two_suns.mat, "w.length"))
+
+## ---- col-construction-9-------------------------------------------------
+two_suns.row_mat <- as.matrix(two_suns.mat, "s.e.irrad", byrow = TRUE)
+class(two_suns.row_mat)
+dim(two_suns.row_mat)
+head(dimnames(two_suns.row_mat)$spct)
+head(attr(two_suns.row_mat, "w.length"))
 
 ## ---- bind-1-------------------------------------------------------------
 two_suns.spct <- rbindspct(list(a = sun.spct, b = sun.spct / 2))
@@ -480,18 +512,18 @@ summary(sun.spct)
 summary(two_suns.spct)
 
 ## ---- summary-3----------------------------------------------------------
-range(sun.spct)
-min(sun.spct)
-max(sun.spct)
-midpoint(sun.spct)
-spread(sun.spct)
-stepsize(sun.spct)
+wl_range(sun.spct)
+wl_min(sun.spct)
+wl_max(sun.spct)
+wl_midpoint(sun.spct)
+wl_expanse(sun.spct)
+wl_stepsize(sun.spct)
 
 ## ---- summary-4----------------------------------------------------------
 filters.mspct <- filter_mspct(list(none = clear.spct,
                                    pet = polyester.spct,
                                    yellow = yellow_gel.spct))
-range(filters.mspct)
+wl_range(filters.mspct)
 
 ## ---- summary-5----------------------------------------------------------
 peaks(sun.spct, span = 51)
