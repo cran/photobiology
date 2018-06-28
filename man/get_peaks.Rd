@@ -6,10 +6,10 @@
 \title{Get peaks and valleys in a spectrum}
 \usage{
 get_peaks(x, y, ignore_threshold = 0, span = 5, strict = TRUE,
-  x_unit = "", x_digits = 3)
+  x_unit = "", x_digits = 3, na.rm = FALSE)
 
 get_valleys(x, y, ignore_threshold = 0, span = 5, strict = TRUE,
-  x_unit = "", x_digits = 3)
+  x_unit = "", x_digits = 3, na.rm = FALSE)
 }
 \arguments{
 \item{x}{numeric}
@@ -32,6 +32,9 @@ all other values in its window to be considered a peak. Default: TRUE.}
 from x value at peaks.}
 
 \item{x_digits}{numeric Number of significant digits in wavelength label.}
+
+\item{na.rm}{logical indicating whether \code{NA} values should be stripped
+before searching for peaks.}
 }
 \value{
 A data frame with variables w.length and s.irrad with their values at

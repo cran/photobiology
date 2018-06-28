@@ -7,9 +7,11 @@
 \alias{water_mvc2vp}
 \title{Water vapour pressure}
 \usage{
-water_vp_sat(temperature, over.ice = FALSE, method = "tetens")
+water_vp_sat(temperature, over.ice = FALSE, method = "tetens",
+  check.range = TRUE)
 
-water_dp(water.vp, over.ice = FALSE, method = "tetens")
+water_dp(water.vp, over.ice = FALSE, method = "tetens",
+  check.range = TRUE)
 
 water_vp2mvc(water.vp, temperature)
 
@@ -22,6 +24,10 @@ water_mvc2vp(water.mvc, temperature)
 
 \item{method}{character Currently "tetens" and modified "magnus" equations
 are supported.}
+
+\item{check.range}{logical Flag indicating whether to check or not that
+arguments for temperature are within the range of validity of the
+\code{method} used.}
 
 \item{water.vp}{numeric vector of water vapour pressure in air (Pa).}
 

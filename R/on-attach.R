@@ -2,3 +2,7 @@
   packageStartupMessage("For news about '", pkgname, "', please, see http://www.r4photobiology.info/")
   packageStartupMessage("For on-line documentation see http://docs.r4photobiology.info/", pkgname, "/")
 }
+
+.onLoad <- function(libname, pkgname) {
+  options(photobiology.verbose = getOption("verbose"))
+}

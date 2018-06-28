@@ -3,7 +3,9 @@
 \name{valleys}
 \alias{valleys}
 \alias{valleys.default}
+\alias{valleys.default}
 \alias{valleys.numeric}
+\alias{valleys.data.frame}
 \alias{valleys.generic_spct}
 \alias{valleys.source_spct}
 \alias{valleys.response_spct}
@@ -15,33 +17,44 @@
 \usage{
 valleys(x, span, ignore_threshold, strict, ...)
 
-\method{valleys}{default}(x, span, ignore_threshold, strict, ...)
+\method{valleys}{default}(x, span = NA, ignore_threshold = NA,
+  strict = NA, na.rm = FALSE, ...)
 
-\method{valleys}{numeric}(x, span = 5, ignore_threshold, strict = TRUE, ...)
+\method{valleys}{default}(x, span = NA, ignore_threshold = NA,
+  strict = NA, na.rm = FALSE, ...)
+
+\method{valleys}{numeric}(x, span = 5, ignore_threshold, strict = TRUE,
+  na.rm = FALSE, ...)
+
+\method{valleys}{data.frame}(x, span = 5, ignore_threshold = 0,
+  strict = TRUE, na.rm = FALSE, var.name, ...)
 
 \method{valleys}{generic_spct}(x, span = 5, ignore_threshold = 0,
-  strict = TRUE, ...)
+  strict = TRUE, na.rm = FALSE, var.name = NULL, ...)
 
 \method{valleys}{source_spct}(x, span = 5, ignore_threshold = 0,
-  strict = TRUE, unit.out = getOption("photobiology.radiation.unit", default
-  = "energy"), ...)
+  strict = TRUE, na.rm = FALSE,
+  unit.out = getOption("photobiology.radiation.unit", default = "energy"),
+  ...)
 
 \method{valleys}{response_spct}(x, span = 5, ignore_threshold = 0,
-  strict = TRUE, unit.out = getOption("photobiology.radiation.unit", default
-  = "energy"), ...)
+  strict = TRUE, na.rm = FALSE,
+  unit.out = getOption("photobiology.radiation.unit", default = "energy"),
+  ...)
 
 \method{valleys}{filter_spct}(x, span = 5, ignore_threshold = 0,
-  strict = TRUE, filter.qty = getOption("photobiology.filter.qty", default =
+  strict = TRUE, na.rm = FALSE,
+  filter.qty = getOption("photobiology.filter.qty", default =
   "transmittance"), ...)
 
 \method{valleys}{reflector_spct}(x, span = 5, ignore_threshold = 0,
-  strict = TRUE, ...)
+  strict = TRUE, na.rm = FALSE, ...)
 
 \method{valleys}{cps_spct}(x, span = 5, ignore_threshold = 0,
-  strict = TRUE, ...)
+  strict = TRUE, na.rm = FALSE, ...)
 
 \method{valleys}{generic_mspct}(x, span = 5, ignore_threshold = 0,
-  strict = TRUE, ..., .parallel = FALSE, .paropts = NULL)
+  strict = TRUE, na.rm = FALSE, ..., .parallel = FALSE, .paropts = NULL)
 }
 \arguments{
 \item{x}{an R object}
@@ -59,6 +72,11 @@ ignored.}
 all other values in its window to be considered a peak. Default: TRUE.}
 
 \item{...}{ignored}
+
+\item{na.rm}{logical indicating whether \code{NA} values should be stripped
+before searching for peaks.}
+
+\item{var.name}{Name of column where to look for peaks.}
 
 \item{unit.out}{character One of "energy" or "photon"}
 
@@ -84,7 +102,11 @@ to local maxima.
 \itemize{
 \item \code{default}: Default function usable on numeric vectors.
 
+\item \code{default}: Default returning always NA.
+
 \item \code{numeric}: Default function usable on numeric vectors.
+
+\item \code{data.frame}: Method for "data.frame" objects.
 
 \item \code{generic_spct}: Method for "generic_spct" objects.
 
@@ -102,6 +124,8 @@ to local maxima.
 }}
 
 \examples{
+valleys(sun.spct, span = 50)
+
 valleys(sun.spct)
 
 }

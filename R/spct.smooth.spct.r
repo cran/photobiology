@@ -46,6 +46,11 @@ smooth_spct.source_spct <- function(x, method = "custom", strength = 1, ...) {
             num.spectra, " spectra")
     return(x)
   }
+  if (("s.e.irrad" %in% names(x) && anyNA(x[["s.e.irrad"]])) ||
+      ("s.q.irrad" %in% names(x) && anyNA(x[["s.q.irrad"]]))) {
+    warning("NAs encoentered when smoothing, returning input unchanged")
+    return(x)
+  }
   # we disable range checks for spectra until end of function
   old.options <- options(photobiology.strict.range = NA_integer_)
   if (method == "lowess") {
@@ -118,7 +123,7 @@ smooth_spct.source_spct <- function(x, method = "custom", strength = 1, ...) {
     }
     num_bad <- with(out.spct, sum(!s.e.irrad.good, na.rm = TRUE))
     if (num_bad > length(out.spct) / 20) {
-      warning(num_bad, " 'bad' estimates in spectral irradiance")
+      message(num_bad, " possibly 'bad' values in smoothed spectral irradiance")
     }
     out.spct <- out.spct[ , c("w.length", "s.e.irrad")]
     setSourceSpct(out.spct, time.unit = attr(x, "time.unit", exact = TRUE))
@@ -149,6 +154,11 @@ smooth_spct.filter_spct <- function(x, method = "custom", strength = 1, ...) {
     return(x)
   }
   # we disable range checks for spectra until end of function
+  if (("Tfr" %in% names(x) && anyNA(x[["Tfr"]])) ||
+      ("A" %in% names(x) && anyNA(x[["A"]]))) {
+    warning("NAs encoentered when smoothing, returning input unchanged")
+    return(x)
+  }
   old.options <- options(photobiology.strict.range = NA_integer_)
   if (method == "lowess") {
     span = 1/50 * strength
@@ -221,7 +231,7 @@ smooth_spct.filter_spct <- function(x, method = "custom", strength = 1, ...) {
     }
     num_bad <- sum(!out.spct[["Tfr.good"]], na.rm=TRUE)
     if (num_bad > length(out.spct) / 20) {
-      warning(num_bad, " 'bad' estimates in spectral irradiance")
+      message(num_bad, " possibly 'bad' values in smoothed spectral Tfr")
     }
     out.spct <- out.spct[ , c("w.length", "Tfr")]
     setFilterSpct(out.spct, Tfr.type = attr(x, "Tfr.type", exact = TRUE))
@@ -249,6 +259,10 @@ smooth_spct.reflector_spct <- function(x, method = "custom", strength = 1, ...) 
   if (num.spectra != 1) {
     warning("Skipping smoothing as object contains ",
             num.spectra, " spectra")
+    return(x)
+  }
+  if ("Rfr" %in% names(x) && anyNA(x[["Rfr"]])) {
+    warning("NAs encoentered when smoothing, returning input unchanged")
     return(x)
   }
   # we disable range checks for spectra until end of function
@@ -311,7 +325,7 @@ smooth_spct.reflector_spct <- function(x, method = "custom", strength = 1, ...) 
     }
     num_bad <- sum(!out.spct[["Rfr.good"]], na.rm=TRUE)
     if (num_bad > length(out.spct) / 20) {
-      warning(num_bad, " 'bad' estimates in spectral irradiance")
+      message(num_bad, " possibly 'bad' values in smoothed spectral Rfr")
     }
     out.spct <- out.spct[ , c("w.length", "Rfr")]
     setReflectorSpct(out.spct)
@@ -338,6 +352,11 @@ smooth_spct.response_spct <- function(x, method = "custom", strength = 1, ...) {
   if (num.spectra != 1) {
     warning("Skipping smoothing as object contains ",
             num.spectra, " spectra")
+    return(x)
+  }
+  if (("s.e.response" %in% names(x) && anyNA(x[["s.e.response"]])) ||
+      ("s.q.response" %in% names(x) && anyNA(x[["s.q.response"]]))) {
+    warning("NAs encoentered when smoothing, returning input unchanged")
     return(x)
   }
   # we disable range checks for spectra until end of function
@@ -413,7 +432,7 @@ smooth_spct.response_spct <- function(x, method = "custom", strength = 1, ...) {
     }
     num_bad <- sum(!out.spct[["s.e.response.good"]], na.rm=TRUE)
     if (num_bad > length(out.spct) / 20) {
-      warning(num_bad, " 'bad' estimates in spectral response")
+      message(num_bad, " possibly 'bad' values in smoothed spectral response")
     }
     out.spct <- out.spct[ , c("w.length", "s.e.response")]
     setResponseSpct(out.spct, time.unit = attr(x, "time.unit", exact = TRUE))

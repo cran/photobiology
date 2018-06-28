@@ -13,41 +13,45 @@
 \alias{setChromaSpct}
 \title{Convert an R object into a spectrum object.}
 \usage{
-setGenericSpct(x, multiple.wl = 1L)
+setGenericSpct(x, multiple.wl = 1L, idfactor = NULL)
 
 setCalibrationSpct(x, strict.range = getOption("photobiology.strict.range",
-  default = FALSE), multiple.wl = 1L)
+  default = FALSE), multiple.wl = 1L, idfactor = NULL)
 
 setRawSpct(x, strict.range = getOption("photobiology.strict.range", default =
-  FALSE), multiple.wl = 1L)
+  FALSE), multiple.wl = 1L, idfactor = NULL)
 
 setCpsSpct(x, strict.range = getOption("photobiology.strict.range", default =
-  FALSE), multiple.wl = 1L)
+  FALSE), multiple.wl = 1L, idfactor = NULL)
 
 setFilterSpct(x, Tfr.type = c("total", "internal"),
   strict.range = getOption("photobiology.strict.range", default = FALSE),
-  multiple.wl = 1L)
+  multiple.wl = 1L, idfactor = NULL)
 
 setReflectorSpct(x, Rfr.type = c("total", "specular"),
   strict.range = getOption("photobiology.strict.range", default = FALSE),
-  multiple.wl = 1L)
+  multiple.wl = 1L, idfactor = NULL)
 
 setObjectSpct(x, Tfr.type = c("total", "internal"), Rfr.type = c("total",
   "specular"), strict.range = getOption("photobiology.strict.range", default =
-  FALSE), multiple.wl = 1L)
+  FALSE), multiple.wl = 1L, idfactor = NULL)
 
-setResponseSpct(x, time.unit = "second", multiple.wl = 1L)
+setResponseSpct(x, time.unit = "second", multiple.wl = 1L,
+  idfactor = NULL)
 
 setSourceSpct(x, time.unit = "second", bswf.used = c("none", "unknown"),
   strict.range = getOption("photobiology.strict.range", default = FALSE),
-  multiple.wl = 1L)
+  multiple.wl = 1L, idfactor = NULL)
 
-setChromaSpct(x, multiple.wl = 1L)
+setChromaSpct(x, multiple.wl = 1L, idfactor = NULL)
 }
 \arguments{
 \item{x}{data.frame, list or generic_spct and derived classes}
 
 \item{multiple.wl}{numeric Maximum number of repeated w.length entries with same value.}
+
+\item{idfactor}{character Name of factor distinguishing multiple spectra when
+stored logitudinally (required if mulitple.wl > 1).}
 
 \item{strict.range}{logical Flag indicating whether off-range values result in an
 error instead of a warning.}

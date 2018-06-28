@@ -152,6 +152,13 @@ as argument but with the spectral data rescaled.
 \item \code{default}: Default for generic function
 }}
 
+\examples{
+fscale(sun.spct, f = "mean")
+fscale(sun.spct, f = "mean", na.rm = TRUE)
+fscale(sun.spct, f = sum)
+fscale(sun.spct, f = function(x) {sum(x) / length(x)})
+
+}
 \seealso{
 Other rescaling functions: \code{\link{fshift}},
   \code{\link{getNormalized}}, \code{\link{is_normalized}},

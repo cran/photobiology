@@ -19,7 +19,7 @@ length. Colours and vision. This package is part of the
 \details{
 Package 'photobiology' is at the core of a suite of packages for
   analysis and plotting of data relevant to photobiology (described at
-  \url{http://www.r4photobiology.info/}). The accompanying packages (under
+  \url{https://www.r4photobiology.info/}). The accompanying packages (under
   development) provide data and definitions that are to a large extent
   application-area specific while the functions in the present package are
   widely useful in photobiology and radiation quantification in geophysics
@@ -87,18 +87,18 @@ spectral data. Methods in Ecology and Evolution, 4(10):906-913.
 \seealso{
 Useful links:
 \itemize{
-  \item \url{http://www.r4photobiology.info/}
+  \item \url{https://www.r4photobiology.info/}
   \item \url{https://bitbucket.org/aphalo/photobiology}
   \item Report bugs at \url{https://bitbucket.org/aphalo/photobiology/issues}
 }
 
 }
 \author{
-\strong{Maintainer}: Pedro J. Aphalo \email{pedro.aphalo@helsinki.fi} (https://orcid.org/0000-0003-3385-972X)
+\strong{Maintainer}: Pedro J. Aphalo \email{pedro.aphalo@helsinki.fi} (0000-0003-3385-972X)
 
 Other contributors:
 \itemize{
-  \item Titta K. Kotilainen (http://orcid.org/0000-0002-2822-9734) [contributor]
+  \item Titta K. Kotilainen (0000-0002-2822-9734) [contributor]
   \item Glenn Davis \email{gdavis@gluonics.com} [contributor]
 }
 

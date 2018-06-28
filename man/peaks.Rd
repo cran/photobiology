@@ -4,6 +4,7 @@
 \alias{peaks}
 \alias{peaks.default}
 \alias{peaks.numeric}
+\alias{peaks.data.frame}
 \alias{peaks.generic_spct}
 \alias{peaks.source_spct}
 \alias{peaks.response_spct}
@@ -13,34 +14,43 @@
 \alias{peaks.generic_mspct}
 \title{Peaks or local maxima}
 \usage{
-peaks(x, span, ignore_threshold, strict, ...)
+peaks(x, span, ignore_threshold, strict, na.rm, ...)
 
-\method{peaks}{default}(x, span, ignore_threshold, strict, ...)
+\method{peaks}{default}(x, span = NA, ignore_threshold = NA, strict = NA,
+  na.rm = FALSE, ...)
 
-\method{peaks}{numeric}(x, span = 5, ignore_threshold, strict = TRUE, ...)
+\method{peaks}{numeric}(x, span = 5, ignore_threshold = NA, strict = TRUE,
+  na.rm = FALSE, ...)
 
-\method{peaks}{generic_spct}(x, span, ignore_threshold, strict, ...)
+\method{peaks}{data.frame}(x, span = 5, ignore_threshold = 0,
+  strict = TRUE, na.rm = FALSE, var.name, ...)
+
+\method{peaks}{generic_spct}(x, span = 5, ignore_threshold = 0,
+  strict = TRUE, na.rm = FALSE, var.name = NULL, ...)
 
 \method{peaks}{source_spct}(x, span = 5, ignore_threshold = 0,
-  strict = TRUE, unit.out = getOption("photobiology.radiation.unit", default
-  = "energy"), ...)
+  strict = TRUE, na.rm = FALSE,
+  unit.out = getOption("photobiology.radiation.unit", default = "energy"),
+  ...)
 
 \method{peaks}{response_spct}(x, span = 5, ignore_threshold = 0,
-  strict = TRUE, unit.out = getOption("photobiology.radiation.unit", default
-  = "energy"), ...)
+  strict = TRUE, na.rm = FALSE,
+  unit.out = getOption("photobiology.radiation.unit", default = "energy"),
+  ...)
 
 \method{peaks}{filter_spct}(x, span = 5, ignore_threshold = 0,
-  strict = TRUE, filter.qty = getOption("photobiology.filter.qty", default =
+  strict = TRUE, na.rm = FALSE,
+  filter.qty = getOption("photobiology.filter.qty", default =
   "transmittance"), ...)
 
 \method{peaks}{reflector_spct}(x, span = 5, ignore_threshold = 0,
-  strict = TRUE, ...)
+  strict = TRUE, na.rm = FALSE, ...)
 
 \method{peaks}{cps_spct}(x, span = 5, ignore_threshold = 0, strict = TRUE,
-  ...)
+  na.rm = FALSE, ...)
 
 \method{peaks}{generic_mspct}(x, span = 5, ignore_threshold = 0,
-  strict = TRUE, ..., .parallel = FALSE, .paropts = NULL)
+  strict = TRUE, na.rm = FALSE, ..., .parallel = FALSE, .paropts = NULL)
 }
 \arguments{
 \item{x}{an R object}
@@ -57,7 +67,12 @@ ignored.}
 \item{strict}{logical flag: if TRUE, an element must be strictly greater than
 all other values in its window to be considered a peak. Default: TRUE.}
 
+\item{na.rm}{logical indicating whether \code{NA} values should be stripped
+before searching for peaks.}
+
 \item{...}{ignored}
+
+\item{var.name}{Name of column where to look for peaks.}
 
 \item{unit.out}{character One of "energy" or "photon"}
 
@@ -81,9 +96,11 @@ to local maxima.
 }
 \section{Methods (by class)}{
 \itemize{
-\item \code{default}: Default function usable on numeric vectors.
+\item \code{default}: Default returning always NA.
 
 \item \code{numeric}: Default function usable on numeric vectors.
+
+\item \code{data.frame}: Method for "data.frame" objects.
 
 \item \code{generic_spct}: Method for "generic_spct" objects.
 
@@ -101,6 +118,9 @@ to local maxima.
 }}
 
 \examples{
+peaks(sun.spct, span = 50)
+peaks(sun.spct, span = NULL)
+
 peaks(sun.spct)
 
 }

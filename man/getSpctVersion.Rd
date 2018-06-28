@@ -10,7 +10,7 @@ getSpctVersion(x)
 \item{x}{a generic_spct object}
 }
 \value{
-numeric value
+integer value
 }
 \description{
 Function to read the "spct.version" attribute of an existing generic_spct

@@ -9,20 +9,20 @@
 \usage{
 trim_spct(spct, range = NULL, low.limit = NULL, high.limit = NULL,
   use.hinges = TRUE, fill = NULL, byref = FALSE,
-  verbose = getOption("photobiology.verbose", default = FALSE))
+  verbose = getOption("photobiology.verbose"))
 
 trim_mspct(mspct, range = NULL, low.limit = NULL, high.limit = NULL,
   use.hinges = TRUE, fill = NULL, byref = FALSE,
-  verbose = getOption("photobiology.verbose", default = TRUE),
-  .parallel = FALSE, .paropts = NULL)
+  verbose = getOption("photobiology.verbose"), .parallel = FALSE,
+  .paropts = NULL)
 
 trim2overlap(mspct, use.hinges = TRUE,
-  verbose = getOption("photobiology.verbose", default = TRUE),
-  .parallel = FALSE, .paropts = NULL)
+  verbose = getOption("photobiology.verbose"), .parallel = FALSE,
+  .paropts = NULL)
 
 extend2extremes(mspct, use.hinges = TRUE, fill = NA,
-  verbose = getOption("photobiology.verbose", default = TRUE),
-  .parallel = FALSE, .paropts = NULL)
+  verbose = getOption("photobiology.verbose"), .parallel = FALSE,
+  .paropts = NULL)
 }
 \arguments{
 \item{spct}{an object of class "generic_spct".}

@@ -5,7 +5,7 @@
 \alias{copy_attributes.default}
 \alias{copy_attributes.generic_spct}
 \alias{copy_attributes.waveband}
-\title{Copy attributes from one R object to another}
+\title{Copy attributes}
 \usage{
 copy_attributes(x, y, which, ...)
 

@@ -7,7 +7,6 @@
 \alias{Tfr_as_default}
 \alias{Afr_as_default}
 \alias{A_as_default}
-\alias{unset_user_defaults}
 \alias{unset_radiation_unit_default}
 \alias{unset_filter_qty_default}
 \alias{unset_user_defaults}
@@ -24,8 +23,6 @@ Tfr_as_default()
 Afr_as_default()
 
 A_as_default()
-
-unset_user_defaults()
 
 unset_radiation_unit_default()
 

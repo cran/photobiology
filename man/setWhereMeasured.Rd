@@ -25,7 +25,7 @@ setWhereMeasured(x, where.measured, lat, lon, ...)
 \item{x}{a generic_spct object}
 
 \item{where.measured}{A one row data.frame such as returned by
-\code{\link[ggmap]{geocode}} for a location search.}
+function \code{geocode} from package 'ggmap' for a location search.}
 
 \item{lat}{numeric Latitude in decimal degrees North}
 

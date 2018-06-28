@@ -1,3 +1,24 @@
+photobiology 0.9.21 (2018-06-18)
+================================
+
+* Fix bugs in copy_attributes() function (some attributes were not copied).
+* Add copying of attributes to conversion functions cps2irrad(), cps2Tfr() and
+cps2Rfr().
+* Add merge_attributes() function and fix bugs in handling of metadata
+attributes in math operators, affecting operations between two spectral objects.
+* Inprove handling of attributes in objects containing multiple spectra in tidy
+(longitudinal) form. Revise setMultipleWl() to guess number of copies when
+multiple.wl argument is NULL. Add setIdFactor() and getIdFactor(), and add
+parameter 'idfactor' to setGenericSpct() and equivalent functions.
+* Handle gracefully attempts to apply smooth_spct() method to spectra containing
+NAs. (Warn and return as is.)
+* Add parameter na.rm to peaks(), valleys() and related methods and functions.
+* Add parameter na.rm to normalize() methods.
+* Option "photobiology.verbose" is initialized to the value of R's option
+"verbose" at the time the package is attached.
+* If photobiology.verbose == TRUE, starting from this version the presence of
+NAs in spectral data triggers warnings.
+
 photobiology 0.9.20 (2018-04-02)
 ================================
 

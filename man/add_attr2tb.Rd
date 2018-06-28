@@ -65,7 +65,7 @@ Currently supported attributes are \code{"when.measured"},
 }
 \examples{
 
-library(magrittr)
+library(dplyr)
 
 my.mspct <- source_mspct(list(sun1 = sun.spct, sun2 = sun.spct * 2))
 q_irrad(my.mspct) \%>\%

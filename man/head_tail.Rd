@@ -10,7 +10,7 @@
 \alias{head_tail.ftable}
 \title{Return the First and Last Part of an Object}
 \usage{
-head_tail(x, ...)
+head_tail(x, n, ...)
 
 \method{head_tail}{default}(x, n = 3L, ...)
 
@@ -27,12 +27,12 @@ head_tail(x, ...)
 \arguments{
 \item{x}{an R object.}
 
-\item{...}{arguments to be passed to or from other methods.}
-
 \item{n}{a single integer. If positive, half the size for the resulting
 object: number of elements for a vector (including lists), rows for a
 matrix or data frame or lines for a function, to be retained from each
 end. If negative, all but the n last and n first number of elements of x.}
+
+\item{...}{arguments to be passed to or from other methods.}
 }
 \value{
 An object (usually) like x but generally smaller. For ftable objects
@@ -51,17 +51,17 @@ The value returned by head_tail() is equivalent to row binding the
 }
 \section{Methods (by class)}{
 \itemize{
-\item \code{default}: 
+\item \code{default}: Default method
 
-\item \code{data.frame}: 
+\item \code{data.frame}: Specialization for \code{data.frame} objects
 
-\item \code{matrix}: 
+\item \code{matrix}: Specialization for \code{matrix}
 
-\item \code{function}: 
+\item \code{function}: Specialization for \code{function}
 
-\item \code{table}: 
+\item \code{table}: Specialization for \code{table}
 
-\item \code{ftable}: 
+\item \code{ftable}: Specialization for \code{ftable}
 }}
 
 \note{
@@ -88,4 +88,3 @@ head_tail(stats::ftable(Titanic))
 \code{\link[utils]{head}}, and compare the examples and the values
  returned to the examples below.
 }
-\keyword{internal}

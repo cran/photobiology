@@ -4,7 +4,8 @@
 \alias{find_peaks}
 \title{Find peaks in a spectrum}
 \usage{
-find_peaks(x, ignore_threshold = 0, span = 3, strict = TRUE)
+find_peaks(x, ignore_threshold = 0, span = 3, strict = TRUE,
+  na.rm = FALSE)
 }
 \arguments{
 \item{x}{numeric vector}
@@ -19,6 +20,9 @@ its neighbors. Default: 3.}
 
 \item{strict}{logical flag: if TRUE, an element must be strictly greater than
 all other values in its window to be considered a peak. Default: TRUE.}
+
+\item{na.rm}{logical indicating whether \code{NA} values should be stripped
+before searching for peaks.}
 }
 \value{
 an object like s.irrad of logical values. Values that are TRUE

@@ -23,44 +23,49 @@ normalize(x, ...)
 \method{normalize}{default}(x, ...)
 
 \method{normalize}{source_spct}(x, ..., range = NULL, norm = "max",
-  unit.out = getOption("photobiology.radiation.unit", default = "energy"))
+  unit.out = getOption("photobiology.radiation.unit", default = "energy"),
+  na.rm = FALSE)
 
 \method{normalize}{response_spct}(x, ..., range = NULL, norm = "max",
-  unit.out = getOption("photobiology.radiation.unit", default = "energy"))
+  unit.out = getOption("photobiology.radiation.unit", default = "energy"),
+  na.rm = FALSE)
 
 \method{normalize}{filter_spct}(x, ..., range = NULL, norm = "max",
-  qty.out = getOption("photobiology.filter.qty", default = "transmittance"))
+  qty.out = getOption("photobiology.filter.qty", default = "transmittance"),
+  na.rm = FALSE)
 
 \method{normalize}{reflector_spct}(x, ..., range = NULL, norm = "max",
-  qty.out = NULL)
+  qty.out = NULL, na.rm = FALSE)
 
-\method{normalize}{raw_spct}(x, ..., range = NULL, norm = "max")
+\method{normalize}{raw_spct}(x, ..., range = NULL, norm = "max",
+  na.rm = FALSE)
 
-\method{normalize}{cps_spct}(x, ..., range = NULL, norm = "max")
+\method{normalize}{cps_spct}(x, ..., range = NULL, norm = "max",
+  na.rm = FALSE)
 
 \method{normalize}{generic_spct}(x, ..., range = NULL, norm = "max",
-  col.names)
+  col.names, na.rm = FALSE)
 
 \method{normalize}{source_mspct}(x, ..., range = NULL, norm = "max",
   unit.out = getOption("photobiology.radiation.unit", default = "energy"),
-  .parallel = FALSE, .paropts = NULL)
+  na.rm = FALSE, .parallel = FALSE, .paropts = NULL)
 
 \method{normalize}{response_mspct}(x, ..., range = NULL, norm = "max",
   unit.out = getOption("photobiology.radiation.unit", default = "energy"),
-  .parallel = FALSE, .paropts = NULL)
+  na.rm = FALSE, .parallel = FALSE, .paropts = NULL)
 
 \method{normalize}{filter_mspct}(x, ..., range = NULL, norm = "max",
   qty.out = getOption("photobiology.filter.qty", default = "transmittance"),
-  .parallel = FALSE, .paropts = NULL)
+  na.rm = FALSE, .parallel = FALSE, .paropts = NULL)
 
 \method{normalize}{reflector_mspct}(x, ..., range = x, norm = "max",
-  qty.out = NULL, .parallel = FALSE, .paropts = NULL)
+  qty.out = NULL, na.rm = FALSE, .parallel = FALSE, .paropts = NULL)
 
 \method{normalize}{raw_mspct}(x, ..., range = x, norm = "max",
-  .parallel = FALSE, .paropts = NULL)
+  na.rm = FALSE, .parallel = FALSE, .paropts = NULL)
 
 \method{normalize}{cps_mspct}(x, ..., range = x, norm = "max",
-  .parallel = FALSE, .paropts = NULL)
+  na.rm = FALSE, .parallel = FALSE, .paropts = NULL)
 }
 \arguments{
 \item{x}{An R object}
@@ -69,14 +74,16 @@ normalize(x, ...)
 
 \item{range}{An R object on which \code{range()} returns a numeric vector of
 length 2 with the limits of a range of wavelengths in nm, with min and max
-wavelengths (nm)}
+wavelengths (nm) used to set boundaries for search for normalization.}
 
 \item{norm}{numeric Normalization wavelength (nm) or character string "max",
-or "min" for normalization at the corresponding wavelength, or "integral" or
-"mean" for rescaling by dividing by these values.}
+or "min" for normalization at the corresponding wavelength.}
 
 \item{unit.out}{character Allowed values "energy", and "photon",
 or its alias "quantum"}
+
+\item{na.rm}{logical indicating whether \code{NA} values should be stripped
+before calculating the summary (e.g. "max") used for normalization.}
 
 \item{qty.out}{character string  Allowed values are "transmittance", and
 "absorbance" indicating on which quantity to apply the normalization.}
@@ -96,6 +103,11 @@ correct environment set up for computing.}
 \value{
 A copy of \code{x}, with spectral data values normalized to one for
 the criterion specified by the argument passed to \code{norm}.
+
+A copy of \code{x} with the values of the spectral quantity rescaled
+  to 1 at the normalization wavelength. If the normalization wavelength is
+  not already present in \code{x}, it is added by interpolation---i.e. the
+  returned value may be one row longer than \code{x}.
 }
 \description{
 These functions return a spectral object of the same class as the one
@@ -134,8 +146,18 @@ wavelength.
 }}
 
 \note{
-Accepted values for \code{norm} vary depending on the class of
-  \code{x}
+1) By default if \code{x} contains one or more \code{NA} values and the
+  normalization is based on a summary quantity, the returned spectrum will
+  contain only \code{NA} values. If \code{na.rm == TRUE} then the summary
+  quantity will be calculated after striping \code{NA} values, and only the
+  values that were \code{NA} in \code{x} will be {NA} values in the returned
+  spectrum.
+}
+\examples{
+normalize(sun.spct)
+normalize(sun.spct, norm = "max")
+normalize(sun.spct, norm = 400)
+
 }
 \seealso{
 Other rescaling functions: \code{\link{fscale}},

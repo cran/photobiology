@@ -17,42 +17,45 @@ source_spct(w.length = NULL, s.e.irrad = NULL, s.q.irrad = NULL,
   time.unit = c("second", "day", "exposure"), bswf.used = c("none",
   "unknown"), comment = NULL,
   strict.range = getOption("photobiology.strict.range", default = FALSE),
-  multiple.wl = 1L, ...)
+  multiple.wl = 1L, idfactor = NULL, ...)
 
 calibration_spct(w.length = NULL, irrad.mult = NA_real_, comment = NULL,
-  instr.desc = NA, multiple.wl = 1L, ...)
+  instr.desc = NA, multiple.wl = 1L, idfactor = NULL, ...)
 
 raw_spct(w.length = NULL, counts = NA_real_, comment = NULL,
-  instr.desc = NA, instr.settings = NA, multiple.wl = 1L, ...)
+  instr.desc = NA, instr.settings = NA, multiple.wl = 1L,
+  idfactor = NULL, ...)
 
 cps_spct(w.length = NULL, cps = NA_real_, comment = NULL,
-  instr.desc = NA, instr.settings = NA, multiple.wl = 1L, ...)
+  instr.desc = NA, instr.settings = NA, multiple.wl = 1L,
+  idfactor = NULL, ...)
 
-generic_spct(w.length = NULL, comment = NULL, multiple.wl = 1L, ...)
+generic_spct(w.length = NULL, comment = NULL, multiple.wl = 1L,
+  idfactor = NULL, ...)
 
 response_spct(w.length = NULL, s.e.response = NULL, s.q.response = NULL,
   time.unit = c("second", "day", "exposure"), comment = NULL,
-  multiple.wl = 1L, ...)
+  multiple.wl = 1L, idfactor = NULL, ...)
 
 filter_spct(w.length = NULL, Tfr = NULL, Tpc = NULL, Afr = NULL,
   A = NULL, Tfr.type = c("total", "internal"), Afr.type = Tfr.type,
   comment = NULL, strict.range = getOption("photobiology.strict.range",
-  default = FALSE), multiple.wl = 1L, ...)
+  default = FALSE), multiple.wl = 1L, idfactor = NULL, ...)
 
 reflector_spct(w.length = NULL, Rfr = NULL, Rpc = NULL,
   Rfr.type = c("total", "specular"), comment = NULL,
   strict.range = getOption("photobiology.strict.range", default = FALSE),
-  multiple.wl = 1L, ...)
+  multiple.wl = 1L, idfactor = NULL, ...)
 
 object_spct(w.length = NULL, Rfr = NULL, Tfr = NULL, Afr = NULL,
   Tfr.type = c("total", "internal"), Rfr.type = c("total", "specular"),
   Afr.type = c("total", "internal"), comment = NULL,
   strict.range = getOption("photobiology.strict.range", default = FALSE),
-  multiple.wl = 1L, ...)
+  multiple.wl = 1L, idfactor = NULL, ...)
 
 chroma_spct(w.length = NULL, x, y, z, comment = NULL,
   strict.range = getOption("photobiology.strict.range", default = FALSE),
-  multiple.wl = 1L, ...)
+  multiple.wl = 1L, idfactor = NULL, ...)
 }
 \arguments{
 \item{w.length}{numeric vector with wavelengths in nanometres}
@@ -78,6 +81,9 @@ in an error instead of a warning.}
 
 \item{multiple.wl}{numeric Maximum number of repeated w.length entries with
 same value.}
+
+\item{idfactor}{character Name of factor distinguishing multiple spectra when
+stored logitudinally (required if mulitple.wl > 1).}
 
 \item{...}{other arguments passed to \code{tibble()}}
 
