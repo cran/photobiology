@@ -1,6 +1,6 @@
-cf9e19eeac7d16d23eac737fe0542f0b *DESCRIPTION
+c865780ba44706cd4fc93c24a73ac397 *DESCRIPTION
 6b280e4de4430c9d0e849cb591cafafd *NAMESPACE
-d30f2e4a393fa3b1dcc9d4e82d35b980 *NEWS
+78806701402933f9b18c48f0bc94f23d *NEWS
 adcdacab9e9fa43a10be3b0adfb2b377 *R/as.energy.r
 f62457c5b4cbdf0c25cd327e0920e485 *R/as.quantum.mol.r
 83876596423afdb12b9c214469ee17dc *R/as.quantum.r
@@ -69,7 +69,7 @@ cebe54f6e3020bc3476dbf89479c2f7b *R/spct.insert.spct.hinges.r
 d3c71f4c02413b3f0b9c840c7c9c3144 *R/spct.reflectance.r
 4c4612fe1be3825b95a5c7856c65593e *R/spct.response.R
 1dbe043766d95ebfc0ee8e6d3392b76f *R/spct.rgb.spct.r
-aa0df41e9cb82a1515b1a3f42249280b *R/spct.smooth.spct.r
+cf8c4cdc05de611db595d5ed6f0d74c0 *R/spct.smooth.spct.r
 857321bfba2602735169d89a81ac8b37 *R/spct.summaries.r
 1668f122f43f33c396b978ff59d629d1 *R/spct.tag.r
 b9831a112bb3757b20217b46f9931910 *R/spct.transmittance.r
@@ -122,13 +122,13 @@ e9b9eeb77c6427aea888790e3c8202ef *data/sun.data.rda
 dd60d6ca6794d133be36d9c6704c338b *data/yellow.gel.rda
 dc9bf4f6081f41498b4d3a529f64920f *inst/CITATION
 7e4385448fecbaf6378c837b655c5045 *inst/doc/userguide1-intro.Rmd
-00999bedb9e7d5822700e5d970dda988 *inst/doc/userguide1-intro.html
+3db2502e18e52cd0b36dac3badcf3acc *inst/doc/userguide1-intro.html
 b327862ff56b1b7d6aa349371fcb2dcb *inst/doc/userguide2-radiation.R
 0dc51be9004d0417dd3728813d6efe26 *inst/doc/userguide2-radiation.Rmd
-823bf6eb4c90b362fafed61e144fcc85 *inst/doc/userguide2-radiation.html
+7972856bdffd4e190e729346362d2f2f *inst/doc/userguide2-radiation.html
 e96a5e97436cf10cb9a82f44324ed0e8 *inst/doc/userguide3-astronomy.R
 954fceebf460a67d5c5c2990027735b8 *inst/doc/userguide3-astronomy.Rmd
-41b9f160e5ed23fa9f8bbb99ed59eaa8 *inst/doc/userguide3-astronomy.html
+7457c38ba07cb62e179368129761277d *inst/doc/userguide3-astronomy.html
 aa6f51f1ea5adb15f9d08c2906d8f10b *man/A.illuminant.spct.Rd
 a18a3d45633280dc9832ed03e6d6ebe5 *man/A2T.Rd
 03b04586561f9d45e7e523928ce41782 *man/D2.UV586.Rd

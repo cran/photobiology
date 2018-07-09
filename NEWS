@@ -1,4 +1,10 @@
-photobiology 0.9.21 (2018-06-18)
+photobiology 0.9.22 (2018-07-09)
+================================
+
+Remove dependency on 'caTools' which is no longer maintained and is
+schedulled to be archived in CRAN.
+
+photobiology 0.9.21 (2018-06-27)
 ================================
 
 * Fix bugs in copy_attributes() function (some attributes were not copied).
