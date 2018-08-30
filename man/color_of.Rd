@@ -24,7 +24,7 @@ color_of(x, ...)
 
 \method{color_of}{source_spct}(x, type = "CMF", ...)
 
-\method{color_of}{source_mspct}(x, ..., idx = !is.null(names(x)))
+\method{color_of}{source_mspct}(x, ..., idx = "spct.idx")
 
 colour_of(x, ...)
 
@@ -40,8 +40,8 @@ color(x, ...)
 \item{short.names}{logical indicating whether to use short or long names for
 wavebands}
 
-\item{idx}{logical whether to add a column with the names of the elements of
-spct}
+\item{idx}{character Name of the column with the names of the members of the
+collection of spectra.}
 }
 \value{
 A color definition in hexadecimal format as a \code{character} string

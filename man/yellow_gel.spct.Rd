@@ -40,4 +40,5 @@ Other Spectral data examples: \code{\link{A.illuminant.spct}},
   \code{\link{white_led.raw_spct}},
   \code{\link{white_led.source_spct}}
 }
+\concept{Spectral data examples}
 \keyword{datasets}

@@ -4,8 +4,8 @@
 \alias{trimInstrDesc}
 \title{Trim the "instr.desc" attribute}
 \usage{
-trimInstrDesc(x, fields = c("time", "spectrometer.name", "spectrometer.sn",
-  "bench.grating", "bench.slit"))
+trimInstrDesc(x, fields = c("time", "spectrometer.name",
+  "spectrometer.sn", "bench.grating", "bench.slit"))
 }
 \arguments{
 \item{x}{a generic_spct object}
@@ -44,3 +44,4 @@ Other measurement metadata functions: \code{\link{getInstrDesc}},
   \code{\link{setWhereMeasured}},
   \code{\link{trimInstrSettings}}
 }
+\concept{measurement metadata functions}

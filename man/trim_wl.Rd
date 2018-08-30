@@ -23,8 +23,9 @@ trim_wl(x, range, use.hinges, fill, ...)
   fill = NULL, trim = getOption("photobiology.waveband.trim", default =
   TRUE), ...)
 
-\method{trim_wl}{list}(x, range = NULL, use.hinges = TRUE, fill = NULL,
-  trim = getOption("photobiology.waveband.trim", default = TRUE), ...)
+\method{trim_wl}{list}(x, range = NULL, use.hinges = TRUE,
+  fill = NULL, trim = getOption("photobiology.waveband.trim", default =
+  TRUE), ...)
 }
 \arguments{
 \item{x}{an R object.}
@@ -96,3 +97,4 @@ trim_wl(sun.spct, range = c(400, NA))
 Other trim functions: \code{\link{clip_wl}},
   \code{\link{trim_spct}}, \code{\link{trim_waveband}}
 }
+\concept{trim functions}

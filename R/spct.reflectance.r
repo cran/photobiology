@@ -215,8 +215,8 @@ reflectance_spct <-
 #' @describeIn reflectance Calculates reflectance from a \code{reflector_mspct}
 #'
 #' @param attr2tb character vector, see \code{\link{add_attr2tb}} for the syntax for \code{attr2tb} passed as is to formal parameter \code{col.names}.
-#' @param idx logical whether to add a column with the names of the elements of
-#'   spct
+#' @param idx character Name of the column with the names of the members of the
+#'   collection of spectra.
 #' @param .parallel	if TRUE, apply function in parallel, using parallel backend
 #'   provided by foreach
 #' @param .paropts a list of additional options passed into the foreach function
@@ -234,7 +234,7 @@ reflectance.reflector_mspct <-
            use.hinges = getOption("photobiology.use.hinges", default = NULL),
            ...,
            attr2tb = NULL,
-           idx = !is.null(names(spct)),
+           idx = "spct.idx",
            .parallel = FALSE,
            .paropts = NULL) {
     z <-
@@ -252,7 +252,8 @@ reflectance.reflector_mspct <-
       )
     add_attr2tb(tb = z,
                 mspct = spct,
-                col.names = attr2tb)
+                col.names = attr2tb,
+                idx = idx)
   }
 
 # object_mspct methods -----------------------------------------------
@@ -268,7 +269,7 @@ reflectance.object_mspct <-
            use.hinges= getOption("photobiology.use.hinges", default = NULL),
            ...,
            attr2tb = NULL,
-           idx = !is.null(names(spct)),
+           idx = "spct.idx",
            .parallel = FALSE,
            .paropts = NULL) {
     z <-
@@ -286,5 +287,6 @@ reflectance.object_mspct <-
       )
     add_attr2tb(tb = z,
                 mspct = spct,
-                col.names = attr2tb)
+                col.names = attr2tb,
+                idx = idx)
   }

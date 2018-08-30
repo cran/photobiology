@@ -3,30 +3,41 @@
 \name{add_attr2tb}
 \alias{add_attr2tb}
 \alias{when_measured2tb}
+\alias{lonlat2tb}
 \alias{lon2tb}
 \alias{lat2tb}
 \alias{geocode2tb}
 \alias{what_measured2tb}
 \title{Copy attributes from members of a generic_mspct}
 \usage{
-add_attr2tb(tb, mspct, col.names = NULL)
+add_attr2tb(tb, mspct, col.names = NULL, idx = "spct.idx")
 
-when_measured2tb(mspct, tb = NULL, col.names = "when.measured")
+when_measured2tb(mspct, tb = NULL, col.names = "when.measured",
+  idx = "spct.idx")
 
-lon2tb(mspct, tb = NULL, col.names = "lon")
+lonlat2tb(mspct, tb = NULL, col.names = c("lon", "lat"),
+  idx = "spct.idx")
 
-lat2tb(mspct, tb = NULL, col.names = "lat")
+lon2tb(mspct, tb = NULL, col.names = "lon", idx = "spct.idx")
 
-geocode2tb(mspct, tb = NULL, col.names = "geocode")
+lat2tb(mspct, tb = NULL, col.names = "lat", idx = "spct.idx")
 
-what_measured2tb(mspct, tb = NULL, col.names = "what.measured")
+geocode2tb(mspct, tb = NULL, col.names = "geocode", idx = "spct.idx")
+
+what_measured2tb(mspct, tb = NULL, col.names = "what.measured",
+  idx = "spct.idx")
 }
 \arguments{
 \item{tb}{tibble or data.frame to which to add the data (optional).}
 
 \item{mspct}{generic_mspct Any collection of spectra.}
 
-\item{col.names}{character Name(s) of column(s) to create.}
+\item{col.names}{named character vector Name(s) of column(s) to create.
+Values are the names of the attributes to copy, while if named, the names
+provide the name for the column.}
+
+\item{idx}{character Name of the column with the names of the members of the
+collection of spectra.}
 }
 \value{
 A tibble With the metadata attributes in separate new variables.
@@ -44,24 +55,24 @@ The attributes are copied to a column in a tibble or data frame. If
   number of spectra in the argument passed to \code{mspct}. If the argument
   to \code{col.names} is aa named vector, with the names of members matching
   the names of attributes, then the values are used as names for the columns
-  created. This permits setting any valid name for the new columns.
-  If the vector passed to \code{col.names} has no names, then the
-  values are interpreted as the names of the attributes to add, and also
-  used as names for the new columns.
+  created. This permits setting any valid name for the new columns. If the
+  vector passed to \code{col.names} has no names, then the values are
+  interpreted as the names of the attributes to add, and also used as names
+  for the new columns.
 }
 \note{
 Currently supported attributes are \code{"when.measured"},
   \code{"what.measured"} and \code{"where.measured"}. In the case of
   \code{"where.measured"}, which has different components the name
-  \code{"where.measured"} is ignored, but instead the following
-  names are recognized: \code{"lon"} and \code{"lat"} for creating numeric
-  columns of longitudes and latitudes respectively, and \code{"geocode"}
-  for creating a column of data frames, in which case, if \code{tb} is not
-  already a \code{tibble} it is converted into one before adding the new
-  column.  The order of the first two arguments is reversed in
-  \code{add_attr2tb()} compared to the other functions. This is to allow
-  its use in 'pipes', while the functions for single attributes are expected
-  to be used mostly to create new tibbles.
+  \code{"where.measured"} is ignored, but instead the following names are
+  recognized: \code{"lon"} and \code{"lat"} for creating numeric columns of
+  longitudes and latitudes respectively, and \code{"geocode"} for creating a
+  column of data frames, in which case, if \code{tb} is not already a
+  \code{tibble} it is converted into one before adding the new column.  The
+  order of the first two arguments is reversed in \code{add_attr2tb()}
+  compared to the other functions. This is to allow its use in 'pipes', while
+  the functions for single attributes are expected to be used mostly to
+  create new tibbles.
 }
 \examples{
 

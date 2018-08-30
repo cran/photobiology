@@ -12,14 +12,15 @@ as.object_mspct(x, ...)
 
 \method{as.object_mspct}{default}(x, ...)
 
-\method{as.object_mspct}{data.frame}(x, Tfr.type = c("total", "internal"),
-  Rfr.type = c("total", "specular"), strict.range = TRUE, ...)
+\method{as.object_mspct}{data.frame}(x, Tfr.type = c("total",
+  "internal"), Rfr.type = c("total", "specular"), strict.range = TRUE,
+  ...)
 
 \method{as.object_mspct}{object_spct}(x, ...)
 
 \method{as.object_mspct}{list}(x, Tfr.type = c("total", "internal"),
-  Rfr.type = c("total", "specular"), strict.range = TRUE, ..., ncol = 1,
-  byrow = FALSE)
+  Rfr.type = c("total", "specular"), strict.range = TRUE, ...,
+  ncol = 1, byrow = FALSE)
 }
 \arguments{
 \item{x}{a list of spectral objects or a list of objects such as data frames
@@ -67,3 +68,4 @@ Other Coercion methods for collections of spectra: \code{\link{as.calibration_ms
   \code{\link{as.source_mspct}}, \code{\link{split2mspct}},
   \code{\link{subset2mspct}}
 }
+\concept{Coercion methods for collections of spectra}

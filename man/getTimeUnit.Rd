@@ -31,3 +31,4 @@ getTimeUnit(sun.spct)
 Other time attribute functions: \code{\link{checkTimeUnit}},
   \code{\link{convertTimeUnit}}, \code{\link{setTimeUnit}}
 }
+\concept{time attribute functions}

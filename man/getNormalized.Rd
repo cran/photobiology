@@ -25,3 +25,4 @@ Other rescaling functions: \code{\link{fscale}},
   \code{\link{is_scaled}}, \code{\link{normalize}},
   \code{\link{setNormalized}}, \code{\link{setScaled}}
 }
+\concept{rescaling functions}

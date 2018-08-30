@@ -31,3 +31,4 @@ Other quantity conversion functions: \code{\link{A2T}},
   \code{\link{e2qmol_multipliers}}, \code{\link{e2q}},
   \code{\link{q2e}}
 }
+\concept{quantity conversion functions}

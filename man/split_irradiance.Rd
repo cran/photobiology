@@ -7,8 +7,8 @@
 split_irradiance(w.length, s.irrad, cut.w.length = range(w.length),
   unit.out = getOption("photobiology.base.unit", default = "energy"),
   unit.in = "energy", scale = "absolute", check.spectrum = TRUE,
-  use.cached.mult = FALSE, use.hinges = getOption("photobiology.use.hinges",
-  default = NULL))
+  use.cached.mult = FALSE,
+  use.hinges = getOption("photobiology.use.hinges", default = NULL))
 }
 \arguments{
 \item{w.length}{numeric Vector of wavelengths (nm).}
@@ -65,3 +65,4 @@ with(sun.data,
                        cut.w.length = c(300, 400, 500, 600, 700),
                        unit.out = "photon"))
 }
+\concept{split a spectrum into regions functions}

@@ -12,7 +12,7 @@
 
 <meta name="author" content="Pedro J. Aphalo" />
 
-<meta name="date" content="2018-07-09" />
+<meta name="date" content="2018-08-30" />
 
 <title>User Guide: 2 Radiation</title>
 
@@ -279,9 +279,9 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 
 
 <h1 class="title toc-ignore">User Guide: 2 Radiation</h1>
-<h3 class="subtitle"><em>Package ‘photobiology’ 0.9.22</em></h3>
+<h3 class="subtitle"><em>Package ‘photobiology’ 0.9.23</em></h3>
 <h4 class="author"><em>Pedro J. Aphalo</em></h4>
-<h4 class="date"><em>2018-07-09</em></h4>
+<h4 class="date"><em>2018-08-30</em></h4>
 
 
 <div id="TOC">
@@ -5312,7 +5312,7 @@ Most frequently used summary methods are implemented for collections of spectra.
 ## [1] &quot;second&quot;
 ## attr(,&quot;radiation.unit&quot;)
 ## [1] &quot;energy irradiance total&quot;</code></pre>
-<div class="sourceCode" id="cb414"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb414-1" data-line-number="1"><span class="kw">q_irrad</span>(sun.spct, PAR.wb) <span class="op">*</span><span class="st"> </span><span class="fl">1e6</span> <span class="co"># umol s-1 m-2</span></a></code></pre></div>
+<div class="sourceCode" id="cb414"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb414-1" data-line-number="1"><span class="kw">q_irrad</span>(sun.spct, PAR.wb, <span class="dt">scale.factor =</span> <span class="fl">1e6</span>) <span class="co"># umol s-1 m-2</span></a></code></pre></div>
 <pre><code>##      PAR 
 ## 894.1352 
 ## attr(,&quot;time.unit&quot;)
@@ -5415,12 +5415,13 @@ Most frequently used summary methods are implemented for collections of spectra.
 <div class="sourceCode" id="cb440"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb440-1" data-line-number="1">two_suns.mspct &lt;-<span class="st"> </span><span class="kw">source_mspct</span>(<span class="kw">list</span>(<span class="dt">sun1 =</span> sun.spct, <span class="dt">sun2 =</span> sun.spct))</a>
 <a class="sourceLine" id="cb440-2" data-line-number="2"><span class="kw">q_irrad</span>(two_suns.mspct, </a>
 <a class="sourceLine" id="cb440-3" data-line-number="3">        <span class="dt">w.band =</span> <span class="kw">list</span>(<span class="dt">PAR =</span> <span class="kw">waveband</span>(<span class="kw">c</span>(<span class="dv">400</span>,<span class="dv">700</span>))),</a>
-<a class="sourceLine" id="cb440-4" data-line-number="4">        <span class="dt">attr2tb =</span> <span class="kw">c</span>(<span class="dt">when.measured =</span> <span class="st">&quot;time&quot;</span>, <span class="dt">lon =</span> <span class="st">&quot;lon&quot;</span>, <span class="dt">lat =</span> <span class="st">&quot;lat&quot;</span>))</a></code></pre></div>
+<a class="sourceLine" id="cb440-4" data-line-number="4">        <span class="dt">scale.factor =</span> <span class="fl">1e6</span>, <span class="co"># umol m-2 s-1</span></a>
+<a class="sourceLine" id="cb440-5" data-line-number="5">        <span class="dt">attr2tb =</span> <span class="kw">c</span>(<span class="dt">when.measured =</span> <span class="st">&quot;time&quot;</span>, <span class="dt">lon =</span> <span class="st">&quot;lon&quot;</span>, <span class="dt">lat =</span> <span class="st">&quot;lat&quot;</span>))</a></code></pre></div>
 <pre><code>## # A tibble: 2 x 5
-##   spct.idx      PAR time                  lon   lat
-##   &lt;fct&gt;       &lt;dbl&gt; &lt;dttm&gt;              &lt;dbl&gt; &lt;dbl&gt;
-## 1 sun1     0.000894 2010-06-22 09:51:00  25.0  60.2
-## 2 sun2     0.000894 2010-06-22 09:51:00  25.0  60.2</code></pre>
+##   spct.idx   PAR time                  lon   lat
+##   &lt;fct&gt;    &lt;dbl&gt; &lt;dttm&gt;              &lt;dbl&gt; &lt;dbl&gt;
+## 1 sun1      894. 2010-06-22 09:51:00  25.0  60.2
+## 2 sun2      894. 2010-06-22 09:51:00  25.0  60.2</code></pre>
 <p>We then convolve each filter’s spectral transmittance by the spectral irradiance of the light source.</p>
 <div class="sourceCode" id="cb442"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb442-1" data-line-number="1">filtered_sun &lt;-<span class="st"> </span><span class="kw">convolve_each</span>(filters.mspct, sun.spct)</a>
 <a class="sourceLine" id="cb442-2" data-line-number="2"><span class="kw">irrad</span>(filtered_sun, <span class="kw">list</span>(UVA.wb, PAR.wb))</a></code></pre></div>
@@ -5431,7 +5432,8 @@ Most frequently used summary methods are implemented for collections of spectra.
 ## 2 pet        23.0         181.
 ## 3 yellow      0.0373      107.</code></pre>
 <p>The code above can also be written as a single statement.</p>
-<div class="sourceCode" id="cb444"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb444-1" data-line-number="1"><span class="kw">irrad</span>(<span class="kw">convolve_each</span>(filters.mspct, sun.spct), <span class="kw">list</span>(UVA.wb, PAR.wb))</a></code></pre></div>
+<div class="sourceCode" id="cb444"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb444-1" data-line-number="1"><span class="kw">irrad</span>(<span class="kw">convolve_each</span>(filters.mspct, sun.spct), </a>
+<a class="sourceLine" id="cb444-2" data-line-number="2">      <span class="kw">list</span>(UVA.wb, PAR.wb))</a></code></pre></div>
 <pre><code>## # A tibble: 3 x 3
 ##   spct.idx irrad_UVA irrad_PAR
 ##   &lt;fct&gt;        &lt;dbl&gt;     &lt;dbl&gt;
@@ -5511,11 +5513,11 @@ Most frequently used summary methods are implemented for collections of spectra.
 <h4>Collections of spectra</h4>
 <div class="sourceCode" id="cb463"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb463-1" data-line-number="1"><span class="kw">q_ratio</span>(filtered_sun, <span class="kw">list</span>(UVB.wb, UVA.wb, PAR.wb))</a></code></pre></div>
 <pre><code>## # A tibble: 3 x 4
-##   spct.idx `q_ratio_UVB:Total(q:q)` `q_ratio_UVA:Total~ `q_ratio_PAR:Tota~
-##   &lt;fct&gt;                       &lt;dbl&gt;               &lt;dbl&gt;              &lt;dbl&gt;
-## 1 none                   0.00133               0.0676                0.712
-## 2 pet                    0.0000370             0.0614                0.720
-## 3 yellow                 0.00000254            0.000134              0.684</code></pre>
+##   spct.idx `q_ratio_UVB:Total(q~ `q_ratio_UVA:Total(~ `q_ratio_PAR:Total(~
+##   &lt;fct&gt;                    &lt;dbl&gt;                &lt;dbl&gt;                &lt;dbl&gt;
+## 1 none                0.00133                0.0676                  0.712
+## 2 pet                 0.0000370              0.0614                  0.720
+## 3 yellow              0.00000254             0.000134                0.684</code></pre>
 </div>
 </div>
 <div id="normalized-difference-indexes" class="section level3">

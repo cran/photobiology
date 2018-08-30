@@ -4,7 +4,8 @@
 \alias{resp_spct}
 \title{Calculate response from spectral response}
 \usage{
-resp_spct(spct, w.band, unit.out, quantity, time.unit, wb.trim, use.hinges, ...)
+resp_spct(spct, w.band, unit.out, quantity, time.unit, scale.factor,
+  wb.trim, use.hinges, ...)
 }
 \arguments{
 \item{spct}{an object of class response_spct".}
@@ -19,6 +20,9 @@ alias "quantum".}
 
 \item{quantity}{character string One of "total", "average" or "mean",
 "contribution", "contribution.pc", "relative" or "relative.pc".}
+
+\item{scale.factor}{numeric vector of length 1, or length equal to that of
+\code{w.band}. Numeric multiplier applied to returned values.}
 
 \item{wb.trim}{logical if TRUE wavebands crossing spectral data boundaries
 are trimmed, if FALSE, they are discarded.}

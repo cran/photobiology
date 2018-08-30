@@ -16,11 +16,11 @@
 \usage{
 peaks(x, span, ignore_threshold, strict, na.rm, ...)
 
-\method{peaks}{default}(x, span = NA, ignore_threshold = NA, strict = NA,
-  na.rm = FALSE, ...)
+\method{peaks}{default}(x, span = NA, ignore_threshold = NA,
+  strict = NA, na.rm = FALSE, ...)
 
-\method{peaks}{numeric}(x, span = 5, ignore_threshold = NA, strict = TRUE,
-  na.rm = FALSE, ...)
+\method{peaks}{numeric}(x, span = 5, ignore_threshold = NA,
+  strict = TRUE, na.rm = FALSE, ...)
 
 \method{peaks}{data.frame}(x, span = 5, ignore_threshold = 0,
   strict = TRUE, na.rm = FALSE, var.name, ...)
@@ -30,13 +30,13 @@ peaks(x, span, ignore_threshold, strict, na.rm, ...)
 
 \method{peaks}{source_spct}(x, span = 5, ignore_threshold = 0,
   strict = TRUE, na.rm = FALSE,
-  unit.out = getOption("photobiology.radiation.unit", default = "energy"),
-  ...)
+  unit.out = getOption("photobiology.radiation.unit", default =
+  "energy"), ...)
 
 \method{peaks}{response_spct}(x, span = 5, ignore_threshold = 0,
   strict = TRUE, na.rm = FALSE,
-  unit.out = getOption("photobiology.radiation.unit", default = "energy"),
-  ...)
+  unit.out = getOption("photobiology.radiation.unit", default =
+  "energy"), ...)
 
 \method{peaks}{filter_spct}(x, span = 5, ignore_threshold = 0,
   strict = TRUE, na.rm = FALSE,
@@ -46,11 +46,12 @@ peaks(x, span, ignore_threshold, strict, na.rm, ...)
 \method{peaks}{reflector_spct}(x, span = 5, ignore_threshold = 0,
   strict = TRUE, na.rm = FALSE, ...)
 
-\method{peaks}{cps_spct}(x, span = 5, ignore_threshold = 0, strict = TRUE,
-  na.rm = FALSE, ...)
+\method{peaks}{cps_spct}(x, span = 5, ignore_threshold = 0,
+  strict = TRUE, na.rm = FALSE, ...)
 
 \method{peaks}{generic_mspct}(x, span = 5, ignore_threshold = 0,
-  strict = TRUE, na.rm = FALSE, ..., .parallel = FALSE, .paropts = NULL)
+  strict = TRUE, na.rm = FALSE, ..., .parallel = FALSE,
+  .paropts = NULL)
 }
 \arguments{
 \item{x}{an R object}
@@ -128,3 +129,4 @@ peaks(sun.spct)
 Other peaks and valleys functions: \code{\link{find_peaks}},
   \code{\link{get_peaks}}, \code{\link{valleys}}
 }
+\concept{peaks and valleys functions}

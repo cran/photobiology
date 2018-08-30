@@ -34,4 +34,5 @@ Other Visual response data examples: \code{\link{beesxyzCMF.spct}},
 \author{
 CIE
 }
+\concept{Visual response data examples}
 \keyword{datasets}

@@ -12,22 +12,23 @@
 \title{Convert a 'wide' or untidy data frame into a collection of spectra}
 \usage{
 split2mspct(x, member.class = NULL, spct.data.var = NULL,
-  w.length.var = "w.length", idx.var = NULL, ncol = 1, byrow = FALSE,
-  ...)
+  w.length.var = "w.length", idx.var = NULL, ncol = 1,
+  byrow = FALSE, ...)
 
 split2source_mspct(x, spct.data.var = "s.e.irrad",
-  w.length.var = "w.length", idx.var = NULL, ncol = 1, byrow = FALSE,
-  ...)
+  w.length.var = "w.length", idx.var = NULL, ncol = 1,
+  byrow = FALSE, ...)
 
 split2response_mspct(x, spct.data.var = "s.e.response",
-  w.length.var = "w.length", idx.var = NULL, ncol = 1, byrow = FALSE,
-  ...)
+  w.length.var = "w.length", idx.var = NULL, ncol = 1,
+  byrow = FALSE, ...)
 
 split2filter_mspct(x, spct.data.var = "Tfr", w.length.var = "w.length",
   idx.var = NULL, ncol = 1, byrow = FALSE, ...)
 
-split2reflector_mspct(x, spct.data.var = "Rfr", w.length.var = "w.length",
-  idx.var = NULL, ncol = 1, byrow = FALSE, ...)
+split2reflector_mspct(x, spct.data.var = "Rfr",
+  w.length.var = "w.length", idx.var = NULL, ncol = 1,
+  byrow = FALSE, ...)
 
 split2cps_mspct(x, spct.data.var = "cps", w.length.var = "w.length",
   idx.var = NULL, ncol = 1, byrow = FALSE, ...)
@@ -36,8 +37,8 @@ split2raw_mspct(x, spct.data.var = "count", w.length.var = "w.length",
   idx.var = NULL, ncol = 1, byrow = FALSE, ...)
 
 split2calibration_mspct(x, spct.data.var = "irrad.mult",
-  w.length.var = "w.length", idx.var = NULL, ncol = 1, byrow = FALSE,
-  ...)
+  w.length.var = "w.length", idx.var = NULL, ncol = 1,
+  byrow = FALSE, ...)
 }
 \arguments{
 \item{x}{data frame}
@@ -77,3 +78,4 @@ Other Coercion methods for collections of spectra: \code{\link{as.calibration_ms
   \code{\link{as.response_mspct}},
   \code{\link{as.source_mspct}}, \code{\link{subset2mspct}}
 }
+\concept{Coercion methods for collections of spectra}

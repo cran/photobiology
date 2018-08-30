@@ -11,25 +11,30 @@
 \usage{
 absorbance(spct, w.band, quantity, wb.trim, use.hinges, ...)
 
-\method{absorbance}{default}(spct, w.band, quantity, wb.trim, use.hinges, ...)
+\method{absorbance}{default}(spct, w.band, quantity, wb.trim, use.hinges,
+  ...)
 
-\method{absorbance}{filter_spct}(spct, w.band = NULL, quantity = "average",
+\method{absorbance}{filter_spct}(spct, w.band = NULL,
+  quantity = "average",
   wb.trim = getOption("photobiology.waveband.trim", default = TRUE),
   use.hinges = getOption("photobiology.use.hinges", default = NULL), ...)
 
-\method{absorbance}{object_spct}(spct, w.band = NULL, quantity = "average",
+\method{absorbance}{object_spct}(spct, w.band = NULL,
+  quantity = "average",
   wb.trim = getOption("photobiology.waveband.trim", default = TRUE),
   use.hinges = getOption("photobiology.use.hinges", default = NULL), ...)
 
-\method{absorbance}{filter_mspct}(spct, w.band = NULL, quantity = "average",
+\method{absorbance}{filter_mspct}(spct, w.band = NULL,
+  quantity = "average",
   wb.trim = getOption("photobiology.waveband.trim", default = TRUE),
   use.hinges = getOption("photobiology.use.hinges", default = NULL), ...,
-  attr2tb = NULL, idx = !is.null(names(spct)))
+  attr2tb = NULL, idx = "spct.idx")
 
-\method{absorbance}{object_mspct}(spct, w.band = NULL, quantity = "average",
+\method{absorbance}{object_mspct}(spct, w.band = NULL,
+  quantity = "average",
   wb.trim = getOption("photobiology.waveband.trim", default = TRUE),
   use.hinges = getOption("photobiology.use.hinges", default = NULL), ...,
-  attr2tb = NULL, idx = !is.null(names(spct)), .parallel = FALSE,
+  attr2tb = NULL, idx = "spct.idx", .parallel = FALSE,
   .paropts = NULL)
 }
 \arguments{
@@ -54,8 +59,8 @@ the boundaries of the wavebands.}
 
 \item{attr2tb}{character vector, see \code{\link{add_attr2tb}} for the syntax for \code{attr2tb} passed as is to formal parameter \code{col.names}.}
 
-\item{idx}{logical whether to add a column with the names of the elements of
-spct}
+\item{idx}{character Name of the column with the names of the members of the
+collection of spectra.}
 
 \item{.parallel}{if TRUE, apply function in parallel, using parallel backend
 provided by foreach}

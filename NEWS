@@ -1,8 +1,21 @@
+photobiology 0.9.23 (2018-08-30)
+================================
+
+* Bug fix: Ensure that getWhenMeasured() always returns an object of class
+"POSIXct".
+* Add "scale.factor" as formal parameter to methods irrad(), q_irrad(),
+e_irrad(), response(), q_response() and e_response().
+* Change default value for parameter "idx" in the various summary methods for
+collections of spectra. Also add parameter "idx" to "add attributes to tibble"
+methods and rewrite the "get" methods for attributes using a simpler, and
+possibly faster approach.
+* Add parameter "sep" to function convolve_each().
+
 photobiology 0.9.22 (2018-07-09)
 ================================
 
 Remove dependency on 'caTools' which is no longer maintained and is
-schedulled to be archived in CRAN.
+scheduled to be archived in CRAN.
 
 photobiology 0.9.21 (2018-06-27)
 ================================
@@ -12,7 +25,7 @@ photobiology 0.9.21 (2018-06-27)
 cps2Rfr().
 * Add merge_attributes() function and fix bugs in handling of metadata
 attributes in math operators, affecting operations between two spectral objects.
-* Inprove handling of attributes in objects containing multiple spectra in tidy
+* Improve handling of attributes in objects containing multiple spectra in tidy
 (longitudinal) form. Revise setMultipleWl() to guess number of copies when
 multiple.wl argument is NULL. Add setIdFactor() and getIdFactor(), and add
 parameter 'idfactor' to setGenericSpct() and equivalent functions.

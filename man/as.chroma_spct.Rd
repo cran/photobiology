@@ -28,3 +28,4 @@ Other constructors of spectral objects: \code{\link{as.calibration_spct}},
   \code{\link{as.response_spct}},
   \code{\link{as.source_spct}}, \code{\link{source_spct}}
 }
+\concept{constructors of spectral objects}

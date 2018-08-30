@@ -9,8 +9,8 @@
 \usage{
 eq_ratio(spct, w.band, wb.trim, use.cached.mult, use.hinges, ...)
 
-\method{eq_ratio}{default}(spct, w.band, wb.trim, use.cached.mult, use.hinges,
-  ...)
+\method{eq_ratio}{default}(spct, w.band, wb.trim, use.cached.mult,
+  use.hinges, ...)
 
 \method{eq_ratio}{source_spct}(spct, w.band = NULL,
   wb.trim = getOption("photobiology.waveband.trim", default = TRUE),
@@ -20,8 +20,9 @@ eq_ratio(spct, w.band, wb.trim, use.cached.mult, use.hinges, ...)
 \method{eq_ratio}{source_mspct}(spct, w.band = NULL,
   wb.trim = getOption("photobiology.waveband.trim", default = TRUE),
   use.cached.mult = FALSE,
-  use.hinges = getOption("photobiology.use.hinges"), ..., attr2tb = NULL,
-  idx = !is.null(names(spct)), .parallel = FALSE, .paropts = NULL)
+  use.hinges = getOption("photobiology.use.hinges"), ...,
+  attr2tb = NULL, idx = "spct.idx", .parallel = FALSE,
+  .paropts = NULL)
 }
 \arguments{
 \item{spct}{source_spct.}
@@ -42,7 +43,8 @@ the boundaries of the wavebands.}
 
 \item{attr2tb}{character vector, see \code{\link{add_attr2tb}} for the syntax for \code{attr2tb} passed as is to formal parameter \code{col.names}.}
 
-\item{idx}{logical whether to add a column with the names of the elements of spct}
+\item{idx}{character Name of the column with the names of the members of the
+collection of spectra.}
 
 \item{.parallel}{if TRUE, apply function in parallel, using parallel backend
 provided by foreach}
@@ -101,3 +103,4 @@ eq_ratio(sun.spct, new_waveband(400,700))
 Other photon and energy ratio functions: \code{\link{e_ratio}},
   \code{\link{q_ratio}}, \code{\link{qe_ratio}}
 }
+\concept{photon and energy ratio functions}

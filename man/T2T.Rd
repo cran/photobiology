@@ -13,16 +13,17 @@ T2T(x, y, byref, Tfr.type.out, ...)
 
 \method{T2T}{default}(x, y, byref = NULL, Tfr.type.out = NULL, ...)
 
-\method{T2T}{filter_spct}(x, y, byref = FALSE, Tfr.type.out = "total", ...)
+\method{T2T}{filter_spct}(x, y, byref = FALSE, Tfr.type.out = "total",
+  ...)
 
 \method{T2T}{object_spct}(x, y = NULL, byref = FALSE,
   Tfr.type.out = "total", ...)
 
-\method{T2T}{filter_mspct}(x, y, byref = FALSE, Tfr.type.out = "total", ...,
-  .parallel = FALSE, .paropts = NULL)
+\method{T2T}{filter_mspct}(x, y, byref = FALSE, Tfr.type.out = "total",
+  ..., .parallel = FALSE, .paropts = NULL)
 
-\method{T2T}{object_mspct}(x, y, byref = FALSE, Tfr.type.out = "total", ...,
-  .parallel = FALSE, .paropts = NULL)
+\method{T2T}{object_mspct}(x, y, byref = FALSE, Tfr.type.out = "total",
+  ..., .parallel = FALSE, .paropts = NULL)
 }
 \arguments{
 \item{x, y}{R objects}
@@ -66,3 +67,4 @@ Other quantity conversion functions: \code{\link{A2T}},
   \code{\link{e2quantum_multipliers}}, \code{\link{e2q}},
   \code{\link{q2e}}
 }
+\concept{quantity conversion functions}

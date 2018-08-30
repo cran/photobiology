@@ -28,3 +28,4 @@ This function alters x itself by reference and in addition
 \seealso{
 Other BSWF attribute functions: \code{\link{getBSWFUsed}}
 }
+\concept{BSWF attribute functions}

@@ -9,12 +9,13 @@
 \usage{
 msmsply(mspct, .fun, ..., .parallel = FALSE, .paropts = NULL)
 
-msdply(mspct, .fun, ..., idx = NULL, col.names = NULL, .parallel = FALSE,
-  .paropts = NULL)
+msdply(mspct, .fun, ..., idx = NULL, col.names = NULL,
+  .parallel = FALSE, .paropts = NULL)
 
 mslply(mspct, .fun, ..., .parallel = FALSE, .paropts = NULL)
 
-msaply(mspct, .fun, ..., .drop = TRUE, .parallel = FALSE, .paropts = NULL)
+msaply(mspct, .fun, ..., .drop = TRUE, .parallel = FALSE,
+  .paropts = NULL)
 }
 \arguments{
 \item{mspct}{an object of class generic_mspct or a derived class}
@@ -32,9 +33,8 @@ your code relies on external data or packages: use the .export and
 .packages arguments to supply them so that all cluster nodes have the
 correct environment set up for computing.}
 
-\item{idx}{logical whether to add a column with the names of the elements of
-mspct, if \code{NULL}, the default, a column is added only if all members
-of \code{mspct} are named.}
+\item{idx}{character Name of the column with the names of the members of the
+collection of spectra.}
 
 \item{col.names}{character Names to be used for data columns.}
 

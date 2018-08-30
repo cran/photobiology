@@ -13,8 +13,8 @@ as.reflector_mspct(x, ...)
 
 \method{as.reflector_mspct}{default}(x, ...)
 
-\method{as.reflector_mspct}{data.frame}(x, Rfr.type = c("total", "specular"),
-  strict.range = TRUE, ...)
+\method{as.reflector_mspct}{data.frame}(x, Rfr.type = c("total",
+  "specular"), strict.range = TRUE, ...)
 
 \method{as.reflector_mspct}{reflector_spct}(x, ...)
 
@@ -89,3 +89,4 @@ Other Coercion methods for collections of spectra: \code{\link{as.calibration_ms
   \code{\link{as.source_mspct}}, \code{\link{split2mspct}},
   \code{\link{subset2mspct}}
 }
+\concept{Coercion methods for collections of spectra}

@@ -8,7 +8,6 @@
 \alias{acos.generic_spct}
 \alias{asin.generic_spct}
 \alias{atan.generic_spct}
-\alias{Trig}
 \alias{cospi.generic_spct}
 \alias{sinpi.generic_spct}
 \alias{tanpi.generic_spct}

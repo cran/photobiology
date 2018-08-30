@@ -54,3 +54,4 @@ Other quantity conversion functions: \code{\link{T2Afr}},
   \code{\link{e2quantum_multipliers}}, \code{\link{e2q}},
   \code{\link{q2e}}
 }
+\concept{quantity conversion functions}

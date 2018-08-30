@@ -7,27 +7,27 @@
 \alias{irrad.source_mspct}
 \title{Irradiance}
 \usage{
-irrad(spct, w.band, unit.out, quantity, time.unit, wb.trim, use.cached.mult,
-  use.hinges, allow.scaled, ...)
-
-\method{irrad}{default}(spct, w.band, unit.out, quantity, time.unit, wb.trim,
+irrad(spct, w.band, unit.out, quantity, time.unit, scale.factor, wb.trim,
   use.cached.mult, use.hinges, allow.scaled, ...)
 
+\method{irrad}{default}(spct, w.band, unit.out, quantity, time.unit,
+  scale.factor, wb.trim, use.cached.mult, use.hinges, allow.scaled, ...)
+
 \method{irrad}{source_spct}(spct, w.band = NULL,
-  unit.out = getOption("photobiology.radiation.unit", default = "energy"),
-  quantity = "total", time.unit = NULL,
+  unit.out = getOption("photobiology.radiation.unit", default =
+  "energy"), quantity = "total", time.unit = NULL, scale.factor = 1,
   wb.trim = getOption("photobiology.waveband.trim", default = TRUE),
   use.cached.mult = getOption("photobiology.use.cached.mult", default =
   FALSE), use.hinges = getOption("photobiology.use.hinges"),
   allow.scaled = !quantity \%in\% c("average", "mean", "total"), ...)
 
 \method{irrad}{source_mspct}(spct, w.band = NULL,
-  unit.out = getOption("photobiology.radiation.unit", default = "energy"),
-  quantity = "total", time.unit = NULL,
+  unit.out = getOption("photobiology.radiation.unit", default =
+  "energy"), quantity = "total", time.unit = NULL, scale.factor = 1,
   wb.trim = getOption("photobiology.waveband.trim", default = TRUE),
   use.cached.mult = getOption("photobiology.use.cached.mult", default =
-  FALSE), use.hinges = NULL, allow.scaled = !quantity \%in\% c("average",
-  "mean", "total"), ..., attr2tb = NULL, idx = !is.null(names(spct)),
+  FALSE), use.hinges = NULL, allow.scaled = !quantity \%in\%
+  c("average", "mean", "total"), ..., attr2tb = NULL, idx = "spct.idx",
   .parallel = FALSE, .paropts = NULL)
 }
 \arguments{
@@ -44,6 +44,9 @@ or its alias "quantum".}
 
 \item{time.unit}{character or lubridate::duration object.}
 
+\item{scale.factor}{numeric vector of length 1, or length equal to that of
+\code{w.band}. Numeric multiplier applied to returned values.}
+
 \item{wb.trim}{logical if TRUE wavebands crossing spectral data boundaries
 are trimmed, if FALSE, they are discarded.}
 
@@ -55,17 +58,18 @@ spectral data before integration so as to reduce interpolation errors at
 the boundaries of the wavebands.}
 
 \item{allow.scaled}{logical indicating whether scaled or normalized spectra
-as argument to spct are flagged as an error}
+as argument to spct are flagged as an error.}
 
 \item{...}{other arguments (possibly ignored)}
 
-\item{attr2tb}{character vector, see \code{\link{add_attr2tb}} for the syntax for \code{attr2tb} passed as is to formal parameter \code{col.names}.}
+\item{attr2tb}{character vector, see \code{\link{add_attr2tb}} for the syntax
+for \code{attr2tb} passed as is to formal parameter \code{col.names}.}
 
-\item{idx}{logical whether to add a column with the names of the elements of
-spct}
+\item{idx}{character Name of the column with the names of the members of the
+collection of spectra.}
 
 \item{.parallel}{if TRUE, apply function in parallel, using parallel backend
-provided by foreach}
+provided by foreach.}
 
 \item{.paropts}{a list of additional options passed into the foreach function
 when parallel computation is enabled. This is important if (for example)
@@ -102,8 +106,7 @@ spectrum.
 \item \code{source_spct}: Calculates irradiance from a \code{source_spct}
 object.
 
-\item \code{source_mspct}: Calculates irradiance from a \code{source_mspct}
-object.
+\item \code{source_mspct}: Calculates irradiance from a \code{source_mspct} object.
 }}
 
 \note{
@@ -137,3 +140,4 @@ Other irradiance functions: \code{\link{e_fluence}},
   \code{\link{e_irrad}}, \code{\link{fluence}},
   \code{\link{q_fluence}}, \code{\link{q_irrad}}
 }
+\concept{irradiance functions}

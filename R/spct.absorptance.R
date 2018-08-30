@@ -237,6 +237,7 @@ absorptance_spct <-
     if (quantity %in% c("contribution", "contribution.pc")) {
       total <- absorptance_spct(spct, w.band = NULL,
                                 quantity = "total",
+                                wb.trim = wb.trim,
                                 use.hinges = use.hinges)
       absorptance <- absorptance / total
       if (quantity == "contribution.pc") {
@@ -266,8 +267,8 @@ absorptance_spct <-
 #' @describeIn absorptance Calculates absorptance from a \code{filter_mspct}
 #'
 #' @param attr2tb character vector, see \code{\link{add_attr2tb}} for the syntax for \code{attr2tb} passed as is to formal parameter \code{col.names}.
-#' @param idx logical whether to add a column with the names of the elements of
-#'   spct
+#' @param idx character Name of the column with the names of the members of the
+#'   collection of spectra.
 #'
 #' @export
 #'
@@ -278,7 +279,7 @@ absorptance.filter_mspct <-
            use.hinges = getOption("photobiology.use.hinges", default = NULL),
            ...,
            attr2tb = NULL,
-           idx = !is.null(names(spct)) ) {
+           idx = "spct.idx" ) {
     z <-
       msdply(
         mspct = spct,
@@ -292,7 +293,8 @@ absorptance.filter_mspct <-
       )
     add_attr2tb(tb = z,
                 mspct = spct,
-                col.names = attr2tb)
+                col.names = attr2tb,
+                idx = idx)
   }
 
 # object_mspct methods -----------------------------------------------
@@ -316,7 +318,7 @@ absorptance.object_mspct <-
            use.hinges=getOption("photobiology.use.hinges", default = NULL),
            ...,
            attr2tb = NULL,
-           idx = !is.null(names(spct)),
+           idx = "spct.idx",
            .parallel = FALSE,
            .paropts = NULL) {
     z <-
@@ -334,5 +336,6 @@ absorptance.object_mspct <-
       )
     add_attr2tb(tb = z,
                 mspct = spct,
-                col.names = attr2tb)
+                col.names = attr2tb,
+                idx = idx)
   }

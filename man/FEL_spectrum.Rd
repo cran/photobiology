@@ -4,7 +4,8 @@
 \alias{FEL_spectrum}
 \title{Incandescent "FEL" lamp emission spectrum}
 \usage{
-FEL_spectrum(w.length, k = photobiology::FEL.BN.9101.165, fill = NA_real_)
+FEL_spectrum(w.length, k = photobiology::FEL.BN.9101.165,
+  fill = NA_real_)
 }
 \arguments{
 \item{w.length}{numeric vector of wavelengths (nm) for output}

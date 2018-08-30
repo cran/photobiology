@@ -3,7 +3,6 @@
 \name{valleys}
 \alias{valleys}
 \alias{valleys.default}
-\alias{valleys.default}
 \alias{valleys.numeric}
 \alias{valleys.data.frame}
 \alias{valleys.generic_spct}
@@ -34,13 +33,13 @@ valleys(x, span, ignore_threshold, strict, ...)
 
 \method{valleys}{source_spct}(x, span = 5, ignore_threshold = 0,
   strict = TRUE, na.rm = FALSE,
-  unit.out = getOption("photobiology.radiation.unit", default = "energy"),
-  ...)
+  unit.out = getOption("photobiology.radiation.unit", default =
+  "energy"), ...)
 
 \method{valleys}{response_spct}(x, span = 5, ignore_threshold = 0,
   strict = TRUE, na.rm = FALSE,
-  unit.out = getOption("photobiology.radiation.unit", default = "energy"),
-  ...)
+  unit.out = getOption("photobiology.radiation.unit", default =
+  "energy"), ...)
 
 \method{valleys}{filter_spct}(x, span = 5, ignore_threshold = 0,
   strict = TRUE, na.rm = FALSE,
@@ -54,7 +53,8 @@ valleys(x, span, ignore_threshold, strict, ...)
   strict = TRUE, na.rm = FALSE, ...)
 
 \method{valleys}{generic_mspct}(x, span = 5, ignore_threshold = 0,
-  strict = TRUE, na.rm = FALSE, ..., .parallel = FALSE, .paropts = NULL)
+  strict = TRUE, na.rm = FALSE, ..., .parallel = FALSE,
+  .paropts = NULL)
 }
 \arguments{
 \item{x}{an R object}
@@ -133,3 +133,4 @@ valleys(sun.spct)
 Other peaks and valleys functions: \code{\link{find_peaks}},
   \code{\link{get_peaks}}, \code{\link{peaks}}
 }
+\concept{peaks and valleys functions}

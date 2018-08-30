@@ -25,50 +25,53 @@ fscale(x, ...)
 \method{fscale}{default}(x, ...)
 
 \method{fscale}{source_spct}(x, range = NULL, f = "mean", target = 1,
-  unit.out = getOption("photobiology.radiation.unit", default = "energy"),
-  ...)
+  unit.out = getOption("photobiology.radiation.unit", default =
+  "energy"), ...)
 
-\method{fscale}{response_spct}(x, range = NULL, f = "mean", target = 1,
-  unit.out = getOption("photobiology.radiation.unit", default = "energy"),
-  ...)
+\method{fscale}{response_spct}(x, range = NULL, f = "mean",
+  target = 1, unit.out = getOption("photobiology.radiation.unit",
+  default = "energy"), ...)
 
 \method{fscale}{filter_spct}(x, range = NULL, f = "mean", target = 1,
-  qty.out = getOption("photobiology.filter.qty", default = "transmittance"),
+  qty.out = getOption("photobiology.filter.qty", default =
+  "transmittance"), ...)
+
+\method{fscale}{reflector_spct}(x, range = NULL, f = "mean",
+  target = 1, qty.out = NULL, ...)
+
+\method{fscale}{raw_spct}(x, range = NULL, f = "mean", target = 1,
   ...)
 
-\method{fscale}{reflector_spct}(x, range = NULL, f = "mean", target = 1,
-  qty.out = NULL, ...)
+\method{fscale}{cps_spct}(x, range = NULL, f = "mean", target = 1,
+  ...)
 
-\method{fscale}{raw_spct}(x, range = NULL, f = "mean", target = 1, ...)
+\method{fscale}{generic_spct}(x, range = NULL, f = "mean",
+  target = 1, col.names, ...)
 
-\method{fscale}{cps_spct}(x, range = NULL, f = "mean", target = 1, ...)
+\method{fscale}{source_mspct}(x, range = NULL, f = "mean",
+  target = 1, unit.out = getOption("photobiology.radiation.unit",
+  default = "energy"), ..., .parallel = FALSE, .paropts = NULL)
 
-\method{fscale}{generic_spct}(x, range = NULL, f = "mean", target = 1,
-  col.names, ...)
+\method{fscale}{response_mspct}(x, range = NULL, f = "mean",
+  target = 1, unit.out = getOption("photobiology.radiation.unit",
+  default = "energy"), ..., .parallel = FALSE, .paropts = NULL)
 
-\method{fscale}{source_mspct}(x, range = NULL, f = "mean", target = 1,
-  unit.out = getOption("photobiology.radiation.unit", default = "energy"),
+\method{fscale}{filter_mspct}(x, range = NULL, f = "mean",
+  target = 1, qty.out = getOption("photobiology.filter.qty", default =
+  "transmittance"), ..., .parallel = FALSE, .paropts = NULL)
+
+\method{fscale}{reflector_mspct}(x, range = NULL, f = "mean",
+  target = 1, qty.out = NULL, ..., .parallel = FALSE,
+  .paropts = NULL)
+
+\method{fscale}{raw_mspct}(x, range = NULL, f = "mean", target = 1,
   ..., .parallel = FALSE, .paropts = NULL)
 
-\method{fscale}{response_mspct}(x, range = NULL, f = "mean", target = 1,
-  unit.out = getOption("photobiology.radiation.unit", default = "energy"),
+\method{fscale}{cps_mspct}(x, range = NULL, f = "mean", target = 1,
   ..., .parallel = FALSE, .paropts = NULL)
 
-\method{fscale}{filter_mspct}(x, range = NULL, f = "mean", target = 1,
-  qty.out = getOption("photobiology.filter.qty", default = "transmittance"),
-  ..., .parallel = FALSE, .paropts = NULL)
-
-\method{fscale}{reflector_mspct}(x, range = NULL, f = "mean", target = 1,
-  qty.out = NULL, ..., .parallel = FALSE, .paropts = NULL)
-
-\method{fscale}{raw_mspct}(x, range = NULL, f = "mean", target = 1, ...,
-  .parallel = FALSE, .paropts = NULL)
-
-\method{fscale}{cps_mspct}(x, range = NULL, f = "mean", target = 1, ...,
-  .parallel = FALSE, .paropts = NULL)
-
-\method{fscale}{generic_mspct}(x, range = NULL, f = "mean", target = 1,
-  col.names, ..., .parallel = FALSE, .paropts = NULL)
+\method{fscale}{generic_mspct}(x, range = NULL, f = "mean",
+  target = 1, col.names, ..., .parallel = FALSE, .paropts = NULL)
 
 \method{fshift}{default}(x, ...)
 }
@@ -165,3 +168,4 @@ Other rescaling functions: \code{\link{fshift}},
   \code{\link{is_scaled}}, \code{\link{normalize}},
   \code{\link{setNormalized}}, \code{\link{setScaled}}
 }
+\concept{rescaling functions}

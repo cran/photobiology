@@ -16,15 +16,15 @@ getWhereMeasured(x, ...)
 
 \method{getWhereMeasured}{summary_generic_spct}(x, ...)
 
-\method{getWhereMeasured}{generic_mspct}(x, ..., idx = !is.null(names(x)))
+\method{getWhereMeasured}{generic_mspct}(x, ..., idx = "spct.idx")
 }
 \arguments{
 \item{x}{a generic_spct object}
 
 \item{...}{Allows use of additional arguments in methods for other classes.}
 
-\item{idx}{logical whether to add a column with the names of the elements of
-spct}
+\item{idx}{character Name of the column with the names of the members of the
+collection of spectra.}
 }
 \value{
 a data.frame with a single row and at least columns "lon" and "lat".
@@ -67,3 +67,4 @@ Other measurement metadata functions: \code{\link{getInstrDesc}},
   \code{\link{trimInstrDesc}},
   \code{\link{trimInstrSettings}}
 }
+\concept{measurement metadata functions}

@@ -4,8 +4,8 @@
 \alias{calc_source_output}
 \title{Scaled and/or interpolated light-source spectral output}
 \usage{
-calc_source_output(w.length.out, w.length.in, s.irrad.in, unit.in = "energy",
-  scaled = NULL, fill = NA, ...)
+calc_source_output(w.length.out, w.length.in, s.irrad.in,
+  unit.in = "energy", scaled = NULL, fill = NA, ...)
 }
 \arguments{
 \item{w.length.out}{numeric vector of wavelengths (nm) for output.}

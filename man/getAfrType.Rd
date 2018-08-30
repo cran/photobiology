@@ -27,3 +27,4 @@ getAfrType(polyester.spct)
 \seealso{
 Other Afr attribute functions: \code{\link{setAfrType}}
 }
+\concept{Afr attribute functions}

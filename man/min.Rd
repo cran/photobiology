@@ -14,7 +14,7 @@ wl_min(x, na.rm = FALSE)
 
 \method{min}{generic_spct}(..., na.rm = FALSE)
 
-\method{min}{generic_mspct}(..., na.rm = FALSE, idx = NULL)
+\method{min}{generic_mspct}(..., na.rm = FALSE, idx = "spct.idx")
 }
 \arguments{
 \item{x}{generic_spct, generic_mspct or waveband object.}
@@ -23,8 +23,8 @@ wl_min(x, na.rm = FALSE)
 
 \item{...}{not used in current version}
 
-\item{idx}{logical whether to add a column with the names of the elements of
-spct}
+\item{idx}{character Name of the column with the names of the members of the
+collection of spectra.}
 }
 \description{
 A method specialization that returns the wavelength minimum from objects of
@@ -46,3 +46,4 @@ wl_min(sun.spct)
 Other wavelength summaries: \code{\link{wl_midpoint}},
   \code{\link{wl_range}}, \code{\link{wl_stepsize}}
 }
+\concept{wavelength summaries}

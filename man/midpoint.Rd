@@ -22,14 +22,15 @@ midpoint(x, ...)
 
 \method{midpoint}{generic_spct}(x, ...)
 
-\method{midpoint}{generic_mspct}(x, ..., idx = !is.null(names(x)))
+\method{midpoint}{generic_mspct}(x, ..., idx = "spct.idx")
 }
 \arguments{
 \item{x}{an R object}
 
 \item{...}{not used in current version}
 
-\item{idx}{logical whether to add a column with the names of the elements of spct}
+\item{idx}{character Name of the column with the names of the members of the
+collection of spectra.}
 }
 \value{
 A numeric value equal to (max(x) - min(x)) / 2. In the case of spectral
@@ -71,3 +72,4 @@ Other wavelength summaries: \code{\link{wl_min}},
 Other wavelength summaries: \code{\link{wl_min}},
   \code{\link{wl_range}}, \code{\link{wl_stepsize}}
 }
+\concept{wavelength summaries}

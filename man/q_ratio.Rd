@@ -7,22 +7,25 @@
 \alias{q_ratio.source_mspct}
 \title{Photon:photon ratio}
 \usage{
-q_ratio(spct, w.band.num, w.band.denom, wb.trim, use.cached.mult, use.hinges,
-  ...)
+q_ratio(spct, w.band.num, w.band.denom, wb.trim, use.cached.mult,
+  use.hinges, ...)
 
 \method{q_ratio}{default}(spct, w.band.num, w.band.denom, wb.trim,
   use.cached.mult, use.hinges, ...)
 
-\method{q_ratio}{source_spct}(spct, w.band.num = NULL, w.band.denom = NULL,
+\method{q_ratio}{source_spct}(spct, w.band.num = NULL,
+  w.band.denom = NULL,
   wb.trim = getOption("photobiology.waveband.trim", default = TRUE),
   use.cached.mult = FALSE,
   use.hinges = getOption("photobiology.use.hinges"), ...)
 
-\method{q_ratio}{source_mspct}(spct, w.band.num = NULL, w.band.denom = NULL,
+\method{q_ratio}{source_mspct}(spct, w.band.num = NULL,
+  w.band.denom = NULL,
   wb.trim = getOption("photobiology.waveband.trim", default = TRUE),
   use.cached.mult = FALSE,
-  use.hinges = getOption("photobiology.use.hinges"), ..., attr2tb = NULL,
-  idx = !is.null(names(spct)), .parallel = FALSE, .paropts = NULL)
+  use.hinges = getOption("photobiology.use.hinges"), ...,
+  attr2tb = NULL, idx = "spct.idx", .parallel = FALSE,
+  .paropts = NULL)
 }
 \arguments{
 \item{spct}{an object of class "source_spct".}
@@ -47,7 +50,8 @@ the boundaries of the wavebands.}
 
 \item{attr2tb}{character vector, see \code{\link{add_attr2tb}} for the syntax for \code{attr2tb} passed as is to formal parameter \code{col.names}.}
 
-\item{idx}{logical whether to add a column with the names of the elements of spct}
+\item{idx}{character Name of the column with the names of the members of the
+collection of spectra.}
 
 \item{.parallel}{if TRUE, apply function in parallel, using parallel backend
 provided by foreach}
@@ -106,3 +110,4 @@ q_ratio(sun.spct, new_waveband(400,500), new_waveband(400,700))
 Other photon and energy ratio functions: \code{\link{e_ratio}},
   \code{\link{eq_ratio}}, \code{\link{qe_ratio}}
 }
+\concept{photon and energy ratio functions}

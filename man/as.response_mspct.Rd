@@ -17,8 +17,8 @@ as.response_mspct(x, ...)
 
 \method{as.response_mspct}{response_spct}(x, ...)
 
-\method{as.response_mspct}{list}(x, time.unit = "second", ..., ncol = 1,
-  byrow = FALSE)
+\method{as.response_mspct}{list}(x, time.unit = "second", ...,
+  ncol = 1, byrow = FALSE)
 
 \method{as.response_mspct}{matrix}(x, w.length,
   spct.data.var = "s.e.response", multiplier = 1, byrow = NULL,
@@ -87,3 +87,4 @@ Other Coercion methods for collections of spectra: \code{\link{as.calibration_ms
   \code{\link{as.source_mspct}}, \code{\link{split2mspct}},
   \code{\link{subset2mspct}}
 }
+\concept{Coercion methods for collections of spectra}

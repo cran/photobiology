@@ -5,9 +5,9 @@
 \alias{new_waveband}
 \title{Waveband constructor method}
 \usage{
-waveband(x = NULL, weight = NULL, SWF.e.fun = NULL, SWF.q.fun = NULL,
-  norm = NULL, SWF.norm = NULL, hinges = NULL, wb.name = NULL,
-  wb.label = wb.name)
+waveband(x = NULL, weight = NULL, SWF.e.fun = NULL,
+  SWF.q.fun = NULL, norm = NULL, SWF.norm = NULL, hinges = NULL,
+  wb.name = NULL, wb.label = wb.name)
 
 new_waveband(w.low, w.high, weight = NULL, SWF.e.fun = NULL,
   SWF.q.fun = NULL, norm = NULL, SWF.norm = NULL, hinges = NULL,
@@ -68,3 +68,4 @@ new_waveband(400,700)
 \seealso{
 Other waveband constructors: \code{\link{split_bands}}
 }
+\concept{waveband constructors}

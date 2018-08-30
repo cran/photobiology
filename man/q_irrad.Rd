@@ -7,24 +7,26 @@
 \alias{q_irrad.source_mspct}
 \title{Photon irradiance}
 \usage{
-q_irrad(spct, w.band, quantity, time.unit, wb.trim, use.cached.mult, use.hinges,
-  allow.scaled, ...)
-
-\method{q_irrad}{default}(spct, w.band, quantity, time.unit, wb.trim,
+q_irrad(spct, w.band, quantity, time.unit, scale.factor, wb.trim,
   use.cached.mult, use.hinges, allow.scaled, ...)
 
+\method{q_irrad}{default}(spct, w.band, quantity, time.unit, scale.factor,
+  wb.trim, use.cached.mult, use.hinges, allow.scaled, ...)
+
 \method{q_irrad}{source_spct}(spct, w.band = NULL, quantity = "total",
-  time.unit = NULL, wb.trim = getOption("photobiology.waveband.trim",
-  default = TRUE), use.cached.mult = getOption("photobiology.use.cached.mult",
-  default = FALSE), use.hinges = NULL, allow.scaled = !quantity \%in\%
+  time.unit = NULL, scale.factor = 1,
+  wb.trim = getOption("photobiology.waveband.trim", default = TRUE),
+  use.cached.mult = getOption("photobiology.use.cached.mult", default =
+  FALSE), use.hinges = NULL, allow.scaled = !quantity \%in\%
   c("average", "mean", "total"), ...)
 
 \method{q_irrad}{source_mspct}(spct, w.band = NULL, quantity = "total",
-  time.unit = NULL, wb.trim = getOption("photobiology.waveband.trim",
-  default = TRUE), use.cached.mult = getOption("photobiology.use.cached.mult",
-  default = FALSE), use.hinges = NULL, allow.scaled = !quantity \%in\%
-  c("average", "mean", "total"), ..., attr2tb = NULL,
-  idx = !is.null(names(spct)), .parallel = FALSE, .paropts = NULL)
+  time.unit = NULL, scale.factor = 1,
+  wb.trim = getOption("photobiology.waveband.trim", default = TRUE),
+  use.cached.mult = getOption("photobiology.use.cached.mult", default =
+  FALSE), use.hinges = NULL, allow.scaled = !quantity \%in\%
+  c("average", "mean", "total"), ..., attr2tb = NULL, idx = "spct.idx",
+  .parallel = FALSE, .paropts = NULL)
 }
 \arguments{
 \item{spct}{an R object.}
@@ -35,6 +37,9 @@ q_irrad(spct, w.band, quantity, time.unit, wb.trim, use.cached.mult, use.hinges,
 "contribution", "contribution.pc", "relative" or "relative.pc".}
 
 \item{time.unit}{character or lubridate::duration object.}
+
+\item{scale.factor}{numeric vector of length 1, or length equal to that of
+\code{w.band}. Numeric multiplier applied to returned values.}
 
 \item{wb.trim}{logical if TRUE wavebands crossing spectral data boundaries
 are trimmed, if FALSE, they are discarded.}
@@ -53,8 +58,8 @@ as argument to spct are flagged as an error.}
 
 \item{attr2tb}{character vector, see \code{\link{add_attr2tb}} for the syntax for \code{attr2tb} passed as is to formal parameter \code{col.names}.}
 
-\item{idx}{logical whether to add a column with the names of the elements of
-spct}
+\item{idx}{character Name of the column with the names of the members of the
+collection of spectra.}
 
 \item{.parallel}{if TRUE, apply function in parallel, using parallel backend
 provided by foreach}
@@ -122,3 +127,4 @@ Other irradiance functions: \code{\link{e_fluence}},
   \code{\link{e_irrad}}, \code{\link{fluence}},
   \code{\link{irrad}}, \code{\link{q_fluence}}
 }
+\concept{irradiance functions}

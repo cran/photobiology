@@ -13,8 +13,8 @@ as.filter_mspct(x, ...)
 
 \method{as.filter_mspct}{default}(x, ...)
 
-\method{as.filter_mspct}{data.frame}(x, Tfr.type = c("total", "internal"),
-  strict.range = TRUE, ...)
+\method{as.filter_mspct}{data.frame}(x, Tfr.type = c("total",
+  "internal"), strict.range = TRUE, ...)
 
 \method{as.filter_mspct}{filter_spct}(x, ...)
 
@@ -89,3 +89,4 @@ Other Coercion methods for collections of spectra: \code{\link{as.calibration_ms
   \code{\link{as.source_mspct}}, \code{\link{split2mspct}},
   \code{\link{subset2mspct}}
 }
+\concept{Coercion methods for collections of spectra}

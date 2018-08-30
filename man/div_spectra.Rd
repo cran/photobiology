@@ -4,8 +4,8 @@
 \alias{div_spectra}
 \title{Divide two spectra, even if the wavelengths values differ}
 \usage{
-div_spectra(w.length1, w.length2 = NULL, s.irrad1, s.irrad2, trim = "union",
-  na.rm = FALSE)
+div_spectra(w.length1, w.length2 = NULL, s.irrad1, s.irrad2,
+  trim = "union", na.rm = FALSE)
 }
 \arguments{
 \item{w.length1}{numeric vector of wavelength (nm) of denominator.}
@@ -72,3 +72,4 @@ Other low-level functions operating on numeric vectors.: \code{\link{as_energy}}
   \code{\link{subt_spectra}}, \code{\link{sum_spectra}},
   \code{\link{trim_tails}}, \code{\link{v_insert_hinges}}
 }
+\concept{low-level functions operating on numeric vectors.}

@@ -23,3 +23,4 @@ is returned
 Other time attribute functions: \code{\link{convertTimeUnit}},
   \code{\link{getTimeUnit}}, \code{\link{setTimeUnit}}
 }
+\concept{time attribute functions}

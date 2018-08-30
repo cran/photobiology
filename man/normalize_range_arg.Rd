@@ -42,3 +42,4 @@ normalize_range_arg(c(NA, NA), range(sun.spct))
 normalize_range_arg(c(NA, NA), sun.spct)
 
 }
+\concept{auxiliary functions}

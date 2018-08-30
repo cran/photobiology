@@ -11,28 +11,32 @@
 \usage{
 reflectance(spct, w.band, quantity, wb.trim, use.hinges, ...)
 
-\method{reflectance}{default}(spct, w.band, quantity, wb.trim, use.hinges, ...)
+\method{reflectance}{default}(spct, w.band, quantity, wb.trim, use.hinges,
+  ...)
 
 \method{reflectance}{reflector_spct}(spct, w.band = NULL,
-  quantity = "average", wb.trim = getOption("photobiology.waveband.trim",
-  default = TRUE), use.hinges = getOption("photobiology.use.hinges", default =
-  NULL), ...)
+  quantity = "average",
+  wb.trim = getOption("photobiology.waveband.trim", default = TRUE),
+  use.hinges = getOption("photobiology.use.hinges", default = NULL), ...)
 
-\method{reflectance}{object_spct}(spct, w.band = NULL, quantity = "average",
+\method{reflectance}{object_spct}(spct, w.band = NULL,
+  quantity = "average",
   wb.trim = getOption("photobiology.waveband.trim", default = TRUE),
   use.hinges = getOption("photobiology.use.hinges", default = NULL), ...)
 
 \method{reflectance}{reflector_mspct}(spct, w.band = NULL,
-  quantity = "average", wb.trim = getOption("photobiology.waveband.trim",
-  default = TRUE), use.hinges = getOption("photobiology.use.hinges", default =
-  NULL), ..., attr2tb = NULL, idx = !is.null(names(spct)),
-  .parallel = FALSE, .paropts = NULL)
+  quantity = "average",
+  wb.trim = getOption("photobiology.waveband.trim", default = TRUE),
+  use.hinges = getOption("photobiology.use.hinges", default = NULL), ...,
+  attr2tb = NULL, idx = "spct.idx", .parallel = FALSE,
+  .paropts = NULL)
 
 \method{reflectance}{object_mspct}(spct, w.band = NULL,
-  quantity = "average", wb.trim = getOption("photobiology.waveband.trim",
-  default = TRUE), use.hinges = getOption("photobiology.use.hinges", default =
-  NULL), ..., attr2tb = NULL, idx = !is.null(names(spct)),
-  .parallel = FALSE, .paropts = NULL)
+  quantity = "average",
+  wb.trim = getOption("photobiology.waveband.trim", default = TRUE),
+  use.hinges = getOption("photobiology.use.hinges", default = NULL), ...,
+  attr2tb = NULL, idx = "spct.idx", .parallel = FALSE,
+  .paropts = NULL)
 }
 \arguments{
 \item{spct}{an R object}
@@ -56,8 +60,8 @@ the boundaries of the wavebands.}
 
 \item{attr2tb}{character vector, see \code{\link{add_attr2tb}} for the syntax for \code{attr2tb} passed as is to formal parameter \code{col.names}.}
 
-\item{idx}{logical whether to add a column with the names of the elements of
-spct}
+\item{idx}{character Name of the column with the names of the members of the
+collection of spectra.}
 
 \item{.parallel}{if TRUE, apply function in parallel, using parallel backend
 provided by foreach}

@@ -4,7 +4,8 @@
 \alias{c.generic_mspct}
 \title{Combine collections of spectra}
 \usage{
-\method{c}{generic_mspct}(..., recursive = FALSE, ncol = 1, byrow = FALSE)
+\method{c}{generic_mspct}(..., recursive = FALSE, ncol = 1,
+  byrow = FALSE)
 }
 \arguments{
 \item{...}{one or more generic_mspct objects to combine.}

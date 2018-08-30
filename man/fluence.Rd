@@ -7,24 +7,27 @@
 \alias{fluence.source_mspct}
 \title{Fluence}
 \usage{
-fluence(spct, w.band, unit.out, exposure.time, wb.trim, use.cached.mult,
-  use.hinges, allow.scaled, ...)
-
-\method{fluence}{default}(spct, w.band, unit.out, exposure.time, wb.trim,
+fluence(spct, w.band, unit.out, exposure.time, scale.factor, wb.trim,
   use.cached.mult, use.hinges, allow.scaled, ...)
 
+\method{fluence}{default}(spct, w.band, unit.out, exposure.time,
+  scale.factor, wb.trim, use.cached.mult, use.hinges, allow.scaled, ...)
+
 \method{fluence}{source_spct}(spct, w.band = NULL,
-  unit.out = getOption("photobiology.radiation.unit", default = "energy"),
-  exposure.time, wb.trim = getOption("photobiology.waveband.trim", default =
-  TRUE), use.cached.mult = getOption("photobiology.use.cached.mult", default =
+  unit.out = getOption("photobiology.radiation.unit", default =
+  "energy"), exposure.time, scale.factor = 1,
+  wb.trim = getOption("photobiology.waveband.trim", default = TRUE),
+  use.cached.mult = getOption("photobiology.use.cached.mult", default =
   FALSE), use.hinges = NULL, allow.scaled = FALSE, ...)
 
 \method{fluence}{source_mspct}(spct, w.band = NULL,
-  unit.out = getOption("photobiology.radiation.unit", default = "energy"),
-  exposure.time, wb.trim = getOption("photobiology.waveband.trim", default =
-  TRUE), use.cached.mult = getOption("photobiology.use.cached.mult", default =
-  FALSE), use.hinges = NULL, allow.scaled = FALSE, ..., attr2tb = NULL,
-  idx = !is.null(names(spct)), .parallel = FALSE, .paropts = NULL)
+  unit.out = getOption("photobiology.radiation.unit", default =
+  "energy"), exposure.time, scale.factor = 1,
+  wb.trim = getOption("photobiology.waveband.trim", default = TRUE),
+  use.cached.mult = getOption("photobiology.use.cached.mult", default =
+  FALSE), use.hinges = NULL, allow.scaled = FALSE, ...,
+  attr2tb = NULL, idx = "spct.idx", .parallel = FALSE,
+  .paropts = NULL)
 }
 \arguments{
 \item{spct}{an R object.}
@@ -35,6 +38,9 @@ fluence(spct, w.band, unit.out, exposure.time, wb.trim, use.cached.mult,
 or its alias "quantum".}
 
 \item{exposure.time}{lubridate::duration object.}
+
+\item{scale.factor}{numeric vector of length 1, or length equal to that of
+\code{w.band}. Numeric multiplier applied to returned values.}
 
 \item{wb.trim}{logical if TRUE wavebands crossing spectral data boundaries
 are trimmed, if FALSE, they are discarded.}
@@ -53,8 +59,8 @@ as argument to spct are flagged as an error.}
 
 \item{attr2tb}{character vector, see \code{\link{add_attr2tb}} for the syntax for \code{attr2tb} passed as is to formal parameter \code{col.names}.}
 
-\item{idx}{logical whether to add a column with the names of the elements of
-spct}
+\item{idx}{character Name of the column with the names of the members of the
+collection of spectra.}
 
 \item{.parallel}{if TRUE, apply function in parallel, using parallel backend
 provided by foreach}
@@ -109,3 +115,4 @@ Other irradiance functions: \code{\link{e_fluence}},
   \code{\link{e_irrad}}, \code{\link{irrad}},
   \code{\link{q_fluence}}, \code{\link{q_irrad}}
 }
+\concept{irradiance functions}

@@ -4,10 +4,10 @@
 \alias{split_photon_irradiance}
 \title{Photon irradiance for split spectrum regions}
 \usage{
-split_photon_irradiance(w.length, s.irrad, cut.w.length = range(w.length),
-  unit.in = "energy", scale = "absolute", check.spectrum = TRUE,
-  use.cached.mult = FALSE, use.hinges = getOption("photobiology.use.hinges",
-  default = NULL))
+split_photon_irradiance(w.length, s.irrad,
+  cut.w.length = range(w.length), unit.in = "energy",
+  scale = "absolute", check.spectrum = TRUE, use.cached.mult = FALSE,
+  use.hinges = getOption("photobiology.use.hinges", default = NULL))
 }
 \arguments{
 \item{w.length}{numeric vector of wavelengths (nm).}
@@ -82,3 +82,4 @@ Other low-level functions operating on numeric vectors.: \code{\link{as_energy}}
   \code{\link{subt_spectra}}, \code{\link{sum_spectra}},
   \code{\link{trim_tails}}, \code{\link{v_insert_hinges}}
 }
+\concept{low-level functions operating on numeric vectors.}

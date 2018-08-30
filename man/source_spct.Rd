@@ -19,8 +19,9 @@ source_spct(w.length = NULL, s.e.irrad = NULL, s.q.irrad = NULL,
   strict.range = getOption("photobiology.strict.range", default = FALSE),
   multiple.wl = 1L, idfactor = NULL, ...)
 
-calibration_spct(w.length = NULL, irrad.mult = NA_real_, comment = NULL,
-  instr.desc = NA, multiple.wl = 1L, idfactor = NULL, ...)
+calibration_spct(w.length = NULL, irrad.mult = NA_real_,
+  comment = NULL, instr.desc = NA, multiple.wl = 1L,
+  idfactor = NULL, ...)
 
 raw_spct(w.length = NULL, counts = NA_real_, comment = NULL,
   instr.desc = NA, instr.settings = NA, multiple.wl = 1L,
@@ -33,9 +34,9 @@ cps_spct(w.length = NULL, cps = NA_real_, comment = NULL,
 generic_spct(w.length = NULL, comment = NULL, multiple.wl = 1L,
   idfactor = NULL, ...)
 
-response_spct(w.length = NULL, s.e.response = NULL, s.q.response = NULL,
-  time.unit = c("second", "day", "exposure"), comment = NULL,
-  multiple.wl = 1L, idfactor = NULL, ...)
+response_spct(w.length = NULL, s.e.response = NULL,
+  s.q.response = NULL, time.unit = c("second", "day", "exposure"),
+  comment = NULL, multiple.wl = 1L, idfactor = NULL, ...)
 
 filter_spct(w.length = NULL, Tfr = NULL, Tpc = NULL, Afr = NULL,
   A = NULL, Tfr.type = c("total", "internal"), Afr.type = Tfr.type,
@@ -153,3 +154,4 @@ Other constructors of spectral objects: \code{\link{as.calibration_spct}},
   \code{\link{as.response_spct}},
   \code{\link{as.source_spct}}
 }
+\concept{constructors of spectral objects}

@@ -49,3 +49,4 @@ with(sun.data, w.length[find_peaks(s.e.irrad)])
 Other peaks and valleys functions: \code{\link{get_peaks}},
   \code{\link{peaks}}, \code{\link{valleys}}
 }
+\concept{peaks and valleys functions}

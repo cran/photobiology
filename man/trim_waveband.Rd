@@ -46,3 +46,4 @@ trim_waveband(VIS, high.limit = 700)
 Other trim functions: \code{\link{clip_wl}},
   \code{\link{trim_spct}}, \code{\link{trim_wl}}
 }
+\concept{trim functions}

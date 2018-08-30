@@ -4,8 +4,8 @@
 \alias{photons_energy_ratio}
 \title{Photon:energy ratio}
 \usage{
-photons_energy_ratio(w.length, s.irrad, w.band = NULL, unit.in = "energy",
-  check.spectrum = TRUE, use.cached.mult = FALSE,
+photons_energy_ratio(w.length, s.irrad, w.band = NULL,
+  unit.in = "energy", check.spectrum = TRUE, use.cached.mult = FALSE,
   use.hinges = getOption("photobiology.use.hinges", default = NULL))
 }
 \arguments{
@@ -65,3 +65,4 @@ Other low-level functions operating on numeric vectors.: \code{\link{as_energy}}
   \code{\link{subt_spectra}}, \code{\link{sum_spectra}},
   \code{\link{trim_tails}}, \code{\link{v_insert_hinges}}
 }
+\concept{low-level functions operating on numeric vectors.}

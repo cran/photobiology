@@ -34,3 +34,4 @@ col2rgb(w_length_range2rgb(500:600))
 Other color functions: \code{\link{rgb_spct}},
   \code{\link{w_length2rgb}}
 }
+\concept{color functions}

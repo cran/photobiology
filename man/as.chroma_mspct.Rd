@@ -58,3 +58,4 @@ Other Coercion methods for collections of spectra: \code{\link{as.calibration_ms
   \code{\link{as.source_mspct}}, \code{\link{split2mspct}},
   \code{\link{subset2mspct}}
 }
+\concept{Coercion methods for collections of spectra}

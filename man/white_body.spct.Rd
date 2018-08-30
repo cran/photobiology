@@ -32,4 +32,5 @@ Other Spectral data examples: \code{\link{A.illuminant.spct}},
   \code{\link{white_led.source_spct}},
   \code{\link{yellow_gel.spct}}
 }
+\concept{Spectral data examples}
 \keyword{datasets}

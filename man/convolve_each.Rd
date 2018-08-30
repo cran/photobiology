@@ -4,7 +4,7 @@
 \alias{convolve_each}
 \title{Convolve function for collections of spectra}
 \usage{
-convolve_each(e1, e2, oper = `*`, ...)
+convolve_each(e1, e2, oper = `*`, sep = "_", ...)
 }
 \arguments{
 \item{e1}{an object of class \code{generic_mspct} or \code{generic_scpt} or
@@ -15,6 +15,10 @@ convolve_each(e1, e2, oper = `*`, ...)
 
 \item{oper}{function, usually but not necessarily an operator with two
 arguments.}
+
+\item{sep}{character Used when pasting the names of members of \code{e1} and
+\code{e2} to form the names of members of the returned collection of
+spectra.}
 
 \item{...}{additional arguments passed to \code{oper} if present.}
 }
@@ -36,3 +40,4 @@ Other math operators and functions: \code{\link{MathFun}},
   \code{\link{sign}}, \code{\link{slash-.generic_spct}},
   \code{\link{times-.generic_spct}}
 }
+\concept{math operators and functions}

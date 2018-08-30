@@ -9,13 +9,14 @@
 \usage{
 T2A(x, action, byref, clean, ...)
 
-\method{T2A}{default}(x, action = NULL, byref = FALSE, clean = TRUE, ...)
-
-\method{T2A}{filter_spct}(x, action = "add", byref = FALSE, clean = TRUE,
+\method{T2A}{default}(x, action = NULL, byref = FALSE, clean = TRUE,
   ...)
 
-\method{T2A}{filter_mspct}(x, action = "add", byref = FALSE, clean = TRUE,
-  ..., .parallel = FALSE, .paropts = NULL)
+\method{T2A}{filter_spct}(x, action = "add", byref = FALSE,
+  clean = TRUE, ...)
+
+\method{T2A}{filter_mspct}(x, action = "add", byref = FALSE,
+  clean = TRUE, ..., .parallel = FALSE, .paropts = NULL)
 }
 \arguments{
 \item{x}{an R object}
@@ -57,3 +58,4 @@ Other quantity conversion functions: \code{\link{A2T}},
   \code{\link{e2quantum_multipliers}}, \code{\link{e2q}},
   \code{\link{q2e}}
 }
+\concept{quantity conversion functions}

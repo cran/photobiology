@@ -21,3 +21,4 @@ Other astronomy related functions: \code{\link{day_night}},
   \code{\link{print.solar_time}}, \code{\link{solar_time}},
   \code{\link{sun_angles}}
 }
+\concept{astronomy related functions}

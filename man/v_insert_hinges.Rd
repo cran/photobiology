@@ -49,4 +49,5 @@ Other low-level functions operating on numeric vectors.: \code{\link{as_energy}}
   \code{\link{subt_spectra}}, \code{\link{sum_spectra}},
   \code{\link{trim_tails}}
 }
+\concept{low-level functions operating on numeric vectors.}
 \keyword{internal.}

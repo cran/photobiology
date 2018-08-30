@@ -35,3 +35,4 @@ getTfrType(my.spct)
 \seealso{
 Other Tfr attribute functions: \code{\link{getTfrType}}
 }
+\concept{Tfr attribute functions}

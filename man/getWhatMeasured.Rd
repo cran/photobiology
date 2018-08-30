@@ -2,19 +2,55 @@
 % Please edit documentation in R/spct.classes.r
 \name{getWhatMeasured}
 \alias{getWhatMeasured}
+\alias{getWhatMeasured.default}
+\alias{getWhatMeasured.generic_spct}
+\alias{getWhatMeasured.summary_generic_spct}
+\alias{getWhatMeasured.generic_mspct}
 \title{Get the "what.measured" attribute}
 \usage{
-getWhatMeasured(x)
+getWhatMeasured(x, ...)
+
+\method{getWhatMeasured}{default}(x, ...)
+
+\method{getWhatMeasured}{generic_spct}(x, ...)
+
+\method{getWhatMeasured}{summary_generic_spct}(x, ...)
+
+\method{getWhatMeasured}{generic_mspct}(x, ..., idx = "spct.idx")
 }
 \arguments{
 \item{x}{a generic_spct object}
+
+\item{...}{Allows use of additional arguments in methods for other classes.}
+
+\item{idx}{character Name of the column with the names of the members of the
+collection of spectra.}
 }
 \value{
-list
+character vector An object containing a description of the data.
 }
 \description{
 Function to read the "what.measured" attribute of an existing generic_spct
-object.
+or a generic_mspct.
+}
+\section{Methods (by class)}{
+\itemize{
+\item \code{default}: default
+
+\item \code{generic_spct}: generic_spct
+
+\item \code{summary_generic_spct}: summary_generic_spct
+
+\item \code{generic_mspct}: generic_mspct
+}}
+
+\note{
+The method for collections of spectra returns the
+  a tibble with a column of character strings.
+}
+\examples{
+getWhatMeasured(sun.spct)
+
 }
 \seealso{
 Other measurement metadata functions: \code{\link{getInstrDesc}},
@@ -32,3 +68,4 @@ Other measurement metadata functions: \code{\link{getInstrDesc}},
   \code{\link{trimInstrDesc}},
   \code{\link{trimInstrSettings}}
 }
+\concept{measurement metadata functions}

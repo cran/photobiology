@@ -12,14 +12,14 @@ setWhereMeasured(x, where.measured, lat, lon, ...)
 
 \method{setWhereMeasured}{default}(x, where.measured, lat, lon, ...)
 
-\method{setWhereMeasured}{generic_spct}(x, where.measured = NA, lat = NA,
-  lon = NA, ...)
+\method{setWhereMeasured}{generic_spct}(x, where.measured = NA,
+  lat = NA, lon = NA, ...)
 
 \method{setWhereMeasured}{summary_generic_spct}(x, where.measured = NA,
   lat = NA, lon = NA, ...)
 
-\method{setWhereMeasured}{generic_mspct}(x, where.measured = NA, lat = NA,
-  lon = NA, ...)
+\method{setWhereMeasured}{generic_mspct}(x, where.measured = NA,
+  lat = NA, lon = NA, ...)
 }
 \arguments{
 \item{x}{a generic_spct object}
@@ -77,3 +77,4 @@ Other measurement metadata functions: \code{\link{getInstrDesc}},
   \code{\link{trimInstrDesc}},
   \code{\link{trimInstrSettings}}
 }
+\concept{measurement metadata functions}

@@ -65,3 +65,4 @@ Other astronomy related functions: \code{\link{day_night}},
   \code{\link{is.solar_time}},
   \code{\link{print.solar_time}}, \code{\link{sun_angles}}
 }
+\concept{astronomy related functions}

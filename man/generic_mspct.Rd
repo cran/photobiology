@@ -13,8 +13,8 @@
 \alias{chroma_mspct}
 \title{Collection-of-spectra constructor}
 \usage{
-generic_mspct(l = NULL, class = "generic_spct", ncol = 1, byrow = FALSE,
-  dim = c(length(l)\%/\%ncol, ncol))
+generic_mspct(l = NULL, class = "generic_spct", ncol = 1,
+  byrow = FALSE, dim = c(length(l)\%/\%ncol, ncol))
 
 calibration_mspct(l = NULL, ncol = 1, byrow = FALSE, ...)
 
@@ -82,3 +82,4 @@ Setting class = source_spct or class = source_mspct makes no difference
 filter_mspct(list(polyester.spct, yellow_gel.spct))
 
 }
+\concept{collections of spectra classes family}

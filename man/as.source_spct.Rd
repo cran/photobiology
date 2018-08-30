@@ -9,7 +9,8 @@ as.source_spct(x, ...)
 
 \method{as.source_spct}{default}(x, time.unit = c("second", "day",
   "exposure"), bswf.used = c("none", "unknown"),
-  strict.range = getOption("photobiology.strict.range", default = FALSE), ...)
+  strict.range = getOption("photobiology.strict.range", default = FALSE),
+  ...)
 }
 \arguments{
 \item{x}{an R object}
@@ -45,3 +46,4 @@ Other constructors of spectral objects: \code{\link{as.calibration_spct}},
   \code{\link{as.reflector_spct}},
   \code{\link{as.response_spct}}, \code{\link{source_spct}}
 }
+\concept{constructors of spectral objects}

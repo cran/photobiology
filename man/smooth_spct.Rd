@@ -13,14 +13,17 @@ smooth_spct(x, method, strength, ...)
 
 \method{smooth_spct}{default}(x, method, strength, ...)
 
-\method{smooth_spct}{source_spct}(x, method = "custom", strength = 1, ...)
-
-\method{smooth_spct}{filter_spct}(x, method = "custom", strength = 1, ...)
-
-\method{smooth_spct}{reflector_spct}(x, method = "custom", strength = 1,
+\method{smooth_spct}{source_spct}(x, method = "custom", strength = 1,
   ...)
 
-\method{smooth_spct}{response_spct}(x, method = "custom", strength = 1, ...)
+\method{smooth_spct}{filter_spct}(x, method = "custom", strength = 1,
+  ...)
+
+\method{smooth_spct}{reflector_spct}(x, method = "custom",
+  strength = 1, ...)
+
+\method{smooth_spct}{response_spct}(x, method = "custom", strength = 1,
+  ...)
 }
 \arguments{
 \item{x}{an R object.}

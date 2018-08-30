@@ -25,14 +25,15 @@ expanse(x, ...)
 
 \method{expanse}{generic_spct}(x, ...)
 
-\method{expanse}{generic_mspct}(x, ..., idx = !is.null(names(x)))
+\method{expanse}{generic_mspct}(x, ..., idx = "spct.idx")
 }
 \arguments{
 \item{x}{an R object}
 
 \item{...}{not used in current version}
 
-\item{idx}{logical whether to add a column with the names of the elements of spct}
+\item{idx}{character Name of the column with the names of the members of the
+collection of spectra.}
 }
 \value{
 A numeric value equal to max(x) - min(x). In the case of spectral

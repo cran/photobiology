@@ -4,8 +4,8 @@
 \alias{calc_multipliers}
 \title{Spectral weights}
 \usage{
-calc_multipliers(w.length, w.band, unit.out = "energy", unit.in = "energy",
-  use.cached.mult = FALSE, fill = 0)
+calc_multipliers(w.length, w.band, unit.out = "energy",
+  unit.in = "energy", use.cached.mult = FALSE, fill = 0)
 }
 \arguments{
 \item{w.length}{numeric vector of wavelengths (nm).}
@@ -54,3 +54,4 @@ Other low-level functions operating on numeric vectors.: \code{\link{as_energy}}
   \code{\link{subt_spectra}}, \code{\link{sum_spectra}},
   \code{\link{trim_tails}}, \code{\link{v_insert_hinges}}
 }
+\concept{low-level functions operating on numeric vectors.}

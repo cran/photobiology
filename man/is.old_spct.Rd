@@ -20,3 +20,4 @@ as used in photobiology (>= 0.6.0).
 Other upgrade from earlier versions: \code{\link{upgrade_spct}},
   \code{\link{upgrade_spectra}}
 }
+\concept{upgrade from earlier versions}

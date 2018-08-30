@@ -7,21 +7,23 @@
 \alias{q_response.response_mspct}
 \title{Photon-based photo-response}
 \usage{
-q_response(spct, w.band, quantity, time.unit, wb.trim, use.hinges, ...)
-
-\method{q_response}{default}(spct, w.band, quantity, time.unit, wb.trim,
+q_response(spct, w.band, quantity, time.unit, scale.factor, wb.trim,
   use.hinges, ...)
 
-\method{q_response}{response_spct}(spct, w.band = NULL, quantity = "total",
-  time.unit = NULL, wb.trim = getOption("photobiology.waveband.trim",
-  default = TRUE), use.hinges = getOption("photobiology.use.hinges", default =
-  NULL), ...)
+\method{q_response}{default}(spct, w.band, quantity, time.unit,
+  scale.factor, wb.trim, use.hinges, ...)
 
-\method{q_response}{response_mspct}(spct, w.band = NULL, quantity = "total",
-  time.unit = NULL, wb.trim = getOption("photobiology.waveband.trim",
-  default = TRUE), use.hinges = getOption("photobiology.use.hinges", default =
-  NULL), ..., attr2tb = NULL, idx = !is.null(names(spct)),
-  .parallel = FALSE, .paropts = NULL)
+\method{q_response}{response_spct}(spct, w.band = NULL,
+  quantity = "total", time.unit = NULL, scale.factor = 1,
+  wb.trim = getOption("photobiology.waveband.trim", default = TRUE),
+  use.hinges = getOption("photobiology.use.hinges", default = NULL), ...)
+
+\method{q_response}{response_mspct}(spct, w.band = NULL,
+  quantity = "total", time.unit = NULL, scale.factor = 1,
+  wb.trim = getOption("photobiology.waveband.trim", default = TRUE),
+  use.hinges = getOption("photobiology.use.hinges", default = NULL), ...,
+  attr2tb = NULL, idx = "spct.idx", .parallel = FALSE,
+  .paropts = NULL)
 }
 \arguments{
 \item{spct}{an R object.}
@@ -36,6 +38,9 @@ constructed on the fly from it.}
 
 \item{time.unit}{character or lubridate::duration object.}
 
+\item{scale.factor}{numeric vector of length 1, or length equal to that of
+\code{w.band}. Numeric multiplier applied to returned values.}
+
 \item{wb.trim}{logical if TRUE wavebands crossing spectral data boundaries
 are trimmed, if FALSE, they are discarded.}
 
@@ -47,8 +52,8 @@ the boundaries of the wavebands.}
 
 \item{attr2tb}{character vector, see \code{\link{add_attr2tb}} for the syntax for \code{attr2tb} passed as is to formal parameter \code{col.names}.}
 
-\item{idx}{logical whether to add a column with the names of the elements of
-spct}
+\item{idx}{character Name of the column with the names of the members of the
+collection of spectra.}
 
 \item{.parallel}{if TRUE, apply function in parallel, using parallel backend
 provided by foreach}
@@ -101,3 +106,4 @@ q_response(photodiode.spct)
 Other response functions: \code{\link{e_response}},
   \code{\link{response}}
 }
+\concept{response functions}

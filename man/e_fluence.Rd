@@ -7,22 +7,25 @@
 \alias{e_fluence.source_mspct}
 \title{Energy fluence}
 \usage{
-e_fluence(spct, w.band, exposure.time, wb.trim, use.cached.mult, use.hinges,
-  allow.scaled, ...)
-
-\method{e_fluence}{default}(spct, w.band, exposure.time, wb.trim,
+e_fluence(spct, w.band, exposure.time, scale.factor, wb.trim,
   use.cached.mult, use.hinges, allow.scaled, ...)
 
+\method{e_fluence}{default}(spct, w.band, exposure.time, scale.factor,
+  wb.trim, use.cached.mult, use.hinges, allow.scaled, ...)
+
 \method{e_fluence}{source_spct}(spct, w.band = NULL, exposure.time,
-  wb.trim = getOption("photobiology.waveband.trim", default = TRUE),
+  scale.factor = 1, wb.trim = getOption("photobiology.waveband.trim",
+  default = TRUE),
   use.cached.mult = getOption("photobiology.use.cached.mult", default =
   FALSE), use.hinges = NULL, allow.scaled = FALSE, ...)
 
 \method{e_fluence}{source_mspct}(spct, w.band = NULL, exposure.time,
-  wb.trim = getOption("photobiology.waveband.trim", default = TRUE),
+  scale.factor = 1, wb.trim = getOption("photobiology.waveband.trim",
+  default = TRUE),
   use.cached.mult = getOption("photobiology.use.cached.mult", default =
-  FALSE), use.hinges = NULL, allow.scaled = FALSE, ..., attr2tb = NULL,
-  idx = !is.null(names(spct)), .parallel = FALSE, .paropts = NULL)
+  FALSE), use.hinges = NULL, allow.scaled = FALSE, ...,
+  attr2tb = NULL, idx = "spct.idx", .parallel = FALSE,
+  .paropts = NULL)
 }
 \arguments{
 \item{spct}{an R object}
@@ -30,6 +33,9 @@ e_fluence(spct, w.band, exposure.time, wb.trim, use.cached.mult, use.hinges,
 \item{w.band}{a list of \code{waveband} objects or a \code{waveband} object}
 
 \item{exposure.time}{lubridate::duration object.}
+
+\item{scale.factor}{numeric vector of length 1, or length equal to that of
+\code{w.band}. Numeric multiplier applied to returned values.}
 
 \item{wb.trim}{logical if TRUE wavebands crossing spectral data boundaries
 are trimmed, if FALSE, they are discarded}
@@ -48,7 +54,8 @@ as argument to spct are flagged as an error}
 
 \item{attr2tb}{character vector, see \code{\link{add_attr2tb}} for the syntax for \code{attr2tb} passed as is to formal parameter \code{col.names}.}
 
-\item{idx}{logical whether to add a column with the names of the elements of spct}
+\item{idx}{character Name of the column with the names of the members of the
+collection of spectra.}
 
 \item{.parallel}{if TRUE, apply function in parallel, using parallel backend
 provided by foreach}
@@ -101,3 +108,4 @@ Other irradiance functions: \code{\link{e_irrad}},
   \code{\link{fluence}}, \code{\link{irrad}},
   \code{\link{q_fluence}}, \code{\link{q_irrad}}
 }
+\concept{irradiance functions}

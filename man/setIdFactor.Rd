@@ -27,3 +27,4 @@ This function alters x itself by reference and in addition
 \seealso{
 Other idfactor attribute functions: \code{\link{getIdFactor}}
 }
+\concept{idfactor attribute functions}

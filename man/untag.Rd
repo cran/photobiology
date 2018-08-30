@@ -47,3 +47,4 @@ Other tagging and related functions: \code{\link{is_tagged}},
   \code{\link{tag}}, \code{\link{wb2rect_spct}},
   \code{\link{wb2spct}}, \code{\link{wb2tagged_spct}}
 }
+\concept{tagging and related functions}

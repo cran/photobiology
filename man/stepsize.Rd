@@ -19,14 +19,15 @@ stepsize(x, ...)
 
 \method{stepsize}{generic_spct}(x, ...)
 
-\method{stepsize}{generic_mspct}(x, ..., idx = !is.null(names(x)))
+\method{stepsize}{generic_mspct}(x, ..., idx = "spct.idx")
 }
 \arguments{
 \item{x}{an R object}
 
 \item{...}{not used in current version}
 
-\item{idx}{logical whether to add a column with the names of the elements of spct}
+\item{idx}{character Name of the column with the names of the members of the
+collection of spectra.}
 }
 \value{
 A numeric vector of length 2 with min and maximum stepsize values.
@@ -57,3 +58,4 @@ stepsize(sun.spct)
 Other wavelength summaries: \code{\link{wl_midpoint}},
   \code{\link{wl_min}}, \code{\link{wl_range}}
 }
+\concept{wavelength summaries}

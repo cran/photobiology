@@ -18,8 +18,8 @@ as.generic_mspct(x, ...)
 
 \method{as.generic_mspct}{generic_spct}(x, force.spct.class = FALSE, ...)
 
-\method{as.generic_mspct}{list}(x, force.spct.class = FALSE, ..., ncol = 1,
-  byrow = FALSE)
+\method{as.generic_mspct}{list}(x, force.spct.class = FALSE, ...,
+  ncol = 1, byrow = FALSE)
 
 \method{as.generic_mspct}{matrix}(x, w.length, member.class, spct.data.var,
   multiplier = 1, byrow = NULL, spct.names = "spct_", ...)
@@ -97,3 +97,4 @@ Other Coercion methods for collections of spectra: \code{\link{as.calibration_ms
   \code{\link{as.source_mspct}}, \code{\link{split2mspct}},
   \code{\link{subset2mspct}}
 }
+\concept{Coercion methods for collections of spectra}

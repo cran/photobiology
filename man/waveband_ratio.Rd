@@ -4,8 +4,9 @@
 \alias{waveband_ratio}
 \title{Photon or energy ratio}
 \usage{
-waveband_ratio(w.length, s.irrad, w.band.num = NULL, w.band.denom = NULL,
-  unit.out.num = NULL, unit.out.denom = unit.out.num, unit.in = "energy",
+waveband_ratio(w.length, s.irrad, w.band.num = NULL,
+  w.band.denom = NULL, unit.out.num = NULL,
+  unit.out.denom = unit.out.num, unit.in = "energy",
   check.spectrum = TRUE, use.cached.mult = FALSE,
   use.hinges = getOption("photobiology.use.hinges", default = NULL))
 }

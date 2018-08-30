@@ -8,9 +8,9 @@
 \alias{sun_azimuth}
 \title{Solar angles}
 \usage{
-sun_angles(time = lubridate::now(tzone = "UTC"), tz = lubridate::tz(time),
-  geocode = data.frame(lon = 0, lat = 51.5, address = "Greenwich"),
-  use.refraction = FALSE)
+sun_angles(time = lubridate::now(tzone = "UTC"),
+  tz = lubridate::tz(time), geocode = data.frame(lon = 0, lat = 51.5,
+  address = "Greenwich"), use.refraction = FALSE)
 
 sun_angles_fast(time, tz, geocode, use.refraction)
 
@@ -89,3 +89,4 @@ Other astronomy related functions: \code{\link{day_night}},
   \code{\link{is.solar_time}},
   \code{\link{print.solar_time}}, \code{\link{solar_time}}
 }
+\concept{astronomy related functions}

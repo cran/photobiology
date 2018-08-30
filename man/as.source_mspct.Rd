@@ -15,17 +15,19 @@ as.source_mspct(x, ...)
 
 \method{as.source_mspct}{data.frame}(x, time.unit = c("second", "day",
   "exposure"), bswf.used = c("none", "unknown"),
-  strict.range = getOption("photobiology.strict.range", default = FALSE), ...)
+  strict.range = getOption("photobiology.strict.range", default = FALSE),
+  ...)
 
 \method{as.source_mspct}{source_spct}(x, ...)
 
-\method{as.source_mspct}{list}(x, time.unit = c("second", "day", "exposure"),
-  bswf.used = c("none", "unknown"),
-  strict.range = getOption("photobiology.strict.range", default = FALSE), ...,
-  ncol = 1, byrow = FALSE)
+\method{as.source_mspct}{list}(x, time.unit = c("second", "day",
+  "exposure"), bswf.used = c("none", "unknown"),
+  strict.range = getOption("photobiology.strict.range", default = FALSE),
+  ..., ncol = 1, byrow = FALSE)
 
-\method{as.source_mspct}{matrix}(x, w.length, spct.data.var = "s.e.irrad",
-  multiplier = 1, byrow = NULL, spct.names = "spct_", ...)
+\method{as.source_mspct}{matrix}(x, w.length,
+  spct.data.var = "s.e.irrad", multiplier = 1, byrow = NULL,
+  spct.names = "spct_", ...)
 }
 \arguments{
 \item{x}{a list of spectral objects or a list of objects such as data frames
@@ -94,3 +96,4 @@ Other Coercion methods for collections of spectra: \code{\link{as.calibration_ms
   \code{\link{as.response_mspct}},
   \code{\link{split2mspct}}, \code{\link{subset2mspct}}
 }
+\concept{Coercion methods for collections of spectra}

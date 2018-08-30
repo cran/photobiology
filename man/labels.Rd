@@ -31,3 +31,4 @@ labels(sun.spct)
 Other waveband attributes: \code{\link{is_effective}},
   \code{\link{normalization}}
 }
+\concept{waveband attributes}

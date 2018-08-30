@@ -42,3 +42,4 @@ Other measurement metadata functions: \code{\link{getInstrDesc}},
   \code{\link{setWhereMeasured}},
   \code{\link{trimInstrDesc}}
 }
+\concept{measurement metadata functions}

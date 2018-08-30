@@ -47,4 +47,5 @@ Other Spectral data examples: \code{\link{A.illuminant.spct}},
 \author{
 Aphalo, P. J. & Wang, F (unpublished data)
 }
+\concept{Spectral data examples}
 \keyword{datasets}

@@ -30,3 +30,4 @@ rgb_spct(sun.spct)
 Other color functions: \code{\link{w_length2rgb}},
   \code{\link{w_length_range2rgb}}
 }
+\concept{color functions}

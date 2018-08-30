@@ -23,16 +23,16 @@ normalize(x, ...)
 \method{normalize}{default}(x, ...)
 
 \method{normalize}{source_spct}(x, ..., range = NULL, norm = "max",
-  unit.out = getOption("photobiology.radiation.unit", default = "energy"),
-  na.rm = FALSE)
+  unit.out = getOption("photobiology.radiation.unit", default =
+  "energy"), na.rm = FALSE)
 
 \method{normalize}{response_spct}(x, ..., range = NULL, norm = "max",
-  unit.out = getOption("photobiology.radiation.unit", default = "energy"),
-  na.rm = FALSE)
+  unit.out = getOption("photobiology.radiation.unit", default =
+  "energy"), na.rm = FALSE)
 
 \method{normalize}{filter_spct}(x, ..., range = NULL, norm = "max",
-  qty.out = getOption("photobiology.filter.qty", default = "transmittance"),
-  na.rm = FALSE)
+  qty.out = getOption("photobiology.filter.qty", default =
+  "transmittance"), na.rm = FALSE)
 
 \method{normalize}{reflector_spct}(x, ..., range = NULL, norm = "max",
   qty.out = NULL, na.rm = FALSE)
@@ -47,19 +47,21 @@ normalize(x, ...)
   col.names, na.rm = FALSE)
 
 \method{normalize}{source_mspct}(x, ..., range = NULL, norm = "max",
-  unit.out = getOption("photobiology.radiation.unit", default = "energy"),
-  na.rm = FALSE, .parallel = FALSE, .paropts = NULL)
+  unit.out = getOption("photobiology.radiation.unit", default =
+  "energy"), na.rm = FALSE, .parallel = FALSE, .paropts = NULL)
 
 \method{normalize}{response_mspct}(x, ..., range = NULL, norm = "max",
-  unit.out = getOption("photobiology.radiation.unit", default = "energy"),
-  na.rm = FALSE, .parallel = FALSE, .paropts = NULL)
+  unit.out = getOption("photobiology.radiation.unit", default =
+  "energy"), na.rm = FALSE, .parallel = FALSE, .paropts = NULL)
 
 \method{normalize}{filter_mspct}(x, ..., range = NULL, norm = "max",
-  qty.out = getOption("photobiology.filter.qty", default = "transmittance"),
-  na.rm = FALSE, .parallel = FALSE, .paropts = NULL)
+  qty.out = getOption("photobiology.filter.qty", default =
+  "transmittance"), na.rm = FALSE, .parallel = FALSE,
+  .paropts = NULL)
 
 \method{normalize}{reflector_mspct}(x, ..., range = x, norm = "max",
-  qty.out = NULL, na.rm = FALSE, .parallel = FALSE, .paropts = NULL)
+  qty.out = NULL, na.rm = FALSE, .parallel = FALSE,
+  .paropts = NULL)
 
 \method{normalize}{raw_mspct}(x, ..., range = x, norm = "max",
   na.rm = FALSE, .parallel = FALSE, .paropts = NULL)
@@ -165,3 +167,4 @@ Other rescaling functions: \code{\link{fscale}},
   \code{\link{is_normalized}}, \code{\link{is_scaled}},
   \code{\link{setNormalized}}, \code{\link{setScaled}}
 }
+\concept{rescaling functions}

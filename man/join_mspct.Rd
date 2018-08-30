@@ -17,11 +17,11 @@ join_mspct(x, type, ...)
 
 \method{join_mspct}{generic_mspct}(x, type = "full", col.name, ...)
 
-\method{join_mspct}{source_mspct}(x, type = "full", unit.out = "energy",
-  ...)
+\method{join_mspct}{source_mspct}(x, type = "full",
+  unit.out = "energy", ...)
 
-\method{join_mspct}{response_mspct}(x, type = "full", unit.out = "energy",
-  ...)
+\method{join_mspct}{response_mspct}(x, type = "full",
+  unit.out = "energy", ...)
 
 \method{join_mspct}{filter_mspct}(x, type = "full",
   qty.out = "transmittance", ...)
@@ -79,3 +79,4 @@ Currently only generic_spct, source_mspct, response_mspct,
   filter_mspct, reflector_mspct and object_mspct classes have this method
   implemented.
 }
+\concept{conversion of collections of spectra}

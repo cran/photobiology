@@ -24,3 +24,4 @@ The object is modified by reference. The class names with ending
 Other upgrade from earlier versions: \code{\link{is.old_spct}},
   \code{\link{upgrade_spectra}}
 }
+\concept{upgrade from earlier versions}

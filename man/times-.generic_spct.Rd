@@ -25,3 +25,4 @@ Other math operators and functions: \code{\link{MathFun}},
   \code{\link{plus-.generic_spct}}, \code{\link{round}},
   \code{\link{sign}}, \code{\link{slash-.generic_spct}}
 }
+\concept{math operators and functions}

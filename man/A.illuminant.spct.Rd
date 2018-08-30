@@ -47,4 +47,5 @@ Other Spectral data examples: \code{\link{D65.illuminant.spct}},
 \author{
 CIE
 }
+\concept{Spectral data examples}
 \keyword{datasets}

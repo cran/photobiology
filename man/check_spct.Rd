@@ -110,3 +110,4 @@ check_spct(sun.spct)
 Other data validity check functions: \code{\link{check_spectrum}},
   \code{\link{check_w.length}}
 }
+\concept{data validity check functions}

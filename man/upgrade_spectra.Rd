@@ -29,3 +29,4 @@ The objects are modified by reference. The class names with ending
 Other upgrade from earlier versions: \code{\link{is.old_spct}},
   \code{\link{upgrade_spct}}
 }
+\concept{upgrade from earlier versions}

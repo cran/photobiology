@@ -15,6 +15,8 @@
 #' @param quantity character string One of "total", "average" or "mean",
 #'   "contribution", "contribution.pc", "relative" or "relative.pc".
 #' @param time.unit character or lubridate::duration object.
+#' @param scale.factor numeric vector of length 1, or length equal to that of
+#'   \code{w.band}. Numeric multiplier applied to returned values.
 #' @param wb.trim logical Flag telling if wavebands crossing spectral data boundaries
 #'   are trimmed or ignored.
 #' @param use.hinges logical Flag indicating whether to insert "hinges" into the
@@ -44,13 +46,13 @@
 #' @export
 #' @family response functions
 #'
-response <- function(spct, w.band, unit.out, quantity, time.unit, wb.trim, use.hinges, ...) UseMethod("response")
+response <- function(spct, w.band, unit.out, quantity, time.unit, scale.factor, wb.trim, use.hinges, ...) UseMethod("response")
 
 #' @describeIn response Default for generic function
 #'
 #' @export
 #'
-response.default <- function(spct, w.band, unit.out, quantity, time.unit, wb.trim, use.hinges, ...) {
+response.default <- function(spct, w.band, unit.out, quantity, time.unit, scale.factor, wb.trim, use.hinges, ...) {
   warning("'response' is not defined for objects of class ", class(spct)[1])
   return(NA)
 }
@@ -64,10 +66,16 @@ response.response_spct <-
            unit.out = getOption("photobiology.radiation.unit", default = "energy"),
            quantity = "total",
            time.unit = NULL,
+           scale.factor = 1,
            wb.trim = getOption("photobiology.waveband.trim", default = TRUE),
            use.hinges = getOption("photobiology.use.hinges", default = NULL), ... ) {
-    resp_spct(spct = spct, w.band = w.band, unit.out = unit.out,
-              quantity = quantity, time.unit = time.unit, wb.trim = wb.trim,
+    resp_spct(spct = spct,
+              w.band = w.band,
+              unit.out = unit.out,
+              quantity = quantity,
+              time.unit = time.unit,
+              scale.factor = scale.factor,
+              wb.trim = wb.trim,
               use.hinges = use.hinges )
   }
 
@@ -85,6 +93,8 @@ response.response_spct <-
 #'   alias "quantum".
 #' @param quantity character string One of "total", "average" or "mean",
 #'   "contribution", "contribution.pc", "relative" or "relative.pc".
+#' @param scale.factor numeric vector of length 1, or length equal to that of
+#'   \code{w.band}. Numeric multiplier applied to returned values.
 #' @param wb.trim logical if TRUE wavebands crossing spectral data boundaries
 #'   are trimmed, if FALSE, they are discarded.
 #' @param use.hinges logical Flag indicating whether to insert "hinges" into the
@@ -104,7 +114,15 @@ response.response_spct <-
 #' @keywords internal
 #'
 resp_spct <-
-  function(spct, w.band, unit.out, quantity, time.unit, wb.trim, use.hinges, ...) {
+  function(spct,
+           w.band,
+           unit.out,
+           quantity,
+           time.unit,
+           scale.factor,
+           wb.trim,
+           use.hinges,
+           ...) {
     num.spectra <- getMultipleWl(spct)
     if (num.spectra != 1) {
       warning("Skipping response calculation as object contains ",
@@ -215,9 +233,14 @@ resp_spct <-
                 "' not supported when using BSWFs, returning 'total' instead")
         quantity <- "total"
       } else {
-        total <- resp_spct(spct, w.band = NULL, unit.out = unit.out,
-                           quantity = "total", time.unit = time.unit,
-                           wb.trim = FALSE, use.hinges = use.hinges)
+        total <- resp_spct(spct,
+                           w.band = NULL,
+                           unit.out = unit.out,
+                           quantity = "total",
+                           time.unit = time.unit,
+                           scale.factor = scale.factor,
+                           wb.trim = FALSE,
+                           use.hinges = use.hinges)
         response <- response / total
         if (quantity == "contribution.pc") {
           response <- response * 1e2
@@ -245,11 +268,23 @@ resp_spct <-
     if (length(response) == 0) {
       response <- NA
       names(response) <- "out of range"
+    } else {
+      names(response) <- paste(names(response), wb_name)
     }
-    names(response) <- paste(names(response), wb_name)
+
+    if (length(scale.factor)  == 1L ||
+        length(scale.factor) == length(w.band)) {
+      if (any(abs(log10(scale.factor) %% 1) > 1e-5)) {
+        warning("Scale factor is not decimal!")
+      }
+      response <- response * scale.factor
+    } else {
+      stop("'scale.factor' must be of length = 1 or of same length as 'w.band'.")
+    }
+
     attr(response, "time.unit") <- getTimeUnit(spct)
     attr(response, "radiation.unit") <- paste(unit.out, "response", quantity)
-    return(response)
+    response
   }
 
 # e_response methods --------------------------------------------------------
@@ -267,6 +302,8 @@ resp_spct <-
 #' @param quantity character string One of "total", "average" or "mean",
 #'   "contribution", "contribution.pc", "relative" or "relative.pc".
 #' @param time.unit character or lubridate::duration object.
+#' @param scale.factor numeric vector of length 1, or length equal to that of
+#'   \code{w.band}. Numeric multiplier applied to returned values.
 #' @param wb.trim logical if TRUE wavebands crossing spectral data boundaries
 #'   are trimmed, if FALSE, they are discarded.
 #' @param use.hinges logical Flag indicating whether to insert "hinges" into the
@@ -298,13 +335,13 @@ resp_spct <-
 #'
 #' @family response functions
 #'
-e_response <- function(spct, w.band, quantity, time.unit, wb.trim, use.hinges, ...) UseMethod("e_response")
+e_response <- function(spct, w.band, quantity, time.unit, scale.factor, wb.trim, use.hinges, ...) UseMethod("e_response")
 
 #' @describeIn e_response Default method for generic function
 #'
 #' @export
 #'
-e_response.default <- function(spct, w.band, quantity, time.unit, wb.trim, use.hinges, ...) {
+e_response.default <- function(spct, w.band, quantity, time.unit, scale.factor, wb.trim, use.hinges, ...) {
   warning("'e_response' is not defined for objects of class ", class(spct)[1])
   return(NA)
 }
@@ -317,10 +354,16 @@ e_response.response_spct <-
   function(spct, w.band = NULL,
            quantity = "total",
            time.unit = NULL,
+           scale.factor = 1,
            wb.trim = getOption("photobiology.waveband.trim", default = TRUE),
            use.hinges = getOption("photobiology.use.hinges", default = NULL), ...) {
-    resp_spct(spct = spct, w.band = w.band, unit.out = "energy",
-              quantity = quantity, time.unit = time.unit, wb.trim = wb.trim,
+    resp_spct(spct = spct,
+              w.band = w.band,
+              unit.out = "energy",
+              quantity = quantity,
+              time.unit = time.unit,
+              scale.factor = scale.factor,
+              wb.trim = wb.trim,
               use.hinges = use.hinges )
   }
 
@@ -339,6 +382,8 @@ e_response.response_spct <-
 #' @param quantity character string One of "total", "average" or "mean",
 #'   "contribution", "contribution.pc", "relative" or "relative.pc".
 #' @param time.unit character or lubridate::duration object.
+#' @param scale.factor numeric vector of length 1, or length equal to that of
+#'   \code{w.band}. Numeric multiplier applied to returned values.
 #' @param wb.trim logical if TRUE wavebands crossing spectral data boundaries
 #'   are trimmed, if FALSE, they are discarded.
 #' @param use.hinges logical Flag indicating whether to insert "hinges" into the
@@ -374,6 +419,7 @@ q_response <- function(spct,
                        w.band,
                        quantity,
                        time.unit,
+                       scale.factor,
                        wb.trim,
                        use.hinges,
                        ...) UseMethod("q_response")
@@ -382,7 +428,7 @@ q_response <- function(spct,
 #'
 #' @export
 #'
-q_response.default <- function(spct, w.band, quantity, time.unit, wb.trim, use.hinges, ...) {
+q_response.default <- function(spct, w.band, quantity, time.unit, scale.factor, wb.trim, use.hinges, ...) {
   warning("'q_response' is not defined for objects of class ", class(spct)[1])
   return(NA)
 }
@@ -395,10 +441,16 @@ q_response.response_spct <-
   function(spct, w.band = NULL,
            quantity = "total",
            time.unit = NULL,
+           scale.factor = 1,
            wb.trim = getOption("photobiology.waveband.trim", default = TRUE),
            use.hinges = getOption("photobiology.use.hinges", default = NULL), ... ) {
-    resp_spct(spct = spct, w.band = w.band, unit.out = "photon",
-              quantity = quantity, time.unit = time.unit, wb.trim = wb.trim,
+    resp_spct(spct = spct,
+              w.band = w.band,
+              unit.out = "photon",
+              quantity = quantity,
+              time.unit = time.unit,
+              scale.factor = scale.factor,
+              wb.trim = wb.trim,
               use.hinges = use.hinges )
   }
 
@@ -407,8 +459,8 @@ q_response.response_spct <-
 #' @describeIn response Calculates response from a \code{response_mspct}
 #'
 #' @param attr2tb character vector, see \code{\link{add_attr2tb}} for the syntax for \code{attr2tb} passed as is to formal parameter \code{col.names}.
-#' @param idx logical whether to add a column with the names of the elements of
-#'   spct
+#' @param idx character Name of the column with the names of the members of the
+#'   collection of spectra.
 #' @param .parallel	if TRUE, apply function in parallel, using parallel backend
 #'   provided by foreach
 #' @param .paropts a list of additional options passed into the foreach function
@@ -424,11 +476,12 @@ response.response_mspct <-
            unit.out = getOption("photobiology.radiation.unit", default = "energy"),
            quantity = "total",
            time.unit = NULL,
+           scale.factor = 1,
            wb.trim = getOption("photobiology.waveband.trim", default = TRUE),
            use.hinges = getOption("photobiology.use.hinges", default = NULL),
            ...,
            attr2tb = NULL,
-           idx = !is.null(names(spct)),
+           idx = "spct.idx",
            .parallel = FALSE,
            .paropts = NULL) {
     z <-
@@ -439,6 +492,7 @@ response.response_mspct <-
         unit.out = unit.out,
         quantity = quantity,
         time.unit = time.unit,
+        scale.factor = scale.factor,
         wb.trim = wb.trim,
         use.hinges = use.hinges,
         idx = idx,
@@ -448,15 +502,16 @@ response.response_mspct <-
       )
     add_attr2tb(tb = z,
                 mspct = spct,
-                col.names = attr2tb)
+                col.names = attr2tb,
+                idx = idx)
   }
 
 #' @describeIn q_response Calculates photon (quantum) response from a
 #'   \code{response_mspct}
 #'
 #' @param attr2tb character vector, see \code{\link{add_attr2tb}} for the syntax for \code{attr2tb} passed as is to formal parameter \code{col.names}.
-#' @param idx logical whether to add a column with the names of the elements of
-#'   spct
+#' @param idx character Name of the column with the names of the members of the
+#'   collection of spectra.
 #' @param .parallel	if TRUE, apply function in parallel, using parallel backend
 #'   provided by foreach
 #' @param .paropts a list of additional options passed into the foreach function
@@ -471,11 +526,12 @@ q_response.response_mspct <-
   function(spct, w.band = NULL,
            quantity = "total",
            time.unit = NULL,
+           scale.factor = 1,
            wb.trim = getOption("photobiology.waveband.trim", default = TRUE),
            use.hinges = getOption("photobiology.use.hinges", default = NULL),
            ...,
            attr2tb = NULL,
-           idx = !is.null(names(spct)),
+           idx = "spct.idx",
            .parallel = FALSE,
            .paropts = NULL) {
     z <-
@@ -485,6 +541,7 @@ q_response.response_mspct <-
         w.band = w.band,
         quantity = quantity,
         time.unit = time.unit,
+        scale.factor = scale.factor,
         wb.trim = wb.trim,
         use.hinges = use.hinges,
         idx = idx,
@@ -494,15 +551,16 @@ q_response.response_mspct <-
       )
     add_attr2tb(tb = z,
                 mspct = spct,
-                col.names = attr2tb)
+                col.names = attr2tb,
+                idx = idx)
   }
 
 #' @describeIn e_response Calculates energy response from a
 #'   \code{response_mspct}
 #'
 #' @param attr2tb character vector, see \code{\link{add_attr2tb}} for the syntax for \code{attr2tb} passed as is to formal parameter \code{col.names}.
-#' @param idx logical whether to add a column with the names of the elements of
-#'   spct
+#' @param idx character Name of the column with the names of the members of the
+#'   collection of spectra.
 #' @param .parallel	if TRUE, apply function in parallel, using parallel backend
 #'   provided by foreach
 #' @param .paropts a list of additional options passed into the foreach function
@@ -517,11 +575,12 @@ e_response.response_mspct <-
   function(spct, w.band = NULL,
            quantity = "total",
            time.unit = NULL,
+           scale.factor = 1,
            wb.trim = getOption("photobiology.waveband.trim", default = TRUE),
            use.hinges = getOption("photobiology.use.hinges", default = NULL),
            ...,
            attr2tb = NULL,
-           idx = !is.null(names(spct)),
+           idx = "spct.idx",
            .parallel = FALSE,
            .paropts = NULL) {
     z <-
@@ -531,6 +590,7 @@ e_response.response_mspct <-
         w.band = w.band,
         quantity = quantity,
         time.unit = time.unit,
+        scale.factor = scale.factor,
         wb.trim = wb.trim,
         use.hinges = use.hinges,
         idx = idx,
@@ -540,5 +600,6 @@ e_response.response_mspct <-
       )
     add_attr2tb(tb = z,
                 mspct = spct,
-                col.names = attr2tb)
+                col.names = attr2tb,
+                idx = idx)
   }

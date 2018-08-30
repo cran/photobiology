@@ -28,3 +28,4 @@ This function alters x itself by reference and in addition
 \seealso{
 Other multiple.wl attribute functions: \code{\link{getMultipleWl}}
 }
+\concept{multiple.wl attribute functions}

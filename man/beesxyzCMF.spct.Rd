@@ -29,4 +29,5 @@ Other Visual response data examples: \code{\link{ciev10.spct}},
   \code{\link{ciexyzCMF10.spct}},
   \code{\link{ciexyzCMF2.spct}}
 }
+\concept{Visual response data examples}
 \keyword{datasets}

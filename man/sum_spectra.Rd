@@ -4,8 +4,8 @@
 \alias{sum_spectra}
 \title{Add two spectra}
 \usage{
-sum_spectra(w.length1, w.length2 = NULL, s.irrad1, s.irrad2, trim = "union",
-  na.rm = FALSE)
+sum_spectra(w.length1, w.length2 = NULL, s.irrad1, s.irrad2,
+  trim = "union", na.rm = FALSE)
 }
 \arguments{
 \item{w.length1}{numeric vector of wavelength (nm).}
@@ -71,3 +71,4 @@ Other low-level functions operating on numeric vectors.: \code{\link{as_energy}}
   \code{\link{subt_spectra}}, \code{\link{trim_tails}},
   \code{\link{v_insert_hinges}}
 }
+\concept{low-level functions operating on numeric vectors.}

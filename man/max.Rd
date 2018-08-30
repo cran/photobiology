@@ -14,7 +14,7 @@ wl_max(x, na.rm = FALSE)
 
 \method{max}{generic_spct}(..., na.rm = FALSE)
 
-\method{max}{generic_mspct}(..., na.rm = FALSE, idx = NULL)
+\method{max}{generic_mspct}(..., na.rm = FALSE, idx = "spct.idx")
 }
 \arguments{
 \item{x}{generic_spct, generic_mspct or waveband object.}
@@ -23,8 +23,8 @@ wl_max(x, na.rm = FALSE)
 
 \item{...}{not used in current version}
 
-\item{idx}{logical whether to add a column with the names of the elements of
-spct}
+\item{idx}{character Name of the column with the names of the members of the
+collection of spectra.}
 }
 \description{
 A method specialization that returns the wavelength maximum from objects of

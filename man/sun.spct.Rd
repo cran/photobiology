@@ -52,4 +52,5 @@ Other Spectral data examples: \code{\link{A.illuminant.spct}},
 \author{
 Anders K. Lindfors (data)
 }
+\concept{Spectral data examples}
 \keyword{datasets}

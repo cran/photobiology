@@ -64,3 +64,4 @@ Other quantity conversion functions: \code{\link{A2T}},
   \code{\link{e2qmol_multipliers}},
   \code{\link{e2quantum_multipliers}}, \code{\link{q2e}}
 }
+\concept{quantity conversion functions}

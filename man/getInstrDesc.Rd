@@ -32,3 +32,4 @@ Other measurement metadata functions: \code{\link{getInstrSettings}},
   \code{\link{trimInstrDesc}},
   \code{\link{trimInstrSettings}}
 }
+\concept{measurement metadata functions}
