@@ -22,8 +22,9 @@ setCalibrationSpct(x,
 setRawSpct(x, strict.range = getOption("photobiology.strict.range",
   default = FALSE), multiple.wl = 1L, idfactor = NULL)
 
-setCpsSpct(x, strict.range = getOption("photobiology.strict.range",
-  default = FALSE), multiple.wl = 1L, idfactor = NULL)
+setCpsSpct(x, time.unit = "second",
+  strict.range = getOption("photobiology.strict.range", default = FALSE),
+  multiple.wl = 1L, idfactor = NULL)
 
 setFilterSpct(x, Tfr.type = c("total", "internal"),
   strict.range = getOption("photobiology.strict.range", default = FALSE),
@@ -58,11 +59,11 @@ stored logitudinally (required if mulitple.wl > 1).}
 \item{strict.range}{logical Flag indicating whether off-range values result in an
 error instead of a warning.}
 
+\item{time.unit}{character A string "second", "day" or "exposure".}
+
 \item{Tfr.type}{character A string, either "total" or "internal".}
 
 \item{Rfr.type}{character A string, either "total" or "specular".}
-
-\item{time.unit}{character A string "second", "day" or "exposure".}
 
 \item{bswf.used}{character A string, either "none" or the name of a BSWF.}
 }

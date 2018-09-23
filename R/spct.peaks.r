@@ -606,3 +606,354 @@ valleys.generic_mspct <- function(x,
           .parallel = .parallel,
           .paropts = .paropts)
 }
+
+# find wavelengths for a target y ----------------------------------------------
+
+#' Find wavelength values in a spectrum
+#'
+#' Find wavelength values corresponding to a target y value in any spectrum. The
+#' name of the column of the spectral data to be used to match the target needs
+#' to be passed as argument unless the spectrum contains a single numerical
+#' variable in addition to "w.length".
+#'
+#' @param x an R object
+#' @param target numeric value indicating the spectral quantity value for which
+#'   wavelengths are to be searched and interpolated if need. The character
+#'   strings "half.maximum" and "half.range" are also accepted as arguments.
+#' @param col.name.x character The name of the column in which to the
+#'   independent variable is stored. Defaults to "w.length" for objects of
+#'   class \code{"generic_spct"} or derived.
+#' @param col.name character The name of the column in which to
+#'    search for the target value.
+#' @param .fun function A binary comparison function or operator.
+#' @param interpolate logical Indicating whether the nearest wavelength value
+#'   in \code{x} should be returned or a value calculated by linear
+#'   interpolation between wavelength values stradling the target.
+#' @param na.rm logical indicating whether \code{NA} values should be stripped
+#'   before searching for the target.
+#'
+#' @note This function is used internally by method \code{wls_at_target()}, and
+#'   these methods should be preferred in user code and scripts.
+#'
+#' @return A spectrum object of the same class as \code{x} with fewer rows,
+#'   possibly even no rows. If \code{FALSE} is passed to \code{interpolate} a
+#'   subset of \code{x} is returned, otherwise a new object of the same class
+#'   containing interpolated wavelenths for the \code{target} value is
+#'   returned.
+#'
+#' @export
+#'
+find_wls <- function(x,
+                     target = NULL,
+                     col.name.x = NULL,
+                     col.name = NULL,
+                     .fun = `<=`,
+                     interpolate = FALSE,
+                     na.rm = FALSE) {
+  stopifnot(is.data.frame(x))
+  x.class <- class(x)[1]
+  if (is.null(target) || is.na(target)) {
+    return(x[NULL, ])
+  }
+  if (is.null(col.name.x)) {
+    if (is.any_spct(x)) {
+      col.name.x <- "w.length"
+    } else {
+      warning("Object is not a \"generic spectrum\" explicit argument to 'col.name' required.")
+      return(x[NULL, ])
+    }
+  }
+  if (is.null(col.name)) {
+    # find target variable
+    col.name <- names(x)
+    col.name <- subset(col.name, sapply(x, is.numeric))
+    col.name <- setdiff(col.name, col.name.x)
+    if (length(col.name) > 1L) {
+      warning("Multiple numeric data columns found, explicit argument to 'col.name' required.")
+      return(x[NULL, ])
+    }
+  }
+  if (na.rm) {
+    x <- na.omit(x)
+  }
+  if (is.character(target)) {
+    if (target %in% c("half.maximum", "HM")) {
+      target <- max(x[[col.name]]) / 2
+    } else if (target %in% c("half.range", "HR")) {
+      target <- mean(range(x[[col.name]]))
+    } else {
+      warning("Unrecognized character string: '", target, "' passed to 'target'", sep = "")
+      target <- NA_real_
+    }
+    if (is.na(target)) {
+      return(x[NULL, ])
+    }
+  }
+  # test all rows for the condition
+  true.rows <- .fun(x[[col.name]], target)
+  # use run length to find transition points
+  runs <- rle(true.rows)
+  if (length(runs$lengths) < 2) {
+    return(do.call(x.class, args = list()))
+  }
+  # accumulate run lengths to get index positions
+  opening.idx <- cumsum(runs$lengths[-length(runs$lengths)])
+  closing.idx <- opening.idx + 1L
+  if (max(closing.idx) > nrow(x)) {
+    closing.idx[length(closing.idx)] <- nrow(x)
+  }
+  if (interpolate) {
+    # do vectorized interpolation to fetch true intersects
+    delta.wl <- x[[col.name.x]][closing.idx] - x[[col.name.x]][opening.idx]
+    delta.col <- x[[col.name]][closing.idx] - x[[col.name]][opening.idx]
+    delta.col.target <- target - x[[col.name]][opening.idx]
+    wl.increment <- delta.wl * abs(delta.col.target / delta.col)
+    wls <- x[[col.name.x]][opening.idx] + wl.increment
+
+    # return as a "short" spectrum containing only matching wls and target values
+    z <- tibble::tibble(wls, target)
+    names(z) <- c(col.name.x, col.name)
+    if (x.class %in% spct_classes()) {
+      z <- do.call(paste("as", x.class, sep = "."), args = list(x = z))
+      # we need to copy our private attributes as we are building a new object
+      z <- copy_attributes(x, z)
+    }
+  } else {
+    # extract nearest wl value for target
+    idxs <- ifelse(abs((x[[col.name]][closing.idx] - target) /
+                     (x[[col.name]][closing.idx] - x[[col.name]][opening.idx])) > 0.5,
+                   opening.idx,
+                   closing.idx)
+    # if the target value is close to a peak or valley, we may pick the same idx on both sides of it.
+    z <- x[unique(idxs), ]
+  }
+  z
+}
+
+# find wavelengths for a target y ----------------------------------------------
+
+#' Find wavelengths values corresponding to a target spectral value
+#'
+#' Find wavelength values corresponding to a target spectral value in a spectrum.
+#' The name of the column of the spectral data to be used is inferred from the
+#' class of \code{x} and the argument passed to \code{unit.out} or
+#' \code{filter.qty} or their defaults that depend on R options set.
+#'
+#' @param x data.frame or spectrum object.
+#' @param target numeric value indicating the spectral quantity value for which
+#'   wavelengths are to be searched and interpolated if need. The character
+#'   string "half.maximum" is also accepted as argument.
+#' @param interpolate logical Indicating whether the nearest wavelength value
+#'   in \code{x} should be returned or a value calculated by linear
+#'   interpolation between wavelength values stradling the target.
+#' @param na.rm logical indicating whether \code{NA} values should be stripped
+#'   before searching for the target.
+#' @param ... currently ignored.
+#'
+#' @return A spectrum object of the same class as \code{x} with fewer rows,
+#'   possibly even no rows. If \code{FALSE} is passed to \code{interpolate} a
+#'   subset of \code{x} is returned, otherwise a new object of the same class
+#'   containing interpolated wavelenths for the \code{target} value is
+#'   returned.
+#'
+#' @note When interpolation is used, only column \code{w.length} and the column
+#'   against which the target value was compared are included in the returned
+#'   object, otherwise, all columns in \code{x} are returned. We implement
+#'   support for \code{data.frame} to simplify the coding of 'ggplot2' stats
+#'   using this function.
+#'
+#' @examples
+#' wls_at_target(sun.spct, target = 0.1)
+#'
+#' @export
+#'
+#' @family peaks and valleys functions
+#'
+wls_at_target <- function(x,
+                          target = NULL,
+                          interpolate = FALSE,
+                          na.rm = FALSE,
+                          ...) UseMethod("wls_at_target")
+
+#' @describeIn wls_at_target Default returning always an empty object of the
+#'   same class as \code{x}.
+#' @export
+#'
+wls_at_target.default <-
+  function(x,
+           target = NULL,
+           interpolate = FALSE,
+           na.rm = FALSE,
+           ...) {
+    warning("Method 'wls_at_target' not implemented for objects of class ", class(x)[1])
+    x[NULL]
+  }
+
+#' @describeIn wls_at_target Method for "generic_spct" objects.
+#'
+#' @param col.name character The name of the column in which to search for the
+#'   target value.
+#'
+#' @export
+#'
+wls_at_target.generic_spct <-
+  function(x,
+           target = "half.maximum",
+           interpolate = FALSE,
+           na.rm = FALSE,
+           col.name = NULL,
+           ...) {
+    find_wls(x,
+             target = target,
+             col.name = col.name,
+             interpolate = interpolate,
+             na.rm = na.rm,
+             ...)
+  }
+
+#' @describeIn wls_at_target Method for "source_spct" objects.
+#'
+#' @param unit.out character One of "energy" or "photon"
+#'
+#' @export
+#'
+wls_at_target.source_spct <-
+  function(x,
+           target = "half.maximum",
+           interpolate = FALSE,
+           na.rm = FALSE,
+           unit.out = getOption("photobiology.radiation.unit", default = "energy"),
+           ...) {
+    if (unit.out == "energy") {
+      z <- q2e(x, "replace", FALSE)
+      col.name <- "s.e.irrad"
+    } else if (unit.out %in% c("photon", "quantum")) {
+      z <- e2q(x, "replace", FALSE)
+      col.name <- "s.q.irrad"
+    } else {
+      stop("Unrecognized 'unit.out': ", unit.out)
+    }
+    find_wls(x,
+             target = target,
+             col.name = col.name,
+             interpolate = interpolate,
+             na.rm = na.rm)
+  }
+
+#' @describeIn wls_at_target Method for "response_spct" objects.
+#' @export
+#'
+wls_at_target.response_spct <-
+  function(x,
+           target = "half.maximum",
+           interpolate = FALSE,
+           na.rm = FALSE,
+           unit.out = getOption("photobiology.radiation.unit", default = "energy"),
+           ...) {
+    if (unit.out == "energy") {
+      z <- q2e(x, "replace", FALSE)
+      col.name <- "s.e.response"
+    } else if (unit.out %in% c("photon", "quantum")) {
+      z <- e2q(x, "replace", FALSE)
+      col.name <- "s.q.response"
+    } else {
+      stop("Unrecognized 'unit.out': ", unit.out)
+    }
+    find_wls(x,
+             target = target,
+             col.name = col.name,
+             interpolate = interpolate,
+             na.rm = na.rm)
+  }
+
+#' @describeIn wls_at_target Method for "filter_spct" objects.
+#'
+#' @param filter.qty character One of "transmittance" or "absorbance"
+#'
+#' @export
+#'
+wls_at_target.filter_spct <-
+  function(x,
+           target = "half.maximum",
+           interpolate = FALSE,
+           na.rm = FALSE,
+           filter.qty = getOption("photobiology.filter.qty", default = "transmittance"),
+           ...) {
+    if (filter.qty == "transmittance") {
+      z <- A2T(x, "replace", FALSE)
+      col.name <- "Tfr"
+    } else if (filter.qty == "absorbance") {
+      z <- T2A(x, "replace", FALSE)
+      col.name <- "A"
+    } else {
+      stop("Unrecognized 'filter.qty': ", filter.qty)
+    }
+    find_wls(x,
+             target = target,
+             col.name = col.name,
+             interpolate = interpolate,
+             na.rm = na.rm)
+  }
+
+#' @describeIn wls_at_target Method for "reflector_spct" objects.
+#' @export
+#'
+wls_at_target.reflector_spct <-
+  function(x,
+           target = "half.maximum",
+           interpolate = FALSE,
+           na.rm = FALSE,
+           ...) {
+    find_wls(x,
+             target = target,
+             col.name = "Rfr",
+             interpolate = interpolate,
+             na.rm = na.rm)
+  }
+
+#' @describeIn wls_at_target Method for "cps_spct" objects.
+#'
+#' @export
+#'
+wls_at_target.cps_spct <-
+  function(x,
+           target = "half.maximum",
+           interpolate = FALSE,
+           na.rm = FALSE,
+           ...) {
+    find_wls(x,
+             target = target,
+             col.name = "cps",
+             interpolate = interpolate,
+             na.rm = na.rm)
+  }
+
+#' @describeIn wls_at_target  Method for "generic_mspct" objects.
+#'
+#' @param .parallel	if TRUE, apply function in parallel, using parallel backend
+#'   provided by foreach
+#' @param .paropts a list of additional options passed into the foreach function
+#'   when parallel computation is enabled. This is important if (for example)
+#'   your code relies on external data or packages: use the .export and
+#'   .packages arguments to supply them so that all cluster nodes have the
+#'   correct environment set up for computing.
+#'
+#' @export
+#'
+wls_at_target.generic_mspct <- function(x,
+                                        target = "half.maximum",
+                                        interpolate = FALSE,
+                                        na.rm = FALSE,
+                                        ...,
+                                        .parallel = FALSE,
+                                        .paropts = NULL) {
+  msmsply(x,
+          .fun = wls_at_target,
+          target = target,
+          interpolate = interpolate,
+          na.rm = na.rm,
+          ...,
+          .parallel = .parallel,
+          .paropts = .paropts)
+}
+

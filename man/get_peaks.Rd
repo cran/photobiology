@@ -53,6 +53,7 @@ with(sun.spct, get_valleys(w.length, s.e.irrad))
 }
 \seealso{
 Other peaks and valleys functions: \code{\link{find_peaks}},
-  \code{\link{peaks}}, \code{\link{valleys}}
+  \code{\link{peaks}}, \code{\link{valleys}},
+  \code{\link{wls_at_target}}
 }
 \concept{peaks and valleys functions}

@@ -10,7 +10,7 @@
 \alias{head_tail.ftable}
 \title{Return the First and Last Part of an Object}
 \usage{
-head_tail(x, n, ...)
+head_tail(x, n = 3L, ...)
 
 \method{head_tail}{default}(x, n = 3L, ...)
 
@@ -27,16 +27,17 @@ head_tail(x, n, ...)
 \arguments{
 \item{x}{an R object.}
 
-\item{n}{a single integer. If positive, half the size for the resulting
-object: number of elements for a vector (including lists), rows for a
-matrix or data frame or lines for a function, to be retained from each
-end. If negative, all but the n last and n first number of elements of x.}
+\item{n}{integer. If positive, \code{n} rows or members in the
+returned object are copied from each of "head" and "tail" of \code{x}.
+If negative, all except \code{n} elements of \code{x} from each of "head"
+and "tail" are returned.}
 
 \item{...}{arguments to be passed to or from other methods.}
 }
 \value{
-An object (usually) like x but generally smaller. For ftable objects
- \code{x}, a transformed \code{format(x)}.
+An object (usually) like \code{x} but smaller, except when
+ \code{n = 0}. For \code{ftable} objects \code{x}, a transformed
+ \code{format(x)}.
 }
 \description{
 Returns the first and last "parts" (rows or members) of a spectrum,
@@ -44,10 +45,11 @@ dataframe, vector, function, table or ftable. In other words, the combined
 output from methods \code{head} and \code{tail}.
 }
 \details{
-The value returned by head_tail() is equivalent to row binding the
- the values returned by head() and tail(), although not implemented in this
- way. The same specializations as defined in package 'utils' for head() and
- tail() have been implemented.
+The value returned by \code{head_tail()} is equivalent to row
+  binding the the values returned by \code{head()} and \code{tail()},
+  although not implemented in this way. The same specializations as defined
+  in package 'utils' for \code{head()} and \code{tail()} have been
+  implemented.
 }
 \section{Methods (by class)}{
 \itemize{

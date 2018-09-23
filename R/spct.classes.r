@@ -860,12 +860,14 @@ setRawSpct <-
 #'
 setCpsSpct <-
   function(x,
+           time.unit="second",
            strict.range = getOption("photobiology.strict.range", default = FALSE),
            multiple.wl = 1L,
            idfactor = NULL) {
     name <- substitute(x)
     setGenericSpct(x, multiple.wl = multiple.wl, idfactor = idfactor)
     class(x) <- c("cps_spct", class(x))
+    setTimeUnit(x, time.unit)
     x <- check_spct(x, strict.range = strict.range)
     if (is.name(name)) {
       name <- as.character(name)
@@ -1015,8 +1017,8 @@ setResponseSpct <-
 #'
 setSourceSpct <-
   function(x,
-           time.unit="second",
-           bswf.used=c("none", "unknown"),
+           time.unit = "second",
+           bswf.used = c("none", "unknown"),
            strict.range = getOption("photobiology.strict.range", default = FALSE),
            multiple.wl = 1L,
            idfactor = NULL) {
@@ -1215,7 +1217,7 @@ is_photon_based <- function(x) {
   } else if (is.response_spct(x)) {
     return("s.q.response" %in% names(x))
   } else {
-    return(NA)
+    return(NA_integer_)
   }
 }
 
@@ -1241,7 +1243,7 @@ is_energy_based <- function(x) {
   } else if (is.response_spct(x)) {
     return("s.e.response" %in% names(x))
   } else {
-    return(NA)
+    return(NA_integer_)
   }
 }
 
@@ -1273,7 +1275,7 @@ is_absorbance_based <- function(x) {
   if (is.filter_spct(x) || is.summary_filter_spct(x)) {
     return("A" %in% names(x))
   } else {
-    return(NA)
+    return(NA_integer_)
   }
 }
 
@@ -1294,7 +1296,7 @@ is_transmittance_based <- function(x) {
   if (is.filter_spct(x) || is.summary_source_spct(x)) {
     return("Tfr" %in% names(x))
   } else {
-    return(NA)
+    return(NA_integer_)
   }
 }
 
@@ -1329,40 +1331,34 @@ is_transmittance_based <- function(x) {
 setTimeUnit <- function(x,
                         time.unit = c("second", "hour", "day", "exposure", "none"),
                         override.ok = FALSE) {
-  if (!(is.source_spct(x) || is.response_spct(x) ||
-        is.summary_source_spct(x) || is.summary_response_spct(x))) {
+  if (!(is.any_spct(x) || is.any_summary_spct(x))) {
     return(invisible(x))
   }
-  name <- substitute(x)
-  if (length(time.unit) > 1) {
-    if (getTimeUnit(x) != "unknown") {
-      time.unit <- getTimeUnit(x)
-    } else {
-      time.unit <- time.unit[[1]]
-    }
-  } else {
-    old.time.unit <- getTimeUnit(x)
-    override.ok <- override.ok ||
-      is.character(old.time.unit) && old.time.unit %in% c("unknown", "none", time.unit)
-    if (!override.ok && old.time.unit != time.unit[1]) {
-      warning("Overriding existing 'time.unit' '", old.time.unit,
-              "' with '", time.unit, "' may invalidate data!")
-    }
-  }
   if (is.character(time.unit)) {
-    if (!(time.unit %in% c("second", "hour", "day", "none", "exposure", "unknown"))) {
-      warning("Unrecognized 'time.unit' argument ", time.unit, " set to 'unknown'.")
-      time.unit <- "unknown"
-    }
-  } else if (lubridate::is.duration(time.unit)) {
-    if (time.unit <= lubridate::duration(0, "seconds")) {
-      stop("When 'time.unit' is a duration, it must be > 0")
-    }
+    time.unit <- time.unit[1]
   }
-  attr(x, "time.unit") <- time.unit
-  if (is.name(name)) {
-    name <- as.character(name)
-    assign(name, x, parent.frame(), inherits = TRUE)
+  name <- substitute(x)
+  old.time.unit <- getTimeUnit(x)
+  override.ok <- ifelse(is.na(old.time.unit) ||
+                          (is.character(old.time.unit) && old.time.unit == "unknown"),
+                        TRUE, override.ok)
+  if (override.ok) {
+    if (is.character(time.unit)) {
+      if (!(time.unit %in% c("second", "hour", "day", "none", "exposure", "unknown"))) {
+        warning("Unrecognized 'time.unit' argument ", time.unit, " set to 'unknown'.")
+        time.unit <- "unknown"
+      }
+    } else if (lubridate::is.duration(time.unit)) {
+      if (time.unit <= lubridate::duration(0, "seconds")) {
+        stop("When 'time.unit' is a duration, it must be > 0")
+      }
+    }
+    attr(x, "time.unit") <- time.unit
+    if (is.name(name)) {
+      name <- as.character(name)
+      assign(name, x, parent.frame(), inherits = TRUE)
+    }
+
   }
   invisible(x)
 }
@@ -1387,9 +1383,11 @@ setTimeUnit <- function(x,
 #' getTimeUnit(sun.spct)
 #'
 getTimeUnit <- function(x, force.duration = FALSE) {
-  if (is.source_spct(x) || is.response_spct(x) ||
-      is.summary_source_spct(x) || is.summary_response_spct(x)) {
+  if (is.any_spct(x) || is.any_summary_spct(x)) {
     time.unit <- attr(x, "time.unit", exact = TRUE)
+    if (is.character(time.unit)) {
+      time.unit <- time.unit[1]
+    }
     if (is.null(time.unit)) {
       # need to handle objects created with old versions
       time.unit <- "unknown"
@@ -1401,7 +1399,7 @@ getTimeUnit <- function(x, force.duration = FALSE) {
     }
     return(time.unit)
   } else {
-    return(NA)
+    return(NA_character_)
   }
 }
 
@@ -1474,7 +1472,7 @@ convertTimeUnit <- function(x, time.unit = NULL, byref = FALSE) {
 #' @family time attribute functions
 #'
 checkTimeUnit <- function(x) {
-  if (is.source_spct(x) || is.response_spct(x)) {
+  if (is.source_spct(x) || is.response_spct(x) || is.cps_spct(x)) {
     time.unit <- getTimeUnit(x)
     if (is.null(time.unit)) {
       setTimeUnit(x, "second")
