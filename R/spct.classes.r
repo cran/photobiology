@@ -72,7 +72,7 @@ check_spct.generic_spct <-
     if (!("tbl_df") %in% class(x)) {
       x <- tibble::as_tibble(x)
     }
-    class(x) <- union(class.x, class(x))
+    class(x) <- union(class.x, class(x)) # can change order!! BUG PRONE
     # check variables
     if (exists("wl", x, mode = "numeric", inherits = FALSE)) {
       dots <- list(~wl)
@@ -1992,6 +1992,7 @@ getMultipleWl <- function(x) {
 #'
 setIdFactor <- function(x, idfactor) {
   stopifnot(is.generic_spct(x) || is.summary_generic_spct(x))
+  stopifnot(is.null(idfactor) || is.character(idfactor))
   name <- substitute(x)
   if (is.null(idfactor) || exists(idfactor, x, inherits = FALSE)) {
     attr(x, "idfactor") <- idfactor
@@ -2767,7 +2768,7 @@ isValidInstrSettings <- function(x) {
         valid <- FALSE
       } else if (is.list(setting)) {
         integ.time <- setting[["integ.time"]]
-        if (is.null(integ.time) || is.na(integ.time) || !is.numeric(integ.time)) {
+        if (is.null(integ.time) || any(is.na(integ.time)) || !is.numeric(integ.time)) {
           valid <- FALSE
         } # else we keep valid unchanged
       } else {
@@ -2838,7 +2839,7 @@ getWhatMeasured.default <- function(x, ...) {
 #' @export
 getWhatMeasured.generic_spct <- function(x, ...) {
   what.measured <- attr(x, "what.measured", exact = TRUE)
-  if (is.null(what.measured) || is.na(what.measured)) {
+  if (is.null(what.measured) || (is.atomic(what.measured) && all(is.na(what.measured)))) {
     # need to handle objects created with old versions
     NA_character_
   } else {
@@ -2850,7 +2851,7 @@ getWhatMeasured.generic_spct <- function(x, ...) {
 #' @export
 getWhatMeasured.summary_generic_spct <- function(x, ...) {
   what.measured <- attr(x, "what.measured", exact = TRUE)
-  if (is.null(what.measured) || is.na(what.measured)) {
+  if (is.null(what.measured) || (is.atomic(what.measured) && all(is.na(what.measured)))) {
     # need to handle objects created with old versions
     NA_character_
   } else {

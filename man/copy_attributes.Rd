@@ -4,6 +4,7 @@
 \alias{copy_attributes}
 \alias{copy_attributes.default}
 \alias{copy_attributes.generic_spct}
+\alias{copy_attributes.generic_mspct}
 \alias{copy_attributes.waveband}
 \title{Copy attributes}
 \usage{
@@ -12,6 +13,9 @@ copy_attributes(x, y, which, ...)
 \method{copy_attributes}{default}(x, y, which = NULL, ...)
 
 \method{copy_attributes}{generic_spct}(x, y, which = NULL,
+  copy.class = FALSE, ...)
+
+\method{copy_attributes}{generic_mspct}(x, y, which = NULL,
   copy.class = FALSE, ...)
 
 \method{copy_attributes}{waveband}(x, y, which = NULL, ...)
@@ -37,6 +41,8 @@ and waveband objects of classes from package 'photobiology'.
 \item \code{default}: Default for generic function
 
 \item \code{generic_spct}: 
+
+\item \code{generic_mspct}: 
 
 \item \code{waveband}: 
 }}

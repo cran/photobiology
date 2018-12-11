@@ -1,8 +1,8 @@
 Package: photobiology
 Type: Package
 Title: Photobiological Calculations
-Version: 0.9.24
-Date: 2018-09-21
+Version: 0.9.25
+Date: 2018-12-11
 Authors@R: 
    c(
     person("Pedro J.", "Aphalo", email = "pedro.aphalo@helsinki.fi", role = c("aut", "cre"), comment = c(ORCID = "0000-0003-3385-972X")),
@@ -32,13 +32,13 @@ URL: https://www.r4photobiology.info/,
         https://bitbucket.org/aphalo/photobiology
 BugReports: https://bitbucket.org/aphalo/photobiology/issues
 Encoding: UTF-8
-RoxygenNote: 6.1.0
+RoxygenNote: 6.1.1
 VignetteBuilder: knitr
 NeedsCompilation: no
-Packaged: 2018-09-21 21:27:28 UTC; aphalo
+Packaged: 2018-12-11 06:17:29 UTC; aphalo
 Author: Pedro J. Aphalo [aut, cre] (<https://orcid.org/0000-0003-3385-972X>),
   Titta K. Kotilainen [ctb] (<https://orcid.org/0000-0002-2822-9734>),
   Glenn Davis [ctb]
 Maintainer: Pedro J. Aphalo <pedro.aphalo@helsinki.fi>
 Repository: CRAN
-Date/Publication: 2018-09-23 17:30:03 UTC
+Date/Publication: 2018-12-11 06:40:03 UTC

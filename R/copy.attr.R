@@ -93,6 +93,24 @@ copy_attributes.generic_spct <- function(x, y,
 #'
 #' @export
 #'
+copy_attributes.generic_mspct <- function(x, y,
+                                         which = NULL,
+                                         copy.class = FALSE,
+                                         ...) {
+  stopifnot(length(x) == length(y))
+  for (i in seq_along(x)) {
+    y[[i]] <- copy_attributes(x[[i]], y[[i]],
+                              which = which,
+                              copy.class = copy.class,
+                              ...)
+  }
+  y
+}
+
+#' @describeIn copy_attributes
+#'
+#' @export
+#'
 copy_attributes.waveband <- function(x, y, which = NULL, ...) {
   stopifnot(is.waveband(y))
   if (length(which) == 0L) {
@@ -145,7 +163,7 @@ merge_attributes.generic_spct <- function(x, y, z,
                                          copy.class = FALSE,
                                          ...) {
   if (copy.class) {
-    stopifnot(class(x) == class(y))
+    stopifnot(class_spct(x)[1] == class_spct(y)[1])
     class(z) <- class(x)
     check_spct(z)
   }
@@ -165,14 +183,16 @@ merge_attributes.generic_spct <- function(x, y, z,
       attr(z, w) <- att.y
     } else if (length(att.y) == 0L) {
       attr(z, w) <- att.x
-    } else if (is.na(att.x) || is.na(att.y) ||
-               class(att.x) != class(att.y) ||
+    } else if (any(is.na(att.x)) || any(is.na(att.y)) ||
+               class(att.x)[1] != class(att.y)[1] ||
                length(att.x) != length(att.y) ||
-               xor(is.atomic(att.x), is.atomic(att.y)) ||
-               (is.atomic(att.x) && any(att.x != att.y)) ||
-               !(all.equal(att.x, att.y))) {
+               xor(is.atomic(att.x), is.atomic(att.y))) {
       attr(z, w) <- ifelse(w %in% c("comment", "time.unit"), NA_character_, NA)
     } else {
+      ## Add generic test of equality to warning
+      if (getOption("photobiology.verbose", default = FALSE)) {
+        warning("Keeping attribute ", w, "'s value from lhs operand.")
+      }
       attr(z, w) <- att.x
     }
   }
