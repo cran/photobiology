@@ -2,7 +2,7 @@
 % Please edit documentation in R/insert.hinges.r
 \name{v_insert_hinges}
 \alias{v_insert_hinges}
-\title{Insert wavelength values into spectral data.}
+\title{Insert spectral data values at new wavelength values.}
 \usage{
 v_insert_hinges(x, y, h)
 }
@@ -47,7 +47,7 @@ Other low-level functions operating on numeric vectors.: \code{\link{as_energy}}
   \code{\link{split_energy_irradiance}},
   \code{\link{split_photon_irradiance}},
   \code{\link{subt_spectra}}, \code{\link{sum_spectra}},
-  \code{\link{trim_tails}}
+  \code{\link{trim_tails}}, \code{\link{v_replace_hinges}}
 }
 \concept{low-level functions operating on numeric vectors.}
 \keyword{internal.}

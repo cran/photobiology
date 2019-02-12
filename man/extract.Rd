@@ -75,6 +75,13 @@ These methods are just wrappers on the method for data.frame objects
   extracted columns are more than one but do not include \code{w.length}, a
   data frame is returned instead of a spectral object.
 }
+\note{
+If any argument is passed to \code{j}, even \code{TRUE}, some metadata
+  attributes are removed from the returned object. This is how the
+  extraction operator works with \code{data.frames} in R. For the time
+  being we retain this behaviour for spectra, but it may change in the
+  future.
+}
 \examples{
 sun.spct[sun.spct$w.length > 400, ]
 subset(sun.spct, w.length > 400)

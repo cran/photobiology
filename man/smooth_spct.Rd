@@ -14,16 +14,16 @@ smooth_spct(x, method, strength, ...)
 \method{smooth_spct}{default}(x, method, strength, ...)
 
 \method{smooth_spct}{source_spct}(x, method = "custom", strength = 1,
-  ...)
+  na.rm = FALSE, ...)
 
 \method{smooth_spct}{filter_spct}(x, method = "custom", strength = 1,
-  ...)
+  na.rm = FALSE, ...)
 
 \method{smooth_spct}{reflector_spct}(x, method = "custom",
-  strength = 1, ...)
+  strength = 1, na.rm = FALSE, ...)
 
 \method{smooth_spct}{response_spct}(x, method = "custom", strength = 1,
-  ...)
+  na.rm = FALSE, ...)
 }
 \arguments{
 \item{x}{an R object.}
@@ -33,6 +33,9 @@ smooth_spct(x, method, strength, ...)
 \item{strength}{numeric value to adjust the degree of smoothing.}
 
 \item{...}{other parameters passed to the underlying smoothing functions.}
+
+\item{na.rm}{logical A value indicating whether NA values should be stripped
+before the computation proceeds.}
 }
 \value{
 A copy of \code{x} with spectral data values replaced by smoothed
@@ -66,4 +69,11 @@ Method "custom" is our home-brewed method which applies strong
   spectrometers. In the cased of methods "lowess" and "supsmu" the current
   function behaves like a wrapper of the functions of the same names from
   base R.
+}
+\examples{
+
+my.spct <- clip_wl(sun.spct, c(400, 500))
+smooth_spct(my.spct)
+smooth_spct(my.spct, method = "supsmu", strength = 4)
+
 }

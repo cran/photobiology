@@ -10,7 +10,7 @@
 \alias{head_tail.ftable}
 \title{Return the First and Last Part of an Object}
 \usage{
-head_tail(x, n = 3L, ...)
+head_tail(x, n, ...)
 
 \method{head_tail}{default}(x, n = 3L, ...)
 
@@ -53,17 +53,17 @@ The value returned by \code{head_tail()} is equivalent to row
 }
 \section{Methods (by class)}{
 \itemize{
-\item \code{default}: Default method
+\item \code{default}: 
 
-\item \code{data.frame}: Specialization for \code{data.frame} objects
+\item \code{data.frame}: 
 
-\item \code{matrix}: Specialization for \code{matrix}
+\item \code{matrix}: 
 
-\item \code{function}: Specialization for \code{function}
+\item \code{function}: 
 
-\item \code{table}: Specialization for \code{table}
+\item \code{table}: 
 
-\item \code{ftable}: Specialization for \code{ftable}
+\item \code{ftable}: 
 }}
 
 \note{

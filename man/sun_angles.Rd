@@ -49,7 +49,7 @@ A data.frame with variables time (in same TZ as input), TZ, solartime,
   one of these two arguments can be vectorized in a given call.
 }
 \description{
-This function returns the solar angles for a given time and location.
+This function returns the solar angles at a given time and location.
 }
 \note{
 This function is an implementation of Meeus equations as used in NOAAs

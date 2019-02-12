@@ -13,19 +13,24 @@ copy_attributes(x, y, which, ...)
 \method{copy_attributes}{default}(x, y, which = NULL, ...)
 
 \method{copy_attributes}{generic_spct}(x, y, which = NULL,
-  copy.class = FALSE, ...)
+  which.not = NULL, copy.class = FALSE, ...)
 
 \method{copy_attributes}{generic_mspct}(x, y, which = NULL,
-  copy.class = FALSE, ...)
+  which.not = NULL, copy.class = FALSE, ...)
 
 \method{copy_attributes}{waveband}(x, y, which = NULL, ...)
 }
 \arguments{
 \item{x, y}{R objects}
 
-\item{which}{character}
+\item{which}{character Names of attributes to copy, if NULL all those
+relevant according to the class of \code{x} is used as defaul,}
 
 \item{...}{not used}
+
+\item{which.not}{character Names of attributes not to be copied. The
+names passed here are removed from the list for \code{which}, which
+is most useful when we want to modify the default.}
 
 \item{copy.class}{logical If TRUE class attributes are also copied.}
 }

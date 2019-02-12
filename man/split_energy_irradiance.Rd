@@ -77,6 +77,7 @@ Other low-level functions operating on numeric vectors.: \code{\link{as_energy}}
   \code{\link{prod_spectra}}, \code{\link{s_e_irrad2rgb}},
   \code{\link{split_photon_irradiance}},
   \code{\link{subt_spectra}}, \code{\link{sum_spectra}},
-  \code{\link{trim_tails}}, \code{\link{v_insert_hinges}}
+  \code{\link{trim_tails}}, \code{\link{v_insert_hinges}},
+  \code{\link{v_replace_hinges}}
 }
 \concept{low-level functions operating on numeric vectors.}

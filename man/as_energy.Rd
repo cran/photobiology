@@ -39,6 +39,7 @@ Other low-level functions operating on numeric vectors.: \code{\link{as_quantum_
   \code{\link{split_energy_irradiance}},
   \code{\link{split_photon_irradiance}},
   \code{\link{subt_spectra}}, \code{\link{sum_spectra}},
-  \code{\link{trim_tails}}, \code{\link{v_insert_hinges}}
+  \code{\link{trim_tails}}, \code{\link{v_insert_hinges}},
+  \code{\link{v_replace_hinges}}
 }
 \concept{low-level functions operating on numeric vectors.}
