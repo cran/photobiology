@@ -4,8 +4,8 @@
 \alias{solar_time}
 \title{Local solar time}
 \usage{
-solar_time(time = lubridate::now(), geocode = data.frame(lon = 0, lat =
-  51.5, address = "Greenwich"), unit.out = "time")
+solar_time(time = lubridate::now(), geocode = tibble::tibble(lon = 0,
+  lat = 51.5, address = "Greenwich"), unit.out = "time")
 }
 \arguments{
 \item{time}{POSIXct Time, any valid time zone (TZ) is allowed, default is

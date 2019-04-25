@@ -26,7 +26,7 @@ sun.spct
 Lindfors, A.; Heikkilä, A.; Kaurola, J.; Koskela, T. & Lakkala,
 K. (2009) Reconstruction of Solar Spectral Surface UV Irradiances Using
 Radiative Transfer Simulations. Photochemistry and Photobiology, 85:
-1233–1239
+1233-1239
 }
 \seealso{
 Other Spectral data examples: \code{\link{A.illuminant.spct}},

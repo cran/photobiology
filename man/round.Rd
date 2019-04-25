@@ -24,7 +24,7 @@
 
 \item{digits}{integer indicating the number of decimal places (round) or
 significant digits (signif) to be used. Negative values are allowed (see
-‘Details’).}
+'Details').}
 
 \item{...}{arguments to be passed to methods.}
 }

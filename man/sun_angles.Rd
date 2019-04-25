@@ -9,21 +9,21 @@
 \title{Solar angles}
 \usage{
 sun_angles(time = lubridate::now(tzone = "UTC"),
-  tz = lubridate::tz(time), geocode = data.frame(lon = 0, lat = 51.5,
-  address = "Greenwich"), use.refraction = FALSE)
+  tz = lubridate::tz(time), geocode = tibble::tibble(lon = 0, lat =
+  51.5, address = "Greenwich"), use.refraction = FALSE)
 
 sun_angles_fast(time, tz, geocode, use.refraction)
 
 sun_elevation(time = lubridate::now(), tz = lubridate::tz(time),
-  geocode = data.frame(lon = 0, lat = 51.5, address = "Greenwich"),
+  geocode = tibble::tibble(lon = 0, lat = 51.5, address = "Greenwich"),
   use.refraction = FALSE)
 
 sun_zenith_angle(time = lubridate::now(), tz = lubridate::tz(time),
-  geocode = data.frame(lon = 0, lat = 51.5, address = "Greenwich"),
+  geocode = tibble::tibble(lon = 0, lat = 51.5, address = "Greenwich"),
   use.refraction = FALSE)
 
 sun_azimuth(time = lubridate::now(), tz = lubridate::tz(time),
-  geocode = data.frame(lon = 0, lat = 51.5, address = "Greenwich"),
+  geocode = tibble::tibble(lon = 0, lat = 51.5, address = "Greenwich"),
   use.refraction = FALSE)
 }
 \arguments{
@@ -44,26 +44,28 @@ A data.frame with variables time (in same TZ as input), TZ, solartime,
   multiple rows is passed to \code{geocode} and a vector of times longer
   than one is passed to \code{time}, sun position for all combinations of
   locations and times are returned are returned by \code{sun_angles}. In
-  contrast, convenience functions returning a vector, require that either
-  a single time instant or a single location are supplied---i.e. only
-  one of these two arguments can be vectorized in a given call.
+  contrast, convenience functions returning a vector.
 }
 \description{
 This function returns the solar angles at a given time and location.
 }
+\details{
+This function is an implementation of Meeus equations as used in
+  NOAAs on-line web calculator, which are precise and valid for a very broad
+  range of dates (years -1000 to 3000 at least). The apparent solar
+  elevations near sunrise and sunset are affected by refraction in the
+  atmosphere, which does in turn depend on weather conditions. The effect of
+  refraction on the apparent position of the sun is only an estimate based on
+  "typical" conditions for the atmosphere. The computation is not defined for
+  latitudes 90 and -90 degrees, i.e. exactly at the poles.
+
+  In the current implementation functions \code{sun_azimuth},
+  \code{sun_elevation}, and \code{sun_zenith_angle} are wrappers
+  on \code{sun_angles}, so if more than one angle is needed it is
+  preferable to directly call \code{sun_angles} as it will be faster.
+}
 \note{
-This function is an implementation of Meeus equations as used in NOAAs
-  on-line web calculator, which are very precise and valid for a very broad
-  range of dates. For the times of sunrise and sunset the times are affected
-  by refraction in the atmosphere, which does in turn depend on weather
-  conditions. The effect of refraction on the apparent position of the sun
-  is only an estimate based on "typical" conditions. The more tangential to
-  the horizon is the path of the sun, the larger the effect of refraction is
-  on the times of visual occlusion of the sun behind the horizon---i.e. the
-  largest timing errors occur at high latitudes.
-  The computation is not defined for latitudes 90 and -90 degrees, i.e. at
-  the poles.
-  There exists a different R implementation of the same algorithms called
+There exists a different R implementation of the same algorithms called
   "AstroCalcPureR" available as function \code{astrocalc4r} in package
   'fishmethods'. Although the equations used are almost all the same, the
   function signatures and which values are returned differ. In particular,

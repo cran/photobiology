@@ -11,34 +11,34 @@
 \title{Times for sun positions}
 \usage{
 day_night(date = lubridate::now(tzone = "UTC"),
-  tz = lubridate::tz(date), geocode = data.frame(lon = 0, lat = 51.5,
-  address = "Greenwich"), twilight = "none", unit.out = "hours")
+  tz = lubridate::tz(date), geocode = tibble::tibble(lon = 0, lat =
+  51.5, address = "Greenwich"), twilight = "none", unit.out = "hours")
 
 day_night_fast(date, tz, geocode, twilight, unit.out)
 
-noon_time(date = lubridate::today(), tz = Sys.timezone(),
-  geocode = data.frame(lon = 0, lat = 51.5, address = "Greenwich"),
+noon_time(date = lubridate::today(), tz = lubridate::tz(date),
+  geocode = tibble::tibble(lon = 0, lat = 51.5, address = "Greenwich"),
   twilight = "none", unit.out = "datetime")
 
-sunrise_time(date = lubridate::today(), tz = Sys.timezone(),
-  geocode = data.frame(lon = 0, lat = 51.5, address = "Greenwich"),
+sunrise_time(date = lubridate::today(), tz = lubridate::tz(date),
+  geocode = tibble::tibble(lon = 0, lat = 51.5, address = "Greenwich"),
   twilight = "sunlight", unit.out = "datetime")
 
-sunset_time(date = lubridate::today(), tz = Sys.timezone(),
-  geocode = data.frame(lon = 0, lat = 51.5, address = "Greenwich"),
+sunset_time(date = lubridate::today(), tz = lubridate::tz(date),
+  geocode = tibble::tibble(lon = 0, lat = 51.5, address = "Greenwich"),
   twilight = "sunlight", unit.out = "datetime")
 
 day_length(date = lubridate::now(), tz = "UTC",
-  geocode = data.frame(lon = 0, lat = 51.5, address = "Greenwich"),
+  geocode = tibble::tibble(lon = 0, lat = 51.5, address = "Greenwich"),
   twilight = "sunlight", unit.out = "hours")
 
 night_length(date = lubridate::now(), tz = "UTC",
-  geocode = data.frame(lon = 0, lat = 51.5, address = "Greenwich"),
+  geocode = tibble::tibble(lon = 0, lat = 51.5, address = "Greenwich"),
   twilight = "sunlight", unit.out = "hours")
 }
 \arguments{
 \item{date}{"vector" of POSIXct times or Date objects, any valid TZ is allowed,
-default is current date}
+default is current date at Greenwich.}
 
 \item{tz}{character vector indicating time zone to be used in output.}
 
@@ -53,9 +53,9 @@ solar elevation angle(s) in degrees (negative if below the horizon).}
 or "second".}
 }
 \value{
-A \code{data.frame} with variables day, tz, twilight.rise, twilight.set,
+A tibble with variables day, tz, twilight.rise, twilight.set,
   longitude, latitude, address, sunrise, noon, sunset, daylength,
-  nightlength.
+  nightlength or the corresponding individual vectors.
 
 \code{noon_time}, \code{sunrise_time} and \code{sunset_time} return a
   vector of POSIXct times
@@ -72,16 +72,16 @@ degrees by supplying "twilight" angle(s) as argument.
 \details{
 Twilight names are interpreted as follows. "none": solar elevation =
   0 degrees. "refraction": solar elevation = 0 degrees + refraction
-  correction. "sunlight": upper rim of solar disk corrected for refraction.
-  "civil": -6 degrees, "naval": -12 degrees, and "astronomical": -18 degrees.
-  Unit names for output are as follows: "hours" times for sunrise and sunset
-  are returned as times-of-day in hours since midnight. "date" or "datetime"
+  correction. "sunlight": upper rim of solar disk corrected for refraction,
+  which the value used by the online NOAA Solar Calculator. "civil": -6
+  degrees, "naval": -12 degrees, and "astronomical": -18 degrees. Unit names
+  for output are as follows: "hours" times for sunrise and sunset are
+  returned as times-of-day in hours since midnight. "date" or "datetime"
   return the same times as datetime objects with TZ set (this is much slower
   than the "hours"). Day length and night length are returned as numeric
   values expressed in hours when `"datetime"' is passed as argument to
-  \code{unit.out}. If twilight is a numeric vector of length two,
-  the element with index 1 is used for sunrise and that with index 2 for
-  sunset.
+  \code{unit.out}. If twilight is a numeric vector of length two, the element
+  with index 1 is used for sunrise and that with index 2 for sunset.
 }
 \note{
 This function is an implementation of Meeus equations as used in NOAAs
@@ -102,6 +102,11 @@ This function is an implementation of Meeus equations as used in NOAAs
   the present implementation splits the calculation into two separate
   functions, one returning angles at given instants in time, and a separate
   one returning the timing of events for given dates.
+
+  In the current implementation functions \code{sunrise_time},
+  \code{noon_time}, \code{sunset_time} and \code{day_length} are wrappers
+  on \code{day_night}, so if more than one quantity is needed it is
+  preferable to directly call \code{day_night} as it will be faster.
 
 \code{night_length} returns the length of night-time conditions in one
   day (00:00:00 to 23:59:59), rather than the length of the night between two

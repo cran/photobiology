@@ -54,7 +54,7 @@ of times if necessary and it may be coerced: see the Coercion section. If
 NULL, deletes the column if a single column is selected.}
 
 \item{name}{A literal character string or a name (possibly backtick quoted).
-For extraction, this is normally (see under ‘Environments’) partially
+For extraction, this is normally (see under 'Environments') partially
 matched to the names of the object.}
 }
 \value{

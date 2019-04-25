@@ -1,4 +1,16 @@
-photobiology 0.9.26 (2019-02-xx)
+photobiology 0.9.27 (2019-04-22)
+================================
+
+* Replace non-ASCII characters from documentation.
+* Improve performance of sun_angles() and day_night() and implement Meuus
+algorithm for julian day. End result is slightly slower performance but much
+higher precision and broader range of dates that are handled correctly.
+* Make sure functions work correctly when a tibble is passed as argument to
+parameter geocode.
+- Values returned by sun_angles() and day_night() have changed very slightly
+as a result of the improved julian day calculation.
+
+photobiology 0.9.26 (2019-02-11)
 ================================
 
 * Move 'tibble' from Imports: to Depends: as newly defined classes are derived
