@@ -1399,7 +1399,11 @@ getTimeUnit <- function(x, force.duration = FALSE) {
     }
     return(time.unit)
   } else {
-    return(NA_character_)
+    if (force.duration) {
+      lubridate::duration(NA_character_)
+    } else {
+      NA_character_
+    }
   }
 }
 
@@ -1501,9 +1505,9 @@ char2duration <- function(time.unit) {
                             minute  = lubridate::duration(1, "minutes"),
                             hour    = lubridate::duration(1, "hours"),
                             day     = lubridate::duration(1, "days"),
-                            exposure = lubridate::duration(NA),
-                            none    = lubridate::duration(NA),
-                            unknown = lubridate::duration(NA)
+                            exposure = lubridate::duration(NA_character_),
+                            none    = lubridate::duration(NA_character_),
+                            unknown = lubridate::duration(NA_character_)
     )
   } else if (lubridate::is.duration(time.unit)) {
     time.duration <- time.unit
@@ -1688,6 +1692,7 @@ getTfrType <- function(x) {
 #'
 #' @export
 #' @family Rfr attribute functions
+#' @examples
 #' my.spct <- reflector_spct(w.length = 400:409, Rfr = 0.1)
 #' getRfrType(my.spct)
 #' setRfrType(my.spct, "specular")
@@ -2449,7 +2454,98 @@ getWhereMeasured.generic_mspct <- function(x,
   msdply(mspct = x, .fun = getWhereMeasured, ..., idx = idx)
 }
 
-# how measured attributes -------------------------------------------------
+# how.measured attributes -------------------------------------------------
+
+#' Set the "how.measured" attribute
+#'
+#' Function to set by reference the "how.measured" attribute  of an existing
+#' generic_spct or derived-class object.
+#'
+#' @param x a generic_spct object
+#' @param how.measured a list
+#'
+#' @return x
+#' @note This function alters x itself by reference and in addition
+#'   returns x invisibly. If x is not a generic_spct object, x is not
+#'   modified.
+#'
+#' @export
+#' @family measurement metadata functions
+#'
+setHowMeasured <- function(x, how.measured) {
+  name <- substitute(x)
+  if (is.generic_spct(x) || is.summary_generic_spct(x)) {
+    attr(x, "how.measured") <- how.measured
+    if (is.name(name)) {
+      name <- as.character(name)
+      assign(name, x, parent.frame(), inherits = TRUE)
+    }
+  }
+  invisible(x)
+}
+
+#' Get the "how.measured" attribute
+#'
+#' Function to read the "how.measured" attribute of an existing generic_spct
+#' or a generic_mspct.
+#'
+#' @param x a generic_spct object
+#' @param ... Allows use of additional arguments in methods for other classes.
+#'
+#' @return character vector An object containing a description of the data.
+#'
+#' @export
+#' @family measurement metadata functions
+#' @examples
+#' getHowMeasured(sun.spct)
+#'
+getHowMeasured <- function(x, ...) UseMethod("getHowMeasured")
+
+#' @describeIn getHowMeasured default
+#' @export
+getHowMeasured.default <- function(x, ...) {
+  # we return an NA of class character
+  NA_character_
+}
+
+#' @describeIn getHowMeasured generic_spct
+#' @export
+getHowMeasured.generic_spct <- function(x, ...) {
+  how.measured <- attr(x, "how.measured", exact = TRUE)
+  if (is.null(how.measured) || (is.atomic(how.measured) && all(is.na(how.measured)))) {
+    # need to handle objects created with old versions
+    NA_character_
+  } else {
+    how.measured
+  }
+}
+
+#' @describeIn getHowMeasured summary_generic_spct
+#' @export
+getHowMeasured.summary_generic_spct <- function(x, ...) {
+  how.measured <- attr(x, "how.measured", exact = TRUE)
+  if (is.null(how.measured) || (is.atomic(how.measured) && all(is.na(how.measured)))) {
+    # need to handle objects created with old versions
+    NA_character_
+  } else {
+    how.measured
+  }
+}
+
+#' @describeIn getHowMeasured generic_mspct
+#' @param idx character Name of the column with the names of the members of the
+#'   collection of spectra.
+#' @note The method for collections of spectra returns the
+#'   a tibble with a column of character strings.
+#' @export
+#'
+getHowMeasured.generic_mspct <- function(x,
+                                          ...,
+                                          idx = "spct.idx") {
+  msdply(mspct = x, .fun = getHowMeasured, ..., idx = idx, col.names = "how.measured")
+}
+
+##
 
 #' Set the "instr.desc" attribute
 #'

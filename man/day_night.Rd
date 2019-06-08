@@ -45,9 +45,10 @@ default is current date at Greenwich.}
 \item{geocode}{data frame with one or more rows and variables lon and lat as
 numeric values (degrees). If present, address will be copied to the output.}
 
-\item{twilight}{character string, one of "none", "civil", "nautical",
-"astronomical", or a \code{numeric} vector of length one, or two, giving
-solar elevation angle(s) in degrees (negative if below the horizon).}
+\item{twilight}{character string, one of "none", "rim", "refraction",
+"sunlight", "civil", "nautical", "astronomical", or a \code{numeric} vector
+of length one, or two, giving solar elevation angle(s) in degrees (negative
+if below the horizon).}
 
 \item{unit.out}{character string, One of "datetime", "day", "hour", "minute",
 or "second".}
@@ -64,24 +65,26 @@ A tibble with variables day, tz, twilight.rise, twilight.set,
   giving the length in hours
 }
 \description{
-Functions for calculating the timing of solar positions by means of function
-\code{sun_angles}, given geographical coordinates and dates. They can be also
-used to find the time for an arbitrary solar elevation between 90 and -90
-degrees by supplying "twilight" angle(s) as argument.
+Functions for calculating the timing of solar positions, given geographical
+coordinates and dates. They can be also used to find the time for an
+arbitrary solar elevation between 90 and -90 degrees by supplying "twilight"
+angle(s) as argument.
 }
 \details{
 Twilight names are interpreted as follows. "none": solar elevation =
-  0 degrees. "refraction": solar elevation = 0 degrees + refraction
+  0 degrees. "rim": upper rim of solar disk at the horizon or solar elevation
+  = -0.53 / 2. "refraction": solar elevation = 0 degrees + refraction
   correction. "sunlight": upper rim of solar disk corrected for refraction,
-  which the value used by the online NOAA Solar Calculator. "civil": -6
-  degrees, "naval": -12 degrees, and "astronomical": -18 degrees. Unit names
-  for output are as follows: "hours" times for sunrise and sunset are
-  returned as times-of-day in hours since midnight. "date" or "datetime"
-  return the same times as datetime objects with TZ set (this is much slower
-  than the "hours"). Day length and night length are returned as numeric
-  values expressed in hours when `"datetime"' is passed as argument to
-  \code{unit.out}. If twilight is a numeric vector of length two, the element
-  with index 1 is used for sunrise and that with index 2 for sunset.
+  which is close to the value used by the online NOAA Solar Calculator.
+  "civil": -6 degrees, "naval": -12 degrees, and "astronomical": -18 degrees.
+  Unit names for output are as follows: "day", "hours", "minutes" and
+  "seconds" times for sunrise and sunset are returned as times-of-day since
+  midnight expressed in the chosen unit. "date" or "datetime" return the same
+  times as datetime objects with TZ set (this is much slower than "hours").
+  Day length and night length are returned as numeric values expressed in
+  hours when `"datetime"' is passed as argument to \code{unit.out}. If
+  twilight is a numeric vector of length two, the element with index 1 is
+  used for sunrise and that with index 2 for sunset.
 }
 \note{
 This function is an implementation of Meeus equations as used in NOAAs
@@ -114,7 +117,7 @@ This function is an implementation of Meeus equations as used in NOAAs
 }
 \section{Warning}{
  Be aware that R's \code{Date} class does not save time zone
-  metadata. This can lead to ambiguities in the current implementation as
+  metadata. This can lead to ambiguities in the current implementation
   based on time instants. The argument passed to \code{date} should be
   of class \code{POSIXct}, in other words an instant in time, from which
   the correct date will be computed based on the \code{tz} argument.
@@ -131,6 +134,21 @@ sunset_time(ymd("2015-05-30"), geocode = my.geocode)
 day_length(ymd("2015-05-30"), geocode = my.geocode)
 day_length(ymd("2015-05-30"), geocode = my.geocode, unit.out = "day")
 
+}
+\references{
+The primary source for the algorithm used is the book:
+Meeus, J. (1998) Astronomical Algorithms, 2 ed., Willmann-Bell, Richmond,
+VA, USA. ISBN 978-0943396613.
+
+A different implementation is available at
+\url{https://www.nefsc.noaa.gov/AstroCalc4R/} and in R paclage
+\code{\link[fishmethods]{astrocalc4r}}. In 'fishmethods' (= 1.11-0) there
+is a bug in function astrocalc4r() that affects sunrise and sunset times.
+
+An interactive web page using the same algorithms is available at
+\url{https://www.esrl.noaa.gov/gmd/grad/solcalc/}. There are small
+differences in the returned times compared to our function that seem to be
+related to the estimation of atmospheric refraction (about 0.1 degrees).
 }
 \seealso{
 \code{\link{sun_angles}}.

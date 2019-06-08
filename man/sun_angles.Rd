@@ -85,6 +85,21 @@ sun_angles(ymd_hms("2014-09-23 12:00:00"),
 sun_angles(ymd_hms("2014-09-23 12:00:00") + minutes((0:6) * 10))
 
 }
+\references{
+The primary source for the algorithm used is the book:
+Meeus, J. (1998) Astronomical Algorithms, 2 ed., Willmann-Bell, Richmond,
+VA, USA. ISBN 978-0943396613.
+
+A different implementation is available at
+\url{https://www.nefsc.noaa.gov/AstroCalc4R/} and in R paclage
+\code{\link[fishmethods]{astrocalc4r}}. In 'fishmethods' (= 1.11-0) there
+is a bug in function astrocalc4r() that affects sunrise and sunset times.
+
+An interactive web page using the same algorithms is available at
+\url{https://www.esrl.noaa.gov/gmd/grad/solcalc/}. There are small
+differences in the returned times compared to our function that seem to be
+related to the estimation of atmospheric refraction (about 0.1 degrees).
+}
 \seealso{
 Other astronomy related functions: \code{\link{day_night}},
   \code{\link{format.solar_time}},

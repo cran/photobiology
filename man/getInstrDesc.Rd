@@ -17,14 +17,15 @@ Function to read the "instr.desc" attribute of an existing generic_spct
 object.
 }
 \seealso{
-Other measurement metadata functions: \code{\link{getInstrSettings}},
+Other measurement metadata functions: \code{\link{getHowMeasured}},
+  \code{\link{getInstrSettings}},
   \code{\link{getWhatMeasured}},
   \code{\link{getWhenMeasured}},
   \code{\link{getWhereMeasured}},
   \code{\link{get_attributes}},
   \code{\link{isValidInstrDesc}},
   \code{\link{isValidInstrSettings}},
-  \code{\link{setInstrDesc}},
+  \code{\link{setHowMeasured}}, \code{\link{setInstrDesc}},
   \code{\link{setInstrSettings}},
   \code{\link{setWhatMeasured}},
   \code{\link{setWhenMeasured}},

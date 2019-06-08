@@ -24,7 +24,8 @@ This function alters x itself by reference and in addition
   modified.
 }
 \seealso{
-Other measurement metadata functions: \code{\link{getInstrDesc}},
+Other measurement metadata functions: \code{\link{getHowMeasured}},
+  \code{\link{getInstrDesc}},
   \code{\link{getInstrSettings}},
   \code{\link{getWhatMeasured}},
   \code{\link{getWhenMeasured}},
@@ -32,7 +33,7 @@ Other measurement metadata functions: \code{\link{getInstrDesc}},
   \code{\link{get_attributes}},
   \code{\link{isValidInstrDesc}},
   \code{\link{isValidInstrSettings}},
-  \code{\link{setInstrDesc}},
+  \code{\link{setHowMeasured}}, \code{\link{setInstrDesc}},
   \code{\link{setInstrSettings}},
   \code{\link{setWhenMeasured}},
   \code{\link{setWhereMeasured}},

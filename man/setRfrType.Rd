@@ -25,8 +25,15 @@ This function alters x itself by reference and in addition
   parameter Rfr.type is used only if \code{x} does not already have this
   attribute set.
 }
-\concept{Rfr attribute functions
+\examples{
 my.spct <- reflector_spct(w.length = 400:409, Rfr = 0.1)
 getRfrType(my.spct)
 setRfrType(my.spct, "specular")
-getRfrType(my.spct)}
+getRfrType(my.spct)
+
+}
+\seealso{
+Other Rfr attribute functions: \code{\link{getRfrType}},
+  \code{\link{getScaled}}
+}
+\concept{Rfr attribute functions}
