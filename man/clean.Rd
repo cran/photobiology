@@ -6,6 +6,7 @@
 \alias{clean.source_spct}
 \alias{clean.filter_spct}
 \alias{clean.reflector_spct}
+\alias{clean.object_spct}
 \alias{clean.response_spct}
 \alias{clean.cps_spct}
 \alias{clean.raw_spct}
@@ -33,6 +34,9 @@ clean(x, range, range.s.data, fill, ...)
   default = "transmittance"), ...)
 
 \method{clean}{reflector_spct}(x, range = x, range.s.data = c(0, 1),
+  fill = range.s.data, ...)
+
+\method{clean}{object_spct}(x, range = x, range.s.data = c(0, 1),
   fill = range.s.data, ...)
 
 \method{clean}{response_spct}(x, range = x, range.s.data = c(0, NA),
@@ -123,6 +127,8 @@ objects instead of vectors.
 \item \code{filter_spct}: Replace off-range values in a filter spectrum
 
 \item \code{reflector_spct}: Replace off-range values in a reflector spectrum
+
+\item \code{object_spct}: Replace off-range values in an object spectrum
 
 \item \code{response_spct}: Replace off-range values in a response spectrum
 
