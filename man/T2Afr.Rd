@@ -11,20 +11,31 @@
 \usage{
 T2Afr(x, action, byref, clean, ...)
 
-\method{T2Afr}{default}(x, action = NULL, byref = FALSE,
-  clean = FALSE, ...)
+\method{T2Afr}{default}(x, action = NULL, byref = FALSE, clean = FALSE, ...)
 
-\method{T2Afr}{filter_spct}(x, action = "add", byref = FALSE,
-  clean = FALSE, ...)
+\method{T2Afr}{filter_spct}(x, action = "add", byref = FALSE, clean = FALSE, ...)
 
-\method{T2Afr}{object_spct}(x, action = "add", byref = FALSE,
-  clean = FALSE, ...)
+\method{T2Afr}{object_spct}(x, action = "add", byref = FALSE, clean = FALSE, ...)
 
-\method{T2Afr}{filter_mspct}(x, action = "add", byref = FALSE,
-  clean = FALSE, ..., .parallel = FALSE, .paropts = NULL)
+\method{T2Afr}{filter_mspct}(
+  x,
+  action = "add",
+  byref = FALSE,
+  clean = FALSE,
+  ...,
+  .parallel = FALSE,
+  .paropts = NULL
+)
 
-\method{T2Afr}{object_mspct}(x, action = "add", byref = FALSE,
-  clean = FALSE, ..., .parallel = FALSE, .paropts = NULL)
+\method{T2Afr}{object_mspct}(
+  x,
+  action = "add",
+  byref = FALSE,
+  clean = FALSE,
+  ...,
+  .parallel = FALSE,
+  .paropts = NULL
+)
 }
 \arguments{
 \item{x}{an R object}
@@ -69,11 +80,14 @@ T2Afr(Ler_leaf.spct)
 
 }
 \seealso{
-Other quantity conversion functions: \code{\link{A2T}},
-  \code{\link{T2A}}, \code{\link{T2T}},
-  \code{\link{as_quantum}},
-  \code{\link{e2qmol_multipliers}},
-  \code{\link{e2quantum_multipliers}}, \code{\link{e2q}},
-  \code{\link{q2e}}
+Other quantity conversion functions: 
+\code{\link{A2T}()},
+\code{\link{T2A}()},
+\code{\link{T2T}()},
+\code{\link{as_quantum}()},
+\code{\link{e2qmol_multipliers}()},
+\code{\link{e2quantum_multipliers}()},
+\code{\link{e2q}()},
+\code{\link{q2e}()}
 }
 \concept{quantity conversion functions}

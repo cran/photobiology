@@ -25,7 +25,8 @@ with(sun.data, check_spectrum(w.length, s.e.irrad))
 
 }
 \seealso{
-Other data validity check functions: \code{\link{check_spct}},
-  \code{\link{check_w.length}}
+Other data validity check functions: 
+\code{\link{check_spct}()},
+\code{\link{check_w.length}()}
 }
 \concept{data validity check functions}

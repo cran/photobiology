@@ -25,6 +25,7 @@ getTfrType(polyester.spct)
 
 }
 \seealso{
-Other Tfr attribute functions: \code{\link{setTfrType}}
+Other Tfr attribute functions: 
+\code{\link{setTfrType}()}
 }
 \concept{Tfr attribute functions}

@@ -26,6 +26,7 @@ This function alters x itself by reference and in addition
   generic_spct, x is not modified. If \code{multiple.wl}
 }
 \seealso{
-Other multiple.wl attribute functions: \code{\link{getMultipleWl}}
+Other multiple.wl attribute functions: 
+\code{\link{getMultipleWl}()}
 }
 \concept{multiple.wl attribute functions}

@@ -4,8 +4,14 @@
 \alias{merge2object_spct}
 \title{Merge into object_spct}
 \usage{
-merge2object_spct(x, y, by = "w.length", ...,
-  w.length.out = x[["w.length"]], Tfr.type.out = "total")
+merge2object_spct(
+  x,
+  y,
+  by = "w.length",
+  ...,
+  w.length.out = x[["w.length"]],
+  Tfr.type.out = "total"
+)
 }
 \arguments{
 \item{x, y}{a filter_spct object and a reflector_spct object.}

@@ -24,6 +24,7 @@ getMultipleWl(sun.spct)
 
 }
 \seealso{
-Other multiple.wl attribute functions: \code{\link{setMultipleWl}}
+Other multiple.wl attribute functions: 
+\code{\link{setMultipleWl}()}
 }
 \concept{multiple.wl attribute functions}

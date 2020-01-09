@@ -18,7 +18,7 @@ head_tail(x, n, ...)
 
 \method{head_tail}{matrix}(x, n = 3L, ...)
 
-\method{head_tail}{function}(x, n = 6L, ...)
+\method{head_tail}{`function`}(x, n = 6L, ...)
 
 \method{head_tail}{table}(x, n = 6L, ...)
 

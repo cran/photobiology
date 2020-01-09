@@ -4,8 +4,17 @@
 \alias{resp_spct}
 \title{Calculate response from spectral response}
 \usage{
-resp_spct(spct, w.band, unit.out, quantity, time.unit, scale.factor,
-  wb.trim, use.hinges, ...)
+resp_spct(
+  spct,
+  w.band,
+  unit.out,
+  quantity,
+  time.unit,
+  scale.factor,
+  wb.trim,
+  use.hinges,
+  ...
+)
 }
 \arguments{
 \item{spct}{an object of class response_spct".}

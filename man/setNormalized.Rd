@@ -2,9 +2,12 @@
 % Please edit documentation in R/spct.normalize.r
 \name{setNormalized}
 \alias{setNormalized}
+\alias{setNormalised}
 \title{Set the "normalized" attribute}
 \usage{
 setNormalized(x, norm = FALSE)
+
+setNormalised(x, norm = FALSE)
 }
 \arguments{
 \item{x}{a generic_spct object}
@@ -17,11 +20,19 @@ object.
 }
 \note{
 if x is not a \code{generic_spct} object, x is not modified.
+
+\code{setNormalised()} is a synonym for this \code{setNormalized()}
+  method.
 }
 \seealso{
-Other rescaling functions: \code{\link{fscale}},
-  \code{\link{fshift}}, \code{\link{getNormalized}},
-  \code{\link{is_normalized}}, \code{\link{is_scaled}},
-  \code{\link{normalize}}, \code{\link{setScaled}}
+Other rescaling functions: 
+\code{\link{fscale}()},
+\code{\link{fshift}()},
+\code{\link{getNormalized}()},
+\code{\link{getScaled}()},
+\code{\link{is_normalized}()},
+\code{\link{is_scaled}()},
+\code{\link{normalize}()},
+\code{\link{setScaled}()}
 }
 \concept{rescaling functions}

@@ -4,24 +4,23 @@
 \alias{convertTimeUnit}
 \title{Convert the "time.unit" attribute of an existing source_spct object}
 \usage{
-convertTimeUnit(x, time.unit = NULL, byref = FALSE)
+convertTimeUnit(x, time.unit = NULL, ...)
 }
 \arguments{
-\item{x}{a source_spct object}
+\item{x}{source_spct or response_spct object}
 
 \item{time.unit}{a character string, either "second", "hour", "day",
 "exposure" or "none", or a lubridate::duration}
 
-\item{byref}{logical indicating if new object will be created by reference or
-by copy of \code{x} (currently ignored)}
+\item{...}{(currently ignored)}
 }
 \value{
 x possibly with the \code{time.unit} attribute modified
 }
 \description{
 Function to set the "time.unit" attribute and simultaneously rescaling the
-spectral data to be expressed in the new time unit. The change is done
-by reference ('in place')
+spectral data to be expressed using the new time unit as basis of expression.
+The change is done by reference ('in place').
 }
 \note{
 if x is not a \code{source_spct} or a \code{response_spct} object, or
@@ -30,13 +29,17 @@ if x is not a \code{source_spct} or a \code{response_spct} object, or
   NAs.
 }
 \examples{
+
 my.spct <- sun.spct
 my.spct
 convertTimeUnit(my.spct, "day")
+my.spct
 
 }
 \seealso{
-Other time attribute functions: \code{\link{checkTimeUnit}},
-  \code{\link{getTimeUnit}}, \code{\link{setTimeUnit}}
+Other time attribute functions: 
+\code{\link{checkTimeUnit}()},
+\code{\link{getTimeUnit}()},
+\code{\link{setTimeUnit}()}
 }
 \concept{time attribute functions}

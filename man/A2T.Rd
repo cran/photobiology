@@ -13,8 +13,7 @@ A2T(x, action, byref, ...)
 
 \method{A2T}{filter_spct}(x, action = "add", byref = FALSE, ...)
 
-\method{A2T}{filter_mspct}(x, action = "add", byref = FALSE, ...,
-  .parallel = FALSE, .paropts = NULL)
+\method{A2T}{filter_mspct}(x, action = "add", byref = FALSE, ..., .parallel = FALSE, .paropts = NULL)
 }
 \arguments{
 \item{x}{an R object}
@@ -47,11 +46,14 @@ Function that converts absorbance (a.u.) into transmittance (fraction).
 }}
 
 \seealso{
-Other quantity conversion functions: \code{\link{T2Afr}},
-  \code{\link{T2A}}, \code{\link{T2T}},
-  \code{\link{as_quantum}},
-  \code{\link{e2qmol_multipliers}},
-  \code{\link{e2quantum_multipliers}}, \code{\link{e2q}},
-  \code{\link{q2e}}
+Other quantity conversion functions: 
+\code{\link{T2Afr}()},
+\code{\link{T2A}()},
+\code{\link{T2T}()},
+\code{\link{as_quantum}()},
+\code{\link{e2qmol_multipliers}()},
+\code{\link{e2quantum_multipliers}()},
+\code{\link{e2q}()},
+\code{\link{q2e}()}
 }
 \concept{quantity conversion functions}

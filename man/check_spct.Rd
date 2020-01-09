@@ -19,43 +19,85 @@ check_spct(x, byref, strict.range, ...)
 
 \method{check_spct}{default}(x, byref = FALSE, strict.range = NA, ...)
 
-\method{check_spct}{generic_spct}(x, byref = TRUE, strict.range = NA,
-  multiple.wl = getMultipleWl(x), ...)
+\method{check_spct}{generic_spct}(
+  x,
+  byref = TRUE,
+  strict.range = NA,
+  multiple.wl = getMultipleWl(x),
+  ...
+)
 
-\method{check_spct}{calibration_spct}(x, byref = TRUE,
+\method{check_spct}{calibration_spct}(
+  x,
+  byref = TRUE,
   strict.range = getOption("photobiology.strict.range", default = FALSE),
-  multiple.wl = getMultipleWl(x), ...)
+  multiple.wl = getMultipleWl(x),
+  ...
+)
 
-\method{check_spct}{raw_spct}(x, byref = TRUE,
+\method{check_spct}{raw_spct}(
+  x,
+  byref = TRUE,
   strict.range = getOption("photobiology.strict.range", default = FALSE),
-  multiple.wl = getMultipleWl(x), ...)
+  multiple.wl = getMultipleWl(x),
+  ...
+)
 
-\method{check_spct}{cps_spct}(x, byref = TRUE,
+\method{check_spct}{cps_spct}(
+  x,
+  byref = TRUE,
   strict.range = getOption("photobiology.strict.range", default = FALSE),
-  multiple.wl = getMultipleWl(x), ...)
+  multiple.wl = getMultipleWl(x),
+  ...
+)
 
-\method{check_spct}{filter_spct}(x, byref = TRUE,
+\method{check_spct}{filter_spct}(
+  x,
+  byref = TRUE,
   strict.range = getOption("photobiology.strict.range", default = FALSE),
-  multiple.wl = getMultipleWl(x), ...)
+  multiple.wl = getMultipleWl(x),
+  ...
+)
 
-\method{check_spct}{reflector_spct}(x, byref = TRUE,
+\method{check_spct}{reflector_spct}(
+  x,
+  byref = TRUE,
   strict.range = getOption("photobiology.strict.range", default = FALSE),
-  multiple.wl = getMultipleWl(x), ...)
+  multiple.wl = getMultipleWl(x),
+  ...
+)
 
-\method{check_spct}{object_spct}(x, byref = TRUE,
+\method{check_spct}{object_spct}(
+  x,
+  byref = TRUE,
   strict.range = getOption("photobiology.strict.range", default = FALSE),
-  multiple.wl = getMultipleWl(x), ...)
+  multiple.wl = getMultipleWl(x),
+  ...
+)
 
-\method{check_spct}{response_spct}(x, byref = TRUE, strict.range = NA,
-  multiple.wl = getMultipleWl(x), ...)
+\method{check_spct}{response_spct}(
+  x,
+  byref = TRUE,
+  strict.range = NA,
+  multiple.wl = getMultipleWl(x),
+  ...
+)
 
-\method{check_spct}{source_spct}(x, byref = TRUE,
+\method{check_spct}{source_spct}(
+  x,
+  byref = TRUE,
   strict.range = getOption("photobiology.strict.range", default = FALSE),
-  multiple.wl = getMultipleWl(x), ...)
+  multiple.wl = getMultipleWl(x),
+  ...
+)
 
-\method{check_spct}{chroma_spct}(x, byref = TRUE,
+\method{check_spct}{chroma_spct}(
+  x,
+  byref = TRUE,
   strict.range = getOption("photobiology.strict.range", default = FALSE),
-  multiple.wl = getMultipleWl(x), ...)
+  multiple.wl = getMultipleWl(x),
+  ...
+)
 }
 \arguments{
 \item{x}{An R object}
@@ -107,7 +149,8 @@ check_spct(sun.spct)
 
 }
 \seealso{
-Other data validity check functions: \code{\link{check_spectrum}},
-  \code{\link{check_w.length}}
+Other data validity check functions: 
+\code{\link{check_spectrum}()},
+\code{\link{check_w.length}()}
 }
 \concept{data validity check functions}

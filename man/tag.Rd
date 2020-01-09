@@ -11,14 +11,27 @@ tag(x, ...)
 
 \method{tag}{default}(x, ...)
 
-\method{tag}{generic_spct}(x, w.band = NULL,
+\method{tag}{generic_spct}(
+  x,
+  w.band = NULL,
   wb.trim = getOption("photobiology.waveband.trim", default = TRUE),
-  use.hinges = TRUE, short.names = TRUE, byref = FALSE, ...)
+  use.hinges = TRUE,
+  short.names = TRUE,
+  byref = FALSE,
+  ...
+)
 
-\method{tag}{generic_mspct}(x, w.band = NULL,
+\method{tag}{generic_mspct}(
+  x,
+  w.band = NULL,
   wb.trim = getOption("photobiology.waveband.trim", default = TRUE),
-  use.hinges = TRUE, short.names = TRUE, byref = FALSE, ...,
-  .parallel = FALSE, .paropts = NULL)
+  use.hinges = TRUE,
+  short.names = TRUE,
+  byref = FALSE,
+  ...,
+  .parallel = FALSE,
+  .paropts = NULL
+)
 }
 \arguments{
 \item{x}{an R object.}
@@ -88,8 +101,11 @@ tag(sun.spct, list(A = waveband(c(300,3005))))
 
 }
 \seealso{
-Other tagging and related functions: \code{\link{is_tagged}},
-  \code{\link{untag}}, \code{\link{wb2rect_spct}},
-  \code{\link{wb2spct}}, \code{\link{wb2tagged_spct}}
+Other tagging and related functions: 
+\code{\link{is_tagged}()},
+\code{\link{untag}()},
+\code{\link{wb2rect_spct}()},
+\code{\link{wb2spct}()},
+\code{\link{wb2tagged_spct}()}
 }
 \concept{tagging and related functions}

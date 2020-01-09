@@ -24,61 +24,129 @@ clean(x, range, range.s.data, fill, ...)
 
 \method{clean}{default}(x, range, range.s.data, fill, ...)
 
-\method{clean}{source_spct}(x, range = x, range.s.data = c(0, NA),
+\method{clean}{source_spct}(
+  x,
+  range = x,
+  range.s.data = c(0, NA),
   fill = range.s.data,
-  unit.out = getOption("photobiology.radiation.unit", default =
-  "energy"), ...)
+  unit.out = getOption("photobiology.radiation.unit", default = "energy"),
+  ...
+)
 
-\method{clean}{filter_spct}(x, range = x, range.s.data = NULL,
-  fill = range.s.data, qty.out = getOption("photobiology.filter.qty",
-  default = "transmittance"), ...)
-
-\method{clean}{reflector_spct}(x, range = x, range.s.data = c(0, 1),
-  fill = range.s.data, ...)
-
-\method{clean}{object_spct}(x, range = x, range.s.data = c(0, 1),
-  fill = range.s.data, ...)
-
-\method{clean}{response_spct}(x, range = x, range.s.data = c(0, NA),
+\method{clean}{filter_spct}(
+  x,
+  range = x,
+  range.s.data = NULL,
   fill = range.s.data,
-  unit.out = getOption("photobiology.radiation.unit", default =
-  "energy"), ...)
+  qty.out = getOption("photobiology.filter.qty", default = "transmittance"),
+  ...
+)
 
-\method{clean}{cps_spct}(x, range = x, range.s.data = c(0, NA),
-  fill = range.s.data, ...)
+\method{clean}{reflector_spct}(x, range = x, range.s.data = c(0, 1), fill = range.s.data, ...)
 
-\method{clean}{raw_spct}(x, range = x, range.s.data = c(NA_real_,
-  NA_real_), fill = range.s.data, ...)
+\method{clean}{object_spct}(x, range = x, range.s.data = c(0, 1), fill = range.s.data, ...)
 
-\method{clean}{generic_spct}(x, range = x, range.s.data = c(NA_real_,
-  NA_real_), fill = range.s.data, col.names, ...)
-
-\method{clean}{source_mspct}(x, range = NULL, range.s.data = c(0, NA),
+\method{clean}{response_spct}(
+  x,
+  range = x,
+  range.s.data = c(0, NA),
   fill = range.s.data,
-  unit.out = getOption("photobiology.radiation.unit", default =
-  "energy"), ..., .parallel = FALSE, .paropts = NULL)
+  unit.out = getOption("photobiology.radiation.unit", default = "energy"),
+  ...
+)
 
-\method{clean}{filter_mspct}(x, range = NULL, range.s.data = NULL,
-  fill = range.s.data, qty.out = getOption("photobiology.filter.qty",
-  default = "transmittance"), ..., .parallel = FALSE, .paropts = NULL)
+\method{clean}{cps_spct}(x, range = x, range.s.data = c(0, NA), fill = range.s.data, ...)
 
-\method{clean}{reflector_mspct}(x, range = NULL, range.s.data = c(0,
-  1), fill = range.s.data, ..., .parallel = FALSE, .paropts = NULL)
+\method{clean}{raw_spct}(
+  x,
+  range = x,
+  range.s.data = c(NA_real_, NA_real_),
+  fill = range.s.data,
+  ...
+)
 
-\method{clean}{response_mspct}(x, range = NULL, range.s.data = c(0,
-  NA), fill = range.s.data,
-  unit.out = getOption("photobiology.radiation.unit", default =
-  "energy"), ..., .parallel = FALSE, .paropts = NULL)
+\method{clean}{generic_spct}(
+  x,
+  range = x,
+  range.s.data = c(NA_real_, NA_real_),
+  fill = range.s.data,
+  col.names,
+  ...
+)
 
-\method{clean}{cps_mspct}(x, range = NULL, range.s.data = c(0, NA),
-  fill = range.s.data, ..., .parallel = FALSE, .paropts = NULL)
+\method{clean}{source_mspct}(
+  x,
+  range = NULL,
+  range.s.data = c(0, NA),
+  fill = range.s.data,
+  unit.out = getOption("photobiology.radiation.unit", default = "energy"),
+  ...,
+  .parallel = FALSE,
+  .paropts = NULL
+)
 
-\method{clean}{raw_mspct}(x, range = NULL, range.s.data = c(0, NA),
-  fill = range.s.data, ..., .parallel = FALSE, .paropts = NULL)
+\method{clean}{filter_mspct}(
+  x,
+  range = NULL,
+  range.s.data = NULL,
+  fill = range.s.data,
+  qty.out = getOption("photobiology.filter.qty", default = "transmittance"),
+  ...,
+  .parallel = FALSE,
+  .paropts = NULL
+)
 
-\method{clean}{generic_mspct}(x, range = x, range.s.data = c(NA_real_,
-  NA_real_), fill = range.s.data, col.names, ..., .parallel = FALSE,
-  .paropts = NULL)
+\method{clean}{reflector_mspct}(
+  x,
+  range = NULL,
+  range.s.data = c(0, 1),
+  fill = range.s.data,
+  ...,
+  .parallel = FALSE,
+  .paropts = NULL
+)
+
+\method{clean}{response_mspct}(
+  x,
+  range = NULL,
+  range.s.data = c(0, NA),
+  fill = range.s.data,
+  unit.out = getOption("photobiology.radiation.unit", default = "energy"),
+  ...,
+  .parallel = FALSE,
+  .paropts = NULL
+)
+
+\method{clean}{cps_mspct}(
+  x,
+  range = NULL,
+  range.s.data = c(0, NA),
+  fill = range.s.data,
+  ...,
+  .parallel = FALSE,
+  .paropts = NULL
+)
+
+\method{clean}{raw_mspct}(
+  x,
+  range = NULL,
+  range.s.data = c(0, NA),
+  fill = range.s.data,
+  ...,
+  .parallel = FALSE,
+  .paropts = NULL
+)
+
+\method{clean}{generic_mspct}(
+  x,
+  range = x,
+  range.s.data = c(NA_real_, NA_real_),
+  fill = range.s.data,
+  col.names,
+  ...,
+  .parallel = FALSE,
+  .paropts = NULL
+)
 }
 \arguments{
 \item{x}{an R object}

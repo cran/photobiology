@@ -47,15 +47,17 @@ Return a copy of an R object with its class set to a given type
 }}
 
 \seealso{
-Other Coercion methods for collections of spectra: \code{\link{as.calibration_mspct}},
-  \code{\link{as.cps_mspct}},
-  \code{\link{as.filter_mspct}},
-  \code{\link{as.generic_mspct}},
-  \code{\link{as.object_mspct}},
-  \code{\link{as.raw_mspct}},
-  \code{\link{as.reflector_mspct}},
-  \code{\link{as.response_mspct}},
-  \code{\link{as.source_mspct}}, \code{\link{split2mspct}},
-  \code{\link{subset2mspct}}
+Other Coercion methods for collections of spectra: 
+\code{\link{as.calibration_mspct}()},
+\code{\link{as.cps_mspct}()},
+\code{\link{as.filter_mspct}()},
+\code{\link{as.generic_mspct}()},
+\code{\link{as.object_mspct}()},
+\code{\link{as.raw_mspct}()},
+\code{\link{as.reflector_mspct}()},
+\code{\link{as.response_mspct}()},
+\code{\link{as.source_mspct}()},
+\code{\link{split2mspct}()},
+\code{\link{subset2mspct}()}
 }
 \concept{Coercion methods for collections of spectra}

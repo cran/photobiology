@@ -457,7 +457,7 @@ mat2mspct <- function(x,
   stopifnot(ncol(x) >= 1L)
   # compatibility with as_tiible() >= 2.0.0
   if (is.null(colnames(x))) {
-    colnames(x) <- letters[1:ncol(x)]
+    colnames(x) <- letters[seq_len(ncol(x))]
   }
   stopifnot(nrow(x) == length(w.length))
   y <- cbind(w.length, x * multiplier)
@@ -465,7 +465,7 @@ mat2mspct <- function(x,
   if (length(spct.names) == ncol(x)) {
     colnames(y) <- c("w.length", spct.names)
   } else {
-    colnames(y) <- c("w.length", paste(spct.names[1], 1:ncol(x), sep = ""))
+    colnames(y) <- c("w.length", paste(spct.names[1], seq_len(ncol(x)), sep = ""))
   }
   z <- split2mspct(x = y,
                    member.class = member.class,
@@ -1644,8 +1644,8 @@ subset2mspct <- function(x,
     # would hang or slowdown to a crawl if indexing by dates
     # could try benchmarking with as.numeric() to see how much faster it is
     if (lubridate::is.instant(x[[idx.var]])) {
-    x[["tmp.idx"]] <- as.character(x[[idx.var]], tz = "UTC")
-    idx <- "tmp.idx"
+      x[["tmp.idx"]] <- as.character(x[[idx.var]], tz = "UTC")
+      idx <- "tmp.idx"
     } else {
       idx <- idx.var
     }
@@ -1698,8 +1698,9 @@ subset2mspct <- function(x,
   }
   # these methods return NA if attribute is not set
   when.measured <- getWhenMeasured(x)
-  where.measured <- getWhereMeasured(x)
   what.measured <- getWhatMeasured(x)
+  # these methods return a data.frame
+  where.measured <- getWhereMeasured(x)
   # these methods may return an empty list
   instr.desc <- getInstrDesc(x)
   instr.settings <- getInstrSettings(x)
@@ -1709,14 +1710,6 @@ subset2mspct <- function(x,
         z[[i]] <- setWhenMeasured(z[[i]], when.measured[[i]])
       } else {
         z[[i]] <- setWhenMeasured(z[[i]], when.measured)
-      }
-    }
-    if (!all(is.na(where.measured))) {
-      if (is.list(where.measured) && !is.data.frame(where.measured) &&
-            length(where.measured) == length(groups)) {
-        z[[i]] <- setWhereMeasured(z[[i]], where.measured[[i]])
-      } else {
-        z[[i]] <- setWhereMeasured(z[[i]], where.measured)
       }
     }
     if (!all(is.na(what.measured))) {
@@ -1745,6 +1738,7 @@ subset2mspct <- function(x,
       }
     }
   }
+  z <- setWhereMeasured(z, where.measured)
   z
 }
 

@@ -41,6 +41,7 @@ is_energy_based(my.spct)
 
 }
 \seealso{
-Other query units functions: \code{\link{is_absorbance_based}}
+Other query units functions: 
+\code{\link{is_absorbance_based}()}
 }
 \concept{query units functions}

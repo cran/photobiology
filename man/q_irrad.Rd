@@ -7,26 +7,61 @@
 \alias{q_irrad.source_mspct}
 \title{Photon irradiance}
 \usage{
-q_irrad(spct, w.band, quantity, time.unit, scale.factor, wb.trim,
-  use.cached.mult, use.hinges, allow.scaled, ...)
+q_irrad(
+  spct,
+  w.band,
+  quantity,
+  time.unit,
+  scale.factor,
+  wb.trim,
+  use.cached.mult,
+  use.hinges,
+  allow.scaled,
+  ...
+)
 
-\method{q_irrad}{default}(spct, w.band, quantity, time.unit, scale.factor,
-  wb.trim, use.cached.mult, use.hinges, allow.scaled, ...)
+\method{q_irrad}{default}(
+  spct,
+  w.band,
+  quantity,
+  time.unit,
+  scale.factor,
+  wb.trim,
+  use.cached.mult,
+  use.hinges,
+  allow.scaled,
+  ...
+)
 
-\method{q_irrad}{source_spct}(spct, w.band = NULL, quantity = "total",
-  time.unit = NULL, scale.factor = 1,
+\method{q_irrad}{source_spct}(
+  spct,
+  w.band = NULL,
+  quantity = "total",
+  time.unit = NULL,
+  scale.factor = 1,
   wb.trim = getOption("photobiology.waveband.trim", default = TRUE),
-  use.cached.mult = getOption("photobiology.use.cached.mult", default =
-  FALSE), use.hinges = NULL, allow.scaled = !quantity \%in\%
-  c("average", "mean", "total"), ...)
+  use.cached.mult = getOption("photobiology.use.cached.mult", default = FALSE),
+  use.hinges = NULL,
+  allow.scaled = !quantity \%in\% c("average", "mean", "total"),
+  ...
+)
 
-\method{q_irrad}{source_mspct}(spct, w.band = NULL, quantity = "total",
-  time.unit = NULL, scale.factor = 1,
+\method{q_irrad}{source_mspct}(
+  spct,
+  w.band = NULL,
+  quantity = "total",
+  time.unit = NULL,
+  scale.factor = 1,
   wb.trim = getOption("photobiology.waveband.trim", default = TRUE),
-  use.cached.mult = getOption("photobiology.use.cached.mult", default =
-  FALSE), use.hinges = NULL, allow.scaled = !quantity \%in\%
-  c("average", "mean", "total"), ..., attr2tb = NULL, idx = "spct.idx",
-  .parallel = FALSE, .paropts = NULL)
+  use.cached.mult = getOption("photobiology.use.cached.mult", default = FALSE),
+  use.hinges = NULL,
+  allow.scaled = !quantity \%in\% c("average", "mean", "total"),
+  ...,
+  attr2tb = NULL,
+  idx = "spct.idx",
+  .parallel = FALSE,
+  .paropts = NULL
+)
 }
 \arguments{
 \item{spct}{an R object.}
@@ -123,8 +158,11 @@ q_irrad(sun.spct, split_bands(c(400,700), length.out = 3), quantity = "contribut
 
 }
 \seealso{
-Other irradiance functions: \code{\link{e_fluence}},
-  \code{\link{e_irrad}}, \code{\link{fluence}},
-  \code{\link{irrad}}, \code{\link{q_fluence}}
+Other irradiance functions: 
+\code{\link{e_fluence}()},
+\code{\link{e_irrad}()},
+\code{\link{fluence}()},
+\code{\link{irrad}()},
+\code{\link{q_fluence}()}
 }
 \concept{irradiance functions}

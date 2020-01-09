@@ -25,6 +25,7 @@ This function alters x itself by reference and in addition
   generic_spct, x is not modified.
 }
 \seealso{
-Other idfactor attribute functions: \code{\link{getIdFactor}}
+Other idfactor attribute functions: 
+\code{\link{getIdFactor}()}
 }
 \concept{idfactor attribute functions}

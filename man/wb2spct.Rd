@@ -20,8 +20,11 @@ A generic.spectrum object, with columns w.length set to the
 Create a generic_spct object with wavelengths from wavebands in a list.
 }
 \seealso{
-Other tagging and related functions: \code{\link{is_tagged}},
-  \code{\link{tag}}, \code{\link{untag}},
-  \code{\link{wb2rect_spct}}, \code{\link{wb2tagged_spct}}
+Other tagging and related functions: 
+\code{\link{is_tagged}()},
+\code{\link{tag}()},
+\code{\link{untag}()},
+\code{\link{wb2rect_spct}()},
+\code{\link{wb2tagged_spct}()}
 }
 \concept{tagging and related functions}

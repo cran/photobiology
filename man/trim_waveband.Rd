@@ -4,9 +4,14 @@
 \alias{trim_waveband}
 \title{Trim (or expand) head and/or tail}
 \usage{
-trim_waveband(w.band, range = NULL, low.limit = 0, high.limit = Inf,
+trim_waveband(
+  w.band,
+  range = NULL,
+  low.limit = 0,
+  high.limit = Inf,
   trim = getOption("photobiology.waveband.trim", default = TRUE),
-  use.hinges = TRUE)
+  use.hinges = TRUE
+)
 }
 \arguments{
 \item{w.band}{an object of class "waveband" or a list of such objects.}
@@ -43,7 +48,9 @@ trim_waveband(VIS, high.limit = 700)
 
 }
 \seealso{
-Other trim functions: \code{\link{clip_wl}},
-  \code{\link{trim_spct}}, \code{\link{trim_wl}}
+Other trim functions: 
+\code{\link{clip_wl}()},
+\code{\link{trim_spct}()},
+\code{\link{trim_wl}()}
 }
 \concept{trim functions}

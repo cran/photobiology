@@ -13,16 +13,33 @@ as.reflector_mspct(x, ...)
 
 \method{as.reflector_mspct}{default}(x, ...)
 
-\method{as.reflector_mspct}{data.frame}(x, Rfr.type = c("total",
-  "specular"), strict.range = TRUE, ...)
+\method{as.reflector_mspct}{data.frame}(
+  x,
+  Rfr.type = c("total", "specular"),
+  strict.range = TRUE,
+  ...
+)
 
 \method{as.reflector_mspct}{reflector_spct}(x, ...)
 
-\method{as.reflector_mspct}{list}(x, Rfr.type = c("total", "specular"),
-  strict.range = TRUE, ..., ncol = 1, byrow = FALSE)
+\method{as.reflector_mspct}{list}(
+  x,
+  Rfr.type = c("total", "specular"),
+  strict.range = TRUE,
+  ...,
+  ncol = 1,
+  byrow = FALSE
+)
 
-\method{as.reflector_mspct}{matrix}(x, w.length, spct.data.var = "Rfr",
-  multiplier = 1, byrow = NULL, spct.names = "spct_", ...)
+\method{as.reflector_mspct}{matrix}(
+  x,
+  w.length,
+  spct.data.var = "Rfr",
+  multiplier = 1,
+  byrow = NULL,
+  spct.names = "spct_",
+  ...
+)
 }
 \arguments{
 \item{x}{a list of spectral objects or a list of objects such as data frames
@@ -78,15 +95,17 @@ When \code{x} is a square matrix an explicit argument is needed for
   of \code{x}.
 }
 \seealso{
-Other Coercion methods for collections of spectra: \code{\link{as.calibration_mspct}},
-  \code{\link{as.chroma_mspct}},
-  \code{\link{as.cps_mspct}},
-  \code{\link{as.filter_mspct}},
-  \code{\link{as.generic_mspct}},
-  \code{\link{as.object_mspct}},
-  \code{\link{as.raw_mspct}},
-  \code{\link{as.response_mspct}},
-  \code{\link{as.source_mspct}}, \code{\link{split2mspct}},
-  \code{\link{subset2mspct}}
+Other Coercion methods for collections of spectra: 
+\code{\link{as.calibration_mspct}()},
+\code{\link{as.chroma_mspct}()},
+\code{\link{as.cps_mspct}()},
+\code{\link{as.filter_mspct}()},
+\code{\link{as.generic_mspct}()},
+\code{\link{as.object_mspct}()},
+\code{\link{as.raw_mspct}()},
+\code{\link{as.response_mspct}()},
+\code{\link{as.source_mspct}()},
+\code{\link{split2mspct}()},
+\code{\link{subset2mspct}()}
 }
 \concept{Coercion methods for collections of spectra}

@@ -10,24 +10,38 @@
 \alias{water_RH2vp}
 \title{Water vapour pressure}
 \usage{
-water_vp_sat(temperature, over.ice = FALSE, method = "tetens",
-  check.range = TRUE)
+water_vp_sat(
+  temperature,
+  over.ice = FALSE,
+  method = "tetens",
+  check.range = TRUE
+)
 
-water_dp(water.vp, over.ice = FALSE, method = "tetens",
-  check.range = TRUE)
+water_dp(water.vp, over.ice = FALSE, method = "tetens", check.range = TRUE)
 
-water_fp(water.vp, over.ice = TRUE, method = "tetens",
-  check.range = TRUE)
+water_fp(water.vp, over.ice = TRUE, method = "tetens", check.range = TRUE)
 
 water_vp2mvc(water.vp, temperature)
 
 water_mvc2vp(water.mvc, temperature)
 
-water_vp2RH(water.vp, temperature, over.ice = FALSE, method = "tetens",
-  pc = TRUE, check.range = TRUE)
+water_vp2RH(
+  water.vp,
+  temperature,
+  over.ice = FALSE,
+  method = "tetens",
+  pc = TRUE,
+  check.range = TRUE
+)
 
-water_RH2vp(relative.humidity, temperature, over.ice = FALSE,
-  method = "tetens", pc = TRUE, check.range = TRUE)
+water_RH2vp(
+  relative.humidity,
+  temperature,
+  over.ice = FALSE,
+  method = "tetens",
+  pc = TRUE,
+  check.range = TRUE
+)
 }
 \arguments{
 \item{temperature}{numeric vector of air temperatures (C).}

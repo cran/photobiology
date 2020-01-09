@@ -23,11 +23,13 @@ A dataset containing wavelengths at a 5 nm interval (300 nm to
 \item z }
 }
 \seealso{
-Other Visual response data examples: \code{\link{ciev10.spct}},
-  \code{\link{ciev2.spct}}, \code{\link{ciexyzCC10.spct}},
-  \code{\link{ciexyzCC2.spct}},
-  \code{\link{ciexyzCMF10.spct}},
-  \code{\link{ciexyzCMF2.spct}}
+Other Visual response data examples: 
+\code{\link{ciev10.spct}},
+\code{\link{ciev2.spct}},
+\code{\link{ciexyzCC10.spct}},
+\code{\link{ciexyzCC2.spct}},
+\code{\link{ciexyzCMF10.spct}},
+\code{\link{ciexyzCMF2.spct}}
 }
 \concept{Visual response data examples}
 \keyword{datasets}

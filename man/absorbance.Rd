@@ -11,31 +11,49 @@
 \usage{
 absorbance(spct, w.band, quantity, wb.trim, use.hinges, ...)
 
-\method{absorbance}{default}(spct, w.band, quantity, wb.trim, use.hinges,
-  ...)
+\method{absorbance}{default}(spct, w.band, quantity, wb.trim, use.hinges, ...)
 
-\method{absorbance}{filter_spct}(spct, w.band = NULL,
+\method{absorbance}{filter_spct}(
+  spct,
+  w.band = NULL,
   quantity = "average",
   wb.trim = getOption("photobiology.waveband.trim", default = TRUE),
-  use.hinges = getOption("photobiology.use.hinges", default = NULL), ...)
+  use.hinges = getOption("photobiology.use.hinges", default = NULL),
+  ...
+)
 
-\method{absorbance}{object_spct}(spct, w.band = NULL,
+\method{absorbance}{object_spct}(
+  spct,
+  w.band = NULL,
   quantity = "average",
   wb.trim = getOption("photobiology.waveband.trim", default = TRUE),
-  use.hinges = getOption("photobiology.use.hinges", default = NULL), ...)
+  use.hinges = getOption("photobiology.use.hinges", default = NULL),
+  ...
+)
 
-\method{absorbance}{filter_mspct}(spct, w.band = NULL,
+\method{absorbance}{filter_mspct}(
+  spct,
+  w.band = NULL,
   quantity = "average",
   wb.trim = getOption("photobiology.waveband.trim", default = TRUE),
-  use.hinges = getOption("photobiology.use.hinges", default = NULL), ...,
-  attr2tb = NULL, idx = "spct.idx")
+  use.hinges = getOption("photobiology.use.hinges", default = NULL),
+  ...,
+  attr2tb = NULL,
+  idx = "spct.idx"
+)
 
-\method{absorbance}{object_mspct}(spct, w.band = NULL,
+\method{absorbance}{object_mspct}(
+  spct,
+  w.band = NULL,
   quantity = "average",
   wb.trim = getOption("photobiology.waveband.trim", default = TRUE),
-  use.hinges = getOption("photobiology.use.hinges", default = NULL), ...,
-  attr2tb = NULL, idx = "spct.idx", .parallel = FALSE,
-  .paropts = NULL)
+  use.hinges = getOption("photobiology.use.hinges", default = NULL),
+  ...,
+  attr2tb = NULL,
+  idx = "spct.idx",
+  .parallel = FALSE,
+  .paropts = NULL
+)
 }
 \arguments{
 \item{spct}{an R object.}

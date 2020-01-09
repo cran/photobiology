@@ -12,11 +12,9 @@ copy_attributes(x, y, which, ...)
 
 \method{copy_attributes}{default}(x, y, which = NULL, ...)
 
-\method{copy_attributes}{generic_spct}(x, y, which = NULL,
-  which.not = NULL, copy.class = FALSE, ...)
+\method{copy_attributes}{generic_spct}(x, y, which = NULL, which.not = NULL, copy.class = FALSE, ...)
 
-\method{copy_attributes}{generic_mspct}(x, y, which = NULL,
-  which.not = NULL, copy.class = FALSE, ...)
+\method{copy_attributes}{generic_mspct}(x, y, which = NULL, which.not = NULL, copy.class = FALSE, ...)
 
 \method{copy_attributes}{waveband}(x, y, which = NULL, ...)
 }

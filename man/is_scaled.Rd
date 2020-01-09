@@ -18,10 +18,22 @@ This function tests a \code{generic_spct} object for an attribute that
 signals whether the spectral data has been rescaled or not after the object
 was created.
 }
+\examples{
+
+scaled.spct <- fscale(sun.spct)
+is_scaled(sun.spct)
+is_scaled(scaled.spct)
+
+}
 \seealso{
-Other rescaling functions: \code{\link{fscale}},
-  \code{\link{fshift}}, \code{\link{getNormalized}},
-  \code{\link{is_normalized}}, \code{\link{normalize}},
-  \code{\link{setNormalized}}, \code{\link{setScaled}}
+Other rescaling functions: 
+\code{\link{fscale}()},
+\code{\link{fshift}()},
+\code{\link{getNormalized}()},
+\code{\link{getScaled}()},
+\code{\link{is_normalized}()},
+\code{\link{normalize}()},
+\code{\link{setNormalized}()},
+\code{\link{setScaled}()}
 }
 \concept{rescaling functions}

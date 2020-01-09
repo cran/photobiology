@@ -11,6 +11,7 @@
 \alias{na.omit.cps_spct}
 \alias{na.omit.raw_spct}
 \alias{na.omit.chroma_spct}
+\alias{na.omit.generic_mspct}
 \alias{na.exclude.generic_spct}
 \alias{na.exclude.source_spct}
 \alias{na.exclude.response_spct}
@@ -20,61 +21,48 @@
 \alias{na.exclude.cps_spct}
 \alias{na.exclude.raw_spct}
 \alias{na.exclude.chroma_spct}
+\alias{na.exclude.generic_mspct}
 \title{Handle Missing Values in Objects}
 \usage{
-\method{na.omit}{generic_spct}(object, na.action = "omit", fill = NULL,
-  target.colnames, ...)
+\method{na.omit}{generic_spct}(object, na.action = "omit", fill = NULL, target.colnames, ...)
 
-\method{na.omit}{source_spct}(object, na.action = "omit", fill = NULL,
-  ...)
+\method{na.omit}{source_spct}(object, na.action = "omit", fill = NULL, ...)
 
-\method{na.omit}{response_spct}(object, na.action = "omit",
-  fill = NULL, ...)
+\method{na.omit}{response_spct}(object, na.action = "omit", fill = NULL, ...)
 
-\method{na.omit}{filter_spct}(object, na.action = "omit", fill = NULL,
-  ...)
+\method{na.omit}{filter_spct}(object, na.action = "omit", fill = NULL, ...)
 
-\method{na.omit}{reflector_spct}(object, na.action = "omit",
-  fill = NULL, ...)
+\method{na.omit}{reflector_spct}(object, na.action = "omit", fill = NULL, ...)
 
-\method{na.omit}{object_spct}(object, na.action = "omit", fill = NULL,
-  ...)
+\method{na.omit}{object_spct}(object, na.action = "omit", fill = NULL, ...)
 
-\method{na.omit}{cps_spct}(object, na.action = "omit", fill = NULL,
-  ...)
+\method{na.omit}{cps_spct}(object, na.action = "omit", fill = NULL, ...)
 
-\method{na.omit}{raw_spct}(object, na.action = "omit", fill = NULL,
-  ...)
+\method{na.omit}{raw_spct}(object, na.action = "omit", fill = NULL, ...)
 
-\method{na.omit}{chroma_spct}(object, na.action = "omit", fill = NULL,
-  ...)
+\method{na.omit}{chroma_spct}(object, na.action = "omit", fill = NULL, ...)
 
-\method{na.exclude}{generic_spct}(object, na.action = "exclude",
-  fill = NULL, target.colnames, ...)
+\method{na.omit}{generic_mspct}(object, na.action = "omit", fill = NULL, ...)
 
-\method{na.exclude}{source_spct}(object, na.action = "exclude",
-  fill = NULL, ...)
+\method{na.exclude}{generic_spct}(object, na.action = "exclude", fill = NULL, target.colnames, ...)
 
-\method{na.exclude}{response_spct}(object, na.action = "exclude",
-  fill = NULL, ...)
+\method{na.exclude}{source_spct}(object, na.action = "exclude", fill = NULL, ...)
 
-\method{na.exclude}{filter_spct}(object, na.action = "exclude",
-  fill = NULL, ...)
+\method{na.exclude}{response_spct}(object, na.action = "exclude", fill = NULL, ...)
 
-\method{na.exclude}{reflector_spct}(object, na.action = "exclude",
-  fill = NULL, ...)
+\method{na.exclude}{filter_spct}(object, na.action = "exclude", fill = NULL, ...)
 
-\method{na.exclude}{object_spct}(object, na.action = "exclude",
-  fill = NULL, ...)
+\method{na.exclude}{reflector_spct}(object, na.action = "exclude", fill = NULL, ...)
 
-\method{na.exclude}{cps_spct}(object, na.action = "exclude",
-  fill = NULL, ...)
+\method{na.exclude}{object_spct}(object, na.action = "exclude", fill = NULL, ...)
 
-\method{na.exclude}{raw_spct}(object, na.action = "exclude",
-  fill = NULL, ...)
+\method{na.exclude}{cps_spct}(object, na.action = "exclude", fill = NULL, ...)
 
-\method{na.exclude}{chroma_spct}(object, na.action = "exclude",
-  fill = NULL, ...)
+\method{na.exclude}{raw_spct}(object, na.action = "exclude", fill = NULL, ...)
+
+\method{na.exclude}{chroma_spct}(object, na.action = "exclude", fill = NULL, ...)
+
+\method{na.exclude}{generic_mspct}(object, na.action = "exclude", fill = NULL, ...)
 }
 \arguments{
 \item{object}{an R object}

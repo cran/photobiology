@@ -71,7 +71,7 @@ na.omit.generic_spct <- function(object,
   for (col in data_cols) {
     rows_to_omit <- union(rows_to_omit, which(is.na(object[[col]])))
   }
-  rows_to_keep <- setdiff(1:nrow(object), rows_to_omit)
+  rows_to_keep <- setdiff(seq_len(nrow(object)), rows_to_omit)
   if (na.action == "replace") {
     z <- object
     if (!is.null(fill)) {
@@ -182,6 +182,14 @@ na.omit.chroma_spct <- function(object, na.action = "omit", fill = NULL, ...) {
                        target.colnames = c("x", "y", "z"))
 }
 
+#' @rdname na.omit
+#'
+#' @export
+#'
+na.omit.generic_mspct <- function(object, na.action = "omit", fill = NULL, ...) {
+  msmsply(object, na.omit, na.action = na.action, fill = fill, ...)
+}
+
 # exclude
 
 #' @rdname na.omit
@@ -281,5 +289,13 @@ na.exclude.chroma_spct <- function(object, na.action = "exclude", fill = NULL, .
                        na.action = na.action,
                        fill = fill,
                        target.colnames = c("x", "y", "z"))
+}
+
+#' @rdname na.omit
+#'
+#' @export
+#'
+na.exclude.generic_mspct <- function(object, na.action = "exclude", fill = NULL, ...) {
+  msmsply(object, na.exclude, na.action = na.action, fill = fill, ...)
 }
 

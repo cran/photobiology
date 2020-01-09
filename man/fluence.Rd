@@ -7,27 +7,61 @@
 \alias{fluence.source_mspct}
 \title{Fluence}
 \usage{
-fluence(spct, w.band, unit.out, exposure.time, scale.factor, wb.trim,
-  use.cached.mult, use.hinges, allow.scaled, ...)
+fluence(
+  spct,
+  w.band,
+  unit.out,
+  exposure.time,
+  scale.factor,
+  wb.trim,
+  use.cached.mult,
+  use.hinges,
+  allow.scaled,
+  ...
+)
 
-\method{fluence}{default}(spct, w.band, unit.out, exposure.time,
-  scale.factor, wb.trim, use.cached.mult, use.hinges, allow.scaled, ...)
+\method{fluence}{default}(
+  spct,
+  w.band,
+  unit.out,
+  exposure.time,
+  scale.factor,
+  wb.trim,
+  use.cached.mult,
+  use.hinges,
+  allow.scaled,
+  ...
+)
 
-\method{fluence}{source_spct}(spct, w.band = NULL,
-  unit.out = getOption("photobiology.radiation.unit", default =
-  "energy"), exposure.time, scale.factor = 1,
+\method{fluence}{source_spct}(
+  spct,
+  w.band = NULL,
+  unit.out = getOption("photobiology.radiation.unit", default = "energy"),
+  exposure.time,
+  scale.factor = 1,
   wb.trim = getOption("photobiology.waveband.trim", default = TRUE),
-  use.cached.mult = getOption("photobiology.use.cached.mult", default =
-  FALSE), use.hinges = NULL, allow.scaled = FALSE, ...)
+  use.cached.mult = getOption("photobiology.use.cached.mult", default = FALSE),
+  use.hinges = NULL,
+  allow.scaled = FALSE,
+  ...
+)
 
-\method{fluence}{source_mspct}(spct, w.band = NULL,
-  unit.out = getOption("photobiology.radiation.unit", default =
-  "energy"), exposure.time, scale.factor = 1,
+\method{fluence}{source_mspct}(
+  spct,
+  w.band = NULL,
+  unit.out = getOption("photobiology.radiation.unit", default = "energy"),
+  exposure.time,
+  scale.factor = 1,
   wb.trim = getOption("photobiology.waveband.trim", default = TRUE),
-  use.cached.mult = getOption("photobiology.use.cached.mult", default =
-  FALSE), use.hinges = NULL, allow.scaled = FALSE, ...,
-  attr2tb = NULL, idx = "spct.idx", .parallel = FALSE,
-  .paropts = NULL)
+  use.cached.mult = getOption("photobiology.use.cached.mult", default = FALSE),
+  use.hinges = NULL,
+  allow.scaled = FALSE,
+  ...,
+  attr2tb = NULL,
+  idx = "spct.idx",
+  .parallel = FALSE,
+  .paropts = NULL
+)
 }
 \arguments{
 \item{spct}{an R object.}
@@ -111,8 +145,11 @@ fluence(sun.spct,
 
 }
 \seealso{
-Other irradiance functions: \code{\link{e_fluence}},
-  \code{\link{e_irrad}}, \code{\link{irrad}},
-  \code{\link{q_fluence}}, \code{\link{q_irrad}}
+Other irradiance functions: 
+\code{\link{e_fluence}()},
+\code{\link{e_irrad}()},
+\code{\link{irrad}()},
+\code{\link{q_fluence}()},
+\code{\link{q_irrad}()}
 }
 \concept{irradiance functions}

@@ -18,14 +18,29 @@ as.generic_mspct(x, ...)
 
 \method{as.generic_mspct}{generic_spct}(x, force.spct.class = FALSE, ...)
 
-\method{as.generic_mspct}{list}(x, force.spct.class = FALSE, ...,
-  ncol = 1, byrow = FALSE)
+\method{as.generic_mspct}{list}(x, force.spct.class = FALSE, ..., ncol = 1, byrow = FALSE)
 
-\method{as.generic_mspct}{matrix}(x, w.length, member.class, spct.data.var,
-  multiplier = 1, byrow = NULL, spct.names = "spct_", ...)
+\method{as.generic_mspct}{matrix}(
+  x,
+  w.length,
+  member.class,
+  spct.data.var,
+  multiplier = 1,
+  byrow = NULL,
+  spct.names = "spct_",
+  ...
+)
 
-mat2mspct(x, w.length, member.class, spct.data.var, multiplier = 1,
-  byrow = NULL, spct.names = "spct_", ...)
+mat2mspct(
+  x,
+  w.length,
+  member.class,
+  spct.data.var,
+  multiplier = 1,
+  byrow = NULL,
+  spct.names = "spct_",
+  ...
+)
 }
 \arguments{
 \item{x}{a list of spectral objects or a list of objects such as data frames
@@ -86,15 +101,17 @@ Members of \code{generic_mspct} objects can be heterogeneous: they can
   \code{w.length} vector must match one of the dimensions of \code{x}.
 }
 \seealso{
-Other Coercion methods for collections of spectra: \code{\link{as.calibration_mspct}},
-  \code{\link{as.chroma_mspct}},
-  \code{\link{as.cps_mspct}},
-  \code{\link{as.filter_mspct}},
-  \code{\link{as.object_mspct}},
-  \code{\link{as.raw_mspct}},
-  \code{\link{as.reflector_mspct}},
-  \code{\link{as.response_mspct}},
-  \code{\link{as.source_mspct}}, \code{\link{split2mspct}},
-  \code{\link{subset2mspct}}
+Other Coercion methods for collections of spectra: 
+\code{\link{as.calibration_mspct}()},
+\code{\link{as.chroma_mspct}()},
+\code{\link{as.cps_mspct}()},
+\code{\link{as.filter_mspct}()},
+\code{\link{as.object_mspct}()},
+\code{\link{as.raw_mspct}()},
+\code{\link{as.reflector_mspct}()},
+\code{\link{as.response_mspct}()},
+\code{\link{as.source_mspct}()},
+\code{\link{split2mspct}()},
+\code{\link{subset2mspct}()}
 }
 \concept{Coercion methods for collections of spectra}

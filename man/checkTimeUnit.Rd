@@ -20,7 +20,9 @@ if x is not a \code{source_spct} or a \code{response_spct} object, NA
 is returned
 }
 \seealso{
-Other time attribute functions: \code{\link{convertTimeUnit}},
-  \code{\link{getTimeUnit}}, \code{\link{setTimeUnit}}
+Other time attribute functions: 
+\code{\link{convertTimeUnit}()},
+\code{\link{getTimeUnit}()},
+\code{\link{setTimeUnit}()}
 }
 \concept{time attribute functions}

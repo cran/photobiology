@@ -13,8 +13,13 @@
 \alias{chroma_mspct}
 \title{Collection-of-spectra constructor}
 \usage{
-generic_mspct(l = NULL, class = "generic_spct", ncol = 1,
-  byrow = FALSE, dim = c(length(l)\%/\%ncol, ncol))
+generic_mspct(
+  l = NULL,
+  class = "generic_spct",
+  ncol = 1,
+  byrow = FALSE,
+  dim = c(length(l)\%/\%ncol, ncol)
+)
 
 calibration_mspct(l = NULL, ncol = 1, byrow = FALSE, ...)
 

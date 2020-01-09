@@ -7,22 +7,46 @@
 \alias{extend2extremes}
 \title{Trim (or expand) head and/or tail of a spectrum}
 \usage{
-trim_spct(spct, range = NULL, low.limit = NULL, high.limit = NULL,
-  use.hinges = TRUE, fill = NULL, byref = FALSE,
-  verbose = getOption("photobiology.verbose"))
+trim_spct(
+  spct,
+  range = NULL,
+  low.limit = NULL,
+  high.limit = NULL,
+  use.hinges = TRUE,
+  fill = NULL,
+  byref = FALSE,
+  verbose = getOption("photobiology.verbose")
+)
 
-trim_mspct(mspct, range = NULL, low.limit = NULL, high.limit = NULL,
-  use.hinges = TRUE, fill = NULL, byref = FALSE,
-  verbose = getOption("photobiology.verbose"), .parallel = FALSE,
-  .paropts = NULL)
+trim_mspct(
+  mspct,
+  range = NULL,
+  low.limit = NULL,
+  high.limit = NULL,
+  use.hinges = TRUE,
+  fill = NULL,
+  byref = FALSE,
+  verbose = getOption("photobiology.verbose"),
+  .parallel = FALSE,
+  .paropts = NULL
+)
 
-trim2overlap(mspct, use.hinges = TRUE,
-  verbose = getOption("photobiology.verbose"), .parallel = FALSE,
-  .paropts = NULL)
+trim2overlap(
+  mspct,
+  use.hinges = TRUE,
+  verbose = getOption("photobiology.verbose"),
+  .parallel = FALSE,
+  .paropts = NULL
+)
 
-extend2extremes(mspct, use.hinges = TRUE, fill = NA,
-  verbose = getOption("photobiology.verbose"), .parallel = FALSE,
-  .paropts = NULL)
+extend2extremes(
+  mspct,
+  use.hinges = TRUE,
+  fill = NA,
+  verbose = getOption("photobiology.verbose"),
+  .parallel = FALSE,
+  .paropts = NULL
+)
 }
 \arguments{
 \item{spct}{an object of class "generic_spct".}
@@ -86,7 +110,9 @@ trim_spct(sun.spct, range = c(300, NA))
 trim_spct(sun.spct, range = c(NA, 400))
 }
 \seealso{
-Other trim functions: \code{\link{clip_wl}},
-  \code{\link{trim_waveband}}, \code{\link{trim_wl}}
+Other trim functions: 
+\code{\link{clip_wl}()},
+\code{\link{trim_waveband}()},
+\code{\link{trim_wl}()}
 }
 \concept{trim functions}

@@ -9,20 +9,29 @@
 \usage{
 qe_ratio(spct, w.band, wb.trim, use.cached.mult, use.hinges, ...)
 
-\method{qe_ratio}{default}(spct, w.band, wb.trim, use.cached.mult,
-  use.hinges, ...)
+\method{qe_ratio}{default}(spct, w.band, wb.trim, use.cached.mult, use.hinges, ...)
 
-\method{qe_ratio}{source_spct}(spct, w.band = NULL,
+\method{qe_ratio}{source_spct}(
+  spct,
+  w.band = NULL,
   wb.trim = getOption("photobiology.waveband.trim", default = TRUE),
   use.cached.mult = FALSE,
-  use.hinges = getOption("photobiology.use.hinges"), ...)
+  use.hinges = getOption("photobiology.use.hinges"),
+  ...
+)
 
-\method{qe_ratio}{source_mspct}(spct, w.band = NULL,
+\method{qe_ratio}{source_mspct}(
+  spct,
+  w.band = NULL,
   wb.trim = getOption("photobiology.waveband.trim", default = TRUE),
   use.cached.mult = FALSE,
-  use.hinges = getOption("photobiology.use.hinges"), ...,
-  attr2tb = NULL, idx = "spct.idx", .parallel = FALSE,
-  .paropts = NULL)
+  use.hinges = getOption("photobiology.use.hinges"),
+  ...,
+  attr2tb = NULL,
+  idx = "spct.idx",
+  .parallel = FALSE,
+  .paropts = NULL
+)
 }
 \arguments{
 \item{spct}{source_spct.}
@@ -100,7 +109,9 @@ qe_ratio(sun.spct, new_waveband(400,700))
 
 }
 \seealso{
-Other photon and energy ratio functions: \code{\link{e_ratio}},
-  \code{\link{eq_ratio}}, \code{\link{q_ratio}}
+Other photon and energy ratio functions: 
+\code{\link{e_ratio}()},
+\code{\link{eq_ratio}()},
+\code{\link{q_ratio}()}
 }
 \concept{photon and energy ratio functions}

@@ -8,23 +8,35 @@
 \alias{sun_azimuth}
 \title{Solar angles}
 \usage{
-sun_angles(time = lubridate::now(tzone = "UTC"),
-  tz = lubridate::tz(time), geocode = tibble::tibble(lon = 0, lat =
-  51.5, address = "Greenwich"), use.refraction = FALSE)
+sun_angles(
+  time = lubridate::now(tzone = "UTC"),
+  tz = lubridate::tz(time),
+  geocode = tibble::tibble(lon = 0, lat = 51.5, address = "Greenwich"),
+  use.refraction = FALSE
+)
 
 sun_angles_fast(time, tz, geocode, use.refraction)
 
-sun_elevation(time = lubridate::now(), tz = lubridate::tz(time),
+sun_elevation(
+  time = lubridate::now(),
+  tz = lubridate::tz(time),
   geocode = tibble::tibble(lon = 0, lat = 51.5, address = "Greenwich"),
-  use.refraction = FALSE)
+  use.refraction = FALSE
+)
 
-sun_zenith_angle(time = lubridate::now(), tz = lubridate::tz(time),
+sun_zenith_angle(
+  time = lubridate::now(),
+  tz = lubridate::tz(time),
   geocode = tibble::tibble(lon = 0, lat = 51.5, address = "Greenwich"),
-  use.refraction = FALSE)
+  use.refraction = FALSE
+)
 
-sun_azimuth(time = lubridate::now(), tz = lubridate::tz(time),
+sun_azimuth(
+  time = lubridate::now(),
+  tz = lubridate::tz(time),
   geocode = tibble::tibble(lon = 0, lat = 51.5, address = "Greenwich"),
-  use.refraction = FALSE)
+  use.refraction = FALSE
+)
 }
 \arguments{
 \item{time}{A "vector" of POSIXct Time, with any valid time zone (TZ) is
@@ -101,9 +113,11 @@ differences in the returned times compared to our function that seem to be
 related to the estimation of atmospheric refraction (about 0.1 degrees).
 }
 \seealso{
-Other astronomy related functions: \code{\link{day_night}},
-  \code{\link{format.solar_time}},
-  \code{\link{is.solar_time}},
-  \code{\link{print.solar_time}}, \code{\link{solar_time}}
+Other astronomy related functions: 
+\code{\link{day_night}()},
+\code{\link{format.solar_time}()},
+\code{\link{is.solar_time}()},
+\code{\link{print.solar_time}()},
+\code{\link{solar_time}()}
 }
 \concept{astronomy related functions}

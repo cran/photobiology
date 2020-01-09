@@ -26,6 +26,7 @@ This function alters x itself by reference and in addition
   \code{time.unit = "hour"} is currently not fully supported.
 }
 \seealso{
-Other BSWF attribute functions: \code{\link{getBSWFUsed}}
+Other BSWF attribute functions: 
+\code{\link{getBSWFUsed}()}
 }
 \concept{BSWF attribute functions}

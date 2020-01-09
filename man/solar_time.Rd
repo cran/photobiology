@@ -4,8 +4,11 @@
 \alias{solar_time}
 \title{Local solar time}
 \usage{
-solar_time(time = lubridate::now(), geocode = tibble::tibble(lon = 0,
-  lat = 51.5, address = "Greenwich"), unit.out = "time")
+solar_time(
+  time = lubridate::now(),
+  geocode = tibble::tibble(lon = 0, lat = 51.5, address = "Greenwich"),
+  unit.out = "time"
+)
 }
 \arguments{
 \item{time}{POSIXct Time, any valid time zone (TZ) is allowed, default is
@@ -60,9 +63,11 @@ class(sol_d)
 
 }
 \seealso{
-Other astronomy related functions: \code{\link{day_night}},
-  \code{\link{format.solar_time}},
-  \code{\link{is.solar_time}},
-  \code{\link{print.solar_time}}, \code{\link{sun_angles}}
+Other astronomy related functions: 
+\code{\link{day_night}()},
+\code{\link{format.solar_time}()},
+\code{\link{is.solar_time}()},
+\code{\link{print.solar_time}()},
+\code{\link{sun_angles}()}
 }
 \concept{astronomy related functions}

@@ -7,23 +7,22 @@
 \alias{smooth_spct.filter_spct}
 \alias{smooth_spct.reflector_spct}
 \alias{smooth_spct.response_spct}
+\alias{smooth_spct.generic_mspct}
 \title{Smooth a spectrum}
 \usage{
 smooth_spct(x, method, strength, ...)
 
 \method{smooth_spct}{default}(x, method, strength, ...)
 
-\method{smooth_spct}{source_spct}(x, method = "custom", strength = 1,
-  na.rm = FALSE, ...)
+\method{smooth_spct}{source_spct}(x, method = "custom", strength = 1, na.rm = FALSE, ...)
 
-\method{smooth_spct}{filter_spct}(x, method = "custom", strength = 1,
-  na.rm = FALSE, ...)
+\method{smooth_spct}{filter_spct}(x, method = "custom", strength = 1, na.rm = FALSE, ...)
 
-\method{smooth_spct}{reflector_spct}(x, method = "custom",
-  strength = 1, na.rm = FALSE, ...)
+\method{smooth_spct}{reflector_spct}(x, method = "custom", strength = 1, na.rm = FALSE, ...)
 
-\method{smooth_spct}{response_spct}(x, method = "custom", strength = 1,
-  na.rm = FALSE, ...)
+\method{smooth_spct}{response_spct}(x, method = "custom", strength = 1, na.rm = FALSE, ...)
+
+\method{smooth_spct}{generic_mspct}(x, method = "custom", strength = 1, na.rm = FALSE, ...)
 }
 \arguments{
 \item{x}{an R object.}
@@ -58,6 +57,8 @@ when needed, defaults suitable for spectral data.
 \item \code{reflector_spct}: Smooth a reflector spectrum
 
 \item \code{response_spct}: Smooth a response spectrum
+
+\item \code{generic_mspct}: 
 }}
 
 \note{

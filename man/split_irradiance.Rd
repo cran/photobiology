@@ -4,11 +4,17 @@
 \alias{split_irradiance}
 \title{Energy or photon irradiance for split spectrum regions}
 \usage{
-split_irradiance(w.length, s.irrad, cut.w.length = range(w.length),
+split_irradiance(
+  w.length,
+  s.irrad,
+  cut.w.length = range(w.length),
   unit.out = getOption("photobiology.base.unit", default = "energy"),
-  unit.in = "energy", scale = "absolute", check.spectrum = TRUE,
+  unit.in = "energy",
+  scale = "absolute",
+  check.spectrum = TRUE,
   use.cached.mult = FALSE,
-  use.hinges = getOption("photobiology.use.hinges", default = NULL))
+  use.hinges = getOption("photobiology.use.hinges", default = NULL)
+)
 }
 \arguments{
 \item{w.length}{numeric Vector of wavelengths (nm).}

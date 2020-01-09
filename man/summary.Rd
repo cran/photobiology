@@ -5,8 +5,7 @@
 \alias{summary.generic_spct}
 \title{Summary of a spectral object}
 \usage{
-\method{summary}{generic_spct}(object, maxsum = 7, digits = max(3,
-  getOption("digits") - 3), ...)
+\method{summary}{generic_spct}(object, maxsum = 7, digits = max(3, getOption("digits") - 3), ...)
 }
 \arguments{
 \item{object}{An object of one of the spectral classes for which a summary is

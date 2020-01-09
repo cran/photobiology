@@ -2,6 +2,7 @@
 % Please edit documentation in R/spct.classes.r
 \name{getWhenMeasured}
 \alias{getWhenMeasured}
+\alias{when_measured}
 \alias{getWhenMeasured.default}
 \alias{getWhenMeasured.generic_spct}
 \alias{getWhenMeasured.summary_generic_spct}
@@ -9,6 +10,8 @@
 \title{Get the "when.measured" attribute}
 \usage{
 getWhenMeasured(x, ...)
+
+when_measured(x, ...)
 
 \method{getWhenMeasured}{default}(x, ...)
 
@@ -52,24 +55,29 @@ The method for collections of spectra returns the
   a tibble with the correct times in TZ = "UTC".
 }
 \examples{
-getWhenMeasured(sun.spct)
+
+when_measured(sun.spct)
 
 }
 \seealso{
-Other measurement metadata functions: \code{\link{getHowMeasured}},
-  \code{\link{getInstrDesc}},
-  \code{\link{getInstrSettings}},
-  \code{\link{getWhatMeasured}},
-  \code{\link{getWhereMeasured}},
-  \code{\link{get_attributes}},
-  \code{\link{isValidInstrDesc}},
-  \code{\link{isValidInstrSettings}},
-  \code{\link{setHowMeasured}}, \code{\link{setInstrDesc}},
-  \code{\link{setInstrSettings}},
-  \code{\link{setWhatMeasured}},
-  \code{\link{setWhenMeasured}},
-  \code{\link{setWhereMeasured}},
-  \code{\link{trimInstrDesc}},
-  \code{\link{trimInstrSettings}}
+Other measurement metadata functions: 
+\code{\link{getHowMeasured}()},
+\code{\link{getInstrDesc}()},
+\code{\link{getInstrSettings}()},
+\code{\link{getWhatMeasured}()},
+\code{\link{getWhereMeasured}()},
+\code{\link{get_attributes}()},
+\code{\link{isValidInstrDesc}()},
+\code{\link{isValidInstrSettings}()},
+\code{\link{select_spct_attributes}()},
+\code{\link{setHowMeasured}()},
+\code{\link{setInstrDesc}()},
+\code{\link{setInstrSettings}()},
+\code{\link{setWhatMeasured}()},
+\code{\link{setWhenMeasured}()},
+\code{\link{setWhereMeasured}()},
+\code{\link{spct_attr2tb}()},
+\code{\link{trimInstrDesc}()},
+\code{\link{trimInstrSettings}()}
 }
 \concept{measurement metadata functions}

@@ -2,9 +2,24 @@
 % Please edit documentation in R/normalized.diff.idx.r
 \name{normalized_diff_ind}
 \alias{normalized_diff_ind}
+\alias{normalised_diff_ind}
+\alias{NDxI}
+\alias{normalized_diff_ind.default}
+\alias{normalized_diff_ind.generic_spct}
+\alias{normalized_diff_ind.generic_mspct}
 \title{Calculate a normalized index.}
 \usage{
 normalized_diff_ind(spct, plus.w.band, minus.w.band, f, ...)
+
+normalised_diff_ind(spct, plus.w.band, minus.w.band, f, ...)
+
+NDxI(spct, plus.w.band, minus.w.band, f, ...)
+
+\method{normalized_diff_ind}{default}(spct, plus.w.band, minus.w.band, f, ...)
+
+\method{normalized_diff_ind}{generic_spct}(spct, plus.w.band, minus.w.band, f, ...)
+
+\method{normalized_diff_ind}{generic_mspct}(spct, plus.w.band, minus.w.band, f, ...)
 }
 \arguments{
 \item{spct}{an R object}
@@ -21,13 +36,17 @@ list of wavebands as second argument.}
 \item{...}{additional arguments passed to f}
 }
 \value{
-A numeric value for the index
+A numeric value for the index, or a tibble depending on whether
+  a spectrum or a collection of spectra is passed as first argument.
 }
 \description{
-This function returns a normalized difference index value for an arbitrary
-pair of wavebands.
+This method returns a normalized difference index value for an arbitrary
+pair of wavebands. There are many such indexes in use, such as NDVI
+(normalized difference vegetation index), NDWI (normalized difference water
+index), NDMI (normalized difference moisture index), etc., the only
+difference among then is in the wavebands used.
 }
-\note{
+\details{
 \code{f} is most frequently \code{\link{reflectance}}, but also
   \code{\link{transmittance}}, or even \code{\link{absorbance}},
   \code{\link{response}}, \code{\link{irradiance}} or a user-defined function
@@ -35,4 +54,23 @@ pair of wavebands.
   should be of the class expected by \code{f}. When using two wavebands of
   different widths do consider passing to \code{f} a suitable \code{quantity}
   argument. Wavebands can describe weighting functions if desired.
+}
+\section{Methods (by class)}{
+\itemize{
+\item \code{default}: default
+
+\item \code{generic_spct}: 
+
+\item \code{generic_mspct}: 
+}}
+
+\note{
+Some NDxI indexes are directly based on satellite instrument data, such
+  as those in the Landsat satellites. To simulate such indexes using spectral
+  reflectande as input, \code{waveband} definitions provided by package
+  \link[photobiologyWavebands]{photobiologyWavebands} can be used.
+
+\code{normalised_diff_ind()} is a synonym for \code{normalized_diff_ind()}.
+
+\code{NDxI()} is a shorthand for \code{normalized_diff_ind()}.
 }

@@ -32,8 +32,11 @@ labels, symbols, rectangles or similar, as the midpoint of each waveband is
 not added to the spectrum.
 }
 \seealso{
-Other tagging and related functions: \code{\link{is_tagged}},
-  \code{\link{tag}}, \code{\link{untag}},
-  \code{\link{wb2rect_spct}}, \code{\link{wb2spct}}
+Other tagging and related functions: 
+\code{\link{is_tagged}()},
+\code{\link{tag}()},
+\code{\link{untag}()},
+\code{\link{wb2rect_spct}()},
+\code{\link{wb2spct}()}
 }
 \concept{tagging and related functions}

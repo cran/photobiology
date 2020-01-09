@@ -4,9 +4,13 @@
 \alias{absorptance_spct}
 \title{Calculate absorptance from spectral absorptance.}
 \usage{
-absorptance_spct(spct, w.band = NULL, quantity = "average",
+absorptance_spct(
+  spct,
+  w.band = NULL,
+  quantity = "average",
   wb.trim = getOption("photobiology.waveband.trim", default = TRUE),
-  use.hinges = getOption("photobiology.use.hinges", default = NULL))
+  use.hinges = getOption("photobiology.use.hinges", default = NULL)
+)
 }
 \arguments{
 \item{spct}{object_spct}

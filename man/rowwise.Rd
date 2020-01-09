@@ -9,20 +9,15 @@
 \alias{rowwise_calibration}
 \title{rowwise functions for collections of spectra}
 \usage{
-rowwise_filter(x, .fun, col.name.tag = "", .fun.name = "Summary of",
-  ...)
+rowwise_filter(x, .fun, col.name.tag = "", .fun.name = "Summary of", ...)
 
-rowwise_source(x, .fun, col.name.tag = "", .fun.name = "Summary of",
-  ...)
+rowwise_source(x, .fun, col.name.tag = "", .fun.name = "Summary of", ...)
 
-rowwise_response(x, .fun, col.name.tag = "", .fun.name = "Summary of",
-  ...)
+rowwise_response(x, .fun, col.name.tag = "", .fun.name = "Summary of", ...)
 
-rowwise_reflector(x, .fun, col.name.tag = "", .fun.name = "Summary of",
-  ...)
+rowwise_reflector(x, .fun, col.name.tag = "", .fun.name = "Summary of", ...)
 
-rowwise_calibration(x, .fun, col.name.tag = "",
-  .fun.name = "Summary of", ...)
+rowwise_calibration(x, .fun, col.name.tag = "", .fun.name = "Summary of", ...)
 }
 \arguments{
 \item{x}{An R object. Currently this package defines methods for collections of
@@ -47,7 +42,7 @@ Omission of NAs is done separately at each wavelength. Interpolation is
   not applied, so all spectra in \code{x} must share the same set of
   wavelengths. When defining new public functions using these utility
   functions make sure to return data that is valid for the class of spectral
-  returned!!
+  object returned!!
 }
 \seealso{
 \code{\link[base]{mean}}

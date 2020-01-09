@@ -11,31 +11,49 @@
 \usage{
 transmittance(spct, w.band, quantity, wb.trim, use.hinges, ...)
 
-\method{transmittance}{default}(spct, w.band, quantity, wb.trim,
-  use.hinges, ...)
+\method{transmittance}{default}(spct, w.band, quantity, wb.trim, use.hinges, ...)
 
-\method{transmittance}{filter_spct}(spct, w.band = NULL,
+\method{transmittance}{filter_spct}(
+  spct,
+  w.band = NULL,
   quantity = "average",
   wb.trim = getOption("photobiology.waveband.trim", default = TRUE),
-  use.hinges = getOption("photobiology.use.hinges", default = NULL), ...)
+  use.hinges = getOption("photobiology.use.hinges", default = NULL),
+  ...
+)
 
-\method{transmittance}{object_spct}(spct, w.band = NULL,
+\method{transmittance}{object_spct}(
+  spct,
+  w.band = NULL,
   quantity = "average",
   wb.trim = getOption("photobiology.waveband.trim", default = TRUE),
-  use.hinges = getOption("photobiology.use.hinges", default = NULL), ...)
+  use.hinges = getOption("photobiology.use.hinges", default = NULL),
+  ...
+)
 
-\method{transmittance}{filter_mspct}(spct, w.band = NULL,
+\method{transmittance}{filter_mspct}(
+  spct,
+  w.band = NULL,
   quantity = "average",
   wb.trim = getOption("photobiology.waveband.trim", default = TRUE),
-  use.hinges = getOption("photobiology.use.hinges", default = NULL), ...,
-  attr2tb = NULL, idx = "spct.idx")
+  use.hinges = getOption("photobiology.use.hinges", default = NULL),
+  ...,
+  attr2tb = NULL,
+  idx = "spct.idx"
+)
 
-\method{transmittance}{object_mspct}(spct, w.band = NULL,
+\method{transmittance}{object_mspct}(
+  spct,
+  w.band = NULL,
   quantity = "average",
   wb.trim = getOption("photobiology.waveband.trim", default = TRUE),
-  use.hinges = getOption("photobiology.use.hinges", default = NULL), ...,
-  attr2tb = NULL, idx = "spct.idx", .parallel = FALSE,
-  .paropts = NULL)
+  use.hinges = getOption("photobiology.use.hinges", default = NULL),
+  ...,
+  attr2tb = NULL,
+  idx = "spct.idx",
+  .parallel = FALSE,
+  .paropts = NULL
+)
 }
 \arguments{
 \item{spct}{an R object.}

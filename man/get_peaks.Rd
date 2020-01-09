@@ -5,11 +5,27 @@
 \alias{get_valleys}
 \title{Get peaks and valleys in a spectrum}
 \usage{
-get_peaks(x, y, ignore_threshold = 0, span = 5, strict = TRUE,
-  x_unit = "", x_digits = 3, na.rm = FALSE)
+get_peaks(
+  x,
+  y,
+  ignore_threshold = 0,
+  span = 5,
+  strict = TRUE,
+  x_unit = "",
+  x_digits = 3,
+  na.rm = FALSE
+)
 
-get_valleys(x, y, ignore_threshold = 0, span = 5, strict = TRUE,
-  x_unit = "", x_digits = 3, na.rm = FALSE)
+get_valleys(
+  x,
+  y,
+  ignore_threshold = 0,
+  span = 5,
+  strict = TRUE,
+  x_unit = "",
+  x_digits = 3,
+  na.rm = FALSE
+)
 }
 \arguments{
 \item{x}{numeric}
@@ -52,8 +68,10 @@ with(sun.spct, get_valleys(w.length, s.e.irrad))
 
 }
 \seealso{
-Other peaks and valleys functions: \code{\link{find_peaks}},
-  \code{\link{peaks}}, \code{\link{valleys}},
-  \code{\link{wls_at_target}}
+Other peaks and valleys functions: 
+\code{\link{find_peaks}()},
+\code{\link{peaks}()},
+\code{\link{valleys}()},
+\code{\link{wls_at_target}()}
 }
 \concept{peaks and valleys functions}

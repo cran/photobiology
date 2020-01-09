@@ -7,25 +7,49 @@
 \alias{e_ratio.source_mspct}
 \title{Energy:energy ratio}
 \usage{
-e_ratio(spct, w.band.num, w.band.denom, wb.trim, use.cached.mult,
-  use.hinges, ...)
+e_ratio(
+  spct,
+  w.band.num,
+  w.band.denom,
+  wb.trim,
+  use.cached.mult,
+  use.hinges,
+  ...
+)
 
-\method{e_ratio}{default}(spct, w.band.num, w.band.denom, wb.trim,
-  use.cached.mult, use.hinges, ...)
+\method{e_ratio}{default}(
+  spct,
+  w.band.num,
+  w.band.denom,
+  wb.trim,
+  use.cached.mult,
+  use.hinges,
+  ...
+)
 
-\method{e_ratio}{source_spct}(spct, w.band.num = NULL,
+\method{e_ratio}{source_spct}(
+  spct,
+  w.band.num = NULL,
   w.band.denom = NULL,
   wb.trim = getOption("photobiology.waveband.trim", default = TRUE),
   use.cached.mult = FALSE,
-  use.hinges = getOption("photobiology.use.hinges"), ...)
+  use.hinges = getOption("photobiology.use.hinges"),
+  ...
+)
 
-\method{e_ratio}{source_mspct}(spct, w.band.num = NULL,
+\method{e_ratio}{source_mspct}(
+  spct,
+  w.band.num = NULL,
   w.band.denom = NULL,
   wb.trim = getOption("photobiology.waveband.trim", default = TRUE),
   use.cached.mult = FALSE,
-  use.hinges = getOption("photobiology.use.hinges"), ...,
-  attr2tb = NULL, idx = "spct.idx", .parallel = FALSE,
-  .paropts = NULL)
+  use.hinges = getOption("photobiology.use.hinges"),
+  ...,
+  attr2tb = NULL,
+  idx = "spct.idx",
+  .parallel = FALSE,
+  .paropts = NULL
+)
 }
 \arguments{
 \item{spct}{source_spct}
@@ -108,7 +132,9 @@ e_ratio(sun.spct, new_waveband(400,500), new_waveband(400,700))
 
 }
 \seealso{
-Other photon and energy ratio functions: \code{\link{eq_ratio}},
-  \code{\link{q_ratio}}, \code{\link{qe_ratio}}
+Other photon and energy ratio functions: 
+\code{\link{eq_ratio}()},
+\code{\link{q_ratio}()},
+\code{\link{qe_ratio}()}
 }
 \concept{photon and energy ratio functions}

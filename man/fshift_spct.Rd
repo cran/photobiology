@@ -12,7 +12,8 @@ fshift_spct(spct, range, col.names, f, ...)
 \item{range}{an R object on which range() returns a vector of length 2, with
 min and max wavelengths (nm)}
 
-\item{col.names}{character The name of the variable to fscale}
+\item{col.names}{character The name of the variable to shift with respect to
+zero.}
 
 \item{f}{function A summary function to be applied to \code{spct}}
 
@@ -22,7 +23,12 @@ min and max wavelengths (nm)}
 a new object of the same class as \code{spct}.
 }
 \description{
-These function returns a spectral object of the same class as the one
-supplied as argument but with the spectral data on a shifted scale.
+This function returns a spectral object of the same class as the one
+supplied as argument but with the spectral data expressed on a zero-shifted
+scale.
+}
+\details{
+This private function is used internally to implement the
+  \code{hshift()} methods that are exported.
 }
 \keyword{internal}

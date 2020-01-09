@@ -5,11 +5,16 @@
 \alias{interpolate_mspct}
 \title{Map a spectrum to new wavelength values.}
 \usage{
-interpolate_spct(spct, w.length.out = NULL, fill = NA,
-  length.out = NULL)
+interpolate_spct(spct, w.length.out = NULL, fill = NA, length.out = NULL)
 
-interpolate_mspct(mspct, w.length.out = NULL, fill = NA,
-  length.out = NULL, .parallel = FALSE, .paropts = NULL)
+interpolate_mspct(
+  mspct,
+  w.length.out = NULL,
+  fill = NA,
+  length.out = NULL,
+  .parallel = FALSE,
+  .paropts = NULL
+)
 }
 \arguments{
 \item{spct}{generic_spct}

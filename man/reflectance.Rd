@@ -11,32 +11,51 @@
 \usage{
 reflectance(spct, w.band, quantity, wb.trim, use.hinges, ...)
 
-\method{reflectance}{default}(spct, w.band, quantity, wb.trim, use.hinges,
-  ...)
+\method{reflectance}{default}(spct, w.band, quantity, wb.trim, use.hinges, ...)
 
-\method{reflectance}{reflector_spct}(spct, w.band = NULL,
+\method{reflectance}{reflector_spct}(
+  spct,
+  w.band = NULL,
   quantity = "average",
   wb.trim = getOption("photobiology.waveband.trim", default = TRUE),
-  use.hinges = getOption("photobiology.use.hinges", default = NULL), ...)
+  use.hinges = getOption("photobiology.use.hinges", default = NULL),
+  ...
+)
 
-\method{reflectance}{object_spct}(spct, w.band = NULL,
+\method{reflectance}{object_spct}(
+  spct,
+  w.band = NULL,
   quantity = "average",
   wb.trim = getOption("photobiology.waveband.trim", default = TRUE),
-  use.hinges = getOption("photobiology.use.hinges", default = NULL), ...)
+  use.hinges = getOption("photobiology.use.hinges", default = NULL),
+  ...
+)
 
-\method{reflectance}{reflector_mspct}(spct, w.band = NULL,
+\method{reflectance}{reflector_mspct}(
+  spct,
+  w.band = NULL,
   quantity = "average",
   wb.trim = getOption("photobiology.waveband.trim", default = TRUE),
-  use.hinges = getOption("photobiology.use.hinges", default = NULL), ...,
-  attr2tb = NULL, idx = "spct.idx", .parallel = FALSE,
-  .paropts = NULL)
+  use.hinges = getOption("photobiology.use.hinges", default = NULL),
+  ...,
+  attr2tb = NULL,
+  idx = "spct.idx",
+  .parallel = FALSE,
+  .paropts = NULL
+)
 
-\method{reflectance}{object_mspct}(spct, w.band = NULL,
+\method{reflectance}{object_mspct}(
+  spct,
+  w.band = NULL,
   quantity = "average",
   wb.trim = getOption("photobiology.waveband.trim", default = TRUE),
-  use.hinges = getOption("photobiology.use.hinges", default = NULL), ...,
-  attr2tb = NULL, idx = "spct.idx", .parallel = FALSE,
-  .paropts = NULL)
+  use.hinges = getOption("photobiology.use.hinges", default = NULL),
+  ...,
+  attr2tb = NULL,
+  idx = "spct.idx",
+  .parallel = FALSE,
+  .paropts = NULL
+)
 }
 \arguments{
 \item{spct}{an R object}

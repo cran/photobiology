@@ -12,15 +12,25 @@ as.object_mspct(x, ...)
 
 \method{as.object_mspct}{default}(x, ...)
 
-\method{as.object_mspct}{data.frame}(x, Tfr.type = c("total",
-  "internal"), Rfr.type = c("total", "specular"), strict.range = TRUE,
-  ...)
+\method{as.object_mspct}{data.frame}(
+  x,
+  Tfr.type = c("total", "internal"),
+  Rfr.type = c("total", "specular"),
+  strict.range = TRUE,
+  ...
+)
 
 \method{as.object_mspct}{object_spct}(x, ...)
 
-\method{as.object_mspct}{list}(x, Tfr.type = c("total", "internal"),
-  Rfr.type = c("total", "specular"), strict.range = TRUE, ...,
-  ncol = 1, byrow = FALSE)
+\method{as.object_mspct}{list}(
+  x,
+  Tfr.type = c("total", "internal"),
+  Rfr.type = c("total", "specular"),
+  strict.range = TRUE,
+  ...,
+  ncol = 1,
+  byrow = FALSE
+)
 }
 \arguments{
 \item{x}{a list of spectral objects or a list of objects such as data frames
@@ -57,15 +67,17 @@ Return a copy of an R object with its class set to a given type
 }}
 
 \seealso{
-Other Coercion methods for collections of spectra: \code{\link{as.calibration_mspct}},
-  \code{\link{as.chroma_mspct}},
-  \code{\link{as.cps_mspct}},
-  \code{\link{as.filter_mspct}},
-  \code{\link{as.generic_mspct}},
-  \code{\link{as.raw_mspct}},
-  \code{\link{as.reflector_mspct}},
-  \code{\link{as.response_mspct}},
-  \code{\link{as.source_mspct}}, \code{\link{split2mspct}},
-  \code{\link{subset2mspct}}
+Other Coercion methods for collections of spectra: 
+\code{\link{as.calibration_mspct}()},
+\code{\link{as.chroma_mspct}()},
+\code{\link{as.cps_mspct}()},
+\code{\link{as.filter_mspct}()},
+\code{\link{as.generic_mspct}()},
+\code{\link{as.raw_mspct}()},
+\code{\link{as.reflector_mspct}()},
+\code{\link{as.response_mspct}()},
+\code{\link{as.source_mspct}()},
+\code{\link{split2mspct}()},
+\code{\link{subset2mspct}()}
 }
 \concept{Coercion methods for collections of spectra}

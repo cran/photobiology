@@ -1,3 +1,42 @@
+photobiology 0.9.30 (2020-01-06)
+================================
+
+* Add function compare_spct() for comparisons between pairs of spectra based
+on summaries computed over multiple ranges of wavelengths.
+* Add utility method uncollect() for extracting all members of a collection of
+spectra.
+* Add utility method wl_thin() for reducing the storage size of _spct objects
+by removing data points in regions with only minor features.
+* Add when_measured() and when_measured<-(), where_measured() and
+where_measured<-(), what_measured() and what_measured<-(), how_measured() and
+how_measured<-() as an alternative syntax consistent with base R for setting
+and querying the attributes when.measured, where.measured, how.measured and
+what.measured used to store metadata in spectral objects and collections.
+* Add spelling synonyms for all normalization-related methods and functions.
+* Add specialization for collections of spectra and spelling synonyms for
+normalized_difference_ind().
+* Revise summary.generic_spct() to store the name of the summarized spectrum
+object and revise print.summary_generic_spct() to display the name of the
+summarized object.
+* Revise fscale() so that by default it sets the "scaled" attribute only when
+the target value for re-scaling is equal to one.
+* Fix bug in get_attributes() methods.
+* Add parameter "address" to setWhereMeasured(), revise print() methods for
+spectra to display address when available.
+* Revise getWhereMeasured() to consistently return a data.frame, even when a
+geocode is missing.
+* Add function na_geocode(), a constructor for a valid geocode data frame with
+all fields set to NAs of correct modes.
+* Revise all logic used for geocodes for consistency in returned and set values.
+
+*******************************************************************************
+One of these changes to handling of geocodes is potentially code-breaking as
+the returned value for missing geocode data is now a data.frame containing NAs
+instead of a bare NA.
+In contrast, handling of geocodes stored in objects created with earlier
+versions of the package is fully consistent with that for new objects.
+*******************************************************************************
+
 photobiology 0.9.29 (2019-09-10)
 ================================
 
@@ -14,7 +53,7 @@ photobiology 0.9.28 (2019-06-08)
 photobiology 0.9.27 (2019-04-22)
 ================================
 
-* Replace non-ASCII characters from documentation.
+* Replace non-ASCII characters in documentation.
 * Improve performance of sun_angles() and day_night() and implement Meuus
 algorithm for julian day. End result is slightly slower performance but much
 higher precision and broader range of dates that are handled correctly.
@@ -28,7 +67,7 @@ photobiology 0.9.26 (2019-02-11)
 
 * Move 'tibble' from Imports: to Depends: as newly defined classes are derived
 from those exported by package 'tibble', making visibility of private
-especialized methods allways necessary.
+specialized methods always necessary.
 * Revise cps2irrad() to ensure that all attributes are copied.
 * Implement s_mean(), s_median(), s_range(), s_sd(), s_var(), s_sum(), s_prod()
 and s_mean_se() methods for collections of spectra that operate across spectra

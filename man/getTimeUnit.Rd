@@ -28,7 +28,9 @@ getTimeUnit(sun.spct)
 
 }
 \seealso{
-Other time attribute functions: \code{\link{checkTimeUnit}},
-  \code{\link{convertTimeUnit}}, \code{\link{setTimeUnit}}
+Other time attribute functions: 
+\code{\link{checkTimeUnit}()},
+\code{\link{convertTimeUnit}()},
+\code{\link{setTimeUnit}()}
 }
 \concept{time attribute functions}

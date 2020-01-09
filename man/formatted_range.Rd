@@ -4,8 +4,7 @@
 \alias{formatted_range}
 \title{Compute range and format it}
 \usage{
-formatted_range(x, na.rm = TRUE, digits = 3, nsmall = 2,
-  collapse = "..")
+formatted_range(x, na.rm = TRUE, digits = 3, nsmall = 2, collapse = "..")
 }
 \arguments{
 \item{x}{an R object}

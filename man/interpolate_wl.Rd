@@ -11,12 +11,17 @@ interpolate_wl(x, w.length.out, fill, length.out, ...)
 
 \method{interpolate_wl}{default}(x, w.length.out, fill, length.out, ...)
 
-\method{interpolate_wl}{generic_spct}(x, w.length.out = NULL,
-  fill = NA, length.out = NULL, ...)
+\method{interpolate_wl}{generic_spct}(x, w.length.out = NULL, fill = NA, length.out = NULL, ...)
 
-\method{interpolate_wl}{generic_mspct}(x, w.length.out = NULL,
-  fill = NA, length.out = NULL, ..., .parallel = FALSE,
-  .paropts = NULL)
+\method{interpolate_wl}{generic_mspct}(
+  x,
+  w.length.out = NULL,
+  fill = NA,
+  length.out = NULL,
+  ...,
+  .parallel = FALSE,
+  .paropts = NULL
+)
 }
 \arguments{
 \item{x}{an R object}

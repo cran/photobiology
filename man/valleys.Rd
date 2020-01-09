@@ -16,45 +16,76 @@
 \usage{
 valleys(x, span, ignore_threshold, strict, ...)
 
-\method{valleys}{default}(x, span = NA, ignore_threshold = NA,
-  strict = NA, na.rm = FALSE, ...)
+\method{valleys}{default}(x, span = NA, ignore_threshold = NA, strict = NA, na.rm = FALSE, ...)
 
-\method{valleys}{default}(x, span = NA, ignore_threshold = NA,
-  strict = NA, na.rm = FALSE, ...)
+\method{valleys}{default}(x, span = NA, ignore_threshold = NA, strict = NA, na.rm = FALSE, ...)
 
-\method{valleys}{numeric}(x, span = 5, ignore_threshold, strict = TRUE,
-  na.rm = FALSE, ...)
+\method{valleys}{numeric}(x, span = 5, ignore_threshold, strict = TRUE, na.rm = FALSE, ...)
 
-\method{valleys}{data.frame}(x, span = 5, ignore_threshold = 0,
-  strict = TRUE, na.rm = FALSE, var.name, ...)
+\method{valleys}{data.frame}(
+  x,
+  span = 5,
+  ignore_threshold = 0,
+  strict = TRUE,
+  na.rm = FALSE,
+  var.name,
+  ...
+)
 
-\method{valleys}{generic_spct}(x, span = 5, ignore_threshold = 0,
-  strict = TRUE, na.rm = FALSE, var.name = NULL, ...)
+\method{valleys}{generic_spct}(
+  x,
+  span = 5,
+  ignore_threshold = 0,
+  strict = TRUE,
+  na.rm = FALSE,
+  var.name = NULL,
+  ...
+)
 
-\method{valleys}{source_spct}(x, span = 5, ignore_threshold = 0,
-  strict = TRUE, na.rm = FALSE,
-  unit.out = getOption("photobiology.radiation.unit", default =
-  "energy"), ...)
+\method{valleys}{source_spct}(
+  x,
+  span = 5,
+  ignore_threshold = 0,
+  strict = TRUE,
+  na.rm = FALSE,
+  unit.out = getOption("photobiology.radiation.unit", default = "energy"),
+  ...
+)
 
-\method{valleys}{response_spct}(x, span = 5, ignore_threshold = 0,
-  strict = TRUE, na.rm = FALSE,
-  unit.out = getOption("photobiology.radiation.unit", default =
-  "energy"), ...)
+\method{valleys}{response_spct}(
+  x,
+  span = 5,
+  ignore_threshold = 0,
+  strict = TRUE,
+  na.rm = FALSE,
+  unit.out = getOption("photobiology.radiation.unit", default = "energy"),
+  ...
+)
 
-\method{valleys}{filter_spct}(x, span = 5, ignore_threshold = 0,
-  strict = TRUE, na.rm = FALSE,
-  filter.qty = getOption("photobiology.filter.qty", default =
-  "transmittance"), ...)
+\method{valleys}{filter_spct}(
+  x,
+  span = 5,
+  ignore_threshold = 0,
+  strict = TRUE,
+  na.rm = FALSE,
+  filter.qty = getOption("photobiology.filter.qty", default = "transmittance"),
+  ...
+)
 
-\method{valleys}{reflector_spct}(x, span = 5, ignore_threshold = 0,
-  strict = TRUE, na.rm = FALSE, ...)
+\method{valleys}{reflector_spct}(x, span = 5, ignore_threshold = 0, strict = TRUE, na.rm = FALSE, ...)
 
-\method{valleys}{cps_spct}(x, span = 5, ignore_threshold = 0,
-  strict = TRUE, na.rm = FALSE, ...)
+\method{valleys}{cps_spct}(x, span = 5, ignore_threshold = 0, strict = TRUE, na.rm = FALSE, ...)
 
-\method{valleys}{generic_mspct}(x, span = 5, ignore_threshold = 0,
-  strict = TRUE, na.rm = FALSE, ..., .parallel = FALSE,
-  .paropts = NULL)
+\method{valleys}{generic_mspct}(
+  x,
+  span = 5,
+  ignore_threshold = 0,
+  strict = TRUE,
+  na.rm = FALSE,
+  ...,
+  .parallel = FALSE,
+  .paropts = NULL
+)
 }
 \arguments{
 \item{x}{an R object}
@@ -130,8 +161,10 @@ valleys(sun.spct)
 
 }
 \seealso{
-Other peaks and valleys functions: \code{\link{find_peaks}},
-  \code{\link{get_peaks}}, \code{\link{peaks}},
-  \code{\link{wls_at_target}}
+Other peaks and valleys functions: 
+\code{\link{find_peaks}()},
+\code{\link{get_peaks}()},
+\code{\link{peaks}()},
+\code{\link{wls_at_target}()}
 }
 \concept{peaks and valleys functions}

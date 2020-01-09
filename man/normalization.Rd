@@ -27,7 +27,8 @@ attributes.
 }}
 
 \seealso{
-Other waveband attributes: \code{\link{is_effective}},
-  \code{\link{labels}}
+Other waveband attributes: 
+\code{\link{is_effective}()},
+\code{\link{labels}()}
 }
 \concept{waveband attributes}

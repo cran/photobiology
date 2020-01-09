@@ -26,11 +26,13 @@ ciexyzCMF2.spct
 
 }
 \seealso{
-Other Visual response data examples: \code{\link{beesxyzCMF.spct}},
-  \code{\link{ciev10.spct}}, \code{\link{ciev2.spct}},
-  \code{\link{ciexyzCC10.spct}},
-  \code{\link{ciexyzCC2.spct}},
-  \code{\link{ciexyzCMF10.spct}}
+Other Visual response data examples: 
+\code{\link{beesxyzCMF.spct}},
+\code{\link{ciev10.spct}},
+\code{\link{ciev2.spct}},
+\code{\link{ciexyzCC10.spct}},
+\code{\link{ciexyzCC2.spct}},
+\code{\link{ciexyzCMF10.spct}}
 }
 \author{
 CIE

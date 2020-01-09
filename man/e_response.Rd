@@ -7,23 +7,53 @@
 \alias{e_response.response_mspct}
 \title{Energy-based photo-response}
 \usage{
-e_response(spct, w.band, quantity, time.unit, scale.factor, wb.trim,
-  use.hinges, ...)
+e_response(
+  spct,
+  w.band,
+  quantity,
+  time.unit,
+  scale.factor,
+  wb.trim,
+  use.hinges,
+  ...
+)
 
-\method{e_response}{default}(spct, w.band, quantity, time.unit,
-  scale.factor, wb.trim, use.hinges, ...)
+\method{e_response}{default}(
+  spct,
+  w.band,
+  quantity,
+  time.unit,
+  scale.factor,
+  wb.trim,
+  use.hinges,
+  ...
+)
 
-\method{e_response}{response_spct}(spct, w.band = NULL,
-  quantity = "total", time.unit = NULL, scale.factor = 1,
+\method{e_response}{response_spct}(
+  spct,
+  w.band = NULL,
+  quantity = "total",
+  time.unit = NULL,
+  scale.factor = 1,
   wb.trim = getOption("photobiology.waveband.trim", default = TRUE),
-  use.hinges = getOption("photobiology.use.hinges", default = NULL), ...)
+  use.hinges = getOption("photobiology.use.hinges", default = NULL),
+  ...
+)
 
-\method{e_response}{response_mspct}(spct, w.band = NULL,
-  quantity = "total", time.unit = NULL, scale.factor = 1,
+\method{e_response}{response_mspct}(
+  spct,
+  w.band = NULL,
+  quantity = "total",
+  time.unit = NULL,
+  scale.factor = 1,
   wb.trim = getOption("photobiology.waveband.trim", default = TRUE),
-  use.hinges = getOption("photobiology.use.hinges", default = NULL), ...,
-  attr2tb = NULL, idx = "spct.idx", .parallel = FALSE,
-  .paropts = NULL)
+  use.hinges = getOption("photobiology.use.hinges", default = NULL),
+  ...,
+  attr2tb = NULL,
+  idx = "spct.idx",
+  .parallel = FALSE,
+  .paropts = NULL
+)
 }
 \arguments{
 \item{spct}{an R object.}
@@ -103,7 +133,8 @@ e_response(photodiode.spct)
 
 }
 \seealso{
-Other response functions: \code{\link{q_response}},
-  \code{\link{response}}
+Other response functions: 
+\code{\link{q_response}()},
+\code{\link{response}()}
 }
 \concept{response functions}

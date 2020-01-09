@@ -4,9 +4,16 @@
 \alias{irradiance}
 \title{Photon or energy irradiance from spectral energy or photon irradiance.}
 \usage{
-irradiance(w.length, s.irrad, w.band = NULL, unit.out = NULL,
-  unit.in = "energy", check.spectrum = TRUE, use.cached.mult = FALSE,
-  use.hinges = getOption("photobiology.use.hinges", default = NULL))
+irradiance(
+  w.length,
+  s.irrad,
+  w.band = NULL,
+  unit.out = NULL,
+  unit.in = "energy",
+  check.spectrum = TRUE,
+  use.cached.mult = FALSE,
+  use.hinges = getOption("photobiology.use.hinges", default = NULL)
+)
 }
 \arguments{
 \item{w.length}{numeric Vector of wavelength (nm).}
@@ -59,24 +66,29 @@ The last three parameters control speed optimizations. The defaults
 with(sun.data, irradiance(w.length, s.e.irrad, new_waveband(400,700), "photon"))
 }
 \seealso{
-Other low-level functions operating on numeric vectors.: \code{\link{as_energy}},
-  \code{\link{as_quantum_mol}},
-  \code{\link{calc_multipliers}},
-  \code{\link{div_spectra}},
-  \code{\link{energy_irradiance}},
-  \code{\link{energy_ratio}}, \code{\link{insert_hinges}},
-  \code{\link{integrate_xy}},
-  \code{\link{interpolate_spectrum}},
-  \code{\link{l_insert_hinges}},
-  \code{\link{oper_spectra}},
-  \code{\link{photon_irradiance}},
-  \code{\link{photon_ratio}},
-  \code{\link{photons_energy_ratio}},
-  \code{\link{prod_spectra}}, \code{\link{s_e_irrad2rgb}},
-  \code{\link{split_energy_irradiance}},
-  \code{\link{split_photon_irradiance}},
-  \code{\link{subt_spectra}}, \code{\link{sum_spectra}},
-  \code{\link{trim_tails}}, \code{\link{v_insert_hinges}},
-  \code{\link{v_replace_hinges}}
+Other low-level functions operating on numeric vectors.: 
+\code{\link{as_energy}()},
+\code{\link{as_quantum_mol}()},
+\code{\link{calc_multipliers}()},
+\code{\link{div_spectra}()},
+\code{\link{energy_irradiance}()},
+\code{\link{energy_ratio}()},
+\code{\link{insert_hinges}()},
+\code{\link{integrate_xy}()},
+\code{\link{interpolate_spectrum}()},
+\code{\link{l_insert_hinges}()},
+\code{\link{oper_spectra}()},
+\code{\link{photon_irradiance}()},
+\code{\link{photon_ratio}()},
+\code{\link{photons_energy_ratio}()},
+\code{\link{prod_spectra}()},
+\code{\link{s_e_irrad2rgb}()},
+\code{\link{split_energy_irradiance}()},
+\code{\link{split_photon_irradiance}()},
+\code{\link{subt_spectra}()},
+\code{\link{sum_spectra}()},
+\code{\link{trim_tails}()},
+\code{\link{v_insert_hinges}()},
+\code{\link{v_replace_hinges}()}
 }
 \concept{low-level functions operating on numeric vectors.}

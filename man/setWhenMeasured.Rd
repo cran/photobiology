@@ -2,6 +2,7 @@
 % Please edit documentation in R/spct.classes.r
 \name{setWhenMeasured}
 \alias{setWhenMeasured}
+\alias{when_measured<-}
 \alias{setWhenMeasured.default}
 \alias{setWhenMeasured.generic_spct}
 \alias{setWhenMeasured.summary_generic_spct}
@@ -10,21 +11,20 @@
 \usage{
 setWhenMeasured(x, when.measured, ...)
 
+when_measured(x) <- value
+
 \method{setWhenMeasured}{default}(x, when.measured, ...)
 
-\method{setWhenMeasured}{generic_spct}(x,
-  when.measured = lubridate::now(tzone = "UTC"), ...)
+\method{setWhenMeasured}{generic_spct}(x, when.measured = lubridate::now(tzone = "UTC"), ...)
 
-\method{setWhenMeasured}{summary_generic_spct}(x,
-  when.measured = lubridate::now(tzone = "UTC"), ...)
+\method{setWhenMeasured}{summary_generic_spct}(x, when.measured = lubridate::now(tzone = "UTC"), ...)
 
-\method{setWhenMeasured}{generic_mspct}(x,
-  when.measured = lubridate::now(tzone = "UTC"), ...)
+\method{setWhenMeasured}{generic_mspct}(x, when.measured = lubridate::now(tzone = "UTC"), ...)
 }
 \arguments{
 \item{x}{a generic_spct object}
 
-\item{when.measured}{POSIXct to add as attribute, or a list of POSIXct.}
+\item{when.measured, value}{POSIXct to add as attribute, or a list of POSIXct.}
 
 \item{...}{Allows use of additional arguments in methods for other classes.}
 }
@@ -55,26 +55,30 @@ This method alters x itself by reference and in addition
 }
 \examples{
 my.spct <- sun.spct
-getWhenMeasured(my.spct)
-setWhenMeasured(my.spct, lubridate::ymd_hms("2015-12-12 08:00:00"))
-getWhenMeasured(my.spct)
+when_measured(my.spct)
+when_measured(my.spct) <- lubridate::ymd_hms("2020-01-01 08:00:00")
+when_measured(my.spct)
 
 }
 \seealso{
-Other measurement metadata functions: \code{\link{getHowMeasured}},
-  \code{\link{getInstrDesc}},
-  \code{\link{getInstrSettings}},
-  \code{\link{getWhatMeasured}},
-  \code{\link{getWhenMeasured}},
-  \code{\link{getWhereMeasured}},
-  \code{\link{get_attributes}},
-  \code{\link{isValidInstrDesc}},
-  \code{\link{isValidInstrSettings}},
-  \code{\link{setHowMeasured}}, \code{\link{setInstrDesc}},
-  \code{\link{setInstrSettings}},
-  \code{\link{setWhatMeasured}},
-  \code{\link{setWhereMeasured}},
-  \code{\link{trimInstrDesc}},
-  \code{\link{trimInstrSettings}}
+Other measurement metadata functions: 
+\code{\link{getHowMeasured}()},
+\code{\link{getInstrDesc}()},
+\code{\link{getInstrSettings}()},
+\code{\link{getWhatMeasured}()},
+\code{\link{getWhenMeasured}()},
+\code{\link{getWhereMeasured}()},
+\code{\link{get_attributes}()},
+\code{\link{isValidInstrDesc}()},
+\code{\link{isValidInstrSettings}()},
+\code{\link{select_spct_attributes}()},
+\code{\link{setHowMeasured}()},
+\code{\link{setInstrDesc}()},
+\code{\link{setInstrSettings}()},
+\code{\link{setWhatMeasured}()},
+\code{\link{setWhereMeasured}()},
+\code{\link{spct_attr2tb}()},
+\code{\link{trimInstrDesc}()},
+\code{\link{trimInstrSettings}()}
 }
 \concept{measurement metadata functions}

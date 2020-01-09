@@ -4,8 +4,7 @@
 \alias{w_length2rgb}
 \title{Wavelength to rgb color conversion}
 \usage{
-w_length2rgb(w.length, sens = photobiology::ciexyzCMF2.spct,
-  color.name = NULL)
+w_length2rgb(w.length, sens = photobiology::ciexyzCMF2.spct, color.name = NULL)
 }
 \arguments{
 \item{w.length}{numeric Vector of wavelengths (nm)}
@@ -29,7 +28,8 @@ col2rgb(w_length2rgb(c(400, 500, 600, 700), color.name="a"))
 
 }
 \seealso{
-Other color functions: \code{\link{rgb_spct}},
-  \code{\link{w_length_range2rgb}}
+Other color functions: 
+\code{\link{rgb_spct}()},
+\code{\link{w_length_range2rgb}()}
 }
 \concept{color functions}

@@ -17,11 +17,9 @@ q2e(x, action, byref, ...)
 
 \method{q2e}{response_spct}(x, action = "add", byref = FALSE, ...)
 
-\method{q2e}{source_mspct}(x, action = "add", byref = FALSE, ...,
-  .parallel = FALSE, .paropts = NULL)
+\method{q2e}{source_mspct}(x, action = "add", byref = FALSE, ..., .parallel = FALSE, .paropts = NULL)
 
-\method{q2e}{response_mspct}(x, action = "add", byref = FALSE, ...,
-  .parallel = FALSE, .paropts = NULL)
+\method{q2e}{response_mspct}(x, action = "add", byref = FALSE, ..., .parallel = FALSE, .paropts = NULL)
 }
 \arguments{
 \item{x}{an R object}
@@ -58,10 +56,14 @@ Function that converts spectral photon irradiance (molar) into spectral energy i
 }}
 
 \seealso{
-Other quantity conversion functions: \code{\link{A2T}},
-  \code{\link{T2Afr}}, \code{\link{T2A}},
-  \code{\link{T2T}}, \code{\link{as_quantum}},
-  \code{\link{e2qmol_multipliers}},
-  \code{\link{e2quantum_multipliers}}, \code{\link{e2q}}
+Other quantity conversion functions: 
+\code{\link{A2T}()},
+\code{\link{T2Afr}()},
+\code{\link{T2A}()},
+\code{\link{T2T}()},
+\code{\link{as_quantum}()},
+\code{\link{e2qmol_multipliers}()},
+\code{\link{e2quantum_multipliers}()},
+\code{\link{e2q}()}
 }
 \concept{quantity conversion functions}

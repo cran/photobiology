@@ -4,8 +4,12 @@
 \alias{split_bands}
 \title{List-of-wavebands constructor}
 \usage{
-split_bands(x, list.names = NULL, short.names = is.null(list.names),
-  length.out = NULL)
+split_bands(
+  x,
+  list.names = NULL,
+  short.names = is.null(list.names),
+  length.out = NULL
+)
 }
 \arguments{
 \item{x}{a numeric vector of wavelengths to split at (nm), or a range of
@@ -45,6 +49,7 @@ split_bands(waveband(c(400,700)), length.out=5)
 
 }
 \seealso{
-Other waveband constructors: \code{\link{waveband}}
+Other waveband constructors: 
+\code{\link{waveband}()}
 }
 \concept{waveband constructors}

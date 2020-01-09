@@ -2,6 +2,7 @@
 % Please edit documentation in R/spct.normalize.r
 \name{normalize}
 \alias{normalize}
+\alias{normalise}
 \alias{normalize.default}
 \alias{normalize.source_spct}
 \alias{normalize.response_spct}
@@ -20,54 +21,108 @@
 \usage{
 normalize(x, ...)
 
+normalise(x, ...)
+
 \method{normalize}{default}(x, ...)
 
-\method{normalize}{source_spct}(x, ..., range = NULL, norm = "max",
-  unit.out = getOption("photobiology.radiation.unit", default =
-  "energy"), na.rm = FALSE)
+\method{normalize}{source_spct}(
+  x,
+  ...,
+  range = NULL,
+  norm = "max",
+  unit.out = getOption("photobiology.radiation.unit", default = "energy"),
+  na.rm = FALSE
+)
 
-\method{normalize}{response_spct}(x, ..., range = NULL, norm = "max",
-  unit.out = getOption("photobiology.radiation.unit", default =
-  "energy"), na.rm = FALSE)
+\method{normalize}{response_spct}(
+  x,
+  ...,
+  range = NULL,
+  norm = "max",
+  unit.out = getOption("photobiology.radiation.unit", default = "energy"),
+  na.rm = FALSE
+)
 
-\method{normalize}{filter_spct}(x, ..., range = NULL, norm = "max",
-  qty.out = getOption("photobiology.filter.qty", default =
-  "transmittance"), na.rm = FALSE)
+\method{normalize}{filter_spct}(
+  x,
+  ...,
+  range = NULL,
+  norm = "max",
+  qty.out = getOption("photobiology.filter.qty", default = "transmittance"),
+  na.rm = FALSE
+)
 
-\method{normalize}{reflector_spct}(x, ..., range = NULL, norm = "max",
-  qty.out = NULL, na.rm = FALSE)
+\method{normalize}{reflector_spct}(x, ..., range = NULL, norm = "max", qty.out = NULL, na.rm = FALSE)
 
-\method{normalize}{raw_spct}(x, ..., range = NULL, norm = "max",
-  na.rm = FALSE)
+\method{normalize}{raw_spct}(x, ..., range = NULL, norm = "max", na.rm = FALSE)
 
-\method{normalize}{cps_spct}(x, ..., range = NULL, norm = "max",
-  na.rm = FALSE)
+\method{normalize}{cps_spct}(x, ..., range = NULL, norm = "max", na.rm = FALSE)
 
-\method{normalize}{generic_spct}(x, ..., range = NULL, norm = "max",
-  col.names, na.rm = FALSE)
+\method{normalize}{generic_spct}(x, ..., range = NULL, norm = "max", col.names, na.rm = FALSE)
 
-\method{normalize}{source_mspct}(x, ..., range = NULL, norm = "max",
-  unit.out = getOption("photobiology.radiation.unit", default =
-  "energy"), na.rm = FALSE, .parallel = FALSE, .paropts = NULL)
+\method{normalize}{source_mspct}(
+  x,
+  ...,
+  range = NULL,
+  norm = "max",
+  unit.out = getOption("photobiology.radiation.unit", default = "energy"),
+  na.rm = FALSE,
+  .parallel = FALSE,
+  .paropts = NULL
+)
 
-\method{normalize}{response_mspct}(x, ..., range = NULL, norm = "max",
-  unit.out = getOption("photobiology.radiation.unit", default =
-  "energy"), na.rm = FALSE, .parallel = FALSE, .paropts = NULL)
+\method{normalize}{response_mspct}(
+  x,
+  ...,
+  range = NULL,
+  norm = "max",
+  unit.out = getOption("photobiology.radiation.unit", default = "energy"),
+  na.rm = FALSE,
+  .parallel = FALSE,
+  .paropts = NULL
+)
 
-\method{normalize}{filter_mspct}(x, ..., range = NULL, norm = "max",
-  qty.out = getOption("photobiology.filter.qty", default =
-  "transmittance"), na.rm = FALSE, .parallel = FALSE,
-  .paropts = NULL)
+\method{normalize}{filter_mspct}(
+  x,
+  ...,
+  range = NULL,
+  norm = "max",
+  qty.out = getOption("photobiology.filter.qty", default = "transmittance"),
+  na.rm = FALSE,
+  .parallel = FALSE,
+  .paropts = NULL
+)
 
-\method{normalize}{reflector_mspct}(x, ..., range = x, norm = "max",
-  qty.out = NULL, na.rm = FALSE, .parallel = FALSE,
-  .paropts = NULL)
+\method{normalize}{reflector_mspct}(
+  x,
+  ...,
+  range = x,
+  norm = "max",
+  qty.out = NULL,
+  na.rm = FALSE,
+  .parallel = FALSE,
+  .paropts = NULL
+)
 
-\method{normalize}{raw_mspct}(x, ..., range = x, norm = "max",
-  na.rm = FALSE, .parallel = FALSE, .paropts = NULL)
+\method{normalize}{raw_mspct}(
+  x,
+  ...,
+  range = x,
+  norm = "max",
+  na.rm = FALSE,
+  .parallel = FALSE,
+  .paropts = NULL
+)
 
-\method{normalize}{cps_mspct}(x, ..., range = x, norm = "max",
-  na.rm = FALSE, .parallel = FALSE, .paropts = NULL)
+\method{normalize}{cps_mspct}(
+  x,
+  ...,
+  range = x,
+  norm = "max",
+  na.rm = FALSE,
+  .parallel = FALSE,
+  .paropts = NULL
+)
 }
 \arguments{
 \item{x}{An R object}
@@ -112,9 +167,18 @@ A copy of \code{x} with the values of the spectral quantity rescaled
   returned value may be one row longer than \code{x}.
 }
 \description{
-These functions return a spectral object of the same class as the one
-supplied as argument but with the spectral data normalized to 1.o a certain
-wavelength.
+This method returns a spectral object of the same class as the one
+supplied as argument but with the spectral data normalized to 1.0 at a
+specific wavelength.
+}
+\details{
+By default normalization is done based on the maximum of the
+  spectral data. It is possible to also do the normalization based on a
+  user-supplied wavelength expressed in nanometres or a wavelength retrieved
+  using an arbitrary R function applied to the spectrum. By default the
+  function is applied to the whole spectrum, but by passing a range of
+  wavelengths as input, the search can be limited to a region of interest
+  within the spectrum.
 }
 \section{Methods (by class)}{
 \itemize{
@@ -148,6 +212,8 @@ wavelength.
 }}
 
 \note{
+\code{normalise()} is a synonym for this \code{normalize()} method.
+
 1) By default if \code{x} contains one or more \code{NA} values and the
   normalization is based on a summary quantity, the returned spectrum will
   contain only \code{NA} values. If \code{na.rm == TRUE} then the summary
@@ -156,15 +222,23 @@ wavelength.
   spectrum.
 }
 \examples{
+
 normalize(sun.spct)
+normalise(sun.spct) # equivalent
+
 normalize(sun.spct, norm = "max")
 normalize(sun.spct, norm = 400)
 
 }
 \seealso{
-Other rescaling functions: \code{\link{fscale}},
-  \code{\link{fshift}}, \code{\link{getNormalized}},
-  \code{\link{is_normalized}}, \code{\link{is_scaled}},
-  \code{\link{setNormalized}}, \code{\link{setScaled}}
+Other rescaling functions: 
+\code{\link{fscale}()},
+\code{\link{fshift}()},
+\code{\link{getNormalized}()},
+\code{\link{getScaled}()},
+\code{\link{is_normalized}()},
+\code{\link{is_scaled}()},
+\code{\link{setNormalized}()},
+\code{\link{setScaled}()}
 }
 \concept{rescaling functions}

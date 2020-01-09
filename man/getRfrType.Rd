@@ -20,7 +20,7 @@ object or object_spct object.
 if x is not a \code{filter_spct} object, \code{NA} is returned
 }
 \seealso{
-Other Rfr attribute functions: \code{\link{getScaled}},
-  \code{\link{setRfrType}}
+Other Rfr attribute functions: 
+\code{\link{setRfrType}()}
 }
 \concept{Rfr attribute functions}

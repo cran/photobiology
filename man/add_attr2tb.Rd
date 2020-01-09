@@ -12,11 +12,14 @@
 \usage{
 add_attr2tb(tb, mspct, col.names = NULL, idx = "spct.idx")
 
-when_measured2tb(mspct, tb = NULL, col.names = "when.measured",
-  idx = "spct.idx")
+when_measured2tb(
+  mspct,
+  tb = NULL,
+  col.names = "when.measured",
+  idx = "spct.idx"
+)
 
-lonlat2tb(mspct, tb = NULL, col.names = c("lon", "lat"),
-  idx = "spct.idx")
+lonlat2tb(mspct, tb = NULL, col.names = c("lon", "lat"), idx = "spct.idx")
 
 lon2tb(mspct, tb = NULL, col.names = "lon", idx = "spct.idx")
 
@@ -24,8 +27,12 @@ lat2tb(mspct, tb = NULL, col.names = "lat", idx = "spct.idx")
 
 geocode2tb(mspct, tb = NULL, col.names = "geocode", idx = "spct.idx")
 
-what_measured2tb(mspct, tb = NULL, col.names = "what.measured",
-  idx = "spct.idx")
+what_measured2tb(
+  mspct,
+  tb = NULL,
+  col.names = "what.measured",
+  idx = "spct.idx"
+)
 }
 \arguments{
 \item{tb}{tibble or data.frame to which to add the data (optional).}

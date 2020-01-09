@@ -4,8 +4,7 @@
 \alias{find_peaks}
 \title{Find peaks in a spectrum}
 \usage{
-find_peaks(x, ignore_threshold = 0, span = 3, strict = TRUE,
-  na.rm = FALSE)
+find_peaks(x, ignore_threshold = 0, span = 3, strict = TRUE, na.rm = FALSE)
 }
 \arguments{
 \item{x}{numeric vector}
@@ -46,8 +45,10 @@ with(sun.data, w.length[find_peaks(s.e.irrad)])
 \seealso{
 \code{\link[splus2R]{peaks}}
 
-Other peaks and valleys functions: \code{\link{get_peaks}},
-  \code{\link{peaks}}, \code{\link{valleys}},
-  \code{\link{wls_at_target}}
+Other peaks and valleys functions: 
+\code{\link{get_peaks}()},
+\code{\link{peaks}()},
+\code{\link{valleys}()},
+\code{\link{wls_at_target}()}
 }
 \concept{peaks and valleys functions}

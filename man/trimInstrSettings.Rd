@@ -27,20 +27,24 @@ This function alters x itself by reference and in addition
   modified.
 }
 \seealso{
-Other measurement metadata functions: \code{\link{getHowMeasured}},
-  \code{\link{getInstrDesc}},
-  \code{\link{getInstrSettings}},
-  \code{\link{getWhatMeasured}},
-  \code{\link{getWhenMeasured}},
-  \code{\link{getWhereMeasured}},
-  \code{\link{get_attributes}},
-  \code{\link{isValidInstrDesc}},
-  \code{\link{isValidInstrSettings}},
-  \code{\link{setHowMeasured}}, \code{\link{setInstrDesc}},
-  \code{\link{setInstrSettings}},
-  \code{\link{setWhatMeasured}},
-  \code{\link{setWhenMeasured}},
-  \code{\link{setWhereMeasured}},
-  \code{\link{trimInstrDesc}}
+Other measurement metadata functions: 
+\code{\link{getHowMeasured}()},
+\code{\link{getInstrDesc}()},
+\code{\link{getInstrSettings}()},
+\code{\link{getWhatMeasured}()},
+\code{\link{getWhenMeasured}()},
+\code{\link{getWhereMeasured}()},
+\code{\link{get_attributes}()},
+\code{\link{isValidInstrDesc}()},
+\code{\link{isValidInstrSettings}()},
+\code{\link{select_spct_attributes}()},
+\code{\link{setHowMeasured}()},
+\code{\link{setInstrDesc}()},
+\code{\link{setInstrSettings}()},
+\code{\link{setWhatMeasured}()},
+\code{\link{setWhenMeasured}()},
+\code{\link{setWhereMeasured}()},
+\code{\link{spct_attr2tb}()},
+\code{\link{trimInstrDesc}()}
 }
 \concept{measurement metadata functions}

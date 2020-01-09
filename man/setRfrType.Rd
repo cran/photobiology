@@ -33,7 +33,7 @@ getRfrType(my.spct)
 
 }
 \seealso{
-Other Rfr attribute functions: \code{\link{getRfrType}},
-  \code{\link{getScaled}}
+Other Rfr attribute functions: 
+\code{\link{getRfrType}()}
 }
 \concept{Rfr attribute functions}

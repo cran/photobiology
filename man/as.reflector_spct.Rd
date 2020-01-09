@@ -7,9 +7,12 @@
 \usage{
 as.reflector_spct(x, ...)
 
-\method{as.reflector_spct}{default}(x, Rfr.type = c("total", "specular"),
+\method{as.reflector_spct}{default}(
+  x,
+  Rfr.type = c("total", "specular"),
   strict.range = getOption("photobiology.strict.range", default = FALSE),
-  ...)
+  ...
+)
 }
 \arguments{
 \item{x}{an R object}
@@ -35,12 +38,16 @@ Return a copy of an R object with its class set to a given type of spectrum.
 \seealso{
 \code{\link{setGenericSpct}}
 
-Other constructors of spectral objects: \code{\link{as.calibration_spct}},
-  \code{\link{as.chroma_spct}}, \code{\link{as.cps_spct}},
-  \code{\link{as.filter_spct}},
-  \code{\link{as.generic_spct}},
-  \code{\link{as.object_spct}}, \code{\link{as.raw_spct}},
-  \code{\link{as.response_spct}},
-  \code{\link{as.source_spct}}, \code{\link{source_spct}}
+Other constructors of spectral objects: 
+\code{\link{as.calibration_spct}()},
+\code{\link{as.chroma_spct}()},
+\code{\link{as.cps_spct}()},
+\code{\link{as.filter_spct}()},
+\code{\link{as.generic_spct}()},
+\code{\link{as.object_spct}()},
+\code{\link{as.raw_spct}()},
+\code{\link{as.response_spct}()},
+\code{\link{as.source_spct}()},
+\code{\link{source_spct}()}
 }
 \concept{constructors of spectral objects}

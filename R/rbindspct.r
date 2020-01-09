@@ -23,7 +23,7 @@
 #'   and all items of the input list have to have non-null column names.
 #'
 #' @param idfactor logical or character Generates an index column of
-#'   \code{factor} type. Default (\code{TRUE}) is to for both lists and
+#'   \code{factor} type. Default is (\code{idfactor=TRUE}) for both lists and
 #'   \code{_mspct} objects. If \code{idfactor=TRUE} then the column is auto
 #'   named \code{spct.idx}. Alternatively the column name can be directly
 #'   provided to \code{idfactor} as a character string.
@@ -57,6 +57,7 @@
 #'   is tagged, it is untagged before row binding.
 #'
 #' @examples
+#' # default, adds factor 'spct.idx' with letters as levels
 #' spct <- rbindspct(list(sun.spct, sun.spct))
 #' spct
 #' class(spct)
@@ -80,9 +81,12 @@
 #' class(spct)
 #'
 rbindspct <- function(l, use.names = TRUE, fill = TRUE, idfactor = TRUE) {
-  if ( (is.null(idfactor) && (!is.null(names(l)))) ||
-       (is.logical(idfactor) && idfactor ) ) {
+  if ((is.null(idfactor) && (!is.null(names(l)))) ||
+       (is.logical(idfactor) && idfactor )) {
     idfactor <- "spct.idx"
+  }
+  if (use.names && !rlang::is_named(l) && all(sapply(l, getMultipleWl) == 1L)) {
+    names(l) <- paste("spct", seq_along(l), sep = "_")
   }
   add.idfactor <- is.character(idfactor)
 
@@ -171,8 +175,7 @@ rbindspct <- function(l, use.names = TRUE, fill = TRUE, idfactor = TRUE) {
   names(instr.settings) <- names.spct
   when.measured <- lapply(l, getWhenMeasured)
   names(when.measured) <- names.spct
-  where.measured <- lapply(l, getWhereMeasured)
-  names(where.measured) <- names.spct
+  where.measured <- dplyr::bind_rows(lapply(l, getWhereMeasured), .id = "spct.idx")
   what.measured <- lapply(l, getWhatMeasured)
   names(what.measured) <- names.spct
 

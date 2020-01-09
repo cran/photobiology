@@ -4,8 +4,15 @@
 \alias{find_wls}
 \title{Find wavelength values in a spectrum}
 \usage{
-find_wls(x, target = NULL, col.name.x = NULL, col.name = NULL,
-  .fun = `<=`, interpolate = FALSE, na.rm = FALSE)
+find_wls(
+  x,
+  target = NULL,
+  col.name.x = NULL,
+  col.name = NULL,
+  .fun = `<=`,
+  interpolate = FALSE,
+  na.rm = FALSE
+)
 }
 \arguments{
 \item{x}{an R object}

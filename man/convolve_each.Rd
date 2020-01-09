@@ -31,13 +31,17 @@ At least one of e1 and e2 must be a \code{generic_mspct} object or
   derived.
 }
 \seealso{
-Other math operators and functions: \code{\link{MathFun}},
-  \code{\link{^.generic_spct}},
-  \code{\link{div-.generic_spct}}, \code{\link{log}},
-  \code{\link{minus-.generic_spct}},
-  \code{\link{mod-.generic_spct}},
-  \code{\link{plus-.generic_spct}}, \code{\link{round}},
-  \code{\link{sign}}, \code{\link{slash-.generic_spct}},
-  \code{\link{times-.generic_spct}}
+Other math operators and functions: 
+\code{\link{MathFun}},
+\code{\link{^.generic_spct}()},
+\code{\link{div-.generic_spct}},
+\code{\link{log}()},
+\code{\link{minus-.generic_spct}},
+\code{\link{mod-.generic_spct}},
+\code{\link{plus-.generic_spct}},
+\code{\link{round}()},
+\code{\link{sign}()},
+\code{\link{slash-.generic_spct}},
+\code{\link{times-.generic_spct}}
 }
 \concept{math operators and functions}

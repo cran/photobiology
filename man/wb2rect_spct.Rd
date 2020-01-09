@@ -29,8 +29,11 @@ a list. The spectrum is suitable for plotting labels, symbols, rectangles or
 similar, as the midpoint of each waveband is added to the spectrum.
 }
 \seealso{
-Other tagging and related functions: \code{\link{is_tagged}},
-  \code{\link{tag}}, \code{\link{untag}},
-  \code{\link{wb2spct}}, \code{\link{wb2tagged_spct}}
+Other tagging and related functions: 
+\code{\link{is_tagged}()},
+\code{\link{tag}()},
+\code{\link{untag}()},
+\code{\link{wb2spct}()},
+\code{\link{wb2tagged_spct}()}
 }
 \concept{tagging and related functions}

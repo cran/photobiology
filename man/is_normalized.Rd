@@ -2,9 +2,12 @@
 % Please edit documentation in R/spct.normalize.r
 \name{is_normalized}
 \alias{is_normalized}
+\alias{is_normalised}
 \title{Query whether a generic spectrum has been normalized.}
 \usage{
 is_normalized(x)
+
+is_normalised(x)
 }
 \arguments{
 \item{x}{An R object.}
@@ -18,10 +21,19 @@ This function tests a \code{generic_spct} object for an attribute that
 signals whether the spectral data has been normalized or not after the object
 was created.
 }
+\note{
+\code{is_normalised()} is a synonym for this \code{is_normalized()}
+  method.
+}
 \seealso{
-Other rescaling functions: \code{\link{fscale}},
-  \code{\link{fshift}}, \code{\link{getNormalized}},
-  \code{\link{is_scaled}}, \code{\link{normalize}},
-  \code{\link{setNormalized}}, \code{\link{setScaled}}
+Other rescaling functions: 
+\code{\link{fscale}()},
+\code{\link{fshift}()},
+\code{\link{getNormalized}()},
+\code{\link{getScaled}()},
+\code{\link{is_scaled}()},
+\code{\link{normalize}()},
+\code{\link{setNormalized}()},
+\code{\link{setScaled}()}
 }
 \concept{rescaling functions}

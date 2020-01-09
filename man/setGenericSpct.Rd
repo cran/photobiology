@@ -15,36 +15,63 @@
 \usage{
 setGenericSpct(x, multiple.wl = 1L, idfactor = NULL)
 
-setCalibrationSpct(x,
+setCalibrationSpct(
+  x,
   strict.range = getOption("photobiology.strict.range", default = FALSE),
-  multiple.wl = 1L, idfactor = NULL)
+  multiple.wl = 1L,
+  idfactor = NULL
+)
 
-setRawSpct(x, strict.range = getOption("photobiology.strict.range",
-  default = FALSE), multiple.wl = 1L, idfactor = NULL)
-
-setCpsSpct(x, time.unit = "second",
+setRawSpct(
+  x,
   strict.range = getOption("photobiology.strict.range", default = FALSE),
-  multiple.wl = 1L, idfactor = NULL)
+  multiple.wl = 1L,
+  idfactor = NULL
+)
 
-setFilterSpct(x, Tfr.type = c("total", "internal"),
+setCpsSpct(
+  x,
+  time.unit = "second",
   strict.range = getOption("photobiology.strict.range", default = FALSE),
-  multiple.wl = 1L, idfactor = NULL)
+  multiple.wl = 1L,
+  idfactor = NULL
+)
 
-setReflectorSpct(x, Rfr.type = c("total", "specular"),
+setFilterSpct(
+  x,
+  Tfr.type = c("total", "internal"),
   strict.range = getOption("photobiology.strict.range", default = FALSE),
-  multiple.wl = 1L, idfactor = NULL)
+  multiple.wl = 1L,
+  idfactor = NULL
+)
 
-setObjectSpct(x, Tfr.type = c("total", "internal"),
+setReflectorSpct(
+  x,
   Rfr.type = c("total", "specular"),
   strict.range = getOption("photobiology.strict.range", default = FALSE),
-  multiple.wl = 1L, idfactor = NULL)
+  multiple.wl = 1L,
+  idfactor = NULL
+)
 
-setResponseSpct(x, time.unit = "second", multiple.wl = 1L,
-  idfactor = NULL)
+setObjectSpct(
+  x,
+  Tfr.type = c("total", "internal"),
+  Rfr.type = c("total", "specular"),
+  strict.range = getOption("photobiology.strict.range", default = FALSE),
+  multiple.wl = 1L,
+  idfactor = NULL
+)
 
-setSourceSpct(x, time.unit = "second", bswf.used = c("none",
-  "unknown"), strict.range = getOption("photobiology.strict.range",
-  default = FALSE), multiple.wl = 1L, idfactor = NULL)
+setResponseSpct(x, time.unit = "second", multiple.wl = 1L, idfactor = NULL)
+
+setSourceSpct(
+  x,
+  time.unit = "second",
+  bswf.used = c("none", "unknown"),
+  strict.range = getOption("photobiology.strict.range", default = FALSE),
+  multiple.wl = 1L,
+  idfactor = NULL
+)
 
 setChromaSpct(x, multiple.wl = 1L, idfactor = NULL)
 }
@@ -107,6 +134,7 @@ is.source_spct(my.df)
 
 }
 \seealso{
-Other set and unset spectral class functions: \code{\link{rmDerivedSpct}}
+Other set and unset spectral class functions: 
+\code{\link{rmDerivedSpct}()}
 }
 \concept{set and unset spectral class functions}

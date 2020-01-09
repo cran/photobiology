@@ -2,14 +2,17 @@
 % Please edit documentation in R/spct.classes.r
 \name{setHowMeasured}
 \alias{setHowMeasured}
+\alias{how_measured<-}
 \title{Set the "how.measured" attribute}
 \usage{
 setHowMeasured(x, how.measured)
+
+how_measured(x) <- value
 }
 \arguments{
 \item{x}{a generic_spct object}
 
-\item{how.measured}{a list}
+\item{how.measured, value}{a list}
 }
 \value{
 x
@@ -23,22 +26,33 @@ This function alters x itself by reference and in addition
   returns x invisibly. If x is not a generic_spct object, x is not
   modified.
 }
+\examples{
+
+my.spct <- sun.spct
+how_measured(my.spct)
+how_measured(my.spct) <- "simulated with a radiation transfer model"
+how_measured(my.spct)
+
+}
 \seealso{
-Other measurement metadata functions: \code{\link{getHowMeasured}},
-  \code{\link{getInstrDesc}},
-  \code{\link{getInstrSettings}},
-  \code{\link{getWhatMeasured}},
-  \code{\link{getWhenMeasured}},
-  \code{\link{getWhereMeasured}},
-  \code{\link{get_attributes}},
-  \code{\link{isValidInstrDesc}},
-  \code{\link{isValidInstrSettings}},
-  \code{\link{setInstrDesc}},
-  \code{\link{setInstrSettings}},
-  \code{\link{setWhatMeasured}},
-  \code{\link{setWhenMeasured}},
-  \code{\link{setWhereMeasured}},
-  \code{\link{trimInstrDesc}},
-  \code{\link{trimInstrSettings}}
+Other measurement metadata functions: 
+\code{\link{getHowMeasured}()},
+\code{\link{getInstrDesc}()},
+\code{\link{getInstrSettings}()},
+\code{\link{getWhatMeasured}()},
+\code{\link{getWhenMeasured}()},
+\code{\link{getWhereMeasured}()},
+\code{\link{get_attributes}()},
+\code{\link{isValidInstrDesc}()},
+\code{\link{isValidInstrSettings}()},
+\code{\link{select_spct_attributes}()},
+\code{\link{setInstrDesc}()},
+\code{\link{setInstrSettings}()},
+\code{\link{setWhatMeasured}()},
+\code{\link{setWhenMeasured}()},
+\code{\link{setWhereMeasured}()},
+\code{\link{spct_attr2tb}()},
+\code{\link{trimInstrDesc}()},
+\code{\link{trimInstrSettings}()}
 }
 \concept{measurement metadata functions}

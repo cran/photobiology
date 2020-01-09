@@ -2,34 +2,36 @@
 % Please edit documentation in R/spct.classes.r
 \name{setWhereMeasured}
 \alias{setWhereMeasured}
+\alias{where_measured<-}
 \alias{setWhereMeasured.default}
 \alias{setWhereMeasured.generic_spct}
 \alias{setWhereMeasured.summary_generic_spct}
 \alias{setWhereMeasured.generic_mspct}
 \title{Set the "where.measured" attribute}
 \usage{
-setWhereMeasured(x, where.measured, lat, lon, ...)
+setWhereMeasured(x, where.measured, lat, lon, address, ...)
 
-\method{setWhereMeasured}{default}(x, where.measured, lat, lon, ...)
+where_measured(x) <- value
 
-\method{setWhereMeasured}{generic_spct}(x, where.measured = NA,
-  lat = NA, lon = NA, ...)
+\method{setWhereMeasured}{default}(x, where.measured, lat, lon, address, ...)
 
-\method{setWhereMeasured}{summary_generic_spct}(x, where.measured = NA,
-  lat = NA, lon = NA, ...)
+\method{setWhereMeasured}{generic_spct}(x, where.measured = NA, lat = NA, lon = NA, address = NA, ...)
 
-\method{setWhereMeasured}{generic_mspct}(x, where.measured = NA,
-  lat = NA, lon = NA, ...)
+\method{setWhereMeasured}{summary_generic_spct}(x, where.measured = NA, lat = NA, lon = NA, address = NA, ...)
+
+\method{setWhereMeasured}{generic_mspct}(x, where.measured = NA, lat = NA, lon = NA, address = NA, ...)
 }
 \arguments{
 \item{x}{a generic_spct object}
 
-\item{where.measured}{A one row data.frame such as returned by
+\item{where.measured, value}{A one row data.frame such as returned by
 function \code{geocode} from package 'ggmap' for a location search.}
 
 \item{lat}{numeric Latitude in decimal degrees North}
 
 \item{lon}{numeric Longitude in decimal degrees West}
+
+\item{address}{character Human readable address}
 
 \item{...}{Allows use of additional arguments in methods for other classes.}
 }
@@ -56,26 +58,40 @@ This method alters x itself by reference and in addition
   returns x invisibly. If x is not a generic_spct or an object of a class derived from
   generic_spct, x is not modified. If \code{where} is not a POSIXct object
   or \code{NULL} an error is triggered. A \code{POSIXct} describes an
-  instant in time (date plus time-of-day plus time zone).
+  instant in time (date plus time-of-day plus time zone). As expected
+  passing \code{NULL} as argument for \code{where.measured} unsets the
+  attribute.
 
 Method for collections of spectra recycles the location information
   only if it is of length one.
 }
+\examples{
+
+my.spct <- sun.spct
+where_measured(my.spct)
+where_measured(my.spct) <- data.frame(lon = 0, lat = -60)
+where_measured(my.spct)
+
+}
 \seealso{
-Other measurement metadata functions: \code{\link{getHowMeasured}},
-  \code{\link{getInstrDesc}},
-  \code{\link{getInstrSettings}},
-  \code{\link{getWhatMeasured}},
-  \code{\link{getWhenMeasured}},
-  \code{\link{getWhereMeasured}},
-  \code{\link{get_attributes}},
-  \code{\link{isValidInstrDesc}},
-  \code{\link{isValidInstrSettings}},
-  \code{\link{setHowMeasured}}, \code{\link{setInstrDesc}},
-  \code{\link{setInstrSettings}},
-  \code{\link{setWhatMeasured}},
-  \code{\link{setWhenMeasured}},
-  \code{\link{trimInstrDesc}},
-  \code{\link{trimInstrSettings}}
+Other measurement metadata functions: 
+\code{\link{getHowMeasured}()},
+\code{\link{getInstrDesc}()},
+\code{\link{getInstrSettings}()},
+\code{\link{getWhatMeasured}()},
+\code{\link{getWhenMeasured}()},
+\code{\link{getWhereMeasured}()},
+\code{\link{get_attributes}()},
+\code{\link{isValidInstrDesc}()},
+\code{\link{isValidInstrSettings}()},
+\code{\link{select_spct_attributes}()},
+\code{\link{setHowMeasured}()},
+\code{\link{setInstrDesc}()},
+\code{\link{setInstrSettings}()},
+\code{\link{setWhatMeasured}()},
+\code{\link{setWhenMeasured}()},
+\code{\link{spct_attr2tb}()},
+\code{\link{trimInstrDesc}()},
+\code{\link{trimInstrSettings}()}
 }
 \concept{measurement metadata functions}

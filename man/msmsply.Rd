@@ -9,13 +9,19 @@
 \usage{
 msmsply(mspct, .fun, ..., .parallel = FALSE, .paropts = NULL)
 
-msdply(mspct, .fun, ..., idx = NULL, col.names = NULL,
-  .parallel = FALSE, .paropts = NULL)
+msdply(
+  mspct,
+  .fun,
+  ...,
+  idx = NULL,
+  col.names = NULL,
+  .parallel = FALSE,
+  .paropts = NULL
+)
 
 mslply(mspct, .fun, ..., .parallel = FALSE, .paropts = NULL)
 
-msaply(mspct, .fun, ..., .drop = TRUE, .parallel = FALSE,
-  .paropts = NULL)
+msaply(mspct, .fun, ..., .drop = TRUE, .parallel = FALSE, .paropts = NULL)
 }
 \arguments{
 \item{mspct}{an object of class generic_mspct or a derived class}

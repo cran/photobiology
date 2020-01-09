@@ -4,9 +4,16 @@
 \alias{energy_ratio}
 \title{Energy:energy ratio}
 \usage{
-energy_ratio(w.length, s.irrad, w.band.num = NULL, w.band.denom = NULL,
-  unit.in = "energy", check.spectrum = TRUE, use.cached.mult = FALSE,
-  use.hinges = NULL)
+energy_ratio(
+  w.length,
+  s.irrad,
+  w.band.num = NULL,
+  w.band.denom = NULL,
+  unit.in = "energy",
+  check.spectrum = TRUE,
+  use.cached.mult = FALSE,
+  use.hinges = NULL
+)
 }
 \arguments{
 \item{w.length}{numeric vector of wavelengths (nm).}
@@ -47,23 +54,29 @@ with(sun.data,
 
 }
 \seealso{
-Other low-level functions operating on numeric vectors.: \code{\link{as_energy}},
-  \code{\link{as_quantum_mol}},
-  \code{\link{calc_multipliers}},
-  \code{\link{div_spectra}},
-  \code{\link{energy_irradiance}},
-  \code{\link{insert_hinges}}, \code{\link{integrate_xy}},
-  \code{\link{interpolate_spectrum}},
-  \code{\link{irradiance}}, \code{\link{l_insert_hinges}},
-  \code{\link{oper_spectra}},
-  \code{\link{photon_irradiance}},
-  \code{\link{photon_ratio}},
-  \code{\link{photons_energy_ratio}},
-  \code{\link{prod_spectra}}, \code{\link{s_e_irrad2rgb}},
-  \code{\link{split_energy_irradiance}},
-  \code{\link{split_photon_irradiance}},
-  \code{\link{subt_spectra}}, \code{\link{sum_spectra}},
-  \code{\link{trim_tails}}, \code{\link{v_insert_hinges}},
-  \code{\link{v_replace_hinges}}
+Other low-level functions operating on numeric vectors.: 
+\code{\link{as_energy}()},
+\code{\link{as_quantum_mol}()},
+\code{\link{calc_multipliers}()},
+\code{\link{div_spectra}()},
+\code{\link{energy_irradiance}()},
+\code{\link{insert_hinges}()},
+\code{\link{integrate_xy}()},
+\code{\link{interpolate_spectrum}()},
+\code{\link{irradiance}()},
+\code{\link{l_insert_hinges}()},
+\code{\link{oper_spectra}()},
+\code{\link{photon_irradiance}()},
+\code{\link{photon_ratio}()},
+\code{\link{photons_energy_ratio}()},
+\code{\link{prod_spectra}()},
+\code{\link{s_e_irrad2rgb}()},
+\code{\link{split_energy_irradiance}()},
+\code{\link{split_photon_irradiance}()},
+\code{\link{subt_spectra}()},
+\code{\link{sum_spectra}()},
+\code{\link{trim_tails}()},
+\code{\link{v_insert_hinges}()},
+\code{\link{v_replace_hinges}()}
 }
 \concept{low-level functions operating on numeric vectors.}

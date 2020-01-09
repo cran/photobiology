@@ -4,8 +4,11 @@
 \alias{tz_time_diff}
 \title{Time difference between two time zones}
 \usage{
-tz_time_diff(when = lubridate::now(), tz.target = lubridate::tz(when),
-  tz.reference = "UTC")
+tz_time_diff(
+  when = lubridate::now(),
+  tz.target = lubridate::tz(when),
+  tz.reference = "UTC"
+)
 }
 \arguments{
 \item{when}{datetime A time instant}

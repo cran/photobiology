@@ -19,8 +19,21 @@ object.
 \note{
 if x is not a \code{filter_spct} object, \code{NA} is returned
 }
-\seealso{
-Other Rfr attribute functions: \code{\link{getRfrType}},
-  \code{\link{setRfrType}}
+\examples{
+
+scaled.spct <- fscale(sun.spct)
+getScaled(scaled.spct)
+
 }
-\concept{Rfr attribute functions}
+\seealso{
+Other rescaling functions: 
+\code{\link{fscale}()},
+\code{\link{fshift}()},
+\code{\link{getNormalized}()},
+\code{\link{is_normalized}()},
+\code{\link{is_scaled}()},
+\code{\link{normalize}()},
+\code{\link{setNormalized}()},
+\code{\link{setScaled}()}
+}
+\concept{rescaling functions}

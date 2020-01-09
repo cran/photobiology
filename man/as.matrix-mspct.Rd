@@ -6,8 +6,7 @@
 \alias{mspct2mat}
 \title{Coerce a collection of spectra into a matrix}
 \usage{
-\method{as.matrix}{generic_mspct}(x, spct.data.var, byrow = attr(x,
-  "mspct.byrow"), ...)
+\method{as.matrix}{generic_mspct}(x, spct.data.var, byrow = attr(x, "mspct.byrow"), ...)
 
 mspct2mat(x, spct.data.var, byrow = attr(x, "mspct.byrow"), ...)
 }

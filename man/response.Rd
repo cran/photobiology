@@ -7,25 +7,57 @@
 \alias{response.response_mspct}
 \title{Integrated response}
 \usage{
-response(spct, w.band, unit.out, quantity, time.unit, scale.factor,
-  wb.trim, use.hinges, ...)
+response(
+  spct,
+  w.band,
+  unit.out,
+  quantity,
+  time.unit,
+  scale.factor,
+  wb.trim,
+  use.hinges,
+  ...
+)
 
-\method{response}{default}(spct, w.band, unit.out, quantity, time.unit,
-  scale.factor, wb.trim, use.hinges, ...)
+\method{response}{default}(
+  spct,
+  w.band,
+  unit.out,
+  quantity,
+  time.unit,
+  scale.factor,
+  wb.trim,
+  use.hinges,
+  ...
+)
 
-\method{response}{response_spct}(spct, w.band = NULL,
-  unit.out = getOption("photobiology.radiation.unit", default =
-  "energy"), quantity = "total", time.unit = NULL, scale.factor = 1,
+\method{response}{response_spct}(
+  spct,
+  w.band = NULL,
+  unit.out = getOption("photobiology.radiation.unit", default = "energy"),
+  quantity = "total",
+  time.unit = NULL,
+  scale.factor = 1,
   wb.trim = getOption("photobiology.waveband.trim", default = TRUE),
-  use.hinges = getOption("photobiology.use.hinges", default = NULL), ...)
+  use.hinges = getOption("photobiology.use.hinges", default = NULL),
+  ...
+)
 
-\method{response}{response_mspct}(spct, w.band = NULL,
-  unit.out = getOption("photobiology.radiation.unit", default =
-  "energy"), quantity = "total", time.unit = NULL, scale.factor = 1,
+\method{response}{response_mspct}(
+  spct,
+  w.band = NULL,
+  unit.out = getOption("photobiology.radiation.unit", default = "energy"),
+  quantity = "total",
+  time.unit = NULL,
+  scale.factor = 1,
   wb.trim = getOption("photobiology.waveband.trim", default = TRUE),
-  use.hinges = getOption("photobiology.use.hinges", default = NULL), ...,
-  attr2tb = NULL, idx = "spct.idx", .parallel = FALSE,
-  .paropts = NULL)
+  use.hinges = getOption("photobiology.use.hinges", default = NULL),
+  ...,
+  attr2tb = NULL,
+  idx = "spct.idx",
+  .parallel = FALSE,
+  .paropts = NULL
+)
 }
 \arguments{
 \item{spct}{an R object of class "generic_spct".}
@@ -103,7 +135,8 @@ The parameter \code{use.hinges} controls speed optimization. The
   in the wavebands is used and all BSWFs are ignored.
 }
 \seealso{
-Other response functions: \code{\link{e_response}},
-  \code{\link{q_response}}
+Other response functions: 
+\code{\link{e_response}()},
+\code{\link{q_response}()}
 }
 \concept{response functions}

@@ -4,8 +4,7 @@
 \alias{relative_AM}
 \title{Relative Air Mass (AM)}
 \usage{
-relative_AM(elevation.angle = NULL, zenith.angle = NULL,
-  occluded.value = NA)
+relative_AM(elevation.angle = NULL, zenith.angle = NULL, occluded.value = NA)
 }
 \arguments{
 \item{elevation.angle, zenith.angle}{numeric vector Angle in degrees for the

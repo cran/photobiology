@@ -7,25 +7,57 @@
 \alias{e_fluence.source_mspct}
 \title{Energy fluence}
 \usage{
-e_fluence(spct, w.band, exposure.time, scale.factor, wb.trim,
-  use.cached.mult, use.hinges, allow.scaled, ...)
+e_fluence(
+  spct,
+  w.band,
+  exposure.time,
+  scale.factor,
+  wb.trim,
+  use.cached.mult,
+  use.hinges,
+  allow.scaled,
+  ...
+)
 
-\method{e_fluence}{default}(spct, w.band, exposure.time, scale.factor,
-  wb.trim, use.cached.mult, use.hinges, allow.scaled, ...)
+\method{e_fluence}{default}(
+  spct,
+  w.band,
+  exposure.time,
+  scale.factor,
+  wb.trim,
+  use.cached.mult,
+  use.hinges,
+  allow.scaled,
+  ...
+)
 
-\method{e_fluence}{source_spct}(spct, w.band = NULL, exposure.time,
-  scale.factor = 1, wb.trim = getOption("photobiology.waveband.trim",
-  default = TRUE),
-  use.cached.mult = getOption("photobiology.use.cached.mult", default =
-  FALSE), use.hinges = NULL, allow.scaled = FALSE, ...)
+\method{e_fluence}{source_spct}(
+  spct,
+  w.band = NULL,
+  exposure.time,
+  scale.factor = 1,
+  wb.trim = getOption("photobiology.waveband.trim", default = TRUE),
+  use.cached.mult = getOption("photobiology.use.cached.mult", default = FALSE),
+  use.hinges = NULL,
+  allow.scaled = FALSE,
+  ...
+)
 
-\method{e_fluence}{source_mspct}(spct, w.band = NULL, exposure.time,
-  scale.factor = 1, wb.trim = getOption("photobiology.waveband.trim",
-  default = TRUE),
-  use.cached.mult = getOption("photobiology.use.cached.mult", default =
-  FALSE), use.hinges = NULL, allow.scaled = FALSE, ...,
-  attr2tb = NULL, idx = "spct.idx", .parallel = FALSE,
-  .paropts = NULL)
+\method{e_fluence}{source_mspct}(
+  spct,
+  w.band = NULL,
+  exposure.time,
+  scale.factor = 1,
+  wb.trim = getOption("photobiology.waveband.trim", default = TRUE),
+  use.cached.mult = getOption("photobiology.use.cached.mult", default = FALSE),
+  use.hinges = NULL,
+  allow.scaled = FALSE,
+  ...,
+  attr2tb = NULL,
+  idx = "spct.idx",
+  .parallel = FALSE,
+  .paropts = NULL
+)
 }
 \arguments{
 \item{spct}{an R object}
@@ -104,8 +136,11 @@ e_fluence(sun.spct, w.band = waveband(c(400,700)),
 
 }
 \seealso{
-Other irradiance functions: \code{\link{e_irrad}},
-  \code{\link{fluence}}, \code{\link{irrad}},
-  \code{\link{q_fluence}}, \code{\link{q_irrad}}
+Other irradiance functions: 
+\code{\link{e_irrad}()},
+\code{\link{fluence}()},
+\code{\link{irrad}()},
+\code{\link{q_fluence}()},
+\code{\link{q_irrad}()}
 }
 \concept{irradiance functions}

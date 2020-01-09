@@ -2,6 +2,7 @@
 % Please edit documentation in R/spct.fshift.r
 \name{fshift}
 \alias{fshift}
+\alias{fshift.default}
 \alias{fshift.source_spct}
 \alias{fshift.response_spct}
 \alias{fshift.filter_spct}
@@ -20,54 +21,105 @@
 \usage{
 fshift(x, ...)
 
-\method{fshift}{source_spct}(x, range = c(min(x), min(x) + 10),
-  f = "mean", unit.out = getOption("photobiology.radiation.unit",
-  default = "energy"), ...)
+\method{fshift}{default}(x, ...)
 
-\method{fshift}{response_spct}(x, range = c(min(x), min(x) + 10),
-  f = "mean", unit.out = getOption("photobiology.radiation.unit",
-  default = "energy"), ...)
+\method{fshift}{source_spct}(
+  x,
+  range = c(min(x), min(x) + 10),
+  f = "mean",
+  unit.out = getOption("photobiology.radiation.unit", default = "energy"),
+  ...
+)
 
-\method{fshift}{filter_spct}(x, range = c(min(x), min(x) + 10),
-  f = "min", qty.out = getOption("photobiology.filter.qty", default =
-  "transmittance"), ...)
+\method{fshift}{response_spct}(
+  x,
+  range = c(min(x), min(x) + 10),
+  f = "mean",
+  unit.out = getOption("photobiology.radiation.unit", default = "energy"),
+  ...
+)
 
-\method{fshift}{reflector_spct}(x, range = c(min(x), min(x) + 10),
-  f = "min", qty.out = NULL, ...)
+\method{fshift}{filter_spct}(
+  x,
+  range = c(min(x), min(x) + 10),
+  f = "min",
+  qty.out = getOption("photobiology.filter.qty", default = "transmittance"),
+  ...
+)
 
-\method{fshift}{source_mspct}(x, range = c(min(x), min(x) + 10),
-  f = "mean", unit.out = getOption("photobiology.radiation.unit",
-  default = "energy"), ...)
+\method{fshift}{reflector_spct}(x, range = c(min(x), min(x) + 10), f = "min", qty.out = NULL, ...)
 
-\method{fshift}{raw_spct}(x, range = c(min(x), min(x) + 10),
-  f = "mean", qty.out = NULL, ...)
+\method{fshift}{source_mspct}(
+  x,
+  range = c(min(x), min(x) + 10),
+  f = "mean",
+  unit.out = getOption("photobiology.radiation.unit", default = "energy"),
+  ...
+)
 
-\method{fshift}{cps_spct}(x, range = c(min(x), min(x) + 10),
-  f = "mean", qty.out = NULL, ...)
+\method{fshift}{raw_spct}(x, range = c(min(x), min(x) + 10), f = "mean", qty.out = NULL, ...)
 
-\method{fshift}{generic_spct}(x, range = c(min(x), min(x) + 10),
-  f = "mean", col.names, ...)
+\method{fshift}{cps_spct}(x, range = c(min(x), min(x) + 10), f = "mean", qty.out = NULL, ...)
 
-\method{fshift}{response_mspct}(x, range = c(min(x), min(x) + 10),
-  f = "mean", unit.out = getOption("photobiology.radiation.unit",
-  default = "energy"), ..., .parallel = FALSE, .paropts = NULL)
+\method{fshift}{generic_spct}(x, range = c(min(x), min(x) + 10), f = "mean", col.names, ...)
 
-\method{fshift}{filter_mspct}(x, range = c(min(x), min(x) + 10),
-  f = "min", qty.out = getOption("photobiology.filter.qty", default =
-  "transmittance"), ..., .parallel = FALSE, .paropts = NULL)
+\method{fshift}{response_mspct}(
+  x,
+  range = c(min(x), min(x) + 10),
+  f = "mean",
+  unit.out = getOption("photobiology.radiation.unit", default = "energy"),
+  ...,
+  .parallel = FALSE,
+  .paropts = NULL
+)
 
-\method{fshift}{reflector_mspct}(x, range = c(min(x), min(x) + 10),
-  f = "min", qty.out = NULL, ..., .parallel = FALSE,
-  .paropts = NULL)
+\method{fshift}{filter_mspct}(
+  x,
+  range = c(min(x), min(x) + 10),
+  f = "min",
+  qty.out = getOption("photobiology.filter.qty", default = "transmittance"),
+  ...,
+  .parallel = FALSE,
+  .paropts = NULL
+)
 
-\method{fshift}{raw_mspct}(x, range = c(min(x), min(x) + 10),
-  f = "min", ..., .parallel = FALSE, .paropts = NULL)
+\method{fshift}{reflector_mspct}(
+  x,
+  range = c(min(x), min(x) + 10),
+  f = "min",
+  qty.out = NULL,
+  ...,
+  .parallel = FALSE,
+  .paropts = NULL
+)
 
-\method{fshift}{cps_mspct}(x, range = c(min(x), min(x) + 10),
-  f = "min", ..., .parallel = FALSE, .paropts = NULL)
+\method{fshift}{raw_mspct}(
+  x,
+  range = c(min(x), min(x) + 10),
+  f = "min",
+  ...,
+  .parallel = FALSE,
+  .paropts = NULL
+)
 
-\method{fshift}{generic_mspct}(x, range = c(min(x), min(x) + 10),
-  f = "min", col.names, ..., .parallel = FALSE, .paropts = NULL)
+\method{fshift}{cps_mspct}(
+  x,
+  range = c(min(x), min(x) + 10),
+  f = "min",
+  ...,
+  .parallel = FALSE,
+  .paropts = NULL
+)
+
+\method{fshift}{generic_mspct}(
+  x,
+  range = c(min(x), min(x) + 10),
+  f = "min",
+  col.names,
+  ...,
+  .parallel = FALSE,
+  .paropts = NULL
+)
 }
 \arguments{
 \item{x}{An R object}
@@ -103,17 +155,21 @@ correct environment set up for computing.}
 \value{
 A copy of \code{x} with the spectral data values replaced with values
   zero-shifted.
+
+a new object of the same class as \code{x}.
 }
 \description{
-These functions return a spectral object of the same class as the one
-supplied as argument but with the spectral data on a shifted scale. A range
-of wavelengths is taken a reference (zero or another numeric constant) and a
-summary is calculated for this waveband. The difference between the computed
-and reference value are used to shift the scale so that these two values
-match in the returned object.
+The \code{fshift()} methods return a spectral object of the same class as the
+one supplied as argument but with the spectral data on a zero-shifted scale.
+A range of wavelengths is taken as a zero reference and the summary
+calculated with \code{f} for this waveband is substracted. This results in a
+zero shift (= additive correction) to the values in the returned object.
+Metadata attributes are retained unchanged.
 }
 \section{Methods (by class)}{
 \itemize{
+\item \code{default}: Default for generic function
+
 \item \code{source_spct}: 
 
 \item \code{response_spct}: 
@@ -144,9 +200,14 @@ match in the returned object.
 }}
 
 \seealso{
-Other rescaling functions: \code{\link{fscale}},
-  \code{\link{getNormalized}}, \code{\link{is_normalized}},
-  \code{\link{is_scaled}}, \code{\link{normalize}},
-  \code{\link{setNormalized}}, \code{\link{setScaled}}
+Other rescaling functions: 
+\code{\link{fscale}()},
+\code{\link{getNormalized}()},
+\code{\link{getScaled}()},
+\code{\link{is_normalized}()},
+\code{\link{is_scaled}()},
+\code{\link{normalize}()},
+\code{\link{setNormalized}()},
+\code{\link{setScaled}()}
 }
 \concept{rescaling functions}

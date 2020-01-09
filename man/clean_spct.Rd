@@ -4,8 +4,7 @@
 \alias{clean_spct}
 \title{Clean a spectrum}
 \usage{
-clean_spct(x, range, range.s.data, fill, col.names, col.pattern = NULL,
-  ...)
+clean_spct(x, range, range.s.data, fill, col.names, col.pattern = NULL, ...)
 }
 \arguments{
 \item{x}{an R object}

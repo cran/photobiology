@@ -12,39 +12,71 @@
 \alias{wls_at_target.generic_mspct}
 \title{Find wavelengths values corresponding to a target spectral value}
 \usage{
-wls_at_target(x, target = NULL, interpolate = FALSE, na.rm = FALSE,
-  ...)
+wls_at_target(x, target = NULL, interpolate = FALSE, na.rm = FALSE, ...)
 
-\method{wls_at_target}{default}(x, target = NULL, interpolate = FALSE,
-  na.rm = FALSE, ...)
+\method{wls_at_target}{default}(x, target = NULL, interpolate = FALSE, na.rm = FALSE, ...)
 
-\method{wls_at_target}{generic_spct}(x, target = "half.maximum",
-  interpolate = FALSE, na.rm = FALSE, col.name = NULL, ...)
+\method{wls_at_target}{generic_spct}(
+  x,
+  target = "half.maximum",
+  interpolate = FALSE,
+  na.rm = FALSE,
+  col.name = NULL,
+  ...
+)
 
-\method{wls_at_target}{source_spct}(x, target = "half.maximum",
-  interpolate = FALSE, na.rm = FALSE,
-  unit.out = getOption("photobiology.radiation.unit", default =
-  "energy"), ...)
+\method{wls_at_target}{source_spct}(
+  x,
+  target = "half.maximum",
+  interpolate = FALSE,
+  na.rm = FALSE,
+  unit.out = getOption("photobiology.radiation.unit", default = "energy"),
+  ...
+)
 
-\method{wls_at_target}{response_spct}(x, target = "half.maximum",
-  interpolate = FALSE, na.rm = FALSE,
-  unit.out = getOption("photobiology.radiation.unit", default =
-  "energy"), ...)
+\method{wls_at_target}{response_spct}(
+  x,
+  target = "half.maximum",
+  interpolate = FALSE,
+  na.rm = FALSE,
+  unit.out = getOption("photobiology.radiation.unit", default = "energy"),
+  ...
+)
 
-\method{wls_at_target}{filter_spct}(x, target = "half.maximum",
-  interpolate = FALSE, na.rm = FALSE,
-  filter.qty = getOption("photobiology.filter.qty", default =
-  "transmittance"), ...)
+\method{wls_at_target}{filter_spct}(
+  x,
+  target = "half.maximum",
+  interpolate = FALSE,
+  na.rm = FALSE,
+  filter.qty = getOption("photobiology.filter.qty", default = "transmittance"),
+  ...
+)
 
-\method{wls_at_target}{reflector_spct}(x, target = "half.maximum",
-  interpolate = FALSE, na.rm = FALSE, ...)
+\method{wls_at_target}{reflector_spct}(
+  x,
+  target = "half.maximum",
+  interpolate = FALSE,
+  na.rm = FALSE,
+  ...
+)
 
-\method{wls_at_target}{cps_spct}(x, target = "half.maximum",
-  interpolate = FALSE, na.rm = FALSE, ...)
+\method{wls_at_target}{cps_spct}(
+  x,
+  target = "half.maximum",
+  interpolate = FALSE,
+  na.rm = FALSE,
+  ...
+)
 
-\method{wls_at_target}{generic_mspct}(x, target = "half.maximum",
-  interpolate = FALSE, na.rm = FALSE, ..., .parallel = FALSE,
-  .paropts = NULL)
+\method{wls_at_target}{generic_mspct}(
+  x,
+  target = "half.maximum",
+  interpolate = FALSE,
+  na.rm = FALSE,
+  ...,
+  .parallel = FALSE,
+  .paropts = NULL
+)
 }
 \arguments{
 \item{x}{data.frame or spectrum object.}
@@ -123,8 +155,10 @@ wls_at_target(sun.spct, target = 0.1)
 
 }
 \seealso{
-Other peaks and valleys functions: \code{\link{find_peaks}},
-  \code{\link{get_peaks}}, \code{\link{peaks}},
-  \code{\link{valleys}}
+Other peaks and valleys functions: 
+\code{\link{find_peaks}()},
+\code{\link{get_peaks}()},
+\code{\link{peaks}()},
+\code{\link{valleys}()}
 }
 \concept{peaks and valleys functions}

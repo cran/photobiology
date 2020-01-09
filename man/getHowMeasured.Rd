@@ -2,6 +2,7 @@
 % Please edit documentation in R/spct.classes.r
 \name{getHowMeasured}
 \alias{getHowMeasured}
+\alias{how_measured}
 \alias{getHowMeasured.default}
 \alias{getHowMeasured.generic_spct}
 \alias{getHowMeasured.summary_generic_spct}
@@ -9,6 +10,8 @@
 \title{Get the "how.measured" attribute}
 \usage{
 getHowMeasured(x, ...)
+
+how_measured(x, ...)
 
 \method{getHowMeasured}{default}(x, ...)
 
@@ -49,24 +52,28 @@ The method for collections of spectra returns the
   a tibble with a column of character strings.
 }
 \examples{
-getHowMeasured(sun.spct)
+how_measured(sun.spct)
 
 }
 \seealso{
-Other measurement metadata functions: \code{\link{getInstrDesc}},
-  \code{\link{getInstrSettings}},
-  \code{\link{getWhatMeasured}},
-  \code{\link{getWhenMeasured}},
-  \code{\link{getWhereMeasured}},
-  \code{\link{get_attributes}},
-  \code{\link{isValidInstrDesc}},
-  \code{\link{isValidInstrSettings}},
-  \code{\link{setHowMeasured}}, \code{\link{setInstrDesc}},
-  \code{\link{setInstrSettings}},
-  \code{\link{setWhatMeasured}},
-  \code{\link{setWhenMeasured}},
-  \code{\link{setWhereMeasured}},
-  \code{\link{trimInstrDesc}},
-  \code{\link{trimInstrSettings}}
+Other measurement metadata functions: 
+\code{\link{getInstrDesc}()},
+\code{\link{getInstrSettings}()},
+\code{\link{getWhatMeasured}()},
+\code{\link{getWhenMeasured}()},
+\code{\link{getWhereMeasured}()},
+\code{\link{get_attributes}()},
+\code{\link{isValidInstrDesc}()},
+\code{\link{isValidInstrSettings}()},
+\code{\link{select_spct_attributes}()},
+\code{\link{setHowMeasured}()},
+\code{\link{setInstrDesc}()},
+\code{\link{setInstrSettings}()},
+\code{\link{setWhatMeasured}()},
+\code{\link{setWhenMeasured}()},
+\code{\link{setWhereMeasured}()},
+\code{\link{spct_attr2tb}()},
+\code{\link{trimInstrDesc}()},
+\code{\link{trimInstrSettings}()}
 }
 \concept{measurement metadata functions}

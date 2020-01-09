@@ -2,6 +2,7 @@
 % Please edit documentation in R/spct.classes.r
 \name{getWhereMeasured}
 \alias{getWhereMeasured}
+\alias{where_measured}
 \alias{getWhereMeasured.default}
 \alias{getWhereMeasured.generic_spct}
 \alias{getWhereMeasured.summary_generic_spct}
@@ -9,6 +10,8 @@
 \title{Get the "where.measured" attribute}
 \usage{
 getWhereMeasured(x, ...)
+
+where_measured(x, ...)
 
 \method{getWhereMeasured}{default}(x, ...)
 
@@ -48,24 +51,28 @@ If x is not a \code{generic_spct} or an object of a derived class
   \code{NA} is returned.
 }
 \examples{
-getWhereMeasured(sun.spct)
+where_measured(sun.spct)
 
 }
 \seealso{
-Other measurement metadata functions: \code{\link{getHowMeasured}},
-  \code{\link{getInstrDesc}},
-  \code{\link{getInstrSettings}},
-  \code{\link{getWhatMeasured}},
-  \code{\link{getWhenMeasured}},
-  \code{\link{get_attributes}},
-  \code{\link{isValidInstrDesc}},
-  \code{\link{isValidInstrSettings}},
-  \code{\link{setHowMeasured}}, \code{\link{setInstrDesc}},
-  \code{\link{setInstrSettings}},
-  \code{\link{setWhatMeasured}},
-  \code{\link{setWhenMeasured}},
-  \code{\link{setWhereMeasured}},
-  \code{\link{trimInstrDesc}},
-  \code{\link{trimInstrSettings}}
+Other measurement metadata functions: 
+\code{\link{getHowMeasured}()},
+\code{\link{getInstrDesc}()},
+\code{\link{getInstrSettings}()},
+\code{\link{getWhatMeasured}()},
+\code{\link{getWhenMeasured}()},
+\code{\link{get_attributes}()},
+\code{\link{isValidInstrDesc}()},
+\code{\link{isValidInstrSettings}()},
+\code{\link{select_spct_attributes}()},
+\code{\link{setHowMeasured}()},
+\code{\link{setInstrDesc}()},
+\code{\link{setInstrSettings}()},
+\code{\link{setWhatMeasured}()},
+\code{\link{setWhenMeasured}()},
+\code{\link{setWhereMeasured}()},
+\code{\link{spct_attr2tb}()},
+\code{\link{trimInstrDesc}()},
+\code{\link{trimInstrSettings}()}
 }
 \concept{measurement metadata functions}

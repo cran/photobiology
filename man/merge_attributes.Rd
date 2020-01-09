@@ -10,8 +10,7 @@ merge_attributes(x, y, z, which, ...)
 
 \method{merge_attributes}{default}(x, y, z, which = NULL, ...)
 
-\method{merge_attributes}{generic_spct}(x, y, z, which = NULL,
-  copy.class = FALSE, ...)
+\method{merge_attributes}{generic_spct}(x, y, z, which = NULL, copy.class = FALSE, ...)
 }
 \arguments{
 \item{x, y, z}{R objects}

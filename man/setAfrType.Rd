@@ -33,6 +33,7 @@ getAfrType(my.spct)
 
 }
 \seealso{
-Other Afr attribute functions: \code{\link{getAfrType}}
+Other Afr attribute functions: 
+\code{\link{getAfrType}()}
 }
 \concept{Afr attribute functions}

@@ -10,31 +10,55 @@
 \alias{night_length}
 \title{Times for sun positions}
 \usage{
-day_night(date = lubridate::now(tzone = "UTC"),
-  tz = lubridate::tz(date), geocode = tibble::tibble(lon = 0, lat =
-  51.5, address = "Greenwich"), twilight = "none", unit.out = "hours")
+day_night(
+  date = lubridate::now(tzone = "UTC"),
+  tz = lubridate::tz(date),
+  geocode = tibble::tibble(lon = 0, lat = 51.5, address = "Greenwich"),
+  twilight = "none",
+  unit.out = "hours"
+)
 
 day_night_fast(date, tz, geocode, twilight, unit.out)
 
-noon_time(date = lubridate::today(), tz = lubridate::tz(date),
+noon_time(
+  date = lubridate::today(),
+  tz = lubridate::tz(date),
   geocode = tibble::tibble(lon = 0, lat = 51.5, address = "Greenwich"),
-  twilight = "none", unit.out = "datetime")
+  twilight = "none",
+  unit.out = "datetime"
+)
 
-sunrise_time(date = lubridate::today(), tz = lubridate::tz(date),
+sunrise_time(
+  date = lubridate::today(),
+  tz = lubridate::tz(date),
   geocode = tibble::tibble(lon = 0, lat = 51.5, address = "Greenwich"),
-  twilight = "sunlight", unit.out = "datetime")
+  twilight = "sunlight",
+  unit.out = "datetime"
+)
 
-sunset_time(date = lubridate::today(), tz = lubridate::tz(date),
+sunset_time(
+  date = lubridate::today(),
+  tz = lubridate::tz(date),
   geocode = tibble::tibble(lon = 0, lat = 51.5, address = "Greenwich"),
-  twilight = "sunlight", unit.out = "datetime")
+  twilight = "sunlight",
+  unit.out = "datetime"
+)
 
-day_length(date = lubridate::now(), tz = "UTC",
+day_length(
+  date = lubridate::now(),
+  tz = "UTC",
   geocode = tibble::tibble(lon = 0, lat = 51.5, address = "Greenwich"),
-  twilight = "sunlight", unit.out = "hours")
+  twilight = "sunlight",
+  unit.out = "hours"
+)
 
-night_length(date = lubridate::now(), tz = "UTC",
+night_length(
+  date = lubridate::now(),
+  tz = "UTC",
   geocode = tibble::tibble(lon = 0, lat = 51.5, address = "Greenwich"),
-  twilight = "sunlight", unit.out = "hours")
+  twilight = "sunlight",
+  unit.out = "hours"
+)
 }
 \arguments{
 \item{date}{"vector" of POSIXct times or Date objects, any valid TZ is allowed,
@@ -153,9 +177,11 @@ related to the estimation of atmospheric refraction (about 0.1 degrees).
 \seealso{
 \code{\link{sun_angles}}.
 
-Other astronomy related functions: \code{\link{format.solar_time}},
-  \code{\link{is.solar_time}},
-  \code{\link{print.solar_time}}, \code{\link{solar_time}},
-  \code{\link{sun_angles}}
+Other astronomy related functions: 
+\code{\link{format.solar_time}()},
+\code{\link{is.solar_time}()},
+\code{\link{print.solar_time}()},
+\code{\link{solar_time}()},
+\code{\link{sun_angles}()}
 }
 \concept{astronomy related functions}

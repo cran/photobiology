@@ -7,25 +7,57 @@
 \alias{q_fluence.source_mspct}
 \title{Photon fluence}
 \usage{
-q_fluence(spct, w.band, exposure.time, scale.factor, wb.trim,
-  use.cached.mult, use.hinges, allow.scaled, ...)
+q_fluence(
+  spct,
+  w.band,
+  exposure.time,
+  scale.factor,
+  wb.trim,
+  use.cached.mult,
+  use.hinges,
+  allow.scaled,
+  ...
+)
 
-\method{q_fluence}{default}(spct, w.band, exposure.time, scale.factor,
-  wb.trim, use.cached.mult, use.hinges, allow.scaled, ...)
+\method{q_fluence}{default}(
+  spct,
+  w.band,
+  exposure.time,
+  scale.factor,
+  wb.trim,
+  use.cached.mult,
+  use.hinges,
+  allow.scaled,
+  ...
+)
 
-\method{q_fluence}{source_spct}(spct, w.band = NULL, exposure.time,
-  scale.factor = 1, wb.trim = getOption("photobiology.waveband.trim",
-  default = TRUE),
-  use.cached.mult = getOption("photobiology.use.cached.mult", default =
-  FALSE), use.hinges = NULL, allow.scaled = FALSE, ...)
+\method{q_fluence}{source_spct}(
+  spct,
+  w.band = NULL,
+  exposure.time,
+  scale.factor = 1,
+  wb.trim = getOption("photobiology.waveband.trim", default = TRUE),
+  use.cached.mult = getOption("photobiology.use.cached.mult", default = FALSE),
+  use.hinges = NULL,
+  allow.scaled = FALSE,
+  ...
+)
 
-\method{q_fluence}{source_mspct}(spct, w.band = NULL, exposure.time,
-  scale.factor = 1, wb.trim = getOption("photobiology.waveband.trim",
-  default = TRUE),
-  use.cached.mult = getOption("photobiology.use.cached.mult", default =
-  FALSE), use.hinges = NULL, allow.scaled = FALSE, ...,
-  attr2tb = NULL, idx = "spct.idx", .parallel = FALSE,
-  .paropts = NULL)
+\method{q_fluence}{source_mspct}(
+  spct,
+  w.band = NULL,
+  exposure.time,
+  scale.factor = 1,
+  wb.trim = getOption("photobiology.waveband.trim", default = TRUE),
+  use.cached.mult = getOption("photobiology.use.cached.mult", default = FALSE),
+  use.hinges = NULL,
+  allow.scaled = FALSE,
+  ...,
+  attr2tb = NULL,
+  idx = "spct.idx",
+  .parallel = FALSE,
+  .paropts = NULL
+)
 }
 \arguments{
 \item{spct}{an R object.}
@@ -105,8 +137,11 @@ q_fluence(sun.spct,
 
 }
 \seealso{
-Other irradiance functions: \code{\link{e_fluence}},
-  \code{\link{e_irrad}}, \code{\link{fluence}},
-  \code{\link{irrad}}, \code{\link{q_irrad}}
+Other irradiance functions: 
+\code{\link{e_fluence}()},
+\code{\link{e_irrad}()},
+\code{\link{fluence}()},
+\code{\link{irrad}()},
+\code{\link{q_irrad}()}
 }
 \concept{irradiance functions}

@@ -12,8 +12,7 @@
 \usage{
 get_attributes(x, which, ...)
 
-\method{get_attributes}{generic_spct}(x, which = NULL,
-  allowed = all.attributes, ...)
+\method{get_attributes}{generic_spct}(x, which = NULL, allowed = all.attributes, ...)
 
 \method{get_attributes}{source_spct}(x, which = NULL, ...)
 
@@ -40,7 +39,20 @@ Named \code{list} of attribute values.
 \description{
 Method returning attributes of an object of class generic_spct or derived,
 or of class waveband. Only attributes defined and/or set by package
-'photobiology' for objects of the corresponding class are returned.
+'photobiology' for objects of the corresponding class are returned. Parameter
+\code{which} can be used to subset the list of attributes.
+}
+\details{
+Vectors of character strings passed as argument to \code{which} are
+  parsed so that if the first member string is \code{"-"} the remaining
+  members are removed from the \code{allowed}; and if it is \code{"="} the
+  remaining members are used if in \code{allowed}. If the first member is
+  none of these three strings, the behaviour is the same as if the first
+  string is \code{"="}. If \code{which} is \code{NULL} all the attributes in
+  \code{allowed} are used. The string \code{""} means no attributes, and has
+  precedence over any other values in the character vector. The order of the
+  names of annotations has no meaning: the vector is interpreted as a set
+  except for the three possible "operators" at position 1.
 }
 \section{Methods (by class)}{
 \itemize{
@@ -58,20 +70,26 @@ or of class waveband. Only attributes defined and/or set by package
 }}
 
 \seealso{
-Other measurement metadata functions: \code{\link{getHowMeasured}},
-  \code{\link{getInstrDesc}},
-  \code{\link{getInstrSettings}},
-  \code{\link{getWhatMeasured}},
-  \code{\link{getWhenMeasured}},
-  \code{\link{getWhereMeasured}},
-  \code{\link{isValidInstrDesc}},
-  \code{\link{isValidInstrSettings}},
-  \code{\link{setHowMeasured}}, \code{\link{setInstrDesc}},
-  \code{\link{setInstrSettings}},
-  \code{\link{setWhatMeasured}},
-  \code{\link{setWhenMeasured}},
-  \code{\link{setWhereMeasured}},
-  \code{\link{trimInstrDesc}},
-  \code{\link{trimInstrSettings}}
+\code{\link{select_spct_attributes}}
+
+Other measurement metadata functions: 
+\code{\link{getHowMeasured}()},
+\code{\link{getInstrDesc}()},
+\code{\link{getInstrSettings}()},
+\code{\link{getWhatMeasured}()},
+\code{\link{getWhenMeasured}()},
+\code{\link{getWhereMeasured}()},
+\code{\link{isValidInstrDesc}()},
+\code{\link{isValidInstrSettings}()},
+\code{\link{select_spct_attributes}()},
+\code{\link{setHowMeasured}()},
+\code{\link{setInstrDesc}()},
+\code{\link{setInstrSettings}()},
+\code{\link{setWhatMeasured}()},
+\code{\link{setWhenMeasured}()},
+\code{\link{setWhereMeasured}()},
+\code{\link{spct_attr2tb}()},
+\code{\link{trimInstrDesc}()},
+\code{\link{trimInstrSettings}()}
 }
 \concept{measurement metadata functions}

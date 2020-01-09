@@ -24,6 +24,7 @@ getMultipleWl(sun.spct)
 
 }
 \seealso{
-Other idfactor attribute functions: \code{\link{setIdFactor}}
+Other idfactor attribute functions: 
+\code{\link{setIdFactor}()}
 }
 \concept{idfactor attribute functions}

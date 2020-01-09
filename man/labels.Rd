@@ -28,7 +28,8 @@ labels(sun.spct)
 
 }
 \seealso{
-Other waveband attributes: \code{\link{is_effective}},
-  \code{\link{normalization}}
+Other waveband attributes: 
+\code{\link{is_effective}()},
+\code{\link{normalization}()}
 }
 \concept{waveband attributes}

@@ -55,7 +55,9 @@ stepsize(sun.spct)
 
 }
 \seealso{
-Other wavelength summaries: \code{\link{wl_midpoint}},
-  \code{\link{wl_min}}, \code{\link{wl_range}}
+Other wavelength summaries: 
+\code{\link{wl_midpoint}()},
+\code{\link{wl_min}()},
+\code{\link{wl_range}()}
 }
 \concept{wavelength summaries}

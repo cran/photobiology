@@ -4,8 +4,11 @@
 \alias{setTimeUnit}
 \title{Set the "time.unit" attribute of an existing source_spct object}
 \usage{
-setTimeUnit(x, time.unit = c("second", "hour", "day", "exposure",
-  "none"), override.ok = FALSE)
+setTimeUnit(
+  x,
+  time.unit = c("second", "hour", "day", "exposure", "none"),
+  override.ok = FALSE
+)
 }
 \arguments{
 \item{x}{a source_spct object}
@@ -37,7 +40,9 @@ setTimeUnit(my.spct, time.unit = lubridate::duration(1, "seconds"))
 
 }
 \seealso{
-Other time attribute functions: \code{\link{checkTimeUnit}},
-  \code{\link{convertTimeUnit}}, \code{\link{getTimeUnit}}
+Other time attribute functions: 
+\code{\link{checkTimeUnit}()},
+\code{\link{convertTimeUnit}()},
+\code{\link{getTimeUnit}()}
 }
 \concept{time attribute functions}

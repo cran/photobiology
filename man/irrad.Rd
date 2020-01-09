@@ -7,28 +7,65 @@
 \alias{irrad.source_mspct}
 \title{Irradiance}
 \usage{
-irrad(spct, w.band, unit.out, quantity, time.unit, scale.factor, wb.trim,
-  use.cached.mult, use.hinges, allow.scaled, ...)
+irrad(
+  spct,
+  w.band,
+  unit.out,
+  quantity,
+  time.unit,
+  scale.factor,
+  wb.trim,
+  use.cached.mult,
+  use.hinges,
+  allow.scaled,
+  ...
+)
 
-\method{irrad}{default}(spct, w.band, unit.out, quantity, time.unit,
-  scale.factor, wb.trim, use.cached.mult, use.hinges, allow.scaled, ...)
+\method{irrad}{default}(
+  spct,
+  w.band,
+  unit.out,
+  quantity,
+  time.unit,
+  scale.factor,
+  wb.trim,
+  use.cached.mult,
+  use.hinges,
+  allow.scaled,
+  ...
+)
 
-\method{irrad}{source_spct}(spct, w.band = NULL,
-  unit.out = getOption("photobiology.radiation.unit", default =
-  "energy"), quantity = "total", time.unit = NULL, scale.factor = 1,
+\method{irrad}{source_spct}(
+  spct,
+  w.band = NULL,
+  unit.out = getOption("photobiology.radiation.unit", default = "energy"),
+  quantity = "total",
+  time.unit = NULL,
+  scale.factor = 1,
   wb.trim = getOption("photobiology.waveband.trim", default = TRUE),
-  use.cached.mult = getOption("photobiology.use.cached.mult", default =
-  FALSE), use.hinges = getOption("photobiology.use.hinges"),
-  allow.scaled = !quantity \%in\% c("average", "mean", "total"), ...)
+  use.cached.mult = getOption("photobiology.use.cached.mult", default = FALSE),
+  use.hinges = getOption("photobiology.use.hinges"),
+  allow.scaled = !quantity \%in\% c("average", "mean", "total"),
+  ...
+)
 
-\method{irrad}{source_mspct}(spct, w.band = NULL,
-  unit.out = getOption("photobiology.radiation.unit", default =
-  "energy"), quantity = "total", time.unit = NULL, scale.factor = 1,
+\method{irrad}{source_mspct}(
+  spct,
+  w.band = NULL,
+  unit.out = getOption("photobiology.radiation.unit", default = "energy"),
+  quantity = "total",
+  time.unit = NULL,
+  scale.factor = 1,
   wb.trim = getOption("photobiology.waveband.trim", default = TRUE),
-  use.cached.mult = getOption("photobiology.use.cached.mult", default =
-  FALSE), use.hinges = NULL, allow.scaled = !quantity \%in\%
-  c("average", "mean", "total"), ..., attr2tb = NULL, idx = "spct.idx",
-  .parallel = FALSE, .paropts = NULL)
+  use.cached.mult = getOption("photobiology.use.cached.mult", default = FALSE),
+  use.hinges = NULL,
+  allow.scaled = !quantity \%in\% c("average", "mean", "total"),
+  ...,
+  attr2tb = NULL,
+  idx = "spct.idx",
+  .parallel = FALSE,
+  .paropts = NULL
+)
 }
 \arguments{
 \item{spct}{an R object.}
@@ -136,8 +173,11 @@ irrad(sun.spct, split_bands(c(400,700), length.out = 3), quantity = "contributio
 
 }
 \seealso{
-Other irradiance functions: \code{\link{e_fluence}},
-  \code{\link{e_irrad}}, \code{\link{fluence}},
-  \code{\link{q_fluence}}, \code{\link{q_irrad}}
+Other irradiance functions: 
+\code{\link{e_fluence}()},
+\code{\link{e_irrad}()},
+\code{\link{fluence}()},
+\code{\link{q_fluence}()},
+\code{\link{q_irrad}()}
 }
 \concept{irradiance functions}

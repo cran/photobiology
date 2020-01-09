@@ -8,8 +8,7 @@
 \usage{
 \method{print}{generic_spct}(x, ..., n = NULL, width = NULL)
 
-\method{print}{generic_mspct}(x, ..., n = NULL, width = NULL,
-  n.members = 10)
+\method{print}{generic_mspct}(x, ..., n = NULL, width = NULL, n.members = 10)
 }
 \arguments{
 \item{x}{An object of one of the summary classes for spectra}
