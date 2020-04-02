@@ -4,7 +4,9 @@
 \name{D2.UV586}
 \alias{D2.UV586}
 \title{Data for typical calibration lamps}
-\format{A \code{polynom::polynomial} object with 6 constants.}
+\format{
+A \code{polynom::polynomial} object with 6 constants.
+}
 \description{
 A dataset containing fitted constants to be used as input for
   function \code{D2_spectrum}.

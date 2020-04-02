@@ -4,13 +4,7 @@
 \alias{absorptance_spct}
 \title{Calculate absorptance from spectral absorptance.}
 \usage{
-absorptance_spct(
-  spct,
-  w.band = NULL,
-  quantity = "average",
-  wb.trim = getOption("photobiology.waveband.trim", default = TRUE),
-  use.hinges = getOption("photobiology.use.hinges", default = NULL)
-)
+absorptance_spct(spct, w.band, quantity, wb.trim, use.hinges, naming)
 }
 \arguments{
 \item{spct}{object_spct}
@@ -28,6 +22,9 @@ are trimmed, if FALSE, they are discarded}
 
 \item{use.hinges}{logical indicating whether to use hinges to reduce
 interpolation errors}
+
+\item{naming}{character one of "long", "default", "short" or "none". Used to
+select the type of names to assign to returned value.}
 }
 \description{
 This function returns the summary absorptance for a given waveband of a

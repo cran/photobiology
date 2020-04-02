@@ -40,6 +40,7 @@ e_fluence(
   use.cached.mult = getOption("photobiology.use.cached.mult", default = FALSE),
   use.hinges = NULL,
   allow.scaled = FALSE,
+  naming = "default",
   ...
 )
 
@@ -83,6 +84,9 @@ the boundaries of the wavebands.}
 as argument to spct are flagged as an error}
 
 \item{...}{other arguments (possibly ignored)}
+
+\item{naming}{character one of "long", "default", "short" or "none". Used to
+select the type of names to assign to returned value.}
 
 \item{attr2tb}{character vector, see \code{\link{add_attr2tb}} for the syntax for \code{attr2tb} passed as is to formal parameter \code{col.names}.}
 

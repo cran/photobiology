@@ -4,7 +4,7 @@
 \alias{absorbance_spct}
 \title{Calculate absorbance from spectral absorbance.}
 \usage{
-absorbance_spct(spct, w.band, quantity, wb.trim, use.hinges)
+absorbance_spct(spct, w.band, quantity, wb.trim, use.hinges, naming)
 }
 \arguments{
 \item{spct}{filter_spct}
@@ -22,6 +22,9 @@ are trimmed or ignored}
 
 \item{use.hinges}{logical Flag indicating whether to use hinges to reduce
 interpolation errors}
+
+\item{naming}{character one of "long", "default", "short" or "none". Used to
+select the type of names to assign to returned value.}
 }
 \description{
 This function returns the mean absorbance for a given

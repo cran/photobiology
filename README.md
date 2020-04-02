@@ -31,12 +31,12 @@ transmission spectrum.
 ``` r
 library(photobiology)
 e_irrad(sun.spct * yellow_gel.spct)
-#>    Total 
+#>  E_Total 
 #> 146.5044 
 #> attr(,"time.unit")
 #> [1] "second"
 #> attr(,"radiation.unit")
-#> [1] "energy irradiance total"
+#> [1] "total energy irradiance"
 ```
 
 The second example shows some simple astronomical calculations for the
@@ -46,9 +46,9 @@ sun.
 geocode <- data.frame(lon = 0, lat = 55)
 date <- lubridate::today(tzone = "UTC")
 sunrise_time(date, tz = "UTC", geocode = geocode)
-#> [1] "2020-01-06 08:23:09 UTC"
+#> [1] "2020-04-02 05:27:34 UTC"
 day_length(date, tz = "UTC", geocode = geocode)
-#> [1] 7.415046
+#> [1] 13.19454
 ```
 
 ## Installation
@@ -69,8 +69,8 @@ devtools::install_bitbucket("aphalo/photobiology")
 ## Documentation
 
 HTML documentation is available at
-(<https://docs.r4photobiology.info/photobiology/>), including a *User
-Guide*.
+(<https://docs.r4photobiology.info/photobiology/>), including three
+*User Guides*.
 
 News on updates to the different packages of the ‘r4photobiology’ suite
 are regularly posted at (<https://www.r4photobiology.info/>).
@@ -127,6 +127,6 @@ citation("photobiology")
 
 ## License
 
-© 2012-2019 Pedro J. Aphalo (<pedro.aphalo@helsinki.fi>). Released under
+© 2012-2020 Pedro J. Aphalo (<pedro.aphalo@helsinki.fi>). Released under
 the GPL, version 2 or greater. This software carries no warranty of any
 kind.

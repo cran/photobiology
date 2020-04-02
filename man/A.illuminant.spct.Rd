@@ -4,7 +4,9 @@
 \name{A.illuminant.spct}
 \alias{A.illuminant.spct}
 \title{CIE A illuminant data}
-\format{A source spectrum with 96 rows and 2 variables}
+\format{
+A source spectrum with 96 rows and 2 variables
+}
 \usage{
 A.illuminant.spct
 }

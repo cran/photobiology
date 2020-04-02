@@ -31,13 +31,24 @@ spectral data before integration so as to reduce interpolation errors at
 the boundaries of the wavebands.}
 }
 \value{
-A waveband object or a list of waveband objects trimmed or filtered
-  depending on whether a single waveband object or a list of waveband
-  objects was supplied as argument to formal parameter \code{w.band}.
+The returned value is a waveband object or a list of waveband objects
+  depending on whether a single waveband object or a list of waveband objects
+  was supplied as argument to formal parameter \code{w.band}. If no waveband
+  is retained, in the first case,  a NULL waveband object is returned, and in
+  the second case, a list of length zero is returned. If the input is a
+  named, list, names are preserved in the returned list.
 }
 \description{
-Trimming of waveband boundaries can be required needed when the spectral data
-does not cover the whole waveband.
+Trimming of waveband boundaries can be needed when the spectral data do not
+cover the whole waveband, or wavebands may have to be removed altogether.
+}
+\details{
+This function will accept both individual wavebands or list of
+  wavebands. When the input is a list, wavebands outisde the range of the
+  range range will be removed from the list, and those partly outside the
+  target range either "trimmed" to this edge of removed (if \code{trim =
+  TRUE} is passed) or discarded (if \code{trim = FALSE}). If the list of
+  wavebands has named members, names are preserved in the returned list.
 }
 \examples{
 VIS <- waveband(c(380, 760)) # nanometres

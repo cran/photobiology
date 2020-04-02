@@ -157,8 +157,11 @@ wls_at_target(sun.spct, target = 0.1)
 \seealso{
 Other peaks and valleys functions: 
 \code{\link{find_peaks}()},
+\code{\link{find_spikes}()},
 \code{\link{get_peaks}()},
 \code{\link{peaks}()},
+\code{\link{replace_bad_pixs}()},
+\code{\link{spikes}()},
 \code{\link{valleys}()}
 }
 \concept{peaks and valleys functions}

@@ -4,7 +4,9 @@
 \name{photodiode.spct}
 \alias{photodiode.spct}
 \title{Spectral response of a GaAsP photodiode}
-\format{A \code{response_spct} object with 94 rows and 2 variables}
+\format{
+A \code{response_spct} object with 94 rows and 2 variables
+}
 \usage{
 photodiode.spct
 }

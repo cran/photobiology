@@ -70,7 +70,10 @@ with(sun.spct, get_valleys(w.length, s.e.irrad))
 \seealso{
 Other peaks and valleys functions: 
 \code{\link{find_peaks}()},
+\code{\link{find_spikes}()},
 \code{\link{peaks}()},
+\code{\link{replace_bad_pixs}()},
+\code{\link{spikes}()},
 \code{\link{valleys}()},
 \code{\link{wls_at_target}()}
 }

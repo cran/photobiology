@@ -4,7 +4,9 @@
 \name{black_body.spct}
 \alias{black_body.spct}
 \title{Theoretical black body}
-\format{A \code{object_spct} object with 4 rows and 3 variables}
+\format{
+A \code{object_spct} object with 4 rows and 3 variables
+}
 \description{
 A dataset for a hypothetical object with transmittance 0/1
   (0\%), reflectance 0/1 (0\%)

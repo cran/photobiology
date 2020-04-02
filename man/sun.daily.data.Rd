@@ -4,7 +4,9 @@
 \name{sun.daily.data}
 \alias{sun.daily.data}
 \title{Daily solar spectral irradiance (simulated)}
-\format{A \code{data.frame} object with 511 rows and 3 variables}
+\format{
+A \code{data.frame} object with 511 rows and 3 variables
+}
 \usage{
 sun.daily.data
 }

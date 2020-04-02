@@ -1,3 +1,85 @@
+photobiology 0.10.0 (2020-04-02)
+================================
+
+** Enhance functionality of peak- and valley-related functions:
+* Revise peaks() and valleys() methods to support peak fitting. Currently only
+spline interpolation is implemented. Default behaviour remains unchanged. (The
+implementation of peak fitting is still experimental and returned values may not
+be reproducible with future versions of the package.)
+** Enhancements to summary functions:
+* Revise q_ratio(), e_ratio(), qe_ratio() and eq_ratio() adding new parameter
+scale factor.
+* Revise irrad(), q_irrad() and e_irrad(); fluence(), q_fluence(), and
+e_fluence(); q_ratio(), e_ratio(), qe_ratio() and eq_ratio(); response(),
+q_response(), and e_response() methods so that they add shorter but still
+informative names to returned numeric values and to columns
+in returned data frames. Add formal parameters naming and name.tag to allow
+user control of the names.
+* Revise absorbance(), absorptance(), transmittance() and reflectance() so
+that they create shorter, and more informative names for returned values.
+* Revise msdply() to treat as special cases all the methods described above, to
+support the especializations of these methods for collections of spectra. For
+those functions not handled as special cases, returned values are, as earlier,
+tagged with the name of the applied function.
+** Add support for extraction of spikes and for despiking:
+* Add function find_spikes() for numeric vectors, useful for Raman spectra.
+* Add function replace_bad_pixs() operating on numeric vectors.
+* Add method spikes() for vectors, data frames and spectra.
+* Add method despike() for vectors, data frames and spectra.
+** Add example data:
+* Add data for cone fundamentals for human vision.
+** Fix bugs:
+* Revise trim_waveband() so that it preserves the names of list members. This
+bug affected computations of irradiances and ratios so that names used in
+lists of wavebands where not reflected in the output, and the label from the
+waveband definitions could not be overriden as intended by design.
+* Ensure that irrad() and response() always label the returned values correctly.
+Values are now always tagged according to the units used, even when these are
+selected by setting R options; i.e., values returned by irrad() and response()
+are always labelled identically as those returned by q_irrad(), e_irrad(),
+q_response() and e_response().
+* Relax check for w.length range allowing longer wavelengths (IR). In addition
+triggering of an error for unlikely wavelengths has been replaced by a
+warning, emitted only when verbose output is enabled. An error is trigegred now
+only for wavelengths < 1 nm.
+* Update clean.object_spct() adding parameter min.Afr that cen be used to
+set a different target than the default of zero and in addition implement
+clean.object_mspct(), which was missing.
+** Compatibility with 'dplyr' (>= 1.0.0):
+Some small internal changes were needed to avoid errors in calls to 'dplyr'
+methods.
+From user's perspective as 'dplyr' now seems to retain classes derived from
+tibble, it may be necessary in certain cases to disable some checks during calls
+to dplyr methods on spectral objects in users' scripts. We have implemented
+R option "photobiology.check.spct" to allow checks to be enabled and disabled
+as needed. This option might be also useful for optimizing performance.
+
+********************************************************************************
+_Code-breaking changes in R for photobiology_
+By changing the labels used for values returned by summary functions, this
+update can break older code. Additionally, bug fixes that correct the behaviour
+of irrad(), fluence(), ratio() and response(), and trim_waveband() can
+potentially break old code.
+The order in which attributes are stored has in some cases changed, and while
+a fixed order is not normally expected, equality tests can return FALSE for
+objects that are functionally identical but differ in their structure because
+of their vintage.
+********************************************************************************
+_Code breaking changes in the tidyverse_
+Packages in the tidyverse are eveolving to use package 'vctrs' for their
+implementation (see https://www.tidyverse.org/blog/ for news).
+'tibble' (3.0.0) seems to handle row names differently than previous versions.
+The 'photobiology' code is not affected, but user code might be affected.
+Contrary to earlier versions, 'tibble' (3.0.0) retains member names in vectors,
+which means that "wl.colors" column created by tag() after the update to
+'tibble' will contain named color values.
+dplyr (1.0.0), not yet released, better preserves object attributes, causing
+some differences in the returned values, as now columns retain S3 class
+attributes.
+The use of 'dplyr' verb select() on spectral objects now fails, while extraction
+with [ and [[ works as expected. However, filter() and mutate() work correctly.
+********************************************************************************
+
 photobiology 0.9.30 (2020-01-06)
 ================================
 

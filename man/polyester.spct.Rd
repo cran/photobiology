@@ -4,7 +4,9 @@
 \name{polyester.spct}
 \alias{polyester.spct}
 \title{Transmittance spectrum of clear polyester film}
-\format{A \code{filter_spct} object with 611 rows and 2 variables}
+\format{
+A \code{filter_spct} object with 611 rows and 2 variables
+}
 \usage{
 polyester.spct
 }

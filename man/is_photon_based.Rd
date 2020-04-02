@@ -29,13 +29,15 @@ Functions to check if \code{source_spct} and \code{response_spct} objects
 contains photon-based or energy-based data.
 }
 \examples{
+colnames(sun.spct)
 is_photon_based(sun.spct)
-my.spct <- dplyr::select(sun.spct, w.length, s.e.irrad)
+my.spct <- sun.spct[ , c("w.length", "s.e.irrad")]
 is.source_spct(my.spct)
 is_photon_based(my.spct)
 
+colnames(sun.spct)
 is_energy_based(sun.spct)
-my.spct <- dplyr::select(sun.spct, w.length, s.q.irrad)
+my.spct <- sun.spct[ , c("w.length", "s.q.irrad")]
 is.source_spct(my.spct)
 is_energy_based(my.spct)
 

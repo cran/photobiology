@@ -8,9 +8,6 @@
 \alias{acos.generic_spct}
 \alias{asin.generic_spct}
 \alias{atan.generic_spct}
-\alias{cospi.generic_spct}
-\alias{sinpi.generic_spct}
-\alias{tanpi.generic_spct}
 \title{Trigonometric Functions}
 \usage{
 \method{cos}{generic_spct}(x)
@@ -24,12 +21,6 @@
 \method{asin}{generic_spct}(x)
 
 \method{atan}{generic_spct}(x)
-
-cospi.generic_spct(x)
-
-sinpi.generic_spct(x)
-
-tanpi.generic_spct(x)
 }
 \arguments{
 \item{x}{an object of class "generic_spct" or a derived class.}

@@ -11,6 +11,7 @@ e_ratio(
   spct,
   w.band.num,
   w.band.denom,
+  scale.factor,
   wb.trim,
   use.cached.mult,
   use.hinges,
@@ -21,6 +22,7 @@ e_ratio(
   spct,
   w.band.num,
   w.band.denom,
+  scale.factor,
   wb.trim,
   use.cached.mult,
   use.hinges,
@@ -31,9 +33,12 @@ e_ratio(
   spct,
   w.band.num = NULL,
   w.band.denom = NULL,
+  scale.factor = 1,
   wb.trim = getOption("photobiology.waveband.trim", default = TRUE),
   use.cached.mult = FALSE,
-  use.hinges = getOption("photobiology.use.hinges"),
+  use.hinges = NULL,
+  naming = "short",
+  name.tag = ifelse(naming != "none", "[e:e]", ""),
   ...
 )
 
@@ -41,9 +46,12 @@ e_ratio(
   spct,
   w.band.num = NULL,
   w.band.denom = NULL,
+  scale.factor = 1,
   wb.trim = getOption("photobiology.waveband.trim", default = TRUE),
   use.cached.mult = FALSE,
-  use.hinges = getOption("photobiology.use.hinges"),
+  use.hinges = NULL,
+  naming = "short",
+  name.tag = ifelse(naming != "none", "[e:e]", ""),
   ...,
   attr2tb = NULL,
   idx = "spct.idx",
@@ -60,6 +68,9 @@ compute the numerator(s) of the ratio(s).}
 \item{w.band.denom}{waveband object or a list of waveband objects used to
 compute the denominator(s) of the ratio(s).}
 
+\item{scale.factor}{numeric vector of length 1, or length equal to that of
+\code{w.band}. Numeric multiplier applied to returned values.}
+
 \item{wb.trim}{logical if TRUE wavebands crossing spectral data boundaries
 are trimmed, if FALSE, they are discarded}
 
@@ -72,13 +83,19 @@ the boundaries of the wavebands.}
 
 \item{...}{other arguments (possibly used by derived methods).}
 
-\item{attr2tb}{character vector, see \code{\link{add_attr2tb}} for the syntax for \code{attr2tb} passed as is to formal parameter \code{col.names}.}
+\item{naming}{character one of "long", "default", "short" or "none". Used to
+select the type of names to assign to returned value.}
+
+\item{name.tag}{character Used to tag the name of the returned values.}
+
+\item{attr2tb}{character vector, see \code{\link{add_attr2tb}} for the syntax
+for \code{attr2tb} passed as is to formal parameter \code{col.names}.}
 
 \item{idx}{character Name of the column with the names of the members of the
 collection of spectra.}
 
 \item{.parallel}{if TRUE, apply function in parallel, using parallel backend
-provided by foreach}
+provided by foreach.}
 
 \item{.paropts}{a list of additional options passed into the foreach function
 when parallel computation is enabled. This is important if (for example)

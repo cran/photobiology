@@ -4,7 +4,9 @@
 \name{white_led.raw_spct}
 \alias{white_led.raw_spct}
 \title{White led bulb spectrum}
-\format{An object of class \code{raw_spct} (inherits from \code{generic_spct}, \code{tbl_df}, \code{tbl}, \code{data.frame}) with 2068 rows and 4 columns.}
+\format{
+An object of class \code{raw_spct} (inherits from \code{generic_spct}, \code{tbl_df}, \code{tbl}, \code{data.frame}) with 2068 rows and 4 columns.
+}
 \usage{
 white_led.raw_spct
 }

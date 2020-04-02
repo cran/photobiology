@@ -11,7 +11,14 @@
 \alias{peaks.filter_spct}
 \alias{peaks.reflector_spct}
 \alias{peaks.cps_spct}
+\alias{peaks.raw_spct}
 \alias{peaks.generic_mspct}
+\alias{peaks.source_mspct}
+\alias{peaks.response_mspct}
+\alias{peaks.filter_mspct}
+\alias{peaks.reflector_mspct}
+\alias{peaks.cps_mspct}
+\alias{peaks.raw_mspct}
 \title{Peaks or local maxima}
 \usage{
 peaks(x, span, ignore_threshold, strict, na.rm, ...)
@@ -26,7 +33,11 @@ peaks(x, span, ignore_threshold, strict, na.rm, ...)
   ignore_threshold = 0,
   strict = TRUE,
   na.rm = FALSE,
-  var.name,
+  x.var.name = NULL,
+  y.var.name = NULL,
+  var.name = y.var.name,
+  refine.wl = FALSE,
+  method = "spline",
   ...
 )
 
@@ -37,6 +48,8 @@ peaks(x, span, ignore_threshold, strict, na.rm, ...)
   strict = TRUE,
   na.rm = FALSE,
   var.name = NULL,
+  refine.wl = FALSE,
+  method = "spline",
   ...
 )
 
@@ -47,6 +60,8 @@ peaks(x, span, ignore_threshold, strict, na.rm, ...)
   strict = TRUE,
   na.rm = FALSE,
   unit.out = getOption("photobiology.radiation.unit", default = "energy"),
+  refine.wl = FALSE,
+  method = "spline",
   ...
 )
 
@@ -57,6 +72,8 @@ peaks(x, span, ignore_threshold, strict, na.rm, ...)
   strict = TRUE,
   na.rm = FALSE,
   unit.out = getOption("photobiology.radiation.unit", default = "energy"),
+  refine.wl = FALSE,
+  method = "spline",
   ...
 )
 
@@ -67,12 +84,45 @@ peaks(x, span, ignore_threshold, strict, na.rm, ...)
   strict = TRUE,
   na.rm = FALSE,
   filter.qty = getOption("photobiology.filter.qty", default = "transmittance"),
+  refine.wl = FALSE,
+  method = "spline",
   ...
 )
 
-\method{peaks}{reflector_spct}(x, span = 5, ignore_threshold = 0, strict = TRUE, na.rm = FALSE, ...)
+\method{peaks}{reflector_spct}(
+  x,
+  span = 5,
+  ignore_threshold = 0,
+  strict = TRUE,
+  na.rm = FALSE,
+  refine.wl = FALSE,
+  method = "spline",
+  ...
+)
 
-\method{peaks}{cps_spct}(x, span = 5, ignore_threshold = 0, strict = TRUE, na.rm = FALSE, ...)
+\method{peaks}{cps_spct}(
+  x,
+  span = 5,
+  ignore_threshold = 0,
+  strict = TRUE,
+  na.rm = FALSE,
+  var.name = "cps",
+  refine.wl = FALSE,
+  method = "spline",
+  ...
+)
+
+\method{peaks}{raw_spct}(
+  x,
+  span = 5,
+  ignore_threshold = 0,
+  strict = TRUE,
+  na.rm = FALSE,
+  var.name = "counts",
+  refine.wl = FALSE,
+  method = "spline",
+  ...
+)
 
 \method{peaks}{generic_mspct}(
   x,
@@ -80,6 +130,92 @@ peaks(x, span, ignore_threshold, strict, na.rm, ...)
   ignore_threshold = 0,
   strict = TRUE,
   na.rm = FALSE,
+  var.name = NULL,
+  refine.wl = FALSE,
+  method = "spline",
+  ...,
+  .parallel = FALSE,
+  .paropts = NULL
+)
+
+\method{peaks}{source_mspct}(
+  x,
+  span = 5,
+  ignore_threshold = 0,
+  strict = TRUE,
+  na.rm = FALSE,
+  unit.out = getOption("photobiology.radiation.unit", default = "energy"),
+  refine.wl = FALSE,
+  method = "spline",
+  ...,
+  .parallel = FALSE,
+  .paropts = NULL
+)
+
+\method{peaks}{response_mspct}(
+  x,
+  span = 5,
+  ignore_threshold = 0,
+  strict = TRUE,
+  na.rm = FALSE,
+  unit.out = getOption("photobiology.radiation.unit", default = "energy"),
+  refine.wl = FALSE,
+  method = "spline",
+  ...,
+  .parallel = FALSE,
+  .paropts = NULL
+)
+
+\method{peaks}{filter_mspct}(
+  x,
+  span = 5,
+  ignore_threshold = 0,
+  strict = TRUE,
+  na.rm = FALSE,
+  filter.qty = getOption("photobiology.filter.qty", default = "transmittance"),
+  refine.wl = FALSE,
+  method = "spline",
+  ...,
+  .parallel = FALSE,
+  .paropts = NULL
+)
+
+\method{peaks}{reflector_mspct}(
+  x,
+  span = 5,
+  ignore_threshold = 0,
+  strict = TRUE,
+  na.rm = FALSE,
+  refine.wl = FALSE,
+  method = "spline",
+  ...,
+  .parallel = FALSE,
+  .paropts = NULL
+)
+
+\method{peaks}{cps_mspct}(
+  x,
+  span = 5,
+  ignore_threshold = 0,
+  strict = TRUE,
+  na.rm = FALSE,
+  var.name = "cps",
+  refine.wl = FALSE,
+  method = "spline",
+  ...,
+  .parallel = FALSE,
+  .paropts = NULL
+)
+
+\method{peaks}{raw_mspct}(
+  x,
+  span = 5,
+  ignore_threshold = 0,
+  strict = TRUE,
+  na.rm = FALSE,
+  var.name = "counts",
+  refine.wl = FALSE,
+  method = "spline",
   ...,
   .parallel = FALSE,
   .paropts = NULL
@@ -89,9 +225,8 @@ peaks(x, span, ignore_threshold, strict, na.rm, ...)
 \item{x}{an R object}
 
 \item{span}{a peak is defined as an element in a sequence which is greater
-than all other elements within a window of width span centered at that
-element. The default value is 3, meaning that a peak is bigger than both of
-its neighbors. Default: 3.}
+than all other elements within a window of width \code{span} centered at
+that element. Use \code{NULL} for the global peak.}
 
 \item{ignore_threshold}{numeric value between 0.0 and 1.0 indicating the
 relative size compared to tallest peak threshold below which peaks will be
@@ -105,7 +240,14 @@ before searching for peaks.}
 
 \item{...}{ignored}
 
-\item{var.name}{Name of column where to look for peaks.}
+\item{var.name, x.var.name, y.var.name}{character Name of column where to look
+for peaks.}
+
+\item{refine.wl}{logical Flag indicating if peak location should be refined by
+fitting a function.}
+
+\item{method}{character String with the name of a method. Currently only
+spline interpolation is implemented.}
 
 \item{unit.out}{character One of "energy" or "photon"}
 
@@ -147,12 +289,27 @@ to local maxima.
 
 \item \code{cps_spct}: Method for "cps_spct" objects.
 
-\item \code{generic_mspct}: Method for "cps_spct" objects.
+\item \code{raw_spct}: Method for "raw_spct" objects.
+
+\item \code{generic_mspct}: Method for "generic_mspct" objects.
+
+\item \code{source_mspct}: Method for "source_mspct" objects.
+
+\item \code{response_mspct}: Method for "cps_mspct" objects.
+
+\item \code{filter_mspct}: Method for "filter_mspct" objects.
+
+\item \code{reflector_mspct}: Method for "reflector_mspct" objects.
+
+\item \code{cps_mspct}: Method for "cps_mspct" objects.
+
+\item \code{raw_mspct}: Method for "raw_mspct" objects.
 }}
 
 \examples{
-peaks(sun.spct, span = 50)
+peaks(sun.spct, span = 51)
 peaks(sun.spct, span = NULL)
+peaks(sun.spct, span = 51, refine.wl = TRUE)
 
 peaks(sun.spct)
 
@@ -160,7 +317,10 @@ peaks(sun.spct)
 \seealso{
 Other peaks and valleys functions: 
 \code{\link{find_peaks}()},
+\code{\link{find_spikes}()},
 \code{\link{get_peaks}()},
+\code{\link{replace_bad_pixs}()},
+\code{\link{spikes}()},
 \code{\link{valleys}()},
 \code{\link{wls_at_target}()}
 }

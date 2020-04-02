@@ -11,6 +11,7 @@ q_ratio(
   spct,
   w.band.num,
   w.band.denom,
+  scale.factor,
   wb.trim,
   use.cached.mult,
   use.hinges,
@@ -21,6 +22,7 @@ q_ratio(
   spct,
   w.band.num,
   w.band.denom,
+  scale.factor,
   wb.trim,
   use.cached.mult,
   use.hinges,
@@ -31,9 +33,12 @@ q_ratio(
   spct,
   w.band.num = NULL,
   w.band.denom = NULL,
+  scale.factor = 1,
   wb.trim = getOption("photobiology.waveband.trim", default = TRUE),
   use.cached.mult = FALSE,
-  use.hinges = getOption("photobiology.use.hinges"),
+  use.hinges = NULL,
+  naming = "short",
+  name.tag = ifelse(naming != "none", "[q:q]", ""),
   ...
 )
 
@@ -41,9 +46,12 @@ q_ratio(
   spct,
   w.band.num = NULL,
   w.band.denom = NULL,
+  scale.factor = 1,
   wb.trim = getOption("photobiology.waveband.trim", default = TRUE),
   use.cached.mult = FALSE,
-  use.hinges = getOption("photobiology.use.hinges"),
+  use.hinges = NULL,
+  naming = "short",
+  name.tag = ifelse(naming != "none", "[q:q]", ""),
   ...,
   attr2tb = NULL,
   idx = "spct.idx",
@@ -60,6 +68,9 @@ compute the numerator(s) of the ratio(s).}
 \item{w.band.denom}{waveband object or a list of waveband objects used to
 compute the denominator(s) of the ratio(s).}
 
+\item{scale.factor}{numeric vector of length 1, or length equal to that of
+\code{w.band}. Numeric multiplier applied to returned values.}
+
 \item{wb.trim}{logical if TRUE wavebands crossing spectral data boundaries
 are trimmed, if FALSE, they are discarded}
 
@@ -71,6 +82,11 @@ spectral data before integration so as to reduce interpolation errors at
 the boundaries of the wavebands.}
 
 \item{...}{other arguments (possibly ignored)}
+
+\item{naming}{character one of "long", "default", "short" or "none". Used to
+select the type of names to assign to returned value.}
+
+\item{name.tag}{character Used to tag the name of the returned values.}
 
 \item{attr2tb}{character vector, see \code{\link{add_attr2tb}} for the syntax for \code{attr2tb} passed as is to formal parameter \code{col.names}.}
 

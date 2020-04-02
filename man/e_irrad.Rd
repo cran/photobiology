@@ -43,6 +43,7 @@ e_irrad(
   use.cached.mult = getOption("photobiology.use.cached.mult", default = FALSE),
   use.hinges = NULL,
   allow.scaled = !quantity \%in\% c("average", "mean", "total"),
+  naming = "default",
   ...
 )
 
@@ -56,6 +57,7 @@ e_irrad(
   use.cached.mult = getOption("photobiology.use.cached.mult", default = FALSE),
   use.hinges = NULL,
   allow.scaled = !quantity \%in\% c("average", "mean", "total"),
+  naming = "default",
   ...,
   attr2tb = NULL,
   idx = "spct.idx",
@@ -90,6 +92,9 @@ the boundaries of the wavebands.}
 as argument to spct are flagged as an error.}
 
 \item{...}{other arguments (possibly used by derived methods).}
+
+\item{naming}{character one of "long", "default", "short" or "none". Used to
+select the type of names to assign to returned value.}
 
 \item{attr2tb}{character vector, see \code{\link{add_attr2tb}} for the syntax for \code{attr2tb} passed as is to formal parameter \code{col.names}.}
 

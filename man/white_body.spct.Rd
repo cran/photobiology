@@ -4,7 +4,9 @@
 \name{white_body.spct}
 \alias{white_body.spct}
 \title{Theoretical white body}
-\format{A \code{object_spct} object with 4 rows and 3 variables}
+\format{
+A \code{object_spct} object with 4 rows and 3 variables
+}
 \description{
 A dataset for a hypothetical object with transmittance 0/1
   (0\%), reflectance 1/1 (100\%)

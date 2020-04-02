@@ -4,7 +4,9 @@
 \name{ccd.spct}
 \alias{ccd.spct}
 \title{Spectral response of a back-thinned CCD image sensor.}
-\format{A \code{response_spct} object with 186 rows and 2 variables}
+\format{
+A \code{response_spct} object with 186 rows and 2 variables
+}
 \usage{
 ccd.spct
 }

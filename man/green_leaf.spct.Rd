@@ -4,7 +4,9 @@
 \name{green_leaf.spct}
 \alias{green_leaf.spct}
 \title{Green birch leaf reflectance.}
-\format{A \code{reflector_spct} object with 226 rows and 2 variables}
+\format{
+A \code{reflector_spct} object with 226 rows and 2 variables
+}
 \usage{
 green_leaf.spct
 }

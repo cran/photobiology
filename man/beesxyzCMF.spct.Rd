@@ -4,7 +4,9 @@
 \name{beesxyzCMF.spct}
 \alias{beesxyzCMF.spct}
 \title{Honeybee xyz chromaticity colour matching function data}
-\format{A data frame with 81 rows and 4 variables}
+\format{
+A data frame with 81 rows and 4 variables
+}
 \usage{
 beesxyzCMF.spct
 }
@@ -29,7 +31,8 @@ Other Visual response data examples:
 \code{\link{ciexyzCC10.spct}},
 \code{\link{ciexyzCC2.spct}},
 \code{\link{ciexyzCMF10.spct}},
-\code{\link{ciexyzCMF2.spct}}
+\code{\link{ciexyzCMF2.spct}},
+\code{\link{cone_fundamentals10.spct}}
 }
 \concept{Visual response data examples}
 \keyword{datasets}

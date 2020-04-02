@@ -4,7 +4,9 @@
 \name{ciev10.spct}
 \alias{ciev10.spct}
 \title{Linear energy CIE 2008 luminous efficiency function 10 deg data}
-\format{A chroma_spct object with 441 rows and 4 variables}
+\format{
+A chroma_spct object with 441 rows and 4 variables
+}
 \usage{
 ciev10.spct
 }
@@ -31,7 +33,8 @@ Other Visual response data examples:
 \code{\link{ciexyzCC10.spct}},
 \code{\link{ciexyzCC2.spct}},
 \code{\link{ciexyzCMF10.spct}},
-\code{\link{ciexyzCMF2.spct}}
+\code{\link{ciexyzCMF2.spct}},
+\code{\link{cone_fundamentals10.spct}}
 }
 \author{
 CIE

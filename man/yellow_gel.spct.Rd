@@ -4,7 +4,9 @@
 \name{yellow_gel.spct}
 \alias{yellow_gel.spct}
 \title{Transmittance spectrum of yellow theatrical gel.}
-\format{A \code{filter_spct} object with 611 rows and 2 variables}
+\format{
+A \code{filter_spct} object with 611 rows and 2 variables
+}
 \usage{
 yellow_gel.spct
 }

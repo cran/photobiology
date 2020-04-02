@@ -6,15 +6,15 @@
 \alias{photobiology-package}
 \title{photobiology: Photobiological Calculations}
 \description{
-Definitions of classes, methods, operators and functions for use in
-    photobiology and radiation meteorology and climatology. Calculation of
+Definitions of classes, methods, operators and functions for use 
+    in photobiology and radiation meteorology and climatology. Calculation of
     effective (weighted) and not-weighted irradiances/doses, fluence rates,
-    transmittance, reflectance, absorptance, absorbance and diverse
-    ratios and other derived quantities from spectral data. Local maxima and
-    minima. Conversion between energy- and photon-based units. Wavelength
-    interpolation. Astronomical calculations related solar angles and day
-    length. Colours and vision. This package is part of the
-    'r4photobiology' suite, Aphalo P. J. (2015) <doi:10.19232/uv4pb.2015.1.14>.
+    transmittance, reflectance, absorptance, absorbance and diverse ratios and 
+    other derived quantities from spectral data. Local maxima and minima: peaks,
+    valleys and spikes. Conversion between energy-and photon-based units. 
+    Wavelength interpolation. Astronomical calculations related solar angles and 
+    day length. Colours and vision. This package is part of the 'r4photobiology' 
+    suite, Aphalo, P. J. (2015) <doi:10.19232/uv4pb.2015.1.14>.
 }
 \details{
 Package 'photobiology' is at the core of a suite of packages for
@@ -87,7 +87,7 @@ spectral data. Methods in Ecology and Evolution, 4(10):906-913.
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://www.r4photobiology.info/}
+  \item \url{https://docs.r4photobiology.info/photobiology}
   \item \url{https://bitbucket.org/aphalo/photobiology}
   \item Report bugs at \url{https://bitbucket.org/aphalo/photobiology/issues}
 }
@@ -100,6 +100,7 @@ Other contributors:
 \itemize{
   \item Titta K. Kotilainen (\href{https://orcid.org/0000-0002-2822-9734}{ORCID}) [contributor]
   \item Glenn Davis \email{gdavis@gluonics.com} [contributor]
+  \item Agnese Fazio \email{agnese.fazio@uni-jena.de} [contributor]
 }
 
 }

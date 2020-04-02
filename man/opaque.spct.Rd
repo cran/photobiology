@@ -4,7 +4,9 @@
 \name{opaque.spct}
 \alias{opaque.spct}
 \title{Theoretical spectrum of an opaque material}
-\format{A \code{filter_spct} object with 4 rows and 2 variables}
+\format{
+A \code{filter_spct} object with 4 rows and 2 variables
+}
 \usage{
 opaque.spct
 }

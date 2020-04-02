@@ -4,7 +4,9 @@
 \name{sun.daily.spct}
 \alias{sun.daily.spct}
 \title{Daily solar spectral irradiance (simulated)}
-\format{A \code{source_spct} object with 511 rows and 3 variables}
+\format{
+A \code{source_spct} object with 511 rows and 3 variables
+}
 \usage{
 sun.daily.spct
 }

@@ -4,7 +4,9 @@
 \name{ciexyzCC10.spct}
 \alias{ciexyzCC10.spct}
 \title{CIE xyz chromaticity coordinates (CC) 10 deg data}
-\format{A chroma_spct object with 441 rows and 4 variables}
+\format{
+A chroma_spct object with 441 rows and 4 variables
+}
 \usage{
 ciexyzCC10.spct
 }
@@ -32,7 +34,8 @@ Other Visual response data examples:
 \code{\link{ciev2.spct}},
 \code{\link{ciexyzCC2.spct}},
 \code{\link{ciexyzCMF10.spct}},
-\code{\link{ciexyzCMF2.spct}}
+\code{\link{ciexyzCMF2.spct}},
+\code{\link{cone_fundamentals10.spct}}
 }
 \author{
 CIE

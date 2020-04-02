@@ -31,7 +31,9 @@
 \alias{atm_refraction_approx}
 \alias{azimuth_angle}
 \title{Solar astronomy using Meeus' algorithm}
-\format{An object of class \code{POSIXct} (inherits from \code{POSIXt}) of length 1.}
+\format{
+An object of class \code{POSIXct} (inherits from \code{POSIXt}) of length 1.
+}
 \usage{
 calendar_change
 

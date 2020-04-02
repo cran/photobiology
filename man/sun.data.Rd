@@ -4,7 +4,9 @@
 \name{sun.data}
 \alias{sun.data}
 \title{Solar spectral irradiance (simulated)}
-\format{A \code{data.frame} object with 508 rows and 3 variables}
+\format{
+A \code{data.frame} object with 508 rows and 3 variables
+}
 \usage{
 sun.data
 }

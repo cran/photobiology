@@ -4,7 +4,9 @@
 \name{Ler_leaf_trns.spct}
 \alias{Ler_leaf_trns.spct}
 \title{Green Arabidopsis leaf spectral transmittance.}
-\format{An \code{filter_spct} object with 1753 rows and 2 variables}
+\format{
+An \code{filter_spct} object with 1753 rows and 2 variables
+}
 \usage{
 Ler_leaf_trns.spct
 }

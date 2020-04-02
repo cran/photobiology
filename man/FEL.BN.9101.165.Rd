@@ -4,7 +4,9 @@
 \name{FEL.BN.9101.165}
 \alias{FEL.BN.9101.165}
 \title{Data for typical calibration lamps}
-\format{A \code{numeric vector}.}
+\format{
+A \code{numeric vector}.
+}
 \description{
 A dataset containing fitted constants to be used as input for
   function \code{FEL_spectrum}.

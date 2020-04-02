@@ -24,7 +24,7 @@ all other values in its window to be considered a peak. Default: TRUE.}
 before searching for peaks.}
 }
 \value{
-an object like s.irrad of logical values. Values that are TRUE
+a logical vector of the same length as \code{x}. Values that are TRUE
   correspond to local peaks in the data.
 }
 \description{
@@ -46,8 +46,11 @@ with(sun.data, w.length[find_peaks(s.e.irrad)])
 \code{\link[splus2R]{peaks}}
 
 Other peaks and valleys functions: 
+\code{\link{find_spikes}()},
 \code{\link{get_peaks}()},
 \code{\link{peaks}()},
+\code{\link{replace_bad_pixs}()},
+\code{\link{spikes}()},
 \code{\link{valleys}()},
 \code{\link{wls_at_target}()}
 }

@@ -4,7 +4,9 @@
 \name{sun.spct}
 \alias{sun.spct}
 \title{Solar spectral irradiance (simulated)}
-\format{A \code{source_spct} object with 508 rows and 3 variables}
+\format{
+A \code{source_spct} object with 508 rows and 3 variables
+}
 \usage{
 sun.spct
 }

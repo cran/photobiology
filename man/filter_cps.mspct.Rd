@@ -4,7 +4,9 @@
 \name{filter_cps.mspct}
 \alias{filter_cps.mspct}
 \title{Counts per second from a measurement of a plastic film}
-\format{A \code{filter_cps.mspct} object with 611 rows and 2 variables}
+\format{
+A \code{filter_cps.mspct} object with 611 rows and 2 variables
+}
 \description{
 A dataset containing the wavelengths at a varying interval and
   counts per second data. Two spectra are included a reference measurement

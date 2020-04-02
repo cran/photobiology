@@ -4,7 +4,9 @@
 \name{Ler_leaf.spct}
 \alias{Ler_leaf.spct}
 \title{Green Arabidopsis leaf reflectance and transmittance.}
-\format{An \code{object_spct} object with 2401 rows and 3 variables}
+\format{
+An \code{object_spct} object with 2401 rows and 3 variables
+}
 \usage{
 Ler_leaf.spct
 }

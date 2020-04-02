@@ -13,6 +13,8 @@ resp_spct(
   scale.factor,
   wb.trim,
   use.hinges,
+  allow.scaled = !quantity \%in\% c("average", "mean", "total"),
+  naming,
   ...
 )
 }
@@ -39,6 +41,9 @@ are trimmed, if FALSE, they are discarded.}
 \item{use.hinges}{logical Flag indicating whether to insert "hinges" into the
 spectral data before integration so as to reduce interpolation errors at
 the boundaries of the wavebands.}
+
+\item{naming}{character one of "long", "default", "short" or "none". Used to
+select the type of names to assign to returned value.}
 
 \item{...}{other arguments (possibly used by derived methods).}
 }

@@ -4,7 +4,7 @@
 \alias{transmittance_spct}
 \title{Calculate transmittance from spectral transmittance.}
 \usage{
-transmittance_spct(spct, w.band, quantity, wb.trim, use.hinges)
+transmittance_spct(spct, w.band, quantity, wb.trim, use.hinges, naming)
 }
 \arguments{
 \item{spct}{an object of class "generic_spct".}
@@ -23,6 +23,9 @@ are trimmed or ignored.}
 \item{use.hinges}{logical Flag indicating whether to insert "hinges" into the
 spectral data before integration so as to reduce interpolation errors at
 the boundaries of the wavebands.}
+
+\item{naming}{character one of "long", "default", "short" or "none". Used to
+select the type of names to assign to returned value.}
 }
 \value{
 a single numeric value

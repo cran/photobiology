@@ -46,6 +46,7 @@ irrad(
   use.cached.mult = getOption("photobiology.use.cached.mult", default = FALSE),
   use.hinges = getOption("photobiology.use.hinges"),
   allow.scaled = !quantity \%in\% c("average", "mean", "total"),
+  naming = "default",
   ...
 )
 
@@ -60,6 +61,7 @@ irrad(
   use.cached.mult = getOption("photobiology.use.cached.mult", default = FALSE),
   use.hinges = NULL,
   allow.scaled = !quantity \%in\% c("average", "mean", "total"),
+  naming = "default",
   ...,
   attr2tb = NULL,
   idx = "spct.idx",
@@ -99,6 +101,9 @@ as argument to spct are flagged as an error.}
 
 \item{...}{other arguments (possibly ignored)}
 
+\item{naming}{character one of "long", "default", "short" or "none". Used to
+select the type of names to assign to returned value.}
+
 \item{attr2tb}{character vector, see \code{\link{add_attr2tb}} for the syntax
 for \code{attr2tb} passed as is to formal parameter \code{col.names}.}
 
@@ -120,7 +125,10 @@ A named \code{numeric} vector in the case of methods for individual
   \code{w.band}. A \code{data.frame} in the case of collections of spectra,
   containing one column for each \code{waveband} object, an index column with
   the names of the spectra, and optionally additional columns with metadata
-  values retrieved from the attributes of the member spectra.
+  values retrieved from the attributes of the member spectra. If
+  \code{naming = "long"} the names generated reflect both quantity and
+  waveband, if \code{naming = "short"}, names are based only on the wavebands,
+  and if \code{naming = "none"} the returned vector has no names.
 
   By default values are only integrated, but depending on the argument passed
   to parameter \code{quantity} they can be re-expressed as relative fractions

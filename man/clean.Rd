@@ -14,6 +14,7 @@
 \alias{clean.source_mspct}
 \alias{clean.filter_mspct}
 \alias{clean.reflector_mspct}
+\alias{clean.object_mspct}
 \alias{clean.response_mspct}
 \alias{clean.cps_mspct}
 \alias{clean.raw_mspct}
@@ -44,7 +45,14 @@ clean(x, range, range.s.data, fill, ...)
 
 \method{clean}{reflector_spct}(x, range = x, range.s.data = c(0, 1), fill = range.s.data, ...)
 
-\method{clean}{object_spct}(x, range = x, range.s.data = c(0, 1), fill = range.s.data, ...)
+\method{clean}{object_spct}(
+  x,
+  range = x,
+  range.s.data = c(0, 1),
+  fill = range.s.data,
+  min.Afr = NULL,
+  ...
+)
 
 \method{clean}{response_spct}(
   x,
@@ -101,6 +109,17 @@ clean(x, range, range.s.data, fill, ...)
   range = NULL,
   range.s.data = c(0, 1),
   fill = range.s.data,
+  ...,
+  .parallel = FALSE,
+  .paropts = NULL
+)
+
+\method{clean}{object_mspct}(
+  x,
+  range = NULL,
+  range.s.data = c(0, 1),
+  fill = range.s.data,
+  min.Afr = NULL,
   ...,
   .parallel = FALSE,
   .paropts = NULL
@@ -167,6 +186,11 @@ or its alias "quantum"}
 \item{qty.out}{character string with allowed values "energy", and "photon",
 or its alias "quantum"}
 
+\item{min.Afr}{numeric Gives the minimum value accepted for the computed
+absorptance. The default \code{NULL} sets a valid value (Afr >= 0) with
+a warning. If an integer value is passed to \code{digits} values are
+adjusted silently.}
+
 \item{col.names}{character The name of the variable to clean}
 
 \item{.parallel}{if TRUE, apply function in parallel, using parallel backend
@@ -212,6 +236,8 @@ objects instead of vectors.
 
 \item \code{reflector_mspct}: 
 
+\item \code{object_mspct}: 
+
 \item \code{response_mspct}: 
 
 \item \code{cps_mspct}: 
@@ -221,3 +247,9 @@ objects instead of vectors.
 \item \code{generic_mspct}: 
 }}
 
+\note{
+In the case of \code{object_spct} objects, cleaning is done first
+  on the Rfr and Tfr columns and subsequently Afr estimated and if needed
+  half of deviation of Afr from the expected minimum value subtracted from
+  each of Rfr and Tfr.
+}

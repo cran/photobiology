@@ -4,7 +4,9 @@
 \name{ciexyzCMF10.spct}
 \alias{ciexyzCMF10.spct}
 \title{Linear energy CIE xyz colour matching function (CMF) 10 deg data}
-\format{A chroma_spct object with 441 rows and 4 variables}
+\format{
+A chroma_spct object with 441 rows and 4 variables
+}
 \usage{
 ciexyzCMF10.spct
 }
@@ -32,7 +34,8 @@ Other Visual response data examples:
 \code{\link{ciev2.spct}},
 \code{\link{ciexyzCC10.spct}},
 \code{\link{ciexyzCC2.spct}},
-\code{\link{ciexyzCMF2.spct}}
+\code{\link{ciexyzCMF2.spct}},
+\code{\link{cone_fundamentals10.spct}}
 }
 \author{
 CIE

@@ -37,6 +37,7 @@ e_response(
   scale.factor = 1,
   wb.trim = getOption("photobiology.waveband.trim", default = TRUE),
   use.hinges = getOption("photobiology.use.hinges", default = NULL),
+  naming = "default",
   ...
 )
 
@@ -48,6 +49,7 @@ e_response(
   scale.factor = 1,
   wb.trim = getOption("photobiology.waveband.trim", default = TRUE),
   use.hinges = getOption("photobiology.use.hinges", default = NULL),
+  naming = "default",
   ...,
   attr2tb = NULL,
   idx = "spct.idx",
@@ -79,6 +81,9 @@ spectral data before integration so as to reduce interpolation errors at
 the boundaries of the wavebands.}
 
 \item{...}{other arguments (possibly used by derived methods).}
+
+\item{naming}{character one of "long", "default", "short" or "none". Used to
+select the type of names to assign to returned value.}
 
 \item{attr2tb}{character vector, see \code{\link{add_attr2tb}} for the syntax for \code{attr2tb} passed as is to formal parameter \code{col.names}.}
 

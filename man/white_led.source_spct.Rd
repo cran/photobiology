@@ -4,7 +4,9 @@
 \name{white_led.source_spct}
 \alias{white_led.source_spct}
 \title{White led bulb spectrum}
-\format{A \code{source_spct} object with 1421 rows and 2 variables}
+\format{
+A \code{source_spct} object with 1421 rows and 2 variables
+}
 \usage{
 white_led.source_spct
 }

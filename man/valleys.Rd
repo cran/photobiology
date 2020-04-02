@@ -11,7 +11,14 @@
 \alias{valleys.filter_spct}
 \alias{valleys.reflector_spct}
 \alias{valleys.cps_spct}
+\alias{valleys.raw_spct}
 \alias{valleys.generic_mspct}
+\alias{valleys.source_mspct}
+\alias{valleys.response_mspct}
+\alias{valleys.filter_mspct}
+\alias{valleys.reflector_mspct}
+\alias{valleys.cps_mspct}
+\alias{valleys.raw_mspct}
 \title{Valleys or local minima}
 \usage{
 valleys(x, span, ignore_threshold, strict, ...)
@@ -28,7 +35,11 @@ valleys(x, span, ignore_threshold, strict, ...)
   ignore_threshold = 0,
   strict = TRUE,
   na.rm = FALSE,
-  var.name,
+  x.var.name = NULL,
+  y.var.name = NULL,
+  var.name = y.var.name,
+  refine.wl = FALSE,
+  method = "spline",
   ...
 )
 
@@ -39,6 +50,8 @@ valleys(x, span, ignore_threshold, strict, ...)
   strict = TRUE,
   na.rm = FALSE,
   var.name = NULL,
+  refine.wl = FALSE,
+  method = "spline",
   ...
 )
 
@@ -49,6 +62,8 @@ valleys(x, span, ignore_threshold, strict, ...)
   strict = TRUE,
   na.rm = FALSE,
   unit.out = getOption("photobiology.radiation.unit", default = "energy"),
+  refine.wl = FALSE,
+  method = "spline",
   ...
 )
 
@@ -59,6 +74,8 @@ valleys(x, span, ignore_threshold, strict, ...)
   strict = TRUE,
   na.rm = FALSE,
   unit.out = getOption("photobiology.radiation.unit", default = "energy"),
+  refine.wl = FALSE,
+  method = "spline",
   ...
 )
 
@@ -69,12 +86,44 @@ valleys(x, span, ignore_threshold, strict, ...)
   strict = TRUE,
   na.rm = FALSE,
   filter.qty = getOption("photobiology.filter.qty", default = "transmittance"),
+  refine.wl = FALSE,
+  method = "spline",
   ...
 )
 
-\method{valleys}{reflector_spct}(x, span = 5, ignore_threshold = 0, strict = TRUE, na.rm = FALSE, ...)
+\method{valleys}{reflector_spct}(
+  x,
+  span = 5,
+  ignore_threshold = 0,
+  strict = TRUE,
+  na.rm = FALSE,
+  refine.wl = FALSE,
+  method = "spline",
+  ...
+)
 
-\method{valleys}{cps_spct}(x, span = 5, ignore_threshold = 0, strict = TRUE, na.rm = FALSE, ...)
+\method{valleys}{cps_spct}(
+  x,
+  span = 5,
+  ignore_threshold = 0,
+  strict = TRUE,
+  na.rm = FALSE,
+  refine.wl = FALSE,
+  method = "spline",
+  ...
+)
+
+\method{valleys}{raw_spct}(
+  x,
+  span = 5,
+  ignore_threshold = 0,
+  strict = TRUE,
+  na.rm = FALSE,
+  var.name = "counts",
+  refine.wl = FALSE,
+  method = "spline",
+  ...
+)
 
 \method{valleys}{generic_mspct}(
   x,
@@ -82,6 +131,92 @@ valleys(x, span, ignore_threshold, strict, ...)
   ignore_threshold = 0,
   strict = TRUE,
   na.rm = FALSE,
+  var.name = NULL,
+  refine.wl = FALSE,
+  method = "spline",
+  ...,
+  .parallel = FALSE,
+  .paropts = NULL
+)
+
+\method{valleys}{source_mspct}(
+  x,
+  span = 5,
+  ignore_threshold = 0,
+  strict = TRUE,
+  na.rm = FALSE,
+  unit.out = getOption("photobiology.radiation.unit", default = "energy"),
+  refine.wl = FALSE,
+  method = "spline",
+  ...,
+  .parallel = FALSE,
+  .paropts = NULL
+)
+
+\method{valleys}{response_mspct}(
+  x,
+  span = 5,
+  ignore_threshold = 0,
+  strict = TRUE,
+  na.rm = FALSE,
+  unit.out = getOption("photobiology.radiation.unit", default = "energy"),
+  refine.wl = FALSE,
+  method = "spline",
+  ...,
+  .parallel = FALSE,
+  .paropts = NULL
+)
+
+\method{valleys}{filter_mspct}(
+  x,
+  span = 5,
+  ignore_threshold = 0,
+  strict = TRUE,
+  na.rm = FALSE,
+  filter.qty = getOption("photobiology.filter.qty", default = "transmittance"),
+  refine.wl = FALSE,
+  method = "spline",
+  ...,
+  .parallel = FALSE,
+  .paropts = NULL
+)
+
+\method{valleys}{reflector_mspct}(
+  x,
+  span = 5,
+  ignore_threshold = 0,
+  strict = TRUE,
+  na.rm = FALSE,
+  refine.wl = FALSE,
+  method = "spline",
+  ...,
+  .parallel = FALSE,
+  .paropts = NULL
+)
+
+\method{valleys}{cps_mspct}(
+  x,
+  span = 5,
+  ignore_threshold = 0,
+  strict = TRUE,
+  na.rm = FALSE,
+  var.name = "cps",
+  refine.wl = FALSE,
+  method = "spline",
+  ...,
+  .parallel = FALSE,
+  .paropts = NULL
+)
+
+\method{valleys}{raw_mspct}(
+  x,
+  span = 5,
+  ignore_threshold = 0,
+  strict = TRUE,
+  na.rm = FALSE,
+  var.name = "counts",
+  refine.wl = FALSE,
+  method = "spline",
   ...,
   .parallel = FALSE,
   .paropts = NULL
@@ -107,7 +242,14 @@ all other values in its window to be considered a peak. Default: TRUE.}
 \item{na.rm}{logical indicating whether \code{NA} values should be stripped
 before searching for peaks.}
 
-\item{var.name}{Name of column where to look for peaks.}
+\item{var.name, x.var.name, y.var.name}{character Name of column where to look
+for valleys.}
+
+\item{refine.wl}{logical Flag indicating if valley location should be refined by
+fitting a function.}
+
+\item{method}{character String with the name of a method. Currently only
+spline interpolation is implemented.}
 
 \item{unit.out}{character One of "energy" or "photon"}
 
@@ -151,7 +293,21 @@ to local maxima.
 
 \item \code{cps_spct}: Method for "cps_spct" objects.
 
+\item \code{raw_spct}: Method for "raw_spct" objects.
+
 \item \code{generic_mspct}: Method for "generic_mspct" objects.
+
+\item \code{source_mspct}: Method for "source_mspct" objects.
+
+\item \code{response_mspct}: Method for "cps_mspct" objects.
+
+\item \code{filter_mspct}: Method for "filter_mspct" objects.
+
+\item \code{reflector_mspct}: Method for "reflector_mspct" objects.
+
+\item \code{cps_mspct}: Method for "cps_mspct" objects.
+
+\item \code{raw_mspct}: Method for "raw_mspct" objects.
 }}
 
 \examples{
@@ -163,8 +319,11 @@ valleys(sun.spct)
 \seealso{
 Other peaks and valleys functions: 
 \code{\link{find_peaks}()},
+\code{\link{find_spikes}()},
 \code{\link{get_peaks}()},
 \code{\link{peaks}()},
+\code{\link{replace_bad_pixs}()},
+\code{\link{spikes}()},
 \code{\link{wls_at_target}()}
 }
 \concept{peaks and valleys functions}

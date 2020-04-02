@@ -4,7 +4,9 @@
 \name{white_led.cps_spct}
 \alias{white_led.cps_spct}
 \title{White led bulb spectrum}
-\format{A \code{data.frame} object with 2068 rows and 2 variables}
+\format{
+A \code{data.frame} object with 2068 rows and 2 variables
+}
 \usage{
 white_led.cps_spct
 }

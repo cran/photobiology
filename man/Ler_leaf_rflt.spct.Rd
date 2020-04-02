@@ -4,7 +4,9 @@
 \name{Ler_leaf_rflt.spct}
 \alias{Ler_leaf_rflt.spct}
 \title{Green Arabidopsis leaf spectral reflectance.}
-\format{An \code{reflector_spct} object with 1750 rows and 2 variables}
+\format{
+An \code{reflector_spct} object with 1750 rows and 2 variables
+}
 \usage{
 Ler_leaf_rflt.spct
 }
