@@ -23,6 +23,7 @@ with(sun.data, photobiology:::check_w.length(w.length))
 \seealso{
 Other data validity check functions: 
 \code{\link{check_spct}()},
-\code{\link{check_spectrum}()}
+\code{\link{check_spectrum}()},
+\code{\link{enable_check_spct}()}
 }
 \concept{data validity check functions}

@@ -2,9 +2,12 @@
 % Please edit documentation in R/spct.new.r
 \name{as.calibration_spct}
 \alias{as.calibration_spct}
+\alias{as.calibration_spct.default}
 \title{Coerce to a spectrum}
 \usage{
 as.calibration_spct(x, ...)
+
+\method{as.calibration_spct}{default}(x, ...)
 }
 \arguments{
 \item{x}{an R object}
@@ -17,6 +20,11 @@ A copy of \code{x} converted into a \code{calibration_spct} object.
 \description{
 Return a copy of an R object with its class set to a given type of spectrum.
 }
+\section{Methods (by class)}{
+\itemize{
+\item \code{default}: 
+}}
+
 \seealso{
 \code{\link{setGenericSpct}}
 

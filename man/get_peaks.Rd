@@ -33,16 +33,16 @@ get_valleys(
 \item{y}{numeric}
 
 \item{ignore_threshold}{numeric Value between 0.0 and 1.0 indicating the
-relative size compared to tallest peak or deepest valley of the peaks
-to return.}
+relative size compared to tallest peak threshold below which peaks will be
+ignored. Negative values set a threshold so that the tallest peaks are
+ignored, instead of the shortest.}
 
-\item{span}{numeric A peak is defined as an element in a sequence which is
+\item{span}{integer A peak is defined as an element in a sequence which is
 greater than all other elements within a window of width \code{span}
-centered at that element. For example, a value of 3 means that a peak is
-bigger than both of its neighbors.}
+centered at that element. Use \code{NULL} for the global peak.}
 
-\item{strict}{logical Flag: if TRUE, an element must be strictly greater than
-all other values in its window to be considered a peak. Default: TRUE.}
+\item{strict}{logical If \code{TRUE}, an element must be strictly greater
+than all other values in its window to be considered a peak.}
 
 \item{x_unit}{character Vector of texts to be pasted at end of labels built
 from x value at peaks.}

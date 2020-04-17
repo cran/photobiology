@@ -19,6 +19,27 @@ spct_classes <- function() {
 
 # check -------------------------------------------------------------------
 
+#' Enable or disable checks
+#'
+#' Choose between protection against errors or faster performance by enabling
+#' (the default) or disabling data-consistency and sanity checks.
+#'
+#' @family data validity check functions
+#'
+#' @export
+#'
+enable_check_spct <- function() {
+  options(photobiology.check.spct = TRUE)
+}
+
+#' @rdname enable_check_spct
+#'
+#' @export
+#'
+disable_check_spct <- function() {
+  options(photobiology.check.spct = FALSE)
+}
+
 #' Check validity of spectral objects
 #'
 #' Check that an R object contains the expected data members.
@@ -534,7 +555,6 @@ check_spct.object_spct <-
       warning("Found variable 'transmittance', I am assuming it expressed as percent")
     }
     if (exists("Afr", x, mode = "numeric", inherits=FALSE)) {
-      dots <- list(~Afr)
       range_check_Afr(x, strict.range=strict.range)
     }
 
@@ -544,14 +564,20 @@ check_spct.object_spct <-
       x[["Tfr"]] <- x[["Tpc"]] / 100
       x[["Tpc"]] <- NULL
       range_check_Tfr(x, strict.range=strict.range)
-    } else if (exists("Afr", x, mode = "numeric", inherits=FALSE)) {
-      x[["Tfr"]] <- 1 - x[["Afr"]]
-      setTfrType(x, getAfrType(x))
-      range_check_Tfr(x, strict.range=strict.range)
-    } else {
-      warning("No transmittance or absorptance data found in object_spct")
+    }
+
+    quantities <- colnames(x)
+    if (!"Rfr" %in% quantities) {
+      x[["Rfr"]] <- NA_real_
+    }
+    if (! any(c("Tfr", "Afr") %in% quantities)) {
       x[["Tfr"]] <- NA_real_
     }
+    ### Creates an endless recursive call!!
+    # if ("Afr" %in% quantities) {
+    #   x <- Afr2T(x, action = "add")
+    # }
+
     if (getOption("photobiology.verbose")) {
       if (exists("Tfr", x, mode = "numeric", inherits = FALSE) && anyNA(x[["Tfr"]])) {
         warning("At least one NA in 'Tfr'")
@@ -734,7 +760,7 @@ check_spct.chroma_spct <-
 
 #' Remove "generic_spct" and derived class attributes.
 #'
-#' Removes from an spectrum object the class attributes "generic_spct" and any
+#' Removes from a spectrum object the class attributes "generic_spct" and any
 #' derived class attribute such as "source_spct". \strong{This operation is done
 #' by reference!}
 #'
@@ -893,14 +919,26 @@ setCpsSpct <-
 #' @describeIn setGenericSpct Set class of an object to "filter_spct".
 #'
 #' @param Tfr.type character A string, either "total" or "internal".
+#' @param Rfr.constant numeric The value of the reflection factor (/1).
+#' @param thickness numeric The thickness of the material.
+#' @param attenuation.mode character One of "reflection", "absorption" or
+#'   "mixed".
 #' @param strict.range logical Flag indicating whether off-range values result in an
 #'   error instead of a warning.
 #' @export
 #' @exportClass filter_spct
 #'
+#' @note For non-diffusing materials like glass an approximate \code{Rfr.constant}
+#'   value can be used to interconvert "total" and "internal" transmittance
+#'   values. Use \code{NA} if not known, or not applicable, e.g., for materials
+#'   subject to internal scattering.
+#'
 setFilterSpct <-
   function(x,
            Tfr.type = c("total", "internal"),
+           Rfr.constant = NA_real_,
+           thickness = NA_real_,
+           attenuation.mode = NA,
            strict.range = getOption("photobiology.strict.range", default = FALSE),
            multiple.wl = 1L,
            idfactor = NULL) {
@@ -910,13 +948,17 @@ setFilterSpct <-
       if (length(Tfr.type) > 1) {
         Tfr.type <- getTfrType(x)
       } else if (Tfr.type != getTfrType(x)) {
-        warning("Changing attribute 'Tfr.type' from ", getTfrType(x),
+        warning("Overwriting attribute 'Tfr.type' from ", getTfrType(x),
                 " into ", Tfr.type)
       }
     }
     setGenericSpct(x, multiple.wl = multiple.wl, idfactor = idfactor)
     class(x) <- c("filter_spct", class(x))
     setTfrType(x, Tfr.type[1])
+    setFilterProperties(x,
+                        Rfr.constant = Rfr.constant,
+                        thickness = thickness,
+                        attenuation.mode = attenuation.mode)
     x <- check_spct(x, strict.range = strict.range)
     if (is.name(name)) {
       name <- as.character(name)
@@ -942,7 +984,7 @@ setReflectorSpct <-
       if (length(Rfr.type) > 1) {
         Rfr.type <- getRfrType(x)
       } else if (Rfr.type != getRfrType(x)) {
-        warning("Changing attribute 'Rfr.type' from ", getRfrType(x),
+        warning("Overwriting attribute 'Rfr.type' from ", getRfrType(x),
                 " into ", Rfr.type)
       }
     }
@@ -965,17 +1007,20 @@ setReflectorSpct <-
 #'
 setObjectSpct <-
   function(x,
-           Tfr.type=c("total", "internal"),
-           Rfr.type=c("total", "specular"),
+           Tfr.type = c("total", "internal"),
+           Rfr.type = c("total", "specular"),
            strict.range = getOption("photobiology.strict.range", default = FALSE),
            multiple.wl = 1L,
            idfactor = NULL) {
     name <- substitute(x)
+    if (Tfr.type == "total" && Rfr.type != "total") {
+      warning("Rfr is not \"total\", making conversions between Afr and Tfr impossible.")
+    }
     if ((is.filter_spct(x) || is.object_spct(x)) && getTfrType(x) != "unknown") {
       if (length(Tfr.type) > 1) {
         Tfr.type <- getTfrType(x)
       } else if (Tfr.type != getTfrType(x)) {
-        warning("Changing attribute 'Tfr.type' from ", getTfrType(x),
+        warning("Overwriting attribute 'Tfr.type' from ", getTfrType(x),
                 " into ", Tfr.type)
       }
     }
@@ -983,7 +1028,7 @@ setObjectSpct <-
       if (length(Rfr.type) > 1) {
         Rfr.type <- getRfrType(x)
       } else if (Rfr.type != getRfrType(x)) {
-        warning("Changing attribute 'Rfr.type' from ", getRfrType(x),
+        warning("Overwriting attribute 'Rfr.type' from ", getRfrType(x),
                 " into ", Rfr.type)
       }
     }
@@ -1155,7 +1200,7 @@ is.any_spct <- function(x) {
   inherits(x, "generic_spct")
 }
 
-#' Query which is the class of an spectrum
+#' Query which is the class of a spectrum
 #'
 #' Functions to check if an object is a generic spectrum, or coerce it if
 #' possible.
@@ -1175,13 +1220,13 @@ class_spct <- function(x) {
   class(x)[class(x) %in% spct_classes()] # maintains order
 }
 
-#' Query if it is an spectrum is tagged
+#' Query if it is a spectrum is tagged
 #'
 #' Functions to check if an spct object contains tags.
 #'
 #' @param x any R object
 #'
-#' @return is_tagged returns TRUE if its argument is a an spectrum
+#' @return is_tagged returns TRUE if its argument is a a spectrum
 #' that contains tags and FALSE if it is an untagged spectrum, but
 #' returns NA for any other R object.
 #'
@@ -1272,10 +1317,10 @@ is_energy_based <- function(x) {
 #'
 #' @param x an R object
 #'
-#' @return \code{is_absorbance_based} returns TRUE if its argument is a \code{filter_spct}
-#' object that contains spectral absorbance data and FALSE if it does not contain
-#' such data, but returns NA for any other R object, including those belonging
-#' other \code{generic_spct}-derived classes.
+#' @return \code{is_absorbance_based} returns TRUE if its argument is a
+#'   \code{filter_spct} object that contains spectral absorbance data and FALSE
+#'   if it does not contain such data, but returns NA for any other R object,
+#'   including those belonging other \code{generic_spct}-derived classes.
 #'
 #' @export
 #' @family query units functions
@@ -1295,14 +1340,36 @@ is_absorbance_based <- function(x) {
   }
 }
 
+# is_absorptance_based ---------------------------------------------------------
+
+#' @rdname is_absorbance_based
+#'
+#' @return \code{is_absorptance_based} returns TRUE if its argument is a
+#'   \code{filter_spct} object that contains spectral absorptance and FALSE if
+#'   it does not contain such data, but returns NA for any other R object,
+#'   including those belonging other \code{generic_spct}-derived classes.
+#'
+#' @export
+#' @examples
+#' is_absorptance_based(polyester.spct)
+#'
+is_absorptance_based <- function(x) {
+  if (is.filter_spct(x) || is.summary_source_spct(x)) {
+    return("Afr" %in% names(x))
+  } else {
+    return(NA_integer_)
+  }
+}
+
 # is_transmittance_based ---------------------------------------------------------
 
 #' @rdname is_absorbance_based
 #'
-#' @return \code{is_transmittance_based} returns TRUE if its argument is a \code{filter_spct}
-#' object that contains spectral transmittance data and FALSE if it does not contain
-#' such data, but returns NA for any other R object, including those belonging
-#' other \code{generic_spct}-derived classes.
+#' @return \code{is_transmittance_based} returns TRUE if its argument is a
+#'   \code{filter_spct} object that contains spectral transmittance data and
+#'   FALSE if it does not contain such data, but returns NA for any other R
+#'   object, including those belonging other \code{generic_spct}-derived
+#'   classes.
 #'
 #' @export
 #' @examples
@@ -1347,9 +1414,13 @@ is_transmittance_based <- function(x) {
 setTimeUnit <- function(x,
                         time.unit = c("second", "hour", "day", "exposure", "none"),
                         override.ok = FALSE) {
-  if (!(is.any_spct(x) || is.any_summary_spct(x))) {
-    return(invisible(x))
+  if (!(class(x)[1] %in%
+        c("source_spct", "summary_source_spct",
+          "response_spct", "response_spct",
+          "raw_spct", "cps_spct"))) {
+     return(invisible(x))
   }
+
   if (is.character(time.unit)) {
     time.unit <- time.unit[1]
   }
@@ -1374,7 +1445,6 @@ setTimeUnit <- function(x,
       name <- as.character(name)
       assign(name, x, parent.frame(), inherits = TRUE)
     }
-
   }
   invisible(x)
 }
@@ -1400,10 +1470,11 @@ setTimeUnit <- function(x,
 #'
 getTimeUnit <- function(x,
                         force.duration = FALSE) {
-  if (is.any_spct(x) || is.any_summary_spct(x)) {
-
+  if (class(x)[1] %in%
+      c("source_spct", "summary_source_spct",
+        "response_spct", "response_spct",
+        "raw_spct", "cps_spct")) {
     time.unit <- attr(x, "time.unit", exact = TRUE)
-
     # need to handle objects created with old versions
     if (!length(time.unit)) {
       time.unit <- "unknown"
@@ -1415,7 +1486,6 @@ getTimeUnit <- function(x,
     if (!lubridate::is.duration(time.unit) && is.numeric(time.unit)) {
       time.unit <- lubridate::duration(seconds = time.unit)
     }
-
     # convert strings to durations
     if (force.duration && is.character(time.unit)) {
       time.unit <- char2duration(time.unit)
@@ -1779,86 +1849,6 @@ getRfrType <- function(x) {
   }
 }
 
-# Afr.type attribute ------------------------------------------------------
-
-#' Set the "Afr.type" attribute
-#'
-#' Function to set by reference the "Afr.type" attribute of an existing
-#' filter_spct or object_spct object
-#'
-#' @param x a filter_spct or an object_spct object
-#' @param Afr.type a character string, either "total" or "internal"
-#'
-#' @return x
-#' @note This function alters x itself by reference and in addition
-#'   returns x invisibly. If x is not a filter_spct or an object_spct object, x is not modified
-#'   The behaviour of this function is 'unusual' in that the default for
-#'   parameter \code{Afr.type} is used only if \code{x} does not already have
-#'   this attribute set.
-#'
-#' @export
-#' @family Afr attribute functions
-#' @examples
-#' my.spct <- polyester.spct
-#' getAfrType(my.spct)
-#' setAfrType(my.spct, "internal")
-#' getAfrType(my.spct)
-#'
-setAfrType <- function(x, Afr.type=c("total", "internal")) {
-  name <- substitute(x)
-  if (length(Afr.type) > 1) {
-    if (getAfrType(x) != "unknown") {
-      Afr.type <- getAfrType(x)
-    } else {
-      Afr.type <- Afr.type[[1]]
-    }
-  }
-  if (is.filter_spct(x) || is.object_spct(x) ||
-      is.summary_filter_spct(x) || is.summary_object_spct(x)) {
-    if  (!(Afr.type %in% c("total", "internal", "unknown"))) {
-      warning("Invalid 'Afr.type' argument, only 'total' and 'internal' supported.")
-      return(x)
-    }
-    attr(x, "Afr.type") <- Afr.type
-    if (is.name(name)) {
-      name <- as.character(name)
-      assign(name, x, parent.frame(), inherits = TRUE)
-    }
-  }
-  invisible(x)
-}
-
-#' Get the "Afr.type" attribute
-#'
-#' Function to read the "Afr.type" attribute of an existing filter_spct or
-#' object_spct object.
-#'
-#' @param x a filter_spct or object_spct object
-#'
-#' @return character string
-#'
-#' @note If x is not a \code{filter_spct} or an \code{object_spct} object,
-#'   \code{NA} is returned.
-#'
-#' @export
-#' @family Afr attribute functions
-#' @examples
-#' getAfrType(polyester.spct)
-#'
-getAfrType <- function(x) {
-  if (is.filter_spct(x) || is.object_spct(x) ||
-      is.summary_filter_spct(x) || is.summary_object_spct(x)) {
-    Afr.type <- attr(x, "Afr.type", exact = TRUE)
-    if (is.null(Afr.type) || is.na(Afr.type)) {
-      # need to handle objects created with old versions
-      Afr.type <- "unknown"
-    }
-    return(Afr.type[[1]])
-  } else {
-    return(NA_character_)
-  }
-}
-
 # spct.version ------------------------------------------------------------
 
 #' Get the "spct.version" attribute
@@ -2123,7 +2113,7 @@ setWhenMeasured.generic_spct <-
     if (!is.null(when.measured)) {
       if (!is.list(when.measured)) {
         when.measured <- list(when.measured)
-      } else if (length(when.measured) != getMultipleWl(x)) {
+      } else if (!length(when.measured) %in% c(1L, getMultipleWl(x))) {
         warning("Length of 'when.measured' does not match spectrum object")
       }
       if (all(sapply(when.measured, lubridate::is.instant))) {
@@ -2153,7 +2143,7 @@ setWhenMeasured.summary_generic_spct <-
     if (!is.null(when.measured)) {
       if (!is.list(when.measured)) {
         when.measured <- list(when.measured)
-      } else if (length(when.measured) != getMultipleWl(x)) {
+      } else if (!length(when.measured) %in% c(1L, getMultipleWl(x))) {
         warning("Length of 'when.measured' does not match spectrum object")
       }
       if (all(sapply(when.measured, lubridate::is.instant))) {
@@ -3067,5 +3057,376 @@ getWhatMeasured.generic_mspct <- function(x,
                                           ...,
                                           idx = "spct.idx") {
   msdply(mspct = x, .fun = getWhatMeasured, ..., idx = idx, col.names = "what.measured")
+}
+
+
+# "filter.properties" attribute ----------------------------------------------
+
+#' Set the "filter.properties" attribute
+#'
+#' Function to set by reference the "filter.properties" attribute  of an existing
+#' filter_spct object.
+#'
+#' @param x a filter_spct object
+#' @param filter.properties,value a list with fields named "Rfr.constant",
+#'   "thickness" and "attenuation.mode".
+#' @param pass.null logical If TRUE, the parameters to the next three
+#'    parameters will be always ignored, otherwise they will be used to
+#'    build an object of class "filter.properties" when the argument to
+#'    filter.properties is NULL.
+#' @param Rfr.constant numeric The value of the reflection factor (/1).
+#' @param thickness numeric The thickness of the material.
+#' @param attenuation.mode character One of "reflection", "absorption" or
+#'   "mixed".
+#'
+#' @details Storing filter properties allows inter-conversion between internal
+#'   and total transmittance, as well as computation of transmittance for
+#'   arbitrary thickness of the material. Whether computations are valid depend
+#'   on the homogeneity of the material. The parameter \code{pass.null} makes
+#'   it possible to remove the attribute.
+#'
+#' @return \code{x}
+#' @note This function alters \code{x} itself by reference and in addition
+#'   returns \code{x} invisibly. If \code{x} is not a filter_spct object,
+#'   \code{x} is not modified.
+#'
+#' @export
+#' @family measurement metadata functions
+#'
+#' @examples
+#'
+#' my.spct <- polyester.spct
+#' filter_properties(my.spct)
+#' filter_properties(my.spct) <- NULL
+#' filter_properties(my.spct)
+#' filter_properties(my.spct, return.null = TRUE)
+#' filter_properties(my.spct) <- list(Rfr.constant = 0.01,
+#'                                    thickness = 125e-6,
+#'                                    attenuation.mode = "absorption")
+#' filter_properties(my.spct)
+#'
+setFilterProperties <- function(x,
+                                filter.properties = NULL,
+                                pass.null = FALSE,
+                                Rfr.constant = NA_real_,
+                                thickness = NA_real_,
+                                attenuation.mode = NA) {
+  name <- substitute(x)
+  if (is.filter_spct(x) || is.object_spct(x)) {
+    if (!(pass.null && is.null(filter.properties))) {
+      if (is.null(filter.properties)) {
+        filter.properties <- list(Rfr.constant = Rfr.constant,
+                                  thickness = thickness,
+                                  attenuation.mode = attenuation.mode)
+        class(filter.properties) <-
+          c("filter_properties", class(filter.properties))
+      } else {
+        stopifnot(setequal(names(filter.properties),
+                           c("Rfr.constant", "thickness", "attenuation.mode")))
+        if (class(filter.properties)[1] != "filter_properties") {
+          class(filter.properties) <-
+            c("filter_properties", class(filter.properties))
+        }
+      }
+    }
+    attr(x, "filter.properties") <- filter.properties
+    if (is.name(name)) {
+      name <- as.character(name)
+      assign(name, x, parent.frame(), inherits = TRUE)
+    }
+  }
+  invisible(x)
+}
+
+#' @rdname setFilterProperties
+#'
+#' @export
+#'
+`filter_properties<-` <- function(x,
+                                  value = NULL) {
+  setFilterProperties(x = x,
+                      filter.properties = value,
+                      pass.null = TRUE)
+}
+
+#' Get the "filter.properties" attribute
+#'
+#' Function to read the "filter.properties" attribute of an existing filter_spct
+#' or a filter_mspct.
+#'
+#' @param x a filter_spct object
+#' @param return.null logical If true, \code{NULL} is returned if the attribute
+#'   is not set, otherwise the expected list is returned with all fields set to
+#'   \code{NA}.
+#' @param ... Allows use of additional arguments in methods for other classes.
+#'
+#' @return a list with fields named "Rfr.constant", "thickness" and "attenuation.mode".
+#'   If the attribute is not set, and \code{return.null} is FALSE, a list with
+#'   fields set to \code{NA} is returned, otherwise, \code{NULL}.
+#'
+#' @export
+#' @family measurement metadata functions
+#'
+#' @examples
+#' filter_properties(polyester.spct)
+#'
+getFilterProperties <- function(x, return.null, ...) UseMethod("getFilterProperties")
+
+#' @rdname getFilterProperties
+#'
+#' @export
+#'
+filter_properties <- getFilterProperties
+
+#' @describeIn getFilterProperties default
+#' @export
+getFilterProperties.default <- function(x,
+                                        return.null = FALSE,
+                                        ...) {
+  if (return.null) {
+    NULL
+  } else {
+    # we return an NA
+    NA
+  }
+}
+
+#' @describeIn getFilterProperties generic_spct
+#' @export
+getFilterProperties.filter_spct <- function(x,
+                                            return.null = FALSE,
+                                            ...) {
+  filter.properties <- attr(x, "filter.properties", exact = TRUE)
+  if (is.null(filter.properties)) {
+    if (!return.null) {
+      # need to handle objects created with old versions
+      filter.properties <- list(Rfr.constant = NA_real_,
+                                thickness = NA_real_,
+                                attenuation.mode = NA)
+      class(filter.properties) <-
+        c("filter_properties", class(filter.properties))
+    }
+  } else {
+    stopifnot(setequal(names(filter.properties),
+                       c("Rfr.constant", "thickness", "attenuation.mode")))
+  }
+  filter.properties
+}
+
+#' @describeIn getFilterProperties summary_generic_spct
+#'
+#' @export
+#'
+getFilterProperties.summary_filter_spct <- getFilterProperties.filter_spct
+
+#' @describeIn getFilterProperties filter_mspct
+#' @param idx character Name of the column with the names of the members of the
+#'   collection of spectra.
+#' @note The method for collections of spectra returns the
+#'   a tibble with a column of lists.
+#' @export
+#'
+getFilterProperties.generic_mspct <- function(x,
+                                              ...,
+                                              idx = "spct.idx") {
+  msdply(mspct = x,
+         .fun = getFilterProperties,
+         ...,
+         idx = idx,
+         col.names = "filter.properties")
+}
+
+# Modify filter properties -----------------------------------------------
+
+#' Convert the "thickness" attribute of an existing filter_spct object.
+#'
+#' Function to set the "thickness" attribute and simultaneously converting the
+#' spectral data to correspond to the new thickness.
+#'
+#' @details For spectral transmittance at a different thickness to be exactly
+#'   computed, it needs to be based on internal transmittance. This function
+#'   will apply \code{converTfrType()} to \code{x} if needed, but to succeed
+#'   metadata should be available. Please, see \code{\link{convertTfrType}}.
+#'
+#' @param x a filter_spct, object_spct, filter_mspct or object_mspct object.
+#' @param thickness numeric (m)
+#'
+#' @return \code{x} possibly with the \code{"thickness"} field of the
+#'   \code{"filter.properties"} attribute modified
+#'
+#' @note if x is not a \code{filter_spct} object, \code{x} is returned
+#'   unchanged. If or \code{x} does not have the \code{"filter.properties"}
+#'   attribute set and with no missing data, \code{x} is returned with
+#'   \code{Tfr} set to \code{NA} values.
+#'
+#' @export
+#' @family time attribute functions
+#' @examples
+#'
+#' my.spct <- polyester.spct
+#' filter_properties(my.spct)
+#' convertThickness(my.spct, thickness = 250e-6)
+#'
+convertThickness <- function(x, thickness = NULL) {
+  if (is.filter_mspct(x) || is.object_mspct(x)) {
+    return(msmsply(mspct = x,
+                   .fun =  convertThickness,
+                   thickness = thickness))
+  }
+  if (!(is.filter_spct(x) || is.object_spct(x))) {
+    warning("'convertThickness()' mot applicable to class '", class(x)[1], "'. Skipping!")
+    return(invisible(x))
+  }
+  if (is.null(thickness)) {
+    # nothing to do
+    return(invisible(x))
+  }
+
+  properties <- filter_properties(x)
+  if (properties[["attenuation.mode"]] == "mixed") {
+    warning("Conversion not possible for non-absorbent materials.")
+    return(x * NA_real_)
+  } else if (properties[["attenuation.mode"]] == "reflection") {
+    warning("Transmittance remains unchanged for purely reflective materials.")
+    properties[["thickness"]] <- thickness
+    setFilterProperties(x, properties)
+    return(x)
+  } else if (properties[["attenuation.mode"]] == "absorption") {
+    columns <- intersect(colnames(x), c("Tfr", "Afr", "A") )
+    if (length(columns) == 0) {
+      warning("No column to convert to new thickness.")
+      return(invisible(x))
+    }
+    if ("Tfr" %in% columns || "A" %in% columns) {
+      if (!"Tfr" %in% columns) {
+        .fun <- T2A
+      } else {
+        .fun <- NULL
+      }
+      # "A" column converted or deleted as needed
+      z <- A2T(x, action = "replace")
+    } else if ("Afr" %in% columns) {
+      .fun <- T2Afr
+      z <- Afr2T(x, action = "replace")
+    } else {
+      stop("conversion failed")
+    }
+
+    current.Tfr.type <- getTfrType(x)
+    if (current.Tfr.type == "total") {
+      z <- convertTfrType(z, "internal")
+    }
+    # convert Tfr, formula is valid only for internal transmittance
+    z <- using_Tfr(z^(thickness / properties[["thickness"]]))
+    properties[["thickness"]] <- thickness
+    setFilterProperties(z, properties)
+    if (current.Tfr.type == "total") {
+      z <- convertTfrType(z, "total")
+    }
+    if (!is.null(.fun)) {
+      z <- .fun(z, action = "replace")
+    }
+    z
+  }
+}
+
+#' Convert the "Tfr.type" attribute
+#'
+#' Function to set the "Tfr.type" attribute and simultaneously converting the
+#' spectral data to correspond to the new type.
+#'
+#' @details Internal transmittance uses as reference the light entering the
+#'   object while total transmittance takes the incident light as reference.
+#'   The conversion is possible only if reflectance is known. Either as
+#'   spectral data in an object_spct object, or a filter_spct object that is
+#'   under the hood an object_spct, or if a fixed reflectance factor applicable
+#'   to all wavelengths is known.
+#'
+#' @param x a filter_spct, object_spct, filter_mspct or object_mspct object.
+#' @param Tfr.type character One of #internal" or "total".
+#'
+#' @return \code{x} possibly with the \code{"thickness"} field of the
+#'   \code{"filter.properties"} attribute modified
+#'
+#' @note if x is not a \code{filter_spct} object, \code{x} is returned
+#'   unchanged. If or \code{x} does not have the \code{"filter.properties"}
+#'   attribute set and with no missing data, \code{x} is returned with
+#'   \code{Tfr} set to \code{NA} values.
+#'
+#' @export
+#' @family time attribute functions
+#' @examples
+#'
+#' my.spct <- polyester.spct
+#' filter_properties(my.spct) <- list(Rfr.constant = 0.07,
+#'                                    thickness = 125e-6,
+#'                                    attenuation.mode = "absorption")
+#' convertTfrType(my.spct, Tfr.type = "internal")
+#'
+convertTfrType <- function(x, Tfr.type = NULL) {
+  if (is.filter_mspct(x) || is.object_mspct(x)) {
+    return(msmsply(mspct = x,
+                   .fun =  convertTfrType,
+                   Tfr.type = Tfr.type))
+  }
+  if (!(is.filter_spct(x) || is.object_spct(x))) {
+    warning("'convertTfrType()' mot applicable to class '", class(x)[1L], "'. Skipping!")
+    return(invisible(x))
+  }
+
+  if (is.null(Tfr.type) || Tfr.type == getTfrType(x)) {
+    # nothing to do
+    return(invisible(x))
+  }
+
+  columns <- intersect(colnames(x), c("Tfr", "Afr", "A", "Rfr") )
+  if (length(setdiff(columns, "Rfr")) == 0L) {
+    warning("No column to convert to new Tfr.type")
+    return(invisible(x))
+  }
+
+  # we keep columns "A" or "Afr" as their values do not depend on "Tfr.type"
+  if (is.filter_spct(x)) {
+    if ("Rfr" %in% columns) {
+      z <- as.object_spct(x)
+    } else if ("Tfr" %in% columns) {
+      z <- x
+    } else if ("A" %in% columns) {
+      # "A" column converted as needed
+      z <- A2T(x, action = "add")
+    } else if ("Afr" %in% columns) {
+      z <- Afr2T(x, action = "add")
+    } else {
+      stop("conversion of input failed")
+    }
+  } else { # user passed an object_spct
+    z <- x
+  }
+
+  current.Tfr.type <- getTfrType(x)
+  if (is.filter_spct(z)) {
+    # no spectral Rfr available, we use a factor
+    properties <- filter_properties(x)
+    if (is.na(current.Tfr.type)) {
+      warning("Current Tfr type is not set, returning NAs.")
+    }
+    if (current.Tfr.type == "internal" && Tfr.type == "total") {
+      z[["Tfr"]] <- z[["Tfr"]] * (1 - properties[["Rfr.constant"]])
+    } else if (current.Tfr.type == "total" && Tfr.type == "internal") {
+      z[["Tfr"]] <- z[["Tfr"]] / (1 - properties[["Rfr.constant"]])
+    }
+    setTfrType(z, Tfr.type)
+  } else if (is.object_spct(z)) {
+    if (current.Tfr.type == "internal" && Tfr.type == "total") {
+      z[["Tfr"]] <- z[["Tfr"]] * (1 - z[["Rfr"]])
+    } else if (current.Tfr.type == "total" && Tfr.type == "internal") {
+      z[["Tfr"]] <- z[["Tfr"]] / (1 - z[["Rfr"]])
+    }
+    setTfrType(z, Tfr.type)
+    if (is.filter_spct(x)) {
+      z <- as.filter_spct(z)
+    }
+  }
+  z
 }
 

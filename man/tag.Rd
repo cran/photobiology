@@ -17,6 +17,7 @@ tag(x, ...)
   wb.trim = getOption("photobiology.waveband.trim", default = TRUE),
   use.hinges = TRUE,
   short.names = TRUE,
+  chroma.type = "CMF",
   byref = FALSE,
   ...
 )
@@ -27,6 +28,7 @@ tag(x, ...)
   wb.trim = getOption("photobiology.waveband.trim", default = TRUE),
   use.hinges = TRUE,
   short.names = TRUE,
+  chroma.type = "CMF",
   byref = FALSE,
   ...,
   .parallel = FALSE,
@@ -50,6 +52,10 @@ the boundaries of the wavebands.}
 
 \item{short.names}{logical Flag indicating whether to use short or long names
 for wavebands}
+
+\item{chroma.type}{character telling whether "CMF", "CC", or "both" should be returned
+for human vision, or an object of class \code{chroma_spct} for any other
+trichromic visual system.}
 
 \item{byref}{logical Flag indicating if new object will be created \emph{by
 reference} or \emph{by copy} of \code{x}}

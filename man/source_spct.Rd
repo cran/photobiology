@@ -84,7 +84,6 @@ filter_spct(
   Afr = NULL,
   A = NULL,
   Tfr.type = c("total", "internal"),
-  Afr.type = Tfr.type,
   comment = NULL,
   strict.range = getOption("photobiology.strict.range", default = FALSE),
   multiple.wl = 1L,
@@ -111,7 +110,6 @@ object_spct(
   Afr = NULL,
   Tfr.type = c("total", "internal"),
   Rfr.type = c("total", "specular"),
-  Afr.type = c("total", "internal"),
   comment = NULL,
   strict.range = getOption("photobiology.strict.range", default = FALSE),
   multiple.wl = 1L,
@@ -185,7 +183,7 @@ m-2 nm-1 or mol d-1 m-2 nm-1}
 
 \item{A}{numeric vector of absorbance values (log10 based a.u.)}
 
-\item{Tfr.type, Afr.type}{character string indicating whether transmittance
+\item{Tfr.type}{character string indicating whether transmittance
 and absorptance values are "total" or "internal" values}
 
 \item{Rfr}{numeric vector with spectral reflectance as fraction of one}

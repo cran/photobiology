@@ -40,6 +40,7 @@ Vectors of character strings passed as argument to \code{attributes}
 \code{\link{get_attributes}}
 
 Other measurement metadata functions: 
+\code{\link{getFilterProperties}()},
 \code{\link{getHowMeasured}()},
 \code{\link{getInstrDesc}()},
 \code{\link{getInstrSettings}()},
@@ -49,6 +50,7 @@ Other measurement metadata functions:
 \code{\link{get_attributes}()},
 \code{\link{isValidInstrDesc}()},
 \code{\link{isValidInstrSettings}()},
+\code{\link{setFilterProperties}()},
 \code{\link{setHowMeasured}()},
 \code{\link{setInstrDesc}()},
 \code{\link{setInstrSettings}()},

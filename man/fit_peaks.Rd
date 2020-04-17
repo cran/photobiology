@@ -32,8 +32,8 @@ fit_valleys(
 \arguments{
 \item{x}{generic_spct or data.frame object.}
 
-\item{peaks.idx, valleys.idx}{integer Indexes into \code{x} selecting global
-or local extremes.}
+\item{peaks.idx, valleys.idx}{logical or integer Indexes into \code{x}
+selecting global or local extremes.}
 
 \item{span}{odd integer The span used when refining the location of maxima or
 minima of \code{x}.}

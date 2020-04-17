@@ -28,6 +28,7 @@ or of class waveband. Only attributes defined and/or set by package
 }
 \seealso{
 Other measurement metadata functions: 
+\code{\link{getFilterProperties}()},
 \code{\link{getHowMeasured}()},
 \code{\link{getInstrDesc}()},
 \code{\link{getInstrSettings}()},
@@ -38,6 +39,7 @@ Other measurement metadata functions:
 \code{\link{isValidInstrDesc}()},
 \code{\link{isValidInstrSettings}()},
 \code{\link{select_spct_attributes}()},
+\code{\link{setFilterProperties}()},
 \code{\link{setHowMeasured}()},
 \code{\link{setInstrDesc}()},
 \code{\link{setInstrSettings}()},

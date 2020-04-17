@@ -42,6 +42,8 @@ setTimeUnit(my.spct, time.unit = lubridate::duration(1, "seconds"))
 \seealso{
 Other time attribute functions: 
 \code{\link{checkTimeUnit}()},
+\code{\link{convertTfrType}()},
+\code{\link{convertThickness}()},
 \code{\link{convertTimeUnit}()},
 \code{\link{getTimeUnit}()}
 }

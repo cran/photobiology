@@ -9,34 +9,37 @@ find_peaks(x, ignore_threshold = 0, span = 3, strict = TRUE, na.rm = FALSE)
 \arguments{
 \item{x}{numeric vector}
 
-\item{ignore_threshold}{numeric value between 0.0 and 1.0 indicating the size
-threshold below which peaks will be ignored.}
+\item{ignore_threshold}{numeric Value between 0.0 and 1.0 indicating the
+relative size compared to tallest peak threshold below which peaks will be
+ignored. Negative values set a threshold so that the tallest peaks are
+ignored, instead of the shortest.}
 
-\item{span}{a peak is defined as an element in a sequence which is greater
-than all other elements within a window of width span centered at that
-element. The default value is 3, meaning that a peak is bigger than both of
-its neighbors. Default: 3.}
+\item{span}{integer A peak is defined as an element in a sequence which is
+greater than all other elements within a window of width \code{span}
+centered at that element. Use \code{NULL} for the global peak.}
 
-\item{strict}{logical flag: if TRUE, an element must be strictly greater than
-all other values in its window to be considered a peak. Default: TRUE.}
+\item{strict}{logical If \code{TRUE}, an element must be strictly greater
+than all other values in its window to be considered a peak.}
 
 \item{na.rm}{logical indicating whether \code{NA} values should be stripped
 before searching for peaks.}
 }
 \value{
-a logical vector of the same length as \code{x}. Values that are TRUE
-  correspond to local peaks in the data.
+A logical vector of the same length as \code{x}. Values that are
+  \code{TRUE} correspond to local peaks in the data.
 }
 \description{
 This function finds all peaks (local maxima) in a spectrum, using a user
-selectable size threshold relative to the tallest peak (global maximum). This
-a wrapper built on top of function peaks from package splus2R.
+provided size threshold relative to the tallest peak (global maximum) bellow
+which found peaks are ignored---i.e., not included in the returned value. This
+is a wrapper built on top of function \code{peaks()} from package 'splus2R'.
 }
 \note{
 This function is a wrapper built on function
   \code{\link[splus2R]{peaks}} from \pkg{splus2R} and handles non-finite
-  (including NA) values differently than \code{peaks}, instead of giving an
-  error they are replaced with the smallest finite value in \code{x}.
+  (including \code{NA}) values differently than \code{splus2R::peaks},
+  instead of giving an error they are replaced with the smallest finite value
+  in \code{x}.
 }
 \examples{
 with(sun.data, w.length[find_peaks(s.e.irrad)])

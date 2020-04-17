@@ -39,6 +39,8 @@ my.spct
 \seealso{
 Other time attribute functions: 
 \code{\link{checkTimeUnit}()},
+\code{\link{convertTfrType}()},
+\code{\link{convertThickness}()},
 \code{\link{getTimeUnit}()},
 \code{\link{setTimeUnit}()}
 }

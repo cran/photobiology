@@ -20,14 +20,15 @@ compare_spct(
 
 \item{w.band}{waveband object or a numeric stepsize in nanometres.}
 
-\item{.summary.fun}{function. The summary function to use.}
+\item{.summary.fun}{function. The summary function to use. It must be a
+method accepting object \code{x} as first argument.}
 
 \item{...}{additional named arguments passed down to \code{.summary.fun}.}
 
 \item{.comparison.fun}{function. The comparison function to use.}
 
-\item{returned.value}{character One of "data.frame", "spectrum", "tagged
-spectrum".}
+\item{returned.value}{character One of "data.frame", "spectrum",
+"tagged.spectrum".}
 
 \item{use.hinges}{logical Flag indicating whether to insert "hinges" into the
 returned spectrum when tagging it.}
@@ -77,9 +78,9 @@ head(
                returned.value = "data.frame")
 )
 compare_spct(source_mspct(list(sun1 = sun.spct, sun2 = sun.spct * 2)),
-             returned.value = "tagged spectrum")
+             returned.value = "tagged.spectrum")
 compare_spct(source_mspct(list(sun1 = sun.spct, sun2 = sun.spct * 2)),
-             returned.value = "tagged spectrum",
+             returned.value = "tagged.spectrum",
              use.hinges = TRUE)
 
 }

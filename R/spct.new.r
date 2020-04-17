@@ -240,7 +240,7 @@ response_spct <- function(w.length = NULL,
 #' @param Tpc numeric vector with spectral transmittance as percent values
 #' @param Afr numeric vector of absorptance as fraction of one
 #' @param A   numeric vector of absorbance values (log10 based a.u.)
-#' @param Tfr.type,Afr.type character string indicating whether transmittance
+#' @param Tfr.type character string indicating whether transmittance
 #'   and absorptance values are "total" or "internal" values
 #'
 #' @note "internal" transmittance is defined as the transmittance of the
@@ -255,7 +255,6 @@ filter_spct <- function(w.length = NULL,
                         Afr = NULL,
                         A = NULL,
                         Tfr.type = c("total", "internal"),
-                        Afr.type = Tfr.type,
                         comment = NULL,
                         strict.range = getOption("photobiology.strict.range", default = FALSE),
                         multiple.wl = 1L,
@@ -271,7 +270,6 @@ filter_spct <- function(w.length = NULL,
     z <- tibble::tibble(w.length, A, ...)
   } else if (is.null(Tpc) && is.null(Tfr) && is.null(A) && is.numeric(Afr)) {
     z <- tibble::tibble(w.length, Afr, ...)
-    Tfr.type <- Afr.type
   } else {
     warning("Only one of Tfr, Tpc, Afr, or A should be different from NULL.")
     z <- tibble::tibble(w.length, ...)
@@ -335,7 +333,6 @@ object_spct <- function(w.length = NULL,
                         Afr = NULL,
                         Tfr.type = c("total", "internal"),
                         Rfr.type = c("total", "specular"),
-                        Afr.type = c("total", "internal"),
                         comment = NULL,
                         strict.range = getOption("photobiology.strict.range", default = FALSE),
                         multiple.wl = 1L,
@@ -393,6 +390,9 @@ chroma_spct <- function(w.length=NULL,
 
 # as methods for spct classes --------------------------------------------
 
+# defined as generics + default as additional methods are defined in other
+# packages of the R for Photobiology suite.
+
 #' Coerce to a spectrum
 #'
 #' Return a copy of an R object with its class set to a given type of spectrum.
@@ -435,7 +435,7 @@ as.generic_spct.default <- function(x, ...) {
 #'
 as.calibration_spct <- function(x, ...) {UseMethod("as.calibration_spct")}
 
-#'@describeIn as.generic_spct
+#' @describeIn as.calibration_spct
 #'
 #' @export
 #'
@@ -460,7 +460,7 @@ as.calibration_spct.default <- function(x, ...) {
 #'
 as.raw_spct <- function(x, ...) {UseMethod("as.raw_spct")}
 
-#' @describeIn as.generic_spct
+#' @describeIn as.raw_spct
 #'
 #' @export
 #'
@@ -682,7 +682,7 @@ as.object_spct.default <- function(x,
 #'
 as.chroma_spct <- function(x, ...) {UseMethod("as.chroma_spct")}
 
-#' @describeIn as.generic_spct
+#' @describeIn as.chroma_spct
 #'
 #' @export
 #'
@@ -755,12 +755,12 @@ merge2object_spct <- function(x, y,
   z <- dplyr::inner_join(xx, yy, by = "w.length", ...)
   if (Tfr.type.out == "internal" && Tfr.type == "total") {
     stopifnot(Rfr.type == "total")
-    z <- dplyr::mutate(z, Tfr = .data$Tfr / (1 - .data$Rfr))
+    z[["Tfr"]] <- z[["Tfr"]] / (1 - z[["Rfr"]])
     Tfr.type <- "internal"
   }
   if (Tfr.type.out == "total" && Tfr.type == "internal") {
     stopifnot(Rfr.type == "total")
-    z <- dplyr::mutate(z, Tfr = .data$Tfr * (1 - .data$Rfr))
+    z[["Tfr"]] <- z[["Tfr"]] * (1 - z[["Rfr"]])
     Tfr.type <- "total"
   }
   setObjectSpct(z, Tfr.type = Tfr.type, Rfr.type = Rfr.type)

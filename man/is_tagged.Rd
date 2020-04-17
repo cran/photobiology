@@ -2,7 +2,7 @@
 % Please edit documentation in R/spct.classes.r
 \name{is_tagged}
 \alias{is_tagged}
-\title{Query if it is an spectrum is tagged}
+\title{Query if it is a spectrum is tagged}
 \usage{
 is_tagged(x)
 }
@@ -10,7 +10,7 @@ is_tagged(x)
 \item{x}{any R object}
 }
 \value{
-is_tagged returns TRUE if its argument is a an spectrum
+is_tagged returns TRUE if its argument is a a spectrum
 that contains tags and FALSE if it is an untagged spectrum, but
 returns NA for any other R object.
 }

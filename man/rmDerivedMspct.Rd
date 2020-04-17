@@ -14,7 +14,7 @@ A character vector containing the removed class attribute values.
   This is different to the behaviour of function \code{unlist} in base R!
 }
 \description{
-Removes from an spectrum object the class attributes "generic_mspct" and any
+Removes from a spectrum object the class attributes "generic_mspct" and any
 derived class attribute such as "source_mspct". \strong{This operation is done
 by reference!}
 }

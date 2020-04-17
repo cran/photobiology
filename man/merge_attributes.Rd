@@ -6,16 +6,30 @@
 \alias{merge_attributes.generic_spct}
 \title{Merge and copy attributes}
 \usage{
-merge_attributes(x, y, z, which, ...)
+merge_attributes(x, y, z, which, which.not, ...)
 
-\method{merge_attributes}{default}(x, y, z, which = NULL, ...)
+\method{merge_attributes}{default}(x, y, z, which = NULL, which.not = NULL, ...)
 
-\method{merge_attributes}{generic_spct}(x, y, z, which = NULL, copy.class = FALSE, ...)
+\method{merge_attributes}{generic_spct}(
+  x,
+  y,
+  z,
+  which = NULL,
+  which.not = NULL,
+  copy.class = FALSE,
+  ...
+)
 }
 \arguments{
-\item{x, y, z}{R objects}
+\item{x, y, z}{R objects. Objects \code{x} and {y} must be of the same class,
+\code{z} must be an object with a structure valid for this same class.}
 
-\item{which}{character}
+\item{which}{character Names of attributes to copy, if NULL all those
+relevant according to the class of \code{x} are used as default,}
+
+\item{which.not}{character Names of attributes not to be copied. The
+names passed here are removed from the list for \code{which}, which
+is most useful when we want to modify the default.}
 
 \item{...}{not used}
 

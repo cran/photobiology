@@ -5,6 +5,9 @@
 \alias{f_mspct}
 \alias{mutate_mspct}
 \alias{calc_filter_multipliers}
+\alias{T2T}
+\alias{getAfrType}
+\alias{setAfrType}
 \title{Defunct functions and methods}
 \usage{
 f_mspct(...)
@@ -12,6 +15,12 @@ f_mspct(...)
 mutate_mspct(...)
 
 calc_filter_multipliers(...)
+
+T2T(...)
+
+getAfrType(...)
+
+setAfrType(...)
 }
 \arguments{
 \item{...}{ignored}
@@ -21,9 +30,15 @@ Functions listed here have been removed or deleted, and temporarily replaced
 by stubs that report this when they are called.
 }
 \note{
-Function \code{f_mspct} has been renamed \code{msdply()}.
+Function \code{f_mspct()} has been renamed \code{msdply()}.
 
-Function \code{mutate_mspct} has been renamed \code{msmsply()}.
+Function \code{mutate_mspct()} has been renamed \code{msmsply()}.
 
-Function \code{calc_filter_multipliers} has been removed.
+Function \code{calc_filter_multipliers()} has been removed.
+
+Function \code{calc_filter_multipliers()} has been removed.
+
+Method \code{getAfrType()} has been removed.
+
+Method \code{setAfrType()} has been removed.
 }

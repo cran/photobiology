@@ -225,17 +225,17 @@ valleys(x, span, ignore_threshold, strict, ...)
 \arguments{
 \item{x}{an R object}
 
-\item{span}{a peak is defined as an element in a sequence which is greater
-than all other elements within a window of width span centered at that
-element. The default value is 3, meaning that a peak is bigger than both of
-its neighbors. Default: 3.}
+\item{span}{integer A valley is defined as an element in a sequence which is smaller
+than all other elements within a window of width \code{span} centered at that
+element. Use \code{NULL} for the global peak.}
 
-\item{ignore_threshold}{numeric value between 0.0 and 1.0 indicating the
-relative size compared to tallest peak threshold below which valleys will be
-ignored.}
+\item{ignore_threshold}{numeric Value between 0.0 and 1.0 indicating the
+relative size compared to tallest peak threshold below which peaks will be
+ignored. Negative values set a threshold so that the tallest peaks are
+ignored, instead of the shortest.}
 
-\item{strict}{logical flag: if TRUE, an element must be strictly greater than
-all other values in its window to be considered a peak. Default: TRUE.}
+\item{strict}{logical If \code{TRUE}, an element must be strictly greater
+than all other values in its window to be considered a peak.}
 
 \item{...}{ignored}
 

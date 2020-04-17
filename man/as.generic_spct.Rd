@@ -3,20 +3,11 @@
 \name{as.generic_spct}
 \alias{as.generic_spct}
 \alias{as.generic_spct.default}
-\alias{as.calibration_spct.default}
-\alias{as.raw_spct.default}
-\alias{as.chroma_spct.default}
 \title{Coerce to a spectrum}
 \usage{
 as.generic_spct(x, ...)
 
 \method{as.generic_spct}{default}(x, ...)
-
-\method{as.calibration_spct}{default}(x, ...)
-
-\method{as.raw_spct}{default}(x, ...)
-
-\method{as.chroma_spct}{default}(x, ...)
 }
 \arguments{
 \item{x}{an R object}
@@ -31,12 +22,6 @@ Return a copy of an R object with its class set to a given type of spectrum.
 }
 \section{Methods (by class)}{
 \itemize{
-\item \code{default}: 
-
-\item \code{default}: 
-
-\item \code{default}: 
-
 \item \code{default}: 
 }}
 

@@ -4,7 +4,7 @@
 \alias{wb2rect_spct}
 \title{Create tagged spectrum from wavebands}
 \usage{
-wb2rect_spct(w.band, short.names = TRUE)
+wb2rect_spct(w.band, short.names = TRUE, chroma.type = "CMF")
 }
 \arguments{
 \item{w.band}{waveband or list of waveband objects The waveband(s) determine
@@ -12,6 +12,10 @@ the wavelengths in variable \code{w.length} of the returned spectrum}
 
 \item{short.names}{logical Flag indicating whether to use short or long names
 for wavebands}
+
+\item{chroma.type}{character telling whether "CMF", "CC", or "both" should be
+returned for human vision, or an object of class \code{chroma_spct} for any
+other trichromic visual system.}
 }
 \value{
 A \code{generic.spectrum} object, with columns w.length, wl.low,

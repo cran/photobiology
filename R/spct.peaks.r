@@ -1,23 +1,25 @@
 #' Find peaks in a spectrum
 #'
 #' This function finds all peaks (local maxima) in a spectrum, using a user
-#' selectable size threshold relative to the tallest peak (global maximum). This
-#' a wrapper built on top of function peaks from package splus2R.
+#' provided size threshold relative to the tallest peak (global maximum) bellow
+#' which found peaks are ignored---i.e., not included in the returned value. This
+#' is a wrapper built on top of function \code{peaks()} from package 'splus2R'.
 #'
 #' @param x numeric vector
-#' @param ignore_threshold numeric value between 0.0 and 1.0 indicating the size
-#'   threshold below which peaks will be ignored.
-#' @param span a peak is defined as an element in a sequence which is greater
-#'   than all other elements within a window of width span centered at that
-#'   element. The default value is 3, meaning that a peak is bigger than both of
-#'   its neighbors. Default: 3.
-#' @param strict logical flag: if TRUE, an element must be strictly greater than
-#'   all other values in its window to be considered a peak. Default: TRUE.
+#' @param ignore_threshold numeric Value between 0.0 and 1.0 indicating the
+#'   relative size compared to tallest peak threshold below which peaks will be
+#'   ignored. Negative values set a threshold so that the tallest peaks are
+#'   ignored, instead of the shortest.
+#' @param span integer A peak is defined as an element in a sequence which is
+#'   greater than all other elements within a window of width \code{span}
+#'   centered at that element. Use \code{NULL} for the global peak.
+#' @param strict logical If \code{TRUE}, an element must be strictly greater
+#'   than all other values in its window to be considered a peak.
 #' @param na.rm logical indicating whether \code{NA} values should be stripped
 #'   before searching for peaks.
 #'
-#' @return a logical vector of the same length as \code{x}. Values that are TRUE
-#'   correspond to local peaks in the data.
+#' @return A logical vector of the same length as \code{x}. Values that are
+#'   \code{TRUE} correspond to local peaks in the data.
 #'
 #' @export
 #' @examples
@@ -25,8 +27,9 @@
 #'
 #' @note This function is a wrapper built on function
 #'   \code{\link[splus2R]{peaks}} from \pkg{splus2R} and handles non-finite
-#'   (including NA) values differently than \code{peaks}, instead of giving an
-#'   error they are replaced with the smallest finite value in \code{x}.
+#'   (including \code{NA}) values differently than \code{splus2R::peaks},
+#'   instead of giving an error they are replaced with the smallest finite value
+#'   in \code{x}.
 #'
 #' @seealso \code{\link[splus2R]{peaks}}
 #'
@@ -34,31 +37,39 @@
 #'
 find_peaks <-
   function(x,
-           ignore_threshold = 0.0,
+           ignore_threshold = 0,
            span = 3,
            strict = TRUE,
            na.rm = FALSE) {
     if (na.rm) {
       x <- na.omit(x)
     }
+    # find peaks
     if(is.null(span)) {
-      return(x == max(x))
-    }
-    range_x <- range(x, finite = TRUE)
-    min_x <- range_x[1]
-    max_x <- range_x[2]
-    x <- ifelse(!is.finite(x), min_x, x)
-    # the next two lines cater for the case when max_x < 0, which is quite common with logs
-    delta <- max_x - min_x
-    top_flag <- ignore_threshold > 0.0
-    scaled_threshold <- delta * abs(ignore_threshold)
-    pks <- splus2R::peaks(x = x, span = span, strict = strict)
-    if (abs(ignore_threshold) < 1e-5)
-      return(pks)
-    if (top_flag) {
-      return(ifelse(x - min_x > scaled_threshold, pks , FALSE))
+      pks <- x == max(x)
+      if (strict && sum(pks) != 1L) {
+        pks <- logical(length(x))
+      }
     } else {
-      return(ifelse(max_x - x > scaled_threshold, pks , FALSE))
+      pks <- splus2R::peaks(x = x, span = span, strict = strict)
+    }
+    # apply threshold to found peaks
+    if (abs(ignore_threshold) < 1e-5) {
+      pks
+    } else {
+      range_x <- range(x, finite = TRUE)
+      min_x <- range_x[1]
+      max_x <- range_x[2]
+      x <- ifelse(!is.finite(x), min_x, x)
+      # this can cater for the case when max_x < 0, as with logs
+      delta <- max_x - min_x
+      top_flag <- ignore_threshold > 0.0
+      scaled_threshold <- delta * abs(ignore_threshold)
+      if (top_flag) {
+        ifelse(x - min_x > scaled_threshold, pks , FALSE)
+      } else {
+        ifelse(max_x - x > scaled_threshold, pks , FALSE)
+      }
     }
   }
 
@@ -72,14 +83,14 @@ find_peaks <-
 #' @param x numeric
 #' @param y numeric
 #' @param ignore_threshold numeric Value between 0.0 and 1.0 indicating the
-#'   relative size compared to tallest peak or deepest valley of the peaks
-#'   to return.
-#' @param span numeric A peak is defined as an element in a sequence which is
+#'   relative size compared to tallest peak threshold below which peaks will be
+#'   ignored. Negative values set a threshold so that the tallest peaks are
+#'   ignored, instead of the shortest.
+#' @param span integer A peak is defined as an element in a sequence which is
 #'   greater than all other elements within a window of width \code{span}
-#'   centered at that element. For example, a value of 3 means that a peak is
-#'   bigger than both of its neighbors.
-#' @param strict logical Flag: if TRUE, an element must be strictly greater than
-#'   all other values in its window to be considered a peak. Default: TRUE.
+#'   centered at that element. Use \code{NULL} for the global peak.
+#' @param strict logical If \code{TRUE}, an element must be strictly greater
+#'   than all other values in its window to be considered a peak.
 #' @param x_unit character Vector of texts to be pasted at end of labels built
 #'   from x value at peaks.
 #' @param x_digits numeric Number of significant digits in wavelength label.
@@ -98,7 +109,7 @@ find_peaks <-
 #'
 get_peaks <- function(x,
                       y,
-                      ignore_threshold = 0.0,
+                      ignore_threshold = 0,
                       span = 5,
                       strict = TRUE,
                       x_unit = "",
@@ -133,7 +144,7 @@ get_peaks <- function(x,
 #' @export
 #'
 get_valleys <- function(x, y,
-                        ignore_threshold = 0.0,
+                        ignore_threshold = 0,
                         span = 5,
                         strict = TRUE,
                         x_unit = "",
@@ -161,8 +172,8 @@ get_valleys <- function(x, y,
 #' \code{find_peaks()} or \code{find_valleys()}.
 #'
 #' @param x generic_spct or data.frame object.
-#' @param peaks.idx,valleys.idx integer Indexes into \code{x} selecting global
-#'   or local extremes.
+#' @param peaks.idx,valleys.idx logical or integer Indexes into \code{x}
+#'   selecting global or local extremes.
 #' @param span odd integer The span used when refining the location of maxima or
 #'   minima of \code{x}.
 #' @param x.col.name,y.col.name character Name of the column of \code{x} on
@@ -283,14 +294,15 @@ fit_valleys <- function(x,
 #' to local maxima.
 #'
 #' @param x an R object
-#' @param ignore_threshold numeric value between 0.0 and 1.0 indicating the
+#' @param ignore_threshold numeric Value between 0.0 and 1.0 indicating the
 #'   relative size compared to tallest peak threshold below which peaks will be
-#'   ignored.
-#' @param span a peak is defined as an element in a sequence which is greater
-#'   than all other elements within a window of width \code{span} centered at
-#'   that element. Use \code{NULL} for the global peak.
-#' @param strict logical flag: if TRUE, an element must be strictly greater than
-#'   all other values in its window to be considered a peak. Default: TRUE.
+#'   ignored. Negative values set a threshold so that the tallest peaks are
+#'   ignored, instead of the shortest.
+#' @param span integer A peak is defined as an element in a sequence which is
+#'   greater than all other elements within a window of width \code{span}
+#'   centered at that element. Use \code{NULL} for the global peak.
+#' @param strict logical If \code{TRUE}, an element must be strictly greater
+#'   than all other values in its window to be considered a peak.
 #' @param na.rm logical indicating whether \code{NA} values should be stripped
 #'   before searching for peaks.
 #' @param var.name,x.var.name,y.var.name character Name of column where to look
@@ -302,6 +314,10 @@ fit_valleys <- function(x,
 #' @param ... ignored
 #'
 #' @return A subset of \code{x} with rows corresponding to local maxima.
+#'
+#' @note Thresholds for ignoring peaks are applied after peaks are searched for,
+#' and negative threshold values can in some cases result in no peaks being
+#' returned.
 #'
 #' @export
 #'
@@ -841,15 +857,15 @@ peaks.raw_mspct <- function(x,
 #' to local maxima.
 #'
 #' @param x an R object
-#' @param ignore_threshold numeric value between 0.0 and 1.0 indicating the
-#'   relative size compared to tallest peak threshold below which valleys will be
-#'   ignored.
-#' @param span a peak is defined as an element in a sequence which is greater
-#'   than all other elements within a window of width span centered at that
-#'   element. The default value is 3, meaning that a peak is bigger than both of
-#'   its neighbors. Default: 3.
-#' @param strict logical flag: if TRUE, an element must be strictly greater than
-#'   all other values in its window to be considered a peak. Default: TRUE.
+#' @param ignore_threshold numeric Value between 0.0 and 1.0 indicating the
+#'   relative size compared to tallest peak threshold below which peaks will be
+#'   ignored. Negative values set a threshold so that the tallest peaks are
+#'   ignored, instead of the shortest.
+#' @param span integer A valley is defined as an element in a sequence which is smaller
+#'   than all other elements within a window of width \code{span} centered at that
+#'   element. Use \code{NULL} for the global peak.
+#' @param strict logical If \code{TRUE}, an element must be strictly greater
+#'   than all other values in its window to be considered a peak.
 #' @param na.rm logical indicating whether \code{NA} values should be stripped
 #'   before searching for peaks.
 #' @param var.name,x.var.name,y.var.name character Name of column where to look
@@ -1418,14 +1434,18 @@ valleys.raw_mspct <- function(x,
 #'   wavelengths are to be searched and interpolated if need. The character
 #'   strings "half.maximum" and "half.range" are also accepted as arguments.
 #' @param col.name.x character The name of the column in which to the
-#'   independent variable is stored. Defaults to "w.length" for objects of
-#'   class \code{"generic_spct"} or derived.
-#' @param col.name character The name of the column in which to
-#'    search for the target value.
+#'   independent variable is stored. Defaults to "w.length" for objects of class
+#'   \code{"generic_spct"} or derived.
+#' @param col.name character The name of the column in which to search for the
+#'   target value.
 #' @param .fun function A binary comparison function or operator.
-#' @param interpolate logical Indicating whether the nearest wavelength value
-#'   in \code{x} should be returned or a value calculated by linear
-#'   interpolation between wavelength values stradling the target.
+#' @param interpolate logical Indicating whether the nearest wavelength value in
+#'   \code{x} should be returned or a value calculated by linear interpolation
+#'   between wavelength values stradling the target.
+#' @param idfactor logical or character Generates an index column of factor
+#'   type. If \code{idfactor = TRUE} then the column is auto named spct.idx.
+#'   Alternatively the column name can be directly passed as argument to
+#'   \code{idfactor} as a character string.
 #' @param na.rm logical indicating whether \code{NA} values should be stripped
 #'   before searching for the target.
 #'
@@ -1435,8 +1455,27 @@ valleys.raw_mspct <- function(x,
 #' @return A spectrum object of the same class as \code{x} with fewer rows,
 #'   possibly even no rows. If \code{FALSE} is passed to \code{interpolate} a
 #'   subset of \code{x} is returned, otherwise a new object of the same class
-#'   containing interpolated wavelenths for the \code{target} value is
-#'   returned.
+#'   containing interpolated wavelenths for the \code{target} value is returned.
+#'
+#' @examples
+#' find_wls(white_led.source_spct)
+#' find_wls(white_led.source_spct, target = "half.maximum")
+#' find_wls(white_led.source_spct, target = 0.4)
+#' find_wls(white_led.source_spct, target = 0.4, interpolate = TRUE)
+#' find_wls(white_led.source_spct, target = c(0.3, 0.4))
+#' find_wls(white_led.source_spct, target = c(0.3, 0.4), idfactor = "target")
+#' find_wls(white_led.source_spct, target = c(0.3, 0.4), idfactor = TRUE)
+#' find_wls(white_led.source_spct, target = c("HM", "HR"))
+#' find_wls(white_led.source_spct, target = c("HM", "HR"), interpolate = TRUE)
+#'
+#' led.df <- as.data.frame(white_led.source_spct)
+#' find_wls(led.df, col.name = "s.e.irrad", col.name.x = "w.length")
+#' find_wls(led.df, col.name = "s.e.irrad", col.name.x = "w.length",
+#'          target = 0.4)
+#' find_wls(led.df, col.name = "s.e.irrad", col.name.x = "w.length",
+#'          target = c(0.3, 0.4))
+#' find_wls(led.df, col.name = "s.e.irrad", col.name.x = "w.length",
+#'          target = 0.4, idfactor = "target")
 #'
 #' @export
 #'
@@ -1446,17 +1485,20 @@ find_wls <- function(x,
                      col.name = NULL,
                      .fun = `<=`,
                      interpolate = FALSE,
+                     idfactor = FALSE,
                      na.rm = FALSE) {
   stopifnot(is.data.frame(x))
   x.class <- class(x)[1]
-  if (is.null(target) || is.na(target)) {
+  target <- na.omit(target)
+  if (!length(target)) {
     return(x[NULL, ])
   }
+
   if (is.null(col.name.x)) {
     if (is.any_spct(x)) {
       col.name.x <- "w.length"
     } else {
-      warning("Object is not a \"generic spectrum\" explicit argument to 'col.name' required.")
+      warning("Object is not a \"generic spectrum\" explicit argument to 'col.name.x' required.")
       return(x[NULL, ])
     }
   }
@@ -1473,58 +1515,84 @@ find_wls <- function(x,
   if (na.rm) {
     x <- na.omit(x)
   }
-  if (is.character(target)) {
-    if (target %in% c("half.maximum", "HM")) {
-      target <- max(x[[col.name]]) / 2
-    } else if (target %in% c("half.range", "HR")) {
-      target <- mean(range(x[[col.name]]))
-    } else {
-      warning("Unrecognized character string: '", target, "' passed to 'target'", sep = "")
-      target <- NA_real_
+  # .fun may not be vectorized over targets so we need to iterate
+  collector.ls <- list()
+  targets <- target
+  for (target in targets) {
+    if (is.character(target)) {
+      if (target %in% c("half.maximum", "HM")) {
+        target <- max(x[[col.name]]) / 2
+      } else if (target %in% c("half.range", "HR")) {
+        target <- mean(range(x[[col.name]]))
+      } else {
+        warning("Unrecognized character string: '", target, "' passed to 'target'", sep = "")
+        target <- NA_real_
+      }
+      if (is.na(target)) {
+        next()
+      }
     }
-    if (is.na(target)) {
-      return(x[NULL, ])
+    # test all rows for the condition
+    true.rows <- .fun(x[[col.name]], target)
+    # use run length to find transition points
+    runs <- rle(true.rows)
+    if (length(runs$lengths) < 2) {
+      next()
+      #    return(do.call(x.class, args = list()))
     }
-  }
-  # test all rows for the condition
-  true.rows <- .fun(x[[col.name]], target)
-  # use run length to find transition points
-  runs <- rle(true.rows)
-  if (length(runs$lengths) < 2) {
-    return(do.call(x.class, args = list()))
-  }
-  # accumulate run lengths to get index positions
-  opening.idx <- cumsum(runs$lengths[-length(runs$lengths)])
-  closing.idx <- opening.idx + 1L
-  if (max(closing.idx) > nrow(x)) {
-    closing.idx[length(closing.idx)] <- nrow(x)
-  }
-  if (interpolate) {
-    # do vectorized interpolation to fetch true intersects
-    delta.wl <- x[[col.name.x]][closing.idx] - x[[col.name.x]][opening.idx]
-    delta.col <- x[[col.name]][closing.idx] - x[[col.name]][opening.idx]
-    delta.col.target <- target - x[[col.name]][opening.idx]
-    wl.increment <- delta.wl * abs(delta.col.target / delta.col)
-    wls <- x[[col.name.x]][opening.idx] + wl.increment
+    # accumulate run lengths to get index positions
+    opening.idx <- cumsum(runs$lengths[-length(runs$lengths)])
+    closing.idx <- opening.idx + 1L
+    if (max(closing.idx) > nrow(x)) {
+      closing.idx[length(closing.idx)] <- nrow(x)
+    }
+    if (interpolate) {
+      # do vectorized interpolation to fetch true intersects
+      delta.wl <- x[[col.name.x]][closing.idx] - x[[col.name.x]][opening.idx]
+      delta.col <- x[[col.name]][closing.idx] - x[[col.name]][opening.idx]
+      delta.col.target <- target - x[[col.name]][opening.idx]
+      wl.increment <- delta.wl * abs(delta.col.target / delta.col)
+      wls <- x[[col.name.x]][opening.idx] + wl.increment
 
-    # return as a "short" spectrum containing only matching wls and target values
-    z <- tibble::tibble(wls, target)
-    names(z) <- c(col.name.x, col.name)
-    if (x.class %in% spct_classes()) {
-      z <- do.call(paste("as", x.class, sep = "."), args = list(x = z))
-      # we need to copy our private attributes as we are building a new object
-      z <- copy_attributes(x, z)
+      # return as a "short" spectrum containing only matching wls and target values
+      z <- tibble::tibble(wls, target)
+      names(z) <- c(col.name.x, col.name)
+      if (x.class %in% spct_classes()) {
+        z <- do.call(paste("as", x.class, sep = "."), args = list(x = z))
+        # we need to copy our private attributes as we are building a new object
+        z <- copy_attributes(x, z)
+      }
+    } else {
+      # extract nearest wl value for target
+      idxs <- ifelse(abs((x[[col.name]][closing.idx] - target) /
+                           (x[[col.name]][closing.idx] - x[[col.name]][opening.idx])) > 0.5,
+                     opening.idx,
+                     closing.idx)
+      # if the target value is close to a peak or valley, we may pick the same idx on both sides of it.
+      z <- x[unique(idxs), ]
     }
-  } else {
-    # extract nearest wl value for target
-    idxs <- ifelse(abs((x[[col.name]][closing.idx] - target) /
-                     (x[[col.name]][closing.idx] - x[[col.name]][opening.idx])) > 0.5,
-                   opening.idx,
-                   closing.idx)
-    # if the target value is close to a peak or valley, we may pick the same idx on both sides of it.
-    z <- x[unique(idxs), ]
+    collector.ls[[as.character(target)]] <- z
   }
-  z
+  if (!length(collector.ls)) {
+    # we will still bind it to respect idfactor and ensure invariant columns
+    collector.ls[[1L]] <- x[NULL, ]
+  }
+  if (is.any_spct(x)) {
+    rbindspct(collector.ls,
+              fill = FALSE,
+              idfactor = idfactor,
+              attrs.source = 1L)
+  } else { # data.frame or tibble
+    if (is.logical(idfactor)) {
+      # convert to equivalent dplyr argument
+      if (!idfactor) {
+        # avoid setting of row names, for consistency
+        names(collector.ls) <- NULL
+      }
+      idfactor <- if (idfactor) "spct.idx" else NULL
+    }
+    dplyr::bind_rows(collector.ls, .id = idfactor)
+  }
 }
 
 # find wavelengths for a target y ----------------------------------------------
@@ -1542,16 +1610,23 @@ find_wls <- function(x,
 #'   string "half.maximum" is also accepted as argument.
 #' @param interpolate logical Indicating whether the nearest wavelength value
 #'   in \code{x} should be returned or a value calculated by linear
-#'   interpolation between wavelength values stradling the target.
+#'   interpolation between wavelength values straddling the target.
+#' @param x.var.name,y.var.name,col.name character The name of the columns in
+#'   which to search for the target value. Use of \code{col.name} is deprecated,
+#'   and is a synonym for \code{y.var.name}.
+#' @param idfactor logical or character Generates an index column of factor
+#'   type. If \code{idfactor = TRUE} then the column is auto named spct.idx.
+#'   Alternatively the column name can be directly passed as argument to
+#'   \code{idfactor} as a character string.
 #' @param na.rm logical indicating whether \code{NA} values should be stripped
 #'   before searching for the target.
 #' @param ... currently ignored.
 #'
-#' @return A spectrum object of the same class as \code{x} with fewer rows,
-#'   possibly even no rows. If \code{FALSE} is passed to \code{interpolate} a
-#'   subset of \code{x} is returned, otherwise a new object of the same class
-#'   containing interpolated wavelenths for the \code{target} value is
-#'   returned.
+#' @return A data.frame or a spectrum object of the same class as \code{x} with
+#'   fewer rows, possibly even no rows. If \code{FALSE} is passed to
+#'   \code{interpolate} a subset of \code{x} is returned, otherwise a new object
+#'   of the same class containing interpolated wavelengths for the \code{target}
+#'   value is returned.
 #'
 #' @note When interpolation is used, only column \code{w.length} and the column
 #'   against which the target value was compared are included in the returned
@@ -1561,6 +1636,11 @@ find_wls <- function(x,
 #'
 #' @examples
 #' wls_at_target(sun.spct, target = 0.1)
+#' wls_at_target(sun.spct, target = 2e-6, unit.out = "photon")
+#' wls_at_target(polyester.spct, target = "HM")
+#' wls_at_target(polyester.spct, target = "HM", interpolate = TRUE)
+#' wls_at_target(polyester.spct, target = "HM", idfactor = "target")
+#' wls_at_target(polyester.spct, target = "HM", filter.qty = "absorbance")
 #'
 #' @export
 #'
@@ -1569,6 +1649,7 @@ find_wls <- function(x,
 wls_at_target <- function(x,
                           target = NULL,
                           interpolate = FALSE,
+                          idfactor = FALSE,
                           na.rm = FALSE,
                           ...) UseMethod("wls_at_target")
 
@@ -1580,16 +1661,41 @@ wls_at_target.default <-
   function(x,
            target = NULL,
            interpolate = FALSE,
+           idfactor = FALSE,
            na.rm = FALSE,
            ...) {
     warning("Method 'wls_at_target' not implemented for objects of class ", class(x)[1])
     x[NULL]
   }
 
-#' @describeIn wls_at_target Method for "generic_spct" objects.
+#' @describeIn wls_at_target  Method for "data.frame" objects.
 #'
-#' @param col.name character The name of the column in which to search for the
-#'   target value.
+#' @export
+#'
+wls_at_target.data.frame <-
+  function(x,
+           target = "half.maximum",
+           interpolate = FALSE,
+           idfactor = FALSE,
+           na.rm = FALSE,
+           x.var.name = NULL,
+           y.var.name = NULL,
+           ...) {
+    if (is.null(y.var.name) || is.null(x.var.name)) {
+      warning("Variable (column) names required.")
+      return(x[NA, ])
+    }
+    find_wls(x,
+             target = target,
+             col.name.x = x.var.name,
+             col.name = y.var.name,
+             .fun = `<=`,
+             interpolate = interpolate,
+             idfactor = idfactor,
+             na.rm = na.rm)
+  }
+
+#' @describeIn wls_at_target Method for "generic_spct" objects.
 #'
 #' @export
 #'
@@ -1597,13 +1703,16 @@ wls_at_target.generic_spct <-
   function(x,
            target = "half.maximum",
            interpolate = FALSE,
+           idfactor = FALSE,
            na.rm = FALSE,
            col.name = NULL,
+           y.var.name = col.name,
            ...) {
     find_wls(x,
              target = target,
              col.name = col.name,
              interpolate = interpolate,
+             idfactor = idfactor,
              na.rm = na.rm,
              ...)
   }
@@ -1618,6 +1727,7 @@ wls_at_target.source_spct <-
   function(x,
            target = "half.maximum",
            interpolate = FALSE,
+           idfactor = FALSE,
            na.rm = FALSE,
            unit.out = getOption("photobiology.radiation.unit", default = "energy"),
            ...) {
@@ -1630,10 +1740,11 @@ wls_at_target.source_spct <-
     } else {
       stop("Unrecognized 'unit.out': ", unit.out)
     }
-    find_wls(x,
+    find_wls(z,
              target = target,
              col.name = col.name,
              interpolate = interpolate,
+             idfactor = idfactor,
              na.rm = na.rm)
   }
 
@@ -1644,8 +1755,10 @@ wls_at_target.response_spct <-
   function(x,
            target = "half.maximum",
            interpolate = FALSE,
+           idfactor = FALSE,
            na.rm = FALSE,
-           unit.out = getOption("photobiology.radiation.unit", default = "energy"),
+           unit.out = getOption("photobiology.radiation.unit",
+                                default = "energy"),
            ...) {
     if (unit.out == "energy") {
       z <- q2e(x, "replace", FALSE)
@@ -1656,10 +1769,11 @@ wls_at_target.response_spct <-
     } else {
       stop("Unrecognized 'unit.out': ", unit.out)
     }
-    find_wls(x,
+    find_wls(z,
              target = target,
              col.name = col.name,
              interpolate = interpolate,
+             idfactor = idfactor,
              na.rm = na.rm)
   }
 
@@ -1673,8 +1787,10 @@ wls_at_target.filter_spct <-
   function(x,
            target = "half.maximum",
            interpolate = FALSE,
+           idfactor = FALSE,
            na.rm = FALSE,
-           filter.qty = getOption("photobiology.filter.qty", default = "transmittance"),
+           filter.qty = getOption("photobiology.filter.qty",
+                                  default = "transmittance"),
            ...) {
     if (filter.qty == "transmittance") {
       z <- A2T(x, "replace", FALSE)
@@ -1685,10 +1801,11 @@ wls_at_target.filter_spct <-
     } else {
       stop("Unrecognized 'filter.qty': ", filter.qty)
     }
-    find_wls(x,
+    find_wls(z,
              target = target,
              col.name = col.name,
              interpolate = interpolate,
+             idfactor = idfactor,
              na.rm = na.rm)
   }
 
@@ -1699,12 +1816,14 @@ wls_at_target.reflector_spct <-
   function(x,
            target = "half.maximum",
            interpolate = FALSE,
+           idfactor = FALSE,
            na.rm = FALSE,
            ...) {
     find_wls(x,
              target = target,
              col.name = "Rfr",
              interpolate = interpolate,
+             idfactor = idfactor,
              na.rm = na.rm)
   }
 
@@ -1716,12 +1835,14 @@ wls_at_target.cps_spct <-
   function(x,
            target = "half.maximum",
            interpolate = FALSE,
+           idfactor = FALSE,
            na.rm = FALSE,
            ...) {
     find_wls(x,
              target = target,
              col.name = "cps",
              interpolate = interpolate,
+             idfactor = idfactor,
              na.rm = na.rm)
   }
 
@@ -1740,6 +1861,7 @@ wls_at_target.cps_spct <-
 wls_at_target.generic_mspct <- function(x,
                                         target = "half.maximum",
                                         interpolate = FALSE,
+                                        idfactor = FALSE,
                                         na.rm = FALSE,
                                         ...,
                                         .parallel = FALSE,
@@ -1748,6 +1870,7 @@ wls_at_target.generic_mspct <- function(x,
           .fun = wls_at_target,
           target = target,
           interpolate = interpolate,
+          idfactor = idfactor,
           na.rm = na.rm,
           ...,
           .parallel = .parallel,

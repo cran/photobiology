@@ -4,7 +4,13 @@
 \alias{rbindspct}
 \title{Row-bind spectra}
 \usage{
-rbindspct(l, use.names = TRUE, fill = TRUE, idfactor = TRUE)
+rbindspct(
+  l,
+  use.names = TRUE,
+  fill = TRUE,
+  idfactor = TRUE,
+  attrs.source = NULL
+)
 }
 \arguments{
 \item{l}{A \code{source_mspct}, \code{filter_mspct}, \code{reflector_mspct},
@@ -28,6 +34,9 @@ and all items of the input list have to have non-null column names.}
 \code{_mspct} objects. If \code{idfactor=TRUE} then the column is auto
 named \code{spct.idx}. Alternatively the column name can be directly
 provided to \code{idfactor} as a character string.}
+
+\item{attrs.source}{integer Index into the members of the list from which
+attributes should be copied. If \code{NULL}, all attributes are merged.}
 }
 \value{
 An spectral object of a type common to all bound items containing a

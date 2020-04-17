@@ -2,7 +2,7 @@
 % Please edit documentation in R/spct.classes.r
 \name{class_spct}
 \alias{class_spct}
-\title{Query which is the class of an spectrum}
+\title{Query which is the class of a spectrum}
 \usage{
 class_spct(x)
 }

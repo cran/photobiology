@@ -28,6 +28,9 @@
 #'   named \code{spct.idx}. Alternatively the column name can be directly
 #'   provided to \code{idfactor} as a character string.
 #'
+#' @param attrs.source integer Index into the members of the list from which
+#'   attributes should be copied. If \code{NULL}, all attributes are merged.
+#'
 #' @details Each item of \code{l} should be a spectrum, including \code{NULL}
 #'   (skipped) or an empty object (0 rows). \code{rbindspc} is most useful when
 #'   there are a variable number of (potentially many) objects to stack.
@@ -80,7 +83,7 @@
 #' head(spct)
 #' class(spct)
 #'
-rbindspct <- function(l, use.names = TRUE, fill = TRUE, idfactor = TRUE) {
+rbindspct <- function(l, use.names = TRUE, fill = TRUE, idfactor = TRUE, attrs.source = NULL) {
   if ((is.null(idfactor) && (!is.null(names(l)))) ||
        (is.logical(idfactor) && idfactor )) {
     idfactor <- "spct.idx"
@@ -95,36 +98,66 @@ rbindspct <- function(l, use.names = TRUE, fill = TRUE, idfactor = TRUE) {
     warning("Argument 'l' should be a list or a collection of spectra.")
     return(generic_spct())
   }
+  # We find the most derived common class for spectra
+  l.class <- shared_member_class(l)
+  if (length(l.class) < 1L) {
+    stop("Argument 'l' should contain only spectra.")
+  } else {
+    l.class <- l.class[1L]
+  }
+
   # list may have members which already have multiple spectra in long form
   mltpl.wl <- sum(sapply(l, FUN = getMultipleWl))
-  # we find the most derived common class
-  # and we make sure that all spectral data use consistent units
-  l.class <- spct_classes()
-  photon.based.input <- any(sapply(l, FUN = is_photon_based))
-  absorbance.based.input <- any(sapply(l, FUN = is_absorbance_based))
+
+  # we check that all spectral data contain consistent quantities
+  if (l.class %in% c("source_spct", "response_spct")) {
+    photon.based <- sapply(l, FUN = is_photon_based)
+    energy.based <- sapply(l, FUN = is_energy_based)
+    qe.consistent.based <-
+      all(photon.based) && !any(energy.based) ||
+      all(energy.based) && !any(photon.based) ||
+      all(energy.based) && all(photon.based)
+  } else {
+    qe.consistent.based <- NA
+  }
+
+  if (l.class == "filter_spct") {
+    absorbance.based <- sapply(l, FUN = is_absorbance_based)
+    transmittance.based <- sapply(l, FUN = is_transmittance_based)
+    absorptance.based <- sapply(l, FUN = is_absorptance_based)
+    TA.consistent.based <- all(absorbance.based) ||
+      all(absorptance.based) ||
+      all(transmittance.based)
+  } else {
+    TA.consistent.based <- NA
+  }
+
+  # check for transformed data
   scaled.input <- sapply(l, FUN = is_scaled)
   normalized.input <- sapply(l, FUN = is_normalized)
   effective.input <- sapply(l, FUN = is_effective)
+
   if (any(scaled.input) && !all(scaled.input)) {
     warning("Spectra being row-bound have been differently re-scaled")
   }
   if (any(normalized.input) && length(unique(normalized.input)) > 1L) {
     warning("Spectra being row-bound have been differently normalized")
   }
+
   for (i in seq_along(l)) {
     class_spct <- class(l[[i]])[1]
     l.class <- intersect(l.class, class_spct)
     if (is_tagged(l[[i]])) {
       l[[i]] <- untag(l[[i]])
     }
-    if (photon.based.input && ("source_spct" %in% class_spct ||
-        "response_spct" %in% class_spct )) {
+    if (!is.na(qe.consistent.based) && !qe.consistent.based) {
       l[[i]] <- q2e(l[[i]], action = "replace", byref = FALSE)
     }
-    if (absorbance.based.input && "filter_spct" %in% class_spct) {
+    if (!is.na(TA.consistent.based) && !TA.consistent.based) {
       l[[i]] <- A2T(l[[i]], action = "replace", byref = FALSE)
     }
   }
+
   # check class is same for all spectra
   #  print(l.class)
   if (length(l.class) != 1L) {
@@ -154,30 +187,44 @@ rbindspct <- function(l, use.names = TRUE, fill = TRUE, idfactor = TRUE) {
   comment.ans <- "rbindspct: concatenated comments"
   comments.found <- FALSE
 
-  for (i in seq_along(l)) {
-    temp <- comment(l[[i]])
-    comments.found <- comments.found || !is.null(temp)
-    if (add.idfactor) {
-      temp <- paste("\n", idfactor , "= ", names.spct[i], ":\n", comment(l[[i]]), sep = "")
-    } else {
-      temp <- paste("\n spectrum = ", names.spct[i], ":\n", comment(l[[i]]), sep = "")
-    }
-    comment.ans <- paste(comment.ans, temp)
-  }
-  if (!comments.found) {
-    comment.ans <- NULL
+  if (length(attrs.source)) {
+    idxs <- intersect(seq_along(l), attrs.source)
+  } else {
+    idxs <- seq_along(l)
   }
 
   # get methods and functions return NA if attr is not set
-  instr.desc <- lapply(l, getInstrDesc)
-  names(instr.desc) <- names.spct
-  instr.settings <- lapply(l, getInstrSettings)
-  names(instr.settings) <- names.spct
-  when.measured <- lapply(l, getWhenMeasured)
-  names(when.measured) <- names.spct
-  where.measured <- dplyr::bind_rows(lapply(l, getWhereMeasured), .id = "spct.idx")
-  what.measured <- lapply(l, getWhatMeasured)
-  names(what.measured) <- names.spct
+  if (length(idxs) == 1L) {
+    comment.ans <- comment(l[[idxs]])
+    instr.desc <- getInstrDesc(l[[idxs]])
+    instr.settings <- getInstrSettings(l[[idxs]])
+    when.measured <- getWhenMeasured(l[[idxs]])
+    where.measured <- getWhereMeasured(l[[idxs]])
+    what.measured <- getWhatMeasured(l[[idxs]])
+  } else {
+    for (i in idxs) {
+      temp <- comment(l[[i]])
+      comments.found <- comments.found || !is.null(temp)
+      if (add.idfactor) {
+        temp <- paste("\n", idfactor , "= ", names.spct[i], ":\n", comment(l[[i]]), sep = "")
+      } else {
+        temp <- paste("\n spectrum = ", names.spct[i], ":\n", comment(l[[i]]), sep = "")
+      }
+      comment.ans <- paste(comment.ans, temp)
+    }
+    if (!comments.found) {
+      comment.ans <- NULL
+    }
+    instr.desc <- lapply(l[idxs], getInstrDesc)
+    names(instr.desc) <- names.spct[idxs]
+    instr.settings <- lapply(l[idxs], getInstrSettings)
+    names(instr.settings) <- names.spct[idxs]
+    when.measured <- lapply(l[idxs], getWhenMeasured)
+    names(when.measured) <- names.spct[idxs]
+    where.measured <- dplyr::bind_rows(lapply(l[idxs], getWhereMeasured), .id = "spct.idx")
+    what.measured <- lapply(l[idxs], getWhatMeasured)
+    names(what.measured) <- names.spct[idxs]
+  }
 
   if (l.class == "source_spct") {
     time.unit <- sapply(l, FUN = getTimeUnit)
@@ -199,7 +246,7 @@ rbindspct <- function(l, use.names = TRUE, fill = TRUE, idfactor = TRUE) {
       bswf.used <- "none"
     }
     setSourceSpct(ans, time.unit = time.unit[1], bswf.used = bswf.used, multiple.wl = mltpl.wl)
-    if (photon.based.input) {
+    if (!qe.consistent.based) {
       e2q(ans, action = "add", byref = TRUE)
     }
   } else if (l.class == "filter_spct") {
@@ -210,8 +257,11 @@ rbindspct <- function(l, use.names = TRUE, fill = TRUE, idfactor = TRUE) {
       warning("Inconsistent 'Tfr.type' among filter spectra passed to rbindspct")
       return(filter_spct())
     }
+    filter.descriptor <- sapply(l, FUN = getFilterProperties, return.null = TRUE)
+    # TODO merge it if possible
+    # and then set
     setFilterSpct(ans, Tfr.type = Tfr.type[1], multiple.wl = mltpl.wl)
-    if (absorbance.based.input) {
+    if (!TA.consistent.based) {
       T2A(ans, action = "add", byref = TRUE)
     }
   } else if (l.class == "reflector_spct") {
@@ -249,7 +299,7 @@ rbindspct <- function(l, use.names = TRUE, fill = TRUE, idfactor = TRUE) {
       return(response_spct())
     }
     setResponseSpct(ans, time.unit = time.unit[1], multiple.wl = mltpl.wl)
-    if (photon.based.input) {
+    if (!qe.consistent.based) {
       e2q(ans, action = "add", byref = TRUE)
     }
   } else if (l.class == "chroma_spct") {

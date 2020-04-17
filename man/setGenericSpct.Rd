@@ -40,6 +40,9 @@ setCpsSpct(
 setFilterSpct(
   x,
   Tfr.type = c("total", "internal"),
+  Rfr.constant = NA_real_,
+  thickness = NA_real_,
+  attenuation.mode = NA,
   strict.range = getOption("photobiology.strict.range", default = FALSE),
   multiple.wl = 1L,
   idfactor = NULL
@@ -90,6 +93,13 @@ error instead of a warning.}
 
 \item{Tfr.type}{character A string, either "total" or "internal".}
 
+\item{Rfr.constant}{numeric The value of the reflection factor (/1).}
+
+\item{thickness}{numeric The thickness of the material.}
+
+\item{attenuation.mode}{character One of "reflection", "absorption" or
+"mixed".}
+
 \item{Rfr.type}{character A string, either "total" or "specular".}
 
 \item{bswf.used}{character A string, either "none" or the name of a BSWF.}
@@ -125,6 +135,11 @@ class to "generic_spct".
 \note{
 This method alters x itself by reference and in addition
   returns x invisibly.
+
+For non-diffusing materials like glass an approximate \code{Rfr.constant}
+  value can be used to interconvert "total" and "internal" transmittance
+  values. Use \code{NA} if not known, or not applicable, e.g., for materials
+  subject to internal scattering.
 }
 \examples{
 my.df <- data.frame(w.length = 300:309, s.e.irrad = rep(100, 10))

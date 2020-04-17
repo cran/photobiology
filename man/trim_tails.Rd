@@ -45,7 +45,7 @@ spectrum of the measured light source. Occasionally one may want also to
 expand the wavelength range.
 }
 \note{
-When expanding an spectrum, if \code{fill == NULL}, expansion is
+When expanding a spectrum, if \code{fill == NULL}, expansion is
   not performed with a warning.
 }
 \examples{

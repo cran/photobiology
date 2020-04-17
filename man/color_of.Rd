@@ -16,13 +16,13 @@ color_of(x, ...)
 
 \method{color_of}{default}(x, ...)
 
-\method{color_of}{numeric}(x, type = "CMF", ...)
+\method{color_of}{numeric}(x, type = "CMF", chroma.type = type, ...)
 
-\method{color_of}{list}(x, short.names = TRUE, type = "CMF", ...)
+\method{color_of}{list}(x, short.names = TRUE, type = "CMF", chroma.type = type, ...)
 
-\method{color_of}{waveband}(x, short.names = TRUE, type = "CMF", ...)
+\method{color_of}{waveband}(x, short.names = TRUE, type = "CMF", chroma.type = type, ...)
 
-\method{color_of}{source_spct}(x, type = "CMF", ...)
+\method{color_of}{source_spct}(x, type = "CMF", chroma.type = type, ...)
 
 \method{color_of}{source_mspct}(x, ..., idx = "spct.idx")
 
@@ -35,7 +35,9 @@ color(x, ...)
 
 \item{...}{ignored (possibly used by derived methods).}
 
-\item{type}{character telling whether "CMF", "CC", or "both" should be returned.}
+\item{type, chroma.type}{character telling whether "CMF", "CC", or "both" should be returned
+for human vision, or an object of class \code{chroma_spct} for any other
+trichromic visual system.}
 
 \item{short.names}{logical indicating whether to use short or long names for
 wavebands}
@@ -50,7 +52,7 @@ A color definition in hexadecimal format as a \code{character} string
   \code{list}, a list of such definitions is returned. In the case of a
   collection of spectra, a \code{data.frame} with one column with such
   definitions and by default an additional column with names of the spectra
-  as index.
+  as index. In case of missing input the returned value is \code{NA}.
 }
 \description{
 Equivalent RGB color of an object such as a spectrum, wavelength or waveband.
@@ -91,6 +93,5 @@ color_of(numeric())
 color_of(NA_real_)
 
 color_of(sun.spct)
-
 
 }

@@ -18,6 +18,7 @@ object.
 }
 \seealso{
 Other measurement metadata functions: 
+\code{\link{getFilterProperties}()},
 \code{\link{getHowMeasured}()},
 \code{\link{getInstrDesc}()},
 \code{\link{getInstrSettings}()},
@@ -27,6 +28,7 @@ Other measurement metadata functions:
 \code{\link{get_attributes}()},
 \code{\link{isValidInstrDesc}()},
 \code{\link{select_spct_attributes}()},
+\code{\link{setFilterProperties}()},
 \code{\link{setHowMeasured}()},
 \code{\link{setInstrDesc}()},
 \code{\link{setInstrSettings}()},

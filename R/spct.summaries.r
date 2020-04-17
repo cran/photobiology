@@ -109,6 +109,27 @@ print.generic_spct <- function(x, ..., n = NULL, width = NULL)
     cat("Time unit ", as.character(getTimeUnit(x, force.duration = TRUE)),
         "\n", sep = "")
   }
+  if (class_spct(x)[1] == "filter_spct") {
+    if (exists("Tfr", where = x, inherits = FALSE)) {
+      cat("Transmittance of type '", getTfrType(x), "'\n", sep = "")
+    }
+    properties <- filter_properties(x, return.null = TRUE)
+    if (!is.null(properties)) {
+      print(properties)
+      cat("\n")
+    }
+  }
+  if (class_spct(x)[1] == "reflector_spct") {
+    cat("Reflectance of type '", getRfrType(x), "'\n", sep = "")
+   }
+  if (class_spct(x)[1] == "object_spct") {
+    if (getTfrType(x) != "total") {
+      cat("Transmittance of type '", getTfrType(x), "'(!!)\n", sep = "")
+    }
+    if (getRfrType(x) != "total") {
+      cat("Reflectance of type '", getRfrType(x), "'(!!)\n", sep = "")
+    }
+  }
   if (is_scaled(x)) {
     scaling <- getScaled(x)
     cat("Rescaled to '", scaling[["f"]], "' = ", scaling[["target"]], "\n", sep = "")
@@ -450,6 +471,18 @@ print.instr_settings <- function(x, ...) {
       "\ncounts @ peak (% of max): ",
       signif(as.numeric(x[["rel.signal"]]) * 100, digits = 3),
       sep = "",
+      ...
+  )
+  invisible(x)
+}
+
+#' @export
+#'
+print.filter_properties <- function(x, ...) {
+  cat("Rfr (/1): ", round(x[["Rfr.constant"]], digits = 3), ", ",
+      "thickness (mm): ", signif(x[["thickness"]] * 1e3, digits = 3), ", ",
+      "attenuation mode: ", x[["attenuation.mode"]], ".",
+       sep = "",
       ...
   )
   invisible(x)

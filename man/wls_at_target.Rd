@@ -3,6 +3,7 @@
 \name{wls_at_target}
 \alias{wls_at_target}
 \alias{wls_at_target.default}
+\alias{wls_at_target.data.frame}
 \alias{wls_at_target.generic_spct}
 \alias{wls_at_target.source_spct}
 \alias{wls_at_target.response_spct}
@@ -12,16 +13,43 @@
 \alias{wls_at_target.generic_mspct}
 \title{Find wavelengths values corresponding to a target spectral value}
 \usage{
-wls_at_target(x, target = NULL, interpolate = FALSE, na.rm = FALSE, ...)
+wls_at_target(
+  x,
+  target = NULL,
+  interpolate = FALSE,
+  idfactor = FALSE,
+  na.rm = FALSE,
+  ...
+)
 
-\method{wls_at_target}{default}(x, target = NULL, interpolate = FALSE, na.rm = FALSE, ...)
+\method{wls_at_target}{default}(
+  x,
+  target = NULL,
+  interpolate = FALSE,
+  idfactor = FALSE,
+  na.rm = FALSE,
+  ...
+)
+
+\method{wls_at_target}{data.frame}(
+  x,
+  target = "half.maximum",
+  interpolate = FALSE,
+  idfactor = FALSE,
+  na.rm = FALSE,
+  x.var.name = NULL,
+  y.var.name = NULL,
+  ...
+)
 
 \method{wls_at_target}{generic_spct}(
   x,
   target = "half.maximum",
   interpolate = FALSE,
+  idfactor = FALSE,
   na.rm = FALSE,
   col.name = NULL,
+  y.var.name = col.name,
   ...
 )
 
@@ -29,6 +57,7 @@ wls_at_target(x, target = NULL, interpolate = FALSE, na.rm = FALSE, ...)
   x,
   target = "half.maximum",
   interpolate = FALSE,
+  idfactor = FALSE,
   na.rm = FALSE,
   unit.out = getOption("photobiology.radiation.unit", default = "energy"),
   ...
@@ -38,6 +67,7 @@ wls_at_target(x, target = NULL, interpolate = FALSE, na.rm = FALSE, ...)
   x,
   target = "half.maximum",
   interpolate = FALSE,
+  idfactor = FALSE,
   na.rm = FALSE,
   unit.out = getOption("photobiology.radiation.unit", default = "energy"),
   ...
@@ -47,6 +77,7 @@ wls_at_target(x, target = NULL, interpolate = FALSE, na.rm = FALSE, ...)
   x,
   target = "half.maximum",
   interpolate = FALSE,
+  idfactor = FALSE,
   na.rm = FALSE,
   filter.qty = getOption("photobiology.filter.qty", default = "transmittance"),
   ...
@@ -56,6 +87,7 @@ wls_at_target(x, target = NULL, interpolate = FALSE, na.rm = FALSE, ...)
   x,
   target = "half.maximum",
   interpolate = FALSE,
+  idfactor = FALSE,
   na.rm = FALSE,
   ...
 )
@@ -64,6 +96,7 @@ wls_at_target(x, target = NULL, interpolate = FALSE, na.rm = FALSE, ...)
   x,
   target = "half.maximum",
   interpolate = FALSE,
+  idfactor = FALSE,
   na.rm = FALSE,
   ...
 )
@@ -72,6 +105,7 @@ wls_at_target(x, target = NULL, interpolate = FALSE, na.rm = FALSE, ...)
   x,
   target = "half.maximum",
   interpolate = FALSE,
+  idfactor = FALSE,
   na.rm = FALSE,
   ...,
   .parallel = FALSE,
@@ -87,15 +121,21 @@ string "half.maximum" is also accepted as argument.}
 
 \item{interpolate}{logical Indicating whether the nearest wavelength value
 in \code{x} should be returned or a value calculated by linear
-interpolation between wavelength values stradling the target.}
+interpolation between wavelength values straddling the target.}
+
+\item{idfactor}{logical or character Generates an index column of factor
+type. If \code{idfactor = TRUE} then the column is auto named spct.idx.
+Alternatively the column name can be directly passed as argument to
+\code{idfactor} as a character string.}
 
 \item{na.rm}{logical indicating whether \code{NA} values should be stripped
 before searching for the target.}
 
 \item{...}{currently ignored.}
 
-\item{col.name}{character The name of the column in which to search for the
-target value.}
+\item{x.var.name, y.var.name, col.name}{character The name of the columns in
+which to search for the target value. Use of \code{col.name} is deprecated,
+and is a synonym for \code{y.var.name}.}
 
 \item{unit.out}{character One of "energy" or "photon"}
 
@@ -111,11 +151,11 @@ your code relies on external data or packages: use the .export and
 correct environment set up for computing.}
 }
 \value{
-A spectrum object of the same class as \code{x} with fewer rows,
-  possibly even no rows. If \code{FALSE} is passed to \code{interpolate} a
-  subset of \code{x} is returned, otherwise a new object of the same class
-  containing interpolated wavelenths for the \code{target} value is
-  returned.
+A data.frame or a spectrum object of the same class as \code{x} with
+  fewer rows, possibly even no rows. If \code{FALSE} is passed to
+  \code{interpolate} a subset of \code{x} is returned, otherwise a new object
+  of the same class containing interpolated wavelengths for the \code{target}
+  value is returned.
 }
 \description{
 Find wavelength values corresponding to a target spectral value in a spectrum.
@@ -127,6 +167,8 @@ class of \code{x} and the argument passed to \code{unit.out} or
 \itemize{
 \item \code{default}: Default returning always an empty object of the
 same class as \code{x}.
+
+\item \code{data.frame}: Method for "data.frame" objects.
 
 \item \code{generic_spct}: Method for "generic_spct" objects.
 
@@ -152,6 +194,11 @@ When interpolation is used, only column \code{w.length} and the column
 }
 \examples{
 wls_at_target(sun.spct, target = 0.1)
+wls_at_target(sun.spct, target = 2e-6, unit.out = "photon")
+wls_at_target(polyester.spct, target = "HM")
+wls_at_target(polyester.spct, target = "HM", interpolate = TRUE)
+wls_at_target(polyester.spct, target = "HM", idfactor = "target")
+wls_at_target(polyester.spct, target = "HM", filter.qty = "absorbance")
 
 }
 \seealso{

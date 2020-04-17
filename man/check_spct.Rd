@@ -151,6 +151,7 @@ check_spct(sun.spct)
 \seealso{
 Other data validity check functions: 
 \code{\link{check_spectrum}()},
-\code{\link{check_w.length}()}
+\code{\link{check_w.length}()},
+\code{\link{enable_check_spct}()}
 }
 \concept{data validity check functions}

@@ -1,24 +1,69 @@
 # Private function which takes the operator as its third argument
-# The operator must enclosed in backticks to be recognized as such
+# The operator must enclosed in back ticks to be recognized as such
 #
 # This avoids the repetition of very similar code for each operator
 # as in the older versions.
 
-oper.e.generic_spct <- function(e1, e2, oper) {
-  if (is.object_spct(e1) || is.object_spct(e2)) {
-    stop("Operators are not defined for object_spct objects")
+apply_oper <- function(e1, e2, oper) {
+  # adjust to current option settings using function variables
+  # photon vs. energy
+  .unit.irrad <- getOption("photobiology.radiation.unit",
+                           default = "energy")
+  if (.unit.irrad == "energy") {
+    .fun.irrad <- q2e
+    .name.irrad <- "s.e.irrad"
+    .name.response <- "s.e.response"
+  } else if (.unit.irrad == "photon") {
+    .fun.irrad <- e2q
+    .name.irrad <- "s.q.irrad"
+    .name.response <- "s.q.response"
   }
+  if (is.source_spct(e1) || is.response_spct(e1)) {
+    e1 <- .fun.irrad(e1, action = "replace")
+  }
+  if (is.source_spct(e2) || is.response_spct(e2)) {
+    e2 <- .fun.irrad(e2, action = "replace")
+  }
+  # filters
+  .qty.filter <- getOption("photobiology.filter.qty", default = "transmittance")
+  if (.qty.filter == "transmittance") {
+    .fun.filter.qty <- any2T
+    .name.filter.qty <- "Tfr"
+  } else if (.qty.filter == "absorbance") {
+    .fun.filter.qty <- any2A
+    .name.filter.qty <- "A"
+  } else if (.qty.filter == "absorptance") {
+    .fun.filter.qty <- any2Afr
+    .name.filter.qty <- "Afr"
+  }
+  # conversion and/or deletion of other quantities
+  if (is.filter_spct(e1)) {
+    e1 <- .fun.filter.qty(e1, action = "replace")
+  }
+  if (is.filter_spct(e2)) {
+    e2 <- .fun.filter.qty(e2, action = "replace")
+  }
+
+  if (is.object_spct(e1) || is.object_spct(e2)) {
+    stop("Operators are not defined for \"object_spct\" objects")
+  }
+
+  # convert logical to integer
   if (is.logical(e1)) {
     e1 <- as.integer(e1)
   }
   if (is.logical(e2)) {
     e2 <- as.integer(e2)
   }
+
+  # only product defined so transitive
   if (is.waveband(e1)) {
     e_temp <- e2
     e2 <- e1
     e1 <- e_temp
   }
+
+  # save class to avoid multiple calls
   if (is.numeric(e1)) {
     class1 <- "numeric"
   } else {
@@ -31,32 +76,36 @@ oper.e.generic_spct <- function(e1, e2, oper) {
   } else {
     class2 <- class_spct(e2)[1]
   }
+
+  # now we walk through all valid combinations of classes
   if (class1 == "calibration_spct") {
     if (is.numeric(e2)) {
       z <- e1
       z[["irrad.mult"]] <- oper(z[["irrad.mult"]], e2)
+      check_spct(z, strict.range = FALSE)
       return(z)
     } else if (class2 == "cps_spct" && identical(oper, `*`)) {
       z <- oper_spectra(e1$w.length, e2$w.length,
                         e1$irrad.mult, e2$cps,
                         bin.oper=oper, trim="intersection")
-      names(z)[2] <- "s.e.irrad"
+      names(z)[2] <- .name.irrad
       setSourceSpct(z, strict.range = getOption("photobiology.strict.range",
-                                             default = FALSE))
+                                                default = FALSE))
       return(merge_attributes(e1, e2, z))
     } else {
       if (identical(oper, `*`)) {
-        warning("operation between 'calibration_spct' and ", class(e2)[1],
-                " objects not implemented")
+        stop("operation between 'calibration_spct' and ", class(e2)[1],
+             " objects not implemented")
       } else {
-        warning("only multiplication between 'calibration_spct' and ",
-                "'cps_spct' objects is implemented")
+        stop("only multiplication between 'calibration_spct' and ",
+             "'cps_spct' objects is implemented")
       }
     }
   } else if (class1 == "raw_spct") {
     if (is.numeric(e2)) {
       z <- e1
       z[["counts"]] <- oper(z[["counts"]], e2)
+      check_spct(z, strict.range = FALSE)
       return(z)
     } else if (class2 == "raw_spct") {
       z <- oper_spectra(e1$w.length, e2$w.length,
@@ -67,566 +116,23 @@ oper.e.generic_spct <- function(e1, e2, oper) {
                                              default = FALSE))
       return(merge_attributes(e1, e2, z))
     } else {
-      warning("operation between 'raw_spct' and ", class(e2)[1],
-              " objects not implemented")
-    }
-  } else if (class1 == "cps_spct") {
-    if (is.numeric(e2)) {
-    z <- e1
-    z[["cps"]] <- oper(z[["cps"]], e2)
-    return(z)
-    } else if (class2 == "calibration_spct" && identical(oper, `*`)) {
-      z <- oper_spectra(e1$w.length, e2$w.length,
-                        e1$cps, e2$irrad.mult,
-                        bin.oper=oper, trim="intersection")
-      names(z)[2] <- "s.e.irrad"
-      setSourceSpct(z, strict.range = getOption("photobiology.strict.range",
-                                                default = FALSE))
-      return(merge_attributes(e1, e2, z))
-    } else if (class2 == "cps_spct") {
-      z <- oper_spectra(e1$w.length, e2$w.length,
-                        e1$cps, e2$cps,
-                        bin.oper=oper, trim="intersection")
-      names(z)[2] <- "cps"
-      setCpsSpct(z, strict.range = getOption("photobiology.strict.range",
-                                             default = FALSE))
-      return(z)
-    } else {
-      warning("operation between 'cps_spct' and ", class(e2)[1],
-              " objects not implemented")
-    }
-  } else if (class1 == "source_spct") {
-    q2e(e1, action = "add", byref = TRUE)
-    if (is.waveband(e2)) {
-      if (!identical(oper, `*`)) {
-        warning("Only '*' is allowed between source_spct and waveband objects")
-        return(NA)
-      }
-      if (is_effective(e1) && !is_effective(e2)) {
-        bswf.used <- getBSWFUsed(e1)
-      } else if (!is_effective(e1) && is_effective(e2)) {
-        bswf.used <- labels(e2)[["name"]]
-      } else if (is_effective(e1) && is_effective(e2)) {
-        bswf.used <- paste(getBSWFUsed(e1), "*", labels(e2)[["name"]])
-      } else if (!is_effective(e1) && !is_effective(e2)) {
-        bswf.used <- "none"
-      } else {
-        stop("Failed assertion! BUG IN PACKAGE CODE")
-      }
-      e1 <- trim_spct(e1, low.limit=min(e2), high.limit=max(e2) - 1e-12,
-                      verbose=FALSE,
-                      use.hinges = getOption("photobiology.use.hinges",
-                                             default=NULL))
-      mult <-
-        calc_multipliers(w.length=e1$w.length, w.band=e2, unit.out="energy",
-                         unit.in="energy",
-                         use.cached.mult = getOption("photobiology.use.cached.mult",
-                                                     default = FALSE))
-      return(source_spct(w.length=e1$w.length,
-                         s.e.irrad = e1$s.e.irrad * mult,
-                          time.unit=getTimeUnit(e1),
-                         bswf.used=bswf.used,
-                         strict.range = getOption("photobiology.strict.range",
-                                                  default = FALSE)))
-    }
-    if (is.numeric(e2)) {
-      z <- e1
-      if (exists("s.q.irrad", z, inherits = FALSE)) {
-        z[["s.q.irrad"]] <- NULL
-      }
-      z[["s.e.irrad"]] <- oper(z[["s.e.irrad"]], e2)
-      check_spct(z)
-      return(z)
-    } else if (class2 == "source_spct") {
-      q2e(e2, action = "replace", byref = TRUE)
-      if (is_effective(e1) || is_effective(e2)) {
-        if (getBSWFUsed(e1) != getBSWFUsed(e2)) {
-          warning("One or both operands are effective spectral irradiances")
-          bswf.used <- paste(getBSWFUsed(e1), getBSWFUsed(e2))
-        } else {
-          bswf.used <- getBSWFUsed(e1)
-        }
-       } else {
-        bswf.used <- "none"
-      }
-      z <- oper_spectra(e1$w.length, e2$w.length,
-                        e1$s.e.irrad, e2$s.e.irrad,
-                        bin.oper=oper, trim="intersection")
-      names(z)[2] <- "s.e.irrad"
-      setSourceSpct(z, time.unit=getTimeUnit(e1), bswf.used = bswf.used,
-                    strict.range = getOption("photobiology.strict.range",
-                                             default = FALSE))
-      return(merge_attributes(e1, e2, z))
-    } else if (class2 == "filter_spct") {
-      filter.quantity <- getOption("photobiology.filter.qty", default="transmittance")
-      if (filter.quantity=="transmittance") {
-        if (!identical(oper, `*`) && !identical(oper, `/`)) {
-          warning("Only '*' and '/' are allowed between source_spct and filter_spct objects")
-          return(NA)
-        }
-        A2T(e2, action = "replace", byref = TRUE)
-        z <- oper_spectra(e1$w.length, e2$w.length,
-                          e1$s.e.irrad, e2$Tfr,
-                          bin.oper=oper, trim="intersection")
-        names(z)[2] <- "s.e.irrad"
-        setSourceSpct(z, time.unit=getTimeUnit(e1), bswf.used = getBSWFUsed(e1),
-                      strict.range = getOption("photobiology.strict.range",
-                                               default = FALSE))
-      } else if (filter.quantity=="absorptance") {
-        if (!identical(oper, `*`) && !identical(oper, `/`)) {
-          warning("Only '*' and '/' are allowed between source_spct and filter_spct objects")
-          return(NA)
-        }
-        T2Afr(e2, action = "add", byref = TRUE)
-        z <- oper_spectra(e1$w.length, e2$w.length,
-                          e1$s.e.irrad, e2$Afr,
-                          bin.oper=oper, trim="intersection")
-        names(z)[2] <- "s.e.response"
-        setResponseSpct(z, time.unit=getTimeUnit(e1))
-      }  else if (filter.quantity=="absorbance") {
-        if (!identical(oper, `*`) && !identical(oper, `/`)) {
-          warning("Only '*' and '/' are allowed between source_spct and filter_spct objects")
-          return(NA)
-        }
-        T2A(e2, action = "add", byref = TRUE)
-        z <- oper_spectra(e1$w.length, e2$w.length,
-                          e1$s.e.irrad, e2$A,
-                          bin.oper=oper, trim="intersection")
-        names(z)[2] <- "s.e.response"
-        setResponseSpct(z, time.unit=getTimeUnit(e1))
-      }
-      return(merge_attributes(e1, e2, z))
-    } else if (class2 == "reflector_spct") {
-      if (!identical(oper, `*`) && !identical(oper, `/`)) {
-        warning("Only '*' and '/' are allowed between source_spct and reflector_spct objects")
-        return(NA)
-      }
-      z <- oper_spectra(e1$w.length, e2$w.length,
-                        e1$s.e.irrad, e2$Rfr,
-                        bin.oper=oper, trim="intersection")
-      names(z)[2] <- "s.e.irrad"
-      setSourceSpct(z, time.unit=getTimeUnit(e1), bswf.used = getBSWFUsed(e1),
-                    strict.range = getOption("photobiology.strict.range",
-                                             default = FALSE))
-      return(merge_attributes(e1, e2, z))
-    } else if (class2 == "response_spct") {
-      q2e(e2, action = "replace", byref = TRUE)
-      if (!identical(oper, `*`) && !identical(oper, `/`)) {
-        warning("Only '*' and '/' are allowed between source_spct and response_spct objects")
-        return(NA)
-      }
-      z <- oper_spectra(e1$w.length, e2$w.length,
-                        e1$s.e.irrad, e2$s.e.response,
-                        bin.oper=oper, trim="intersection")
-      names(z)[2] <- "s.e.response"
-      setResponseSpct(z, time.unit=getTimeUnit(e1))
-      return(merge_attributes(e1, e2, z))
-    } else if (class2 == "chroma_spct") {
-      if (!identical(oper, `*`) && !identical(oper, `/`)) {
-        warning("Only '*' and '/' are allowed between source_spct and chroma_spct objects")
-        return(NA)
-      }
-      x <- oper_spectra(e1$w.length, e2$w.length,
-                        e1$s.e.irrad, e2$x,
-                        bin.oper=oper, trim="intersection")
-      y <- oper_spectra(e1$w.length, e2$w.length,
-                        e1$s.e.irrad, e2$y,
-                        bin.oper=oper, trim="intersection")
-      z <- oper_spectra(e1$w.length, e2$w.length,
-                        e1$s.e.irrad, e2$z,
-                        bin.oper=oper, trim="intersection")
-      z <- tibble::tibble(w.length=x$w.length, x=x[["s.irrad"]],
-                             y=y[["s.irrad"]], z=z[["s.irrad"]])
-      setChromaSpct(z)
-      return(merge_attributes(e1, e2, z))
-    } else { # this traps also e2 == "generic_spct"
-      warning("Operations involving generic_spct are undefined and always return NA")
-      return(NA)
-    }
-  } else if (class1 == "filter_spct") {
-    filter.quantity <- getOption("photobiology.filter.qty",
-                                 default = "transmittance")
-    if (filter.quantity == "transmittance") {
-      e1 <- A2T(e1)
-      if (is.numeric(e2)) {
-        z <- e1
-        if (exists("A", z, inherits = FALSE)) {
-          z[["A"]] <- NULL
-        }
-        z[["Tfr"]] <- oper(z[["Tfr"]], e2)
-        check_spct(z)
-        return(z)
-      }
-      else if (class2 == "source_spct") {
-        q2e(e2, action = "add", byref = TRUE)
-        if (!identical(oper, `*`) && !identical(oper, `/`)) {
-          warning("Only '*' and '/' are allowed between filter_spct and source_spct objects")
-          return(NA)
-        } else if (identical(oper, `/`)) {
-          warning("Dividing a 'filter.spct' by a 'source.spct' is a very unusual operation!")
-        }
-        z <- oper_spectra(e1$w.length, e2$w.length,
-                          e1$Tfr, e2$s.e.irrad,
-                          bin.oper=oper, trim="intersection")
-        names(z)[2] <- "s.e.irrad"
-        setSourceSpct(z, time.unit=getTimeUnit(e2), bswf.used = getBSWFUsed(e2),
-                      strict.range = getOption("photobiology.strict.range",
-                                               default = FALSE))
-        return(merge_attributes(e1, e2, z))
-      } else if (class2 == "filter_spct") {
-        e2 <- A2T(e2)
-        if (!identical(oper, `*`) && !identical(oper, `/`)) {
-          warning("Only '*' and '/' are allowed for two filter_spct objects (transmittance)")
-          return(NA)
-        }
-        z <- oper_spectra(e1$w.length, e2$w.length,
-                          e1$Tfr, e2$Tfr,
-                          bin.oper=oper, trim="intersection")
-        names(z)[2] <- "Tfr"
-        setFilterSpct(z, strict.range = getOption("photobiology.strict.range",
-                                                  default = FALSE))
-        return(merge_attributes(e1, e2, z))
-      } else { # this traps optically illegal operations
-        warning("The operation attempted is undefined according to Optics laws or the input is malformed")
-        return(NA)
-      }
-    } else if (filter.quantity=="absorptance") {
-      T2Afr(e1, action = "add", byref = TRUE)
-      if (is.numeric(e2)) {
-        z <- e1
-        if (exists("Tfr", z, inherits = FALSE)) {
-          z[["Tfr"]] <- NULL
-        }
-        z[["Afr"]] <- oper(z[["Afr"]], e2)
-        check_spct(z)
-        return(z)
-      } else if (class2 == "source_spct") {
-        q2e(e2, action = "add", byref = TRUE)
-        if (!identical(oper, `*`) && !identical(oper, `/`)) {
-          warning("Only '*' and '/' are allowed between filter_spct and source_spct objects")
-        }
-        z <- oper_spectra(e1$w.length, e2$w.length,
-                          e1$Afr, e2$s.e.irrad,
-                          bin.oper=oper, trim="intersection")
-        names(z)[2] <- "s.e.response"
-        setResponseSpct(z, time.unit=getTimeUnit(e2))
-        return(merge_attributes(e1, e2, z))
-      } else if (class2 == "filter_spct") {
-        T2Afr(e2, action = "add", byref = TRUE)
-        if (!identical(oper, `*`) && !identical(oper, `/`)) {
-          warning("Only '*' and '/' are allowed for two filter_spct objects (absorptance)")
-          return(NA)
-        }
-        z <- oper_spectra(e1$w.length, e2$w.length,
-                          e1$Afr, e2$Afr,
-                          bin.oper=oper, trim="intersection")
-        names(z)[2] <- "Afr"
-        setFilterSpct(z, strict.range = getOption("photobiology.strict.range",
-                                                  default = FALSE))
-        return(merge_attributes(e1, e2, z))
-      } else { # this traps optically illegal operations
-        warning("The operation attempted is undefined according to Optics laws or the input is malformed")
-        return(NA)
-      }
-    } else if (filter.quantity=="absorbance") {
-      T2A(e1, action = "add", byref = TRUE)
-      if (is.numeric(e2)) {
-        z <- e1
-        if (exists("Tfr", z, inherits = FALSE)) {
-          z[["Tfr"]] <- NULL
-        }
-        z[["A"]] <- oper(z[["A"]], e2)
-        check_spct(z)
-        return(z)
-      } else if (class2 == "source_spct") {
-        q2e(e2, action = "add", byref = TRUE)
-        if (!identical(oper, `*`) && !identical(oper, `/`)) {
-          warning("Only '*' and '/' are allowed between filter_spct and source_spct objects")
-        }
-        z <- oper_spectra(e1$w.length, e2$w.length,
-                          e1$A, e2$s.e.irrad,
-                          bin.oper=oper, trim="intersection")
-        names(z)[2] <- "s.e.response"
-        setResponseSpct(z, time.unit=getTimeUnit(e2))
-        return(merge_attributes(e1, e2, z))
-      } else if (class2 == "filter_spct") {
-        T2A(e2, action = "add", byref = TRUE)
-        if (!identical(oper, `+`) && !identical(oper, `-`)) {
-          warning("Only '+' and '-' are allowed for two filter_spct objects (absorbance)")
-          return(NA)
-        }
-        z <- oper_spectra(e1$w.length, e2$w.length,
-                          e1$A, e2$A,
-                          bin.oper=oper, trim="intersection")
-        names(z)[2] <- "A"
-        setFilterSpct(z, strict.range = getOption("photobiology.strict.range",
-                                                  default = FALSE))
-        return(merge_attributes(e1, e2, z))
-      } else { # this traps optically illegal operations
-        warning("The operation attempted is undefined according to Optics laws or the input is malformed")
-        return(NA)
-      }
-    }
-  } else if (class1 == "reflector_spct") {
-    if (is.numeric(e2)) {
-      z <- e1
-      z[["Rfr"]] <- oper(z[["Rfr"]], e2)
-      check_spct(z)
-      return(z)
-    } else if (class2 == "reflector_spct") {
-      z <- oper_spectra(e1$w.length, e2$w.length,
-                        e1$Rfr, e2$Rfr,
-                        bin.oper=oper, trim="intersection")
-      names(z)[2] <- "Rfr"
-      setReflectorSpct(z, strict.range = getOption("photobiology.strict.range",
-                                                   default = FALSE))
-      return(merge_attributes(e1, e2, z))
-    } else if (class2 == "source_spct") {
-      if (!identical(oper, `*`) && !identical(oper, `/`)) {
-        warning("Only '*' and '/' are allowed between reflector_spct and source_spct objects")
-        return(NA)
-      } else if (identical(oper, `/`)) {
-        warning("Dividing a 'reflector.spct' by a 'source.spct' is a very unusual operation!")
-      }
-      z <- oper_spectra(e1$w.length, e2$w.length,
-                        e1$Rfr, e2$s.e.irrad,
-                        bin.oper=oper, trim="intersection")
-      names(z)[2] <- "s.e.irrad"
-      setSourceSpct(z, time.unit=getTimeUnit(e2), bswf.used = getBSWFUsed(e2),
-                    strict.range = getOption("photobiology.strict.range",
-                                             default = FALSE))
-      return(merge_attributes(e1, e2, z))
-    } else { # this traps optically illegal operations
-      warning("The operation attempted is undefined according to Optics laws or the input is malformed")
-      return(NA)
-    }
-  } else if (class1 == "response_spct") {
-    q2e(e1, action = "replace", byref = TRUE)
-    if (is.numeric(e2)) {
-      z <- e1
-      z[["s.e.response"]] <- oper(z[["s.e.response"]], e2)
-      check_spct(z)
-      return(z)
-    } else if (class2 == "response_spct") {
-      q2e(e2, action = "replace", byref = TRUE)
-      z <- oper_spectra(e1$w.length, e2$w.length,
-                        e1$s.e.response, e2$s.e.response,
-                        bin.oper=oper, trim="intersection")
-      names(z)[2] <- "s.e.response"
-      setResponseSpct(z, time.unit=getTimeUnit(e1))
-      return(merge_attributes(e1, e2, z))
-    } else if (class2 == "source_spct") {
-      if (!identical(oper, `*`) && !identical(oper, `/`)) {
-        warning("Only '*' and '/' are allowed between response_spct and source_spct objects")
-        return(NA)
-      }
-      q2e(e2, action = "replace", byref = TRUE)
-      z <- oper_spectra(e1$w.length, e2$w.length,
-                        e1$s.e.response, e2$s.e.irrad,
-                        bin.oper=oper, trim="intersection")
-      names(z)[2] <- "s.e.response"
-      setResponseSpct(z, time.unit=getTimeUnit(e2))
-      return(merge_attributes(e1, e2, z))
-    } else { # this traps optically illegal operations
-      warning("The operation attempted is undefined according to Optics laws or the input is malformed")
-      return(NA)
-    }
-  } else if (class1 == "chroma_spct") {
-    if (is.numeric(e2)) {
-      if (length(e2) == 3 && names(e2) == c("x", "y", "z")) {
-        return(chroma_spct(w.length = e1$w.length,
-                           x = oper(e1$x, e2["x"]),
-                           y = oper(e1$y, e2["y"]),
-                           z = oper(e1$z, e2["z"])))
-      } else {
-        return(chroma_spct(w.length = e1$w.length,
-                           x = oper(e1$x, e2),
-                           y = oper(e1$y, e2),
-                           z = oper(e1$z, e2)))
-      }
-    } else if (class2 == "chroma_spct") {
-      x <- oper_spectra(e1$w.length, e2$w.length,
-                        e1$x, e2$x,
-                        bin.oper=oper, trim="intersection")
-      y <- oper_spectra(e1$w.length, e2$w.length,
-                        e1$y, e2$y,
-                        bin.oper=oper, trim="intersection")
-      z <- oper_spectra(e1$w.length, e2$w.length,
-                        e1$z, e2$z,
-                        bin.oper=oper, trim="intersection")
-      zz <- chroma_spct(w.length=x$w.length,
-                         x=x[["s.irrad"]], y=y[["s.irrad"]], z=z[["s.irrad"]])
-      return(merge_attributes(e1, e2, zz))
-    } else if (class2 == "source_spct") {
-      q2e(e2, action = "replace", byref = TRUE)
-      x <- oper_spectra(e1$w.length, e2$w.length,
-                        e1$x, e2$s.e.irrad,
-                        bin.oper=oper, trim="intersection")
-      y <- oper_spectra(e1$w.length, e2$w.length,
-                        e1$y, e2$s.e.irrad,
-                        bin.oper=oper, trim="intersection")
-      z <- oper_spectra(e1$w.length, e2$w.length,
-                        e1$z, e2$s.e.irrad,
-                        bin.oper=oper, trim="intersection")
-      zz <- chroma_spct(w.length=x$w.length,
-                         x=x[["s.irrad"]], y=y[["s.irrad"]], z=z[["s.irrad"]])
-      return(merge_attributes(e1, e2, zz))
-    }
-  } else if (is.numeric(e1)) {
-    if (class2 == "calibration_spct") {
-      z <- e2
-      z[["irrad.mult"]] <- oper(e1, z[["irrad.mult"]])
-      return(z)
-    } else if (class2 == "raw_spct") {
-      z <- e2
-      z[["counts"]] <- oper(e1, z[["counts"]])
-      return(z)
-    } else if (class2 == "cps_spct") {
-      z <- e2
-      z[["cps"]] <- oper(e1, z[["cps"]])
-      return(z)
-    } else if (class2 == "source_spct") {
-      q2e(e2, action = "replace", byref = TRUE)
-      z <- e2
-      z[["s.e.irrad"]] <- oper(e1, z[["s.e.irrad"]])
-      return(z)
-    } else if (class2 == "filter_spct") {
-      filter.quantity <- getOption("photobiology.filter.qty",
-                                   default="transmittance")
-      if (filter.quantity=="transmittance") {
-        A2T(e2, action = "add", byref = TRUE)
-        return(filter_spct(w.length=e2$w.length, Tfr=oper(e1, e2$Tfr),
-                           strict.range = getOption("photobiology.strict.range",
-                                                    default = FALSE)))
-      } else if (filter.quantity=="absorptance") {
-        T2Afr(e2, action = "add", byref = TRUE)
-        return(filter_spct(w.length=e2$w.length, Afr = oper(e1, e2$Afr),
-                           strict.range = getOption("photobiology.strict.range",
-                                                    default = FALSE)))
-      } else if (filter.quantity=="absorbance") {
-        T2A(e2, action = "add", byref = TRUE)
-        return(filter_spct(w.length=e2$w.length, A=oper(e1, e2$A),
-                           strict.range = getOption("photobiology.strict.range",
-                                                    default = FALSE)))
-      } else {
-        stop("Assertion failed: bug in code!")
-      }
-    } else if (class2 == "reflector_spct") {
-      return(reflector_spct(w.length=e2$w.length, Rfr=oper(e1, e2$Rfr),
-                            strict.range = getOption("photobiology.strict.range",
-                                                     default = FALSE)))
-    } else if (class2 == "response_spct") {
-      q2e(e2, action = "replace", byref = TRUE)
-      return(response_spct(w.length=e2$w.length,
-                           s.e.response=oper(e1, e2$s.e.response)))
-    } else if (class2 == "chroma_spct") {
-      if (length(e2) == 3 && names(e2) == c("x", "y", "z")) {
-        return(chroma_spct(w.length = e2$w.length,
-                           x = oper(e1["x"], e2$x),
-                           y = oper(e1["y"], e2$y),
-                           z = oper(e1["z"], e2$z)))
-      } else {
-        return(chroma_spct(w.length = e2$w.length,
-                           x = oper(e1, e2$x),
-                           y = oper(e1, e2$y),
-                           z = oper(e1, e2$z)))
-      }
-    }
-  } else {
-    warning("The operation attempted is undefined according to Optics laws or the input is malformed")
-    return(NA)
-  }
-}
-
-# Private function which takes the operator as its third argument
-# The operator must be enclosed in backticks to be recognized as such
-#
-# This avoids the repetition of very similar code for each operator
-# as in the older versions.
-
-oper.q.generic_spct <- function(e1, e2, oper) {
-  if (is.object_spct(e1) || is.object_spct(e2)) {
-    stop("Operators are not defined for object_spct objects")
-  }
-  if (is.logical(e1)) {
-    e1 <- as.integer(e1)
-  }
-  if (is.logical(e2)) {
-    e2 <- as.integer(e2)
-  }
-  if (is.waveband(e1)) {
-    e_temp <- e2
-    e2 <- e1
-    e1 <- e_temp
-  }
-  if (is.numeric(e1)) {
-    class1 <- "numeric"
-  } else {
-    class1 <- class_spct(e1)[1]
-  }
-  if (is.numeric(e2)) {
-    class2 <- "numeric"
-  } else if (is.waveband(e2)) {
-    class2 <- "waveband"
-  } else {
-    class2 <- class_spct(e2)[1]
-  }
-  if (class1 == "calibration_spct") {
-    if (is.numeric(e2)) {
-      z <- e1
-      z[["irrad.mult"]] <- oper(z[["irrad.mult"]], e2)
-      return(z)
-    } else if (class2 == "cps_spct" && identical(oper, `*`)) {
-      z <- oper_spectra(e1$w.length, e2$w.length,
-                        e1$irrad.mult, e2$cps,
-                        bin.oper=oper, trim="intersection")
-      names(z)[2] <- "s.e.irrad"
-      setSourceSpct(z, strict.range = getOption("photobiology.strict.range",
-                                                default = FALSE))
-      z <- merge_attributes(e1, e2, z)
-      # we store only calibration multipliers in energy units!
-      return(e2q(z))
-    } else {
-      if (identical(oper, `*`)) {
-        warning("operation between 'calibration_spct' and ", class(e2)[1],
-                " objects not implemented")
-      } else {
-        warning("only multiplication between 'calibration_spct' and ",
-                "'cps_spct' objects is implemented")
-      }
-    }
-  } else if (class1 == "raw_spct") {
-    if (is.numeric(e2)) {
-      z <- e1
-      z[["counts"]] <- oper(z[["counts"]], e2)
-      return(z)
-    } else if (class2 == "raw_spct") {
-      z <- oper_spectra(e1$w.length, e2$w.length,
-                        e1$counts, e2$counts,
-                        bin.oper=oper, trim="intersection")
-      names(z)[2] <- "counts"
-      setRawSpct(z, strict.range = getOption("photobiology.strict.range",
-                                             default = FALSE))
-      return(merge_attributes(e1, e2, z))
-    } else {
-      warning("operation between 'raw_spct' and ", class(e2)[1],
-              " objects not implemented")
+      stop("operation between 'raw_spct' and ", class(e2)[1],
+           " objects not implemented")
     }
   } else if (class1 == "cps_spct") {
     if (is.numeric(e2)) {
       z <- e1
       z[["cps"]] <- oper(z[["cps"]], e2)
+      check_spct(z, strict.range = FALSE)
       return(z)
     } else if (class2 == "calibration_spct" && identical(oper, `*`)) {
       z <- oper_spectra(e1$w.length, e2$w.length,
                         e1$cps, e2$irrad.mult,
                         bin.oper=oper, trim="intersection")
-      names(z)[2] <- "s.e.irrad"
+      names(z)[2] <- .name.irrad
       setSourceSpct(z, strict.range = getOption("photobiology.strict.range",
                                                 default = FALSE))
-      z <- merge_attributes(e1, e2, z)
-      # we store only calibration multipliers in energy units!
-      return(e2q(z))
+      return(merge_attributes(e1, e2, z))
     } else if (class2 == "cps_spct") {
       z <- oper_spectra(e1$w.length, e2$w.length,
                         e1$cps, e2$cps,
@@ -634,17 +140,15 @@ oper.q.generic_spct <- function(e1, e2, oper) {
       names(z)[2] <- "cps"
       setCpsSpct(z, strict.range = getOption("photobiology.strict.range",
                                              default = FALSE))
-      return(merge_attributes(e1, e2, z))
+      return(z)
     } else {
-      warning("operation between 'cps_spct' and ", class(e2)[1],
-              " objects not implemented")
+      stop("operation between 'cps_spct' and ", class(e2)[1],
+           " objects not implemented")
     }
   } else if (class1 == "source_spct") {
-    e2q(e1, action = "replace", byref = TRUE)
     if (is.waveband(e2)) {
       if (!identical(oper, `*`)) {
-        warning("The operation attempted is undefined according to Optics laws or the input is malformed")
-        return(NA)
+        stop("Only '*' is allowed between source_spct and waveband objects")
       }
       if (is_effective(e1) && !is_effective(e2)) {
         bswf.used <- getBSWFUsed(e1)
@@ -657,36 +161,29 @@ oper.q.generic_spct <- function(e1, e2, oper) {
       } else {
         stop("Failed assertion! BUG IN PACKAGE CODE")
       }
-      e1 <- trim_spct(e1,
-                      low.limit = min(e2),
-                      high.limit = max(e2) - 1e-12,
-                      verbose=FALSE,
+      e1 <- trim_spct(e1, low.limit = min(e2), high.limit = max(e2) - 1e-12,
+                      verbose = FALSE,
                       use.hinges = getOption("photobiology.use.hinges",
-                                             default=NULL))
-      mult <- calc_multipliers(w.length=e1$w.length,
-                               w.band=e2,
-                               unit.out="photon",
-                               unit.in="photon",
-                               use.cached.mult = getOption("photobiology.use.cached.mult",
-                                                           default = FALSE))
-      return(source_spct(w.length=e1$w.length, s.q.irrad = e1$s.q.irrad * mult,
-                         bswf.used = bswf.used, time.unit=getTimeUnit(e1),
-                         strict.range = getOption("photobiology.strict.range",
-                                                  default = FALSE)))
-     }
-    if (is.numeric(e2)) {
+                                             default = NULL))
+      mult <-
+        calc_multipliers(w.length = e1[["w.length"]], w.band = e2, unit.out = .unit.irrad,
+                         unit.in = .unit.irrad,
+                         use.cached.mult = getOption("photobiology.use.cached.mult",
+                                                     default = FALSE))
       z <- e1
-      z[["s.q.irrad"]] <- oper(z[["s.q.irrad"]], e2)
+      z[[.name.irrad]] <- z[[.name.irrad]] * mult
+      setBSWFUsed(z, bswf.used = bswf.used)
+      check_spct(z, strict.range = FALSE)
+      return(z)
+    } else if (is.numeric(e2)) {
+      z <- e1
+      z[[.name.irrad]] <- oper(z[[.name.irrad]], e2)
+      check_spct(z, strict.range = FALSE)
       return(z)
     } else if (class2 == "source_spct") {
-      e2q(e2, action = "replace", byref = TRUE)
-      if (getTimeUnit(e1) != getTimeUnit(e2)) {
-        warning("operands have different value for 'time.unit' attribute")
-        return(NA)
-      }
       if (is_effective(e1) || is_effective(e2)) {
         if (getBSWFUsed(e1) != getBSWFUsed(e2)) {
-          warning("One or both operands are effective spectral irradiances")
+          warning("Operands are weighted quantities, but use a different BSWF.")
           bswf.used <- paste(getBSWFUsed(e1), getBSWFUsed(e2))
         } else {
           bswf.used <- getBSWFUsed(e1)
@@ -694,239 +191,177 @@ oper.q.generic_spct <- function(e1, e2, oper) {
       } else {
         bswf.used <- "none"
       }
-      z <- oper_spectra(e1$w.length, e2$w.length,
-                        e1$s.q.irrad, e2$s.q.irrad,
-                        bin.oper=oper, trim="intersection")
-      names(z)[2] <- "s.q.irrad"
-      setSourceSpct(z, time.unit = getTimeUnit(e1), bswf.used = bswf.used,
+      z <- oper_spectra(e1[["w.length"]], e2[["w.length"]],
+                        e1[[.name.irrad]], e2[[.name.irrad]],
+                        bin.oper = oper, trim="intersection")
+      names(z)[2] <- .name.irrad
+      setSourceSpct(z, time.unit=getTimeUnit(e1), bswf.used = bswf.used,
                     strict.range = getOption("photobiology.strict.range",
                                              default = FALSE))
       return(merge_attributes(e1, e2, z))
     } else if (class2 == "filter_spct") {
-      filter.quantity <- getOption("photobiology.filter.qty", default="transmittance")
-      if (filter.quantity=="transmittance") {
-        if (!identical(oper, `*`) && !identical(oper, `/`)) {
-          warning("Only '*' and '/' are allowed between source_spct and filter_spct objects")
-          return(NA)
-        }
-        A2T(e2, action = "add", byref = TRUE)
-        z <- oper_spectra(e1$w.length, e2$w.length,
-                          e1$s.q.irrad, e2$Tfr,
-                          bin.oper=oper, trim="intersection")
-        names(z)[2] <- "s.q.irrad"
-        setSourceSpct(z, time.unit = getTimeUnit(e1), bswf.used = getBSWFUsed(e1),
-                      strict.range = getOption("photobiology.strict.range",
-                                               default = FALSE))
-      } else if (filter.quantity=="absorptance") {
-        if (!identical(oper, `*`)) return(NA)
-        T2Afr(e2, action = "add", byref = TRUE)
-        z <- oper_spectra(e1$w.length, e2$w.length,
-                          e1$s.q.irrad, e2$Afr,
-                          bin.oper=oper, trim="intersection")
-        names(z)[2] <- "s.q.response"
-        setResponseSpct(z)
-      } else if (filter.quantity=="absorbance") {
-        if (!identical(oper, `*`)) return(NA)
-        T2A(e2, action = "add", byref = TRUE)
-        z <- oper_spectra(e1$w.length, e2$w.length,
-                          e1$s.q.irrad, e2$A,
-                          bin.oper=oper, trim="intersection")
-        names(z)[2] <- "s.q.response"
-        setResponseSpct(z)
+      if (!(identical(oper, `*`) || identical(oper, `/`))) {
+        stop("Only '*' and '/' are allowed between irradiance and \"Tfr\", \"A\" or \"Afr\" values.")
       }
-      return(merge_attributes(e1, e2, z))
-    } else if (class2 == "reflector_spct") {
-      if (!identical(oper, `*`)) return(NA)
-      z <- oper_spectra(e1$w.length, e2$w.length,
-                        e1$s.q.irrad, e2$s.q.irrad,
-                        bin.oper=oper, trim="intersection")
-      names(z)[2] <- "s.q.irrad"
+      z <- oper_spectra(e1[["w.length"]], e2[["w.length"]],
+                        e1[[.name.irrad]], e2[[.name.filter.qty]],
+                        bin.oper = oper, trim="intersection")
+      names(z)[2] <- .name.irrad
       setSourceSpct(z, time.unit = getTimeUnit(e1), bswf.used = getBSWFUsed(e1),
                     strict.range = getOption("photobiology.strict.range",
                                              default = FALSE))
       return(merge_attributes(e1, e2, z))
-    } else if (class2 == "response_spct") {
-      if (!identical(oper, `*`)) return(NA)
-      e2q(e2, action = "replace", byref = TRUE)
-      z <- oper_spectra(e1$w.length, e2$w.length,
-                        e1$s.q.irrad, e2$s.q.response,
+    } else if (class2 == "reflector_spct") {
+      if (!identical(oper, `*`) && !identical(oper, `/`)) {
+        stop("Only '*' and '/' are allowed between source_spct and reflector_spct objects")
+      }
+      z <- oper_spectra(e1[["w.length"]], e2[["w.length"]],
+                        e1[[.name.irrad]], e2[["Rfr"]],
                         bin.oper=oper, trim="intersection")
-      names(z)[2] <- "s.q.response"
-      setResponseSpct(z)
+      names(z)[2] <- .name.irrad
+      setSourceSpct(z, time.unit=getTimeUnit(e1), bswf.used = getBSWFUsed(e1),
+                    strict.range = getOption("photobiology.strict.range",
+                                             default = FALSE))
+      return(merge_attributes(e1, e2, z))
+    } else if (class2 == "response_spct") {
+      if (!identical(oper, `*`) && !identical(oper, `/`)) {
+        stop("Only '*' and '/' are allowed between source_spct and response_spct objects")
+      }
+      z <- oper_spectra(e1[["w.length"]], e2[["w.length"]],
+                        e1[[.name.irrad]], e2[[.name.response]],
+                        bin.oper=oper, trim="intersection")
+      names(z)[2] <- .name.response
+      setResponseSpct(z, time.unit=getTimeUnit(e1))
       return(merge_attributes(e1, e2, z))
     } else if (class2 == "chroma_spct") {
-      if (!identical(oper, `*`)) return(NA)
-      x <- oper_spectra(e1$w.length, e2$w.length,
-                        e1$s.q.irrad, e2$x,
+      if (!identical(oper, `*`) && !identical(oper, `/`)) {
+        stop("Only '*' and '/' are allowed between source_spct and chroma_spct objects")
+      }
+      x <- oper_spectra(e1[["w.length"]], e2[["w.length"]],
+                        e1[[.name.irrad]], e2[["x"]],
                         bin.oper=oper, trim="intersection")
-      y <- oper_spectra(e1$w.length, e2$w.length,
-                        e1$s.q.irrad, e2$y,
+      y <- oper_spectra(e1[["w.length"]], e2[["w.length"]],
+                        e1[[.name.irrad]], e2[["y"]],
                         bin.oper=oper, trim="intersection")
-      z <- oper_spectra(e1$w.length, e2$w.length,
-                        e1$s.q.irrad, e2$z,
+      z <- oper_spectra(e1[["w.length"]], e2[["w.length"]],
+                        e1[[.name.irrad]], e2[["z"]],
                         bin.oper=oper, trim="intersection")
-      z <- tibble::tibble(w.length=x$w.length,
-                             x=x[["s.irrad"]], y=y[["s.irrad"]], z=z[["s.irrad"]])
+      z <- tibble::tibble(w.length = x[[1L]],
+                          x = x[[2L]], y = y[[2L]], z = z[[2L]])
       setChromaSpct(z)
       return(merge_attributes(e1, e2, z))
     } else { # this traps also e2 == "generic_spct"
-      return(NA)
+      stop("Operations involving generic_spct are undefined and always return NA")
     }
   } else if (class1 == "filter_spct") {
-    filter.quantity <- getOption("photobiology.filter.qty", default="transmittance")
-    if (filter.quantity=="transmittance") {
-      e1 <- A2T(e1)
-      if (is.numeric(e2)) {
-        z <- e1
-        if (exists("A", z, inherits = FALSE)) {
-          z[["A"]] <- NULL
-        }
-        z[["Tfr"]] <- oper(z[["Tfr"]], e2)
-        return(z)
-      } else if (class2 == "source_spct") {
-        e2q(e2, action = "replace", byref = TRUE)
-        if (!identical(oper, `*`)) return(NA)
-        z <- oper_spectra(e1$w.length, e2$w.length,
-                          e1$Tfr, e2$s.q.irrad,
-                          bin.oper=oper, trim="intersection")
-        names(z)[2] <- "s.q.irrad"
-        setSourceSpct(z, time.unit = getTimeUnit(e2), bswf.used = getBSWFUsed(e2),
-                      strict.range = getOption("photobiology.strict.range",
-                                               default = FALSE))
-      } else if (class2 == "filter_spct") {
-        e2 <- A2T(e2)
-        if (!identical(oper, `*`)) return(NA)
-        z <- oper_spectra(e1$w.length, e2$w.length,
-                          e1$Tfr, e2$Tfr,
-                          bin.oper=oper, trim="intersection")
-        names(z)[2] <- "Tfr"
-        setFilterSpct(z, strict.range = getOption("photobiology.strict.range",
-                                                  default = FALSE))
-        return(merge_attributes(e1, e2, z))
-      } else { # this traps optically illegal operations
-        warning("The operation attempted is undefined according to Optics laws or the input is malformed")
-        return(NA)
+    if (is.numeric(e2)) {
+      z <- e1
+      z[[.name.filter.qty]] <- oper(z[[.name.filter.qty]], e2)
+      check_spct(z, strict.range = FALSE)
+      return(z)
+    } else if (class2 == "source_spct") {
+      if (!(identical(oper, `*`) || identical(oper, `/`))) {
+        stop("Only '*' and '/' are allowed between filter_spct and source_spct objects")
       }
-    } else if (filter.quantity=="absorptance") {
-      T2Afr(e1, action = "add", byref = TRUE)
-      if (is.numeric(e2)) {
-        if (exists("Tfr", z, inherits = FALSE)) {
-          z[["Tfr"]] <- NULL
-        }
-        z[["Afr"]] <- oper(z[["Afr"]], e2)
-        return(z)
-      } else if (class2 == "source_spct") {
-        e2q(e2, action = "add", byref = TRUE)
-        if (!identical(oper, `*`)) return(NA)
-        z <- oper_spectra(e1$w.length, e2$w.length,
-                          e1$Afr, e2$s.q.irrad,
-                          bin.oper=oper, trim="intersection")
-        names(z)[2] <- "s.q.response"
-        setResponseSpct(z)
-        return(merge_attributes(e1, e2, z))
-      } else if (class2 == "filter_spct") {
-        T2A(e2, action = "add", byref = TRUE)
-        if (!identical(oper, `+`) || !identical(oper, `-`)) return(NA)
-        z <- oper_spectra(e1$w.length, e2$w.length,
-                          e1$A, e2$A,
-                          bin.oper=oper, trim="intersection")
-        names(z)[2] <- "A"
-        setFilterSpct(z, strict.range = getOption("photobiology.strict.range",
-                                                  default = FALSE))
-        return(merge_attributes(e1, e2, z))
-      } else { # this traps optically illegal operations
-        warning("The operation attempted is undefined according to Optics laws or the input is malformed")
-        return(NA)
+      if (identical(oper, `/`)) { # only for verbose!!
+        warning("Dividing a 'filter.spct' by a 'source.spct' is a very unusual operation!")
       }
-    } else if (filter.quantity=="absorbance") {
-      T2A(e1, action = "add", byref = TRUE)
-      if (is.numeric(e2)) {
-        if (exists("Tfr", z, inherits = FALSE)) {
-          z[["Tfr"]] <- NULL
-        }
-        z[["A"]] <- oper(z[["A"]], e2)
-        return(z)
-      } else if (class2 == "source_spct") {
-        e2q(e2, action = "add", byref = TRUE)
-        if (!identical(oper, `*`)) return(NA)
-        z <- oper_spectra(e1$w.length, e2$w.length,
-                          e1$A, e2$s.q.irrad,
-                          bin.oper=oper, trim="intersection")
-        names(z)[2] <- "s.q.response"
-        setResponseSpct(z)
-        return(merge_attributes(e1, e2, z))
-      } else if (class2 == "filter_spct") {
-        T2A(e2, action = "add", byref = TRUE)
-        if (!identical(oper, `+`) || !identical(oper, `-`)) return(NA)
-        z <- oper_spectra(e1$w.length, e2$w.length,
-                          e1$A, e2$A,
-                          bin.oper=oper, trim="intersection")
-        names(z)[2] <- "A"
-        setFilterSpct(z, strict.range = getOption("photobiology.strict.range",
-                                                  default = FALSE))
-        return(merge_attributes(e1, e2, z))
-      } else { # this traps optically illegal operations
-        warning("The operation attempted is undefined according to Optics laws or the input is malformed")
-        return(NA)
+      z <- oper_spectra(e1[["w.length"]], e2[["w.length"]],
+                        e1[[.name.filter.qty]], e2[[.name.irrad]],
+                        bin.oper=oper, trim="intersection")
+      names(z)[2] <- .name.irrad
+      setSourceSpct(z, time.unit = getTimeUnit(e2), bswf.used = getBSWFUsed(e2),
+                    strict.range = getOption("photobiology.strict.range",
+                                             default = FALSE))
+      return(merge_attributes(e1, e2, z))
+    } else if (class2 == "filter_spct") {
+      if (.qty.filter %in% c("transmittance", "absorptance") &&
+          !(identical(oper, `*`) || identical(oper, `/`))) {
+        stop("Only '*' and '/' are allowed between \"Tfr\", or \"Afr\" values.")
+      } else if (.qty.filter == "absorbance" &&
+                 !(identical(oper, `+`) || identical(oper, `-`))) {
+        stop("Only '+' and '-' are allowed between \"A\" values.")
       }
+      z <- oper_spectra(e1[["w.length"]], e2[["w.length"]],
+                        e1[[.name.filter.qty]], e2[[.name.filter.qty]],
+                        bin.oper=oper, trim="intersection")
+      names(z)[2] <- .name.filter.qty
+      setFilterSpct(z, strict.range = getOption("photobiology.strict.range",
+                                                default = FALSE))
+      return(merge_attributes(e1, e2, z))
+    } else if (class2 == "source_spct") {
+      if (!identical(oper, `*`) && !identical(oper, `/`)) {
+        stop("Only '*' and '/' are allowed between filter_spct and source_spct objects")
+      }
+      z <- oper_spectra(e1[["w.length"]], e2[["w.length"]],
+                        e1[[.name.filter.qty]], e2[[.name.irrad]],
+                        bin.oper=oper, trim="intersection")
+      if (.qty.filter == "Tfr") {
+        names(z)[2] <- .name.irrad
+        setSourceSpct(z, time.unit = getTimeUnit(e2))
+      } else {
+        names(z)[2] <- .name.response
+        setResponseSpct(z, time.unit = getTimeUnit(e2))
+      }
+      return(merge_attributes(e1, e2, z))
     }
   } else if (class1 == "reflector_spct") {
     if (is.numeric(e2)) {
       z <- e1
       z[["Rfr"]] <- oper(z[["Rfr"]], e2)
+      check_spct(z, strict.range = FALSE)
       return(z)
     } else if (class2 == "reflector_spct") {
-      z <- oper_spectra(e1$w.length, e2$w.length,
-                        e1$Rfr, e2$Rfr,
+      z <- oper_spectra(e1[["w.length"]], e2[["w.length"]],
+                        e1[["Rfr"]], e2[["Rfr"]],
                         bin.oper=oper, trim="intersection")
       names(z)[2] <- "Rfr"
       setReflectorSpct(z, strict.range = getOption("photobiology.strict.range",
                                                    default = FALSE))
       return(merge_attributes(e1, e2, z))
     } else if (class2 == "source_spct") {
-      if (!identical(oper, `*`)) return(NA)
-      e2q(e2, action = "replace", byref = TRUE)
-      z <- oper_spectra(e1$w.length, e2$w.length,
-                        e1$Rfr, e2$s.q.irrad,
-                        bin.oper=oper, trim="intersection")
-      names(z)[2] <- "s.q.irrad"
-      setSourceSpct(z, time.unit = getTimeUnit(e2), bswf.used = getBSWFUsed(e2),
+      if (!identical(oper, `*`) && !identical(oper, `/`)) {
+        stop("Only '*' and '/' are allowed between reflector_spct and source_spct objects")
+      }
+      if (identical(oper, `/`)) { # if verbose!!
+        warning("Dividing a 'reflector.spct' by a 'source.spct' is a very unusual operation!")
+      }
+      z <- oper_spectra(e1[["w.length"]], e2[["w.length"]],
+                        e1[["Rfr"]], e2[[.name.irrad]],
+                        bin.oper = oper, trim = "intersection")
+      names(z)[2] <- .name.irrad
+      setSourceSpct(z, time.unit=getTimeUnit(e2), bswf.used = getBSWFUsed(e2),
                     strict.range = getOption("photobiology.strict.range",
                                              default = FALSE))
       return(merge_attributes(e1, e2, z))
     } else { # this traps optically illegal operations
-      warning("The operation attempted is undefined according to Optics laws or the input is malformed")
-      return(NA)
+      stop("The operation attempted is undefined according to Optics laws or the input is malformed")
     }
   } else if (class1 == "response_spct") {
-    e2q(e1, action = "replace", byref = TRUE)
     if (is.numeric(e2)) {
       z <- e1
-      if (exists("s.e.response", z, inherits = FALSE)) {
-        z[["s.e.response"]] <- NULL
-      }
-      z[["s.q.response"]] <- oper(z[["s.q.response"]], e2)
+      z[[.name.response]] <- oper(z[[.name.response]], e2)
+      check_spct(z, strict.range = FALSE)
       return(z)
-    }  else if (class2 == "response_spct") {
-      e2q(e2, action = "replace", byref = TRUE)
-      z <- oper_spectra(e1$w.length, e2$w.length,
-                        e1$s.q.response, e2$s.q.response,
+    } else if (class2 == "response_spct") {
+      z <- oper_spectra(e1[["w.length"]], e2[["w.length"]],
+                        e1[[.name.response]], e2[[.name.response]],
                         bin.oper=oper, trim="intersection")
-      names(z)[2] <- "s.q.response"
+      names(z)[2] <- .name.response
       setResponseSpct(z, time.unit=getTimeUnit(e1))
       return(merge_attributes(e1, e2, z))
     } else if (class2 == "source_spct") {
-      if (!identical(oper, `*`)) return(NA)
-      e2q(e2, action = "replace", byref = TRUE)
-      z <- oper_spectra(e1$w.length, e2$w.length,
-                        e1$s.q.response, e2$s.q.irrad,
+      if (!(identical(oper, `*`) || identical(oper, `/`))) {
+        stop("Only '*' and '/' are allowed between response_spct and source_spct objects")
+      }
+      z <- oper_spectra(e1[["w.length"]], e2[["w.length"]],
+                        e1[[.name.response]], e2[[.name.irrad]],
                         bin.oper=oper, trim="intersection")
-      names(z)[2] <- "s.q.response"
-      setResponseSpct(z)
+      names(z)[2] <- .name.response
+      setResponseSpct(z, time.unit=getTimeUnit(e2))
       return(merge_attributes(e1, e2, z))
     } else { # this traps optically illegal operations
-      warning("The operation attempted is undefined according to Optics laws or the input is malformed")
-      return(NA)
+      stop("The operation attempted is undefined according to Optics laws or the input is malformed")
     }
   } else if (class1 == "chroma_spct") {
     if (is.numeric(e2)) {
@@ -942,68 +377,86 @@ oper.q.generic_spct <- function(e1, e2, oper) {
                            z = oper(e1$z, e2)))
       }
     } else if (class2 == "chroma_spct") {
-      x <- oper_spectra(e1$w.length, e2$w.length, e1$x, e2$x, bin.oper=oper, trim="intersection")
-      y <- oper_spectra(e1$w.length, e2$w.length, e1$y, e2$y, bin.oper=oper, trim="intersection")
-      z <- oper_spectra(e1$w.length, e2$w.length, e1$z, e2$z, bin.oper=oper, trim="intersection")
-      zz <- chroma_spct(w.length=x$w.length, x=x[["s.irrad"]], y=y[["s.irrad"]], z=z[["s.irrad"]])
+      x <- oper_spectra(e1[["w.length"]], e2[["w.length"]],
+                        e1["x"], e2["x"],
+                        bin.oper=oper, trim="intersection")
+      y <- oper_spectra(e1[["w.length"]], e2[["w.length"]],
+                        e1["y"], e2["y"],
+                        bin.oper=oper, trim="intersection")
+      z <- oper_spectra(e1[["w.length"]], e2[["w.length"]],
+                        e1["z"], e2["z"],
+                        bin.oper=oper, trim="intersection")
+      zz <- chroma_spct(w.length = x[["w.length"]],
+                        x = x[["s.irrad"]], y = y[["s.irrad"]], z = z[["s.irrad"]])
       return(merge_attributes(e1, e2, zz))
     } else if (class2 == "source_spct") {
-      e2q(e2, action = "replace", byref = TRUE)
-      x <- oper_spectra(e1$w.length, e2$w.length, e1$x, e2$s.q.irrad, bin.oper=oper, trim="intersection")
-      y <- oper_spectra(e1$w.length, e2$w.length, e1$y, e2$s.q.irrad, bin.oper=oper, trim="intersection")
-      z <- oper_spectra(e1$w.length, e2$w.length, e1$z, e2$s.q.irrad, bin.oper=oper, trim="intersection")
-      zz <- chroma_spct(w.length=x$w.length, x=x[["s.irrad"]], y=y[["s.irrad"]], z=z[["s.irrad"]])
+      x <- oper_spectra(e1[["w.length"]], e2[["w.length"]],
+                        e1[["x"]], e2[[.name.irrad]],
+                        bin.oper=oper, trim="intersection")
+      y <- oper_spectra(e1[["w.length"]], e2[["w.length"]],
+                        e1[["y"]], e2[[.name.irrad]],
+                        bin.oper=oper, trim="intersection")
+      z <- oper_spectra(e1[["w.length"]], e2[["w.length"]],
+                        e1[["z"]], e2[[.name.irrad]],
+                        bin.oper=oper, trim="intersection")
+      zz <- chroma_spct(w.length = x[["w.length"]],
+                        x = x[[2L]], y = y[[2L]], z = z[[2L]])
       return(merge_attributes(e1, e2, zz))
     }
   } else if (is.numeric(e1)) {
     if (class2 == "calibration_spct") {
       z <- e2
       z[["irrad.mult"]] <- oper(e1, z[["irrad.mult"]])
+      check_spct(z, strict.range = FALSE)
+      return(z)
+    } else if (class2 == "raw_spct") {
+      z <- e2
+      z[["counts"]] <- oper(e1, z[["counts"]])
+      check_spct(z, strict.range = FALSE)
       return(z)
     } else if (class2 == "cps_spct") {
       z <- e2
-      z[["cps"]] <-  oper(e1, z[["cps"]])
+      z[["cps"]] <- oper(e1, z[["cps"]])
+      check_spct(z, strict.range = FALSE)
       return(z)
     } else if (class2 == "source_spct") {
-      e2q(e2, action = "replace", byref = TRUE)
       z <- e2
-      z[["s.q.irrad"]] <- oper(e1, z[["s.q.irrad"]])
+      z[[.name.irrad]] <- oper(e1, z[[.name.irrad]])
+      check_spct(z, strict.range = FALSE)
       return(z)
     } else if (class2 == "filter_spct") {
-      filter.quantity <- getOption("photobiology.filter.qty", default="transmittance")
-      if (filter.quantity=="transmittance") {
-        A2T(e2, action = "add", byref = TRUE)
-        return(filter_spct(w.length=e2$w.length, Tfr=oper(e1, e2$Tfr), strict.range = getOption("photobiology.strict.range", default = FALSE)))
-      } else if (filter.quantity=="absorptance") {
-        T2Afr(e2, action = "add", byref = TRUE)
-        return(filter_spct(w.length=e2$w.length, Afr=oper(e1, e2$Afr), strict.range = getOption("photobiology.strict.range", default = FALSE)))
-      } else if (filter.quantity=="absorbance") {
-        T2A(e2, action = "add", byref = TRUE)
-        return(filter_spct(w.length=e2$w.length, A=oper(e1, e2$A), strict.range = getOption("photobiology.strict.range", default = FALSE)))
-      } else {
-        stop("Assertion failed: bug in code!")
-      }
+      z <- e2
+      z[[.name.filter.qty]] <- oper(e1, z[[.name.filter.qty]])
+      check_spct(z, strict.range = FALSE)
+      return(z)
     } else if (class2 == "reflector_spct") {
-      return(reflector_spct(w.length=e2$w.length, Rfr=oper(e1, e2$Rfr), strict.range = getOption("photobiology.strict.range", default = FALSE)))
+      z <- e2
+      z[["Rfr"]] <- oper(e1, e2[["Rfr"]])
+      check_spct(z, strict.range = FALSE)
+      return(z)
     } else if (class2 == "response_spct") {
-      e2q(e2, action = "replace", byref = TRUE)
-      return(response_spct(w.length=e2$w.length, s.q.response=oper(e1, e2$s.q.response)))
+      z <- e2
+      z[[.name.response]] <- oper(e1, e2[[.name.response]])
+      check_spct(z, strict.range = FALSE)
+      return(z)
     } else if (class2 == "chroma_spct") {
-      if (length(e2) == 3 && names(e2) == c("x", "y", "z")) {
-        return(chroma_spct(w.length = e2$w.length,
-                           x = oper(e1["x"], e2$x),
-                           y = oper(e1["y"], e2$y),
-                           z = oper(e1["z"], e2$z)))
+      z <- e2
+      if (length(e1) == 3 && names(e1) == c("x", "y", "z")) {
+        z[["x"]] <- oper(e1["x"], z["x"])
+        z[["y"]] <- oper(e1["y"], z["y"])
+        z[["z"]] <- oper(e1["z"], z["z"])
+        check_spct(z, strict.range = FALSE)
+        return(z)
       } else {
-        return(chroma_spct(w.length = e2$w.length,
-                           x = oper(e1, e2$x),
-                           y = oper(e1, e2$y),
-                           z = oper(e1, e2$z)))
+        z[["x"]] <- oper(e1, z["x"])
+        z[["y"]] <- oper(e1, z["y"])
+        z[["z"]] <- oper(e1, z["z"])
+        check_spct(z, strict.range = FALSE)
+        return(z)
       }
     }
-  } else  {
-    warning("The operation attempted is undefined according to Optics laws or the input is malformed")
-    return(NA)
+  } else {
+    stop("The operation attempted is undefined according to Optics laws or the input is malformed")
   }
 }
 
@@ -1020,14 +473,7 @@ oper.q.generic_spct <- function(e1, e2, oper) {
 #' @family math operators and functions
 #'
 '*.generic_spct' <- function(e1, e2) {
-  unit <- getOption("photobiology.radiation.unit", default = "energy")
-  if (unit == "energy") {
-    return(oper.e.generic_spct(e1, e2, `*`))
-  } else if (unit == "photon" || unit == "quantum") {
-    return(oper.q.generic_spct(e1, e2, `*`))
-  } else {
-    return(NA)
-  }
+  apply_oper(e1, e2, `*`)
 }
 
 # division ----------------------------------------------------------------
@@ -1044,14 +490,7 @@ oper.q.generic_spct <- function(e1, e2, oper) {
 #' @family math operators and functions
 #'
 '/.generic_spct' <- function(e1, e2) {
-  unit <- getOption("photobiology.radiation.unit", default = "energy")
-  if (unit == "energy") {
-    return(oper.e.generic_spct(e1, e2, `/`))
-  } else if (unit == "photon" || unit == "quantum") {
-    return(oper.q.generic_spct(e1, e2, `/`))
-  } else {
-    return(NA)
-  }
+  apply_oper(e1, e2, `/`)
 }
 
 #' Arithmetic Operators
@@ -1065,14 +504,7 @@ oper.q.generic_spct <- function(e1, e2, oper) {
 #' @family math operators and functions
 #'
 '%/%.generic_spct' <- function(e1, e2) {
-  unit <- getOption("photobiology.radiation.unit", default = "energy")
-  if (unit == "energy") {
-    return(oper.e.generic_spct(e1, e2, `%/%`))
-  } else if (unit == "photon" || unit == "quantum") {
-    return(oper.q.generic_spct(e1, e2, `%/%`))
-  } else {
-    return(NA)
-  }
+  apply_oper(e1, e2, `%/%`)
 }
 
 #' Arithmetic Operators
@@ -1086,14 +518,7 @@ oper.q.generic_spct <- function(e1, e2, oper) {
 #' @family math operators and functions
 #'
 '%%.generic_spct' <- function(e1, e2) {
-  unit <- getOption("photobiology.radiation.unit", default = "energy")
-  if (unit == "energy") {
-    return(oper.e.generic_spct(e1, e2, `%%`))
-  } else if (unit == "photon" || unit == "quantum") {
-    return(oper.q.generic_spct(e1, e2, `%%`))
-  } else {
-    return(NA)
-  }
+  apply_oper(e1, e2, `%%`)
 }
 
 # Sum ---------------------------------------------------------------
@@ -1109,16 +534,11 @@ oper.q.generic_spct <- function(e1, e2, oper) {
 #' @family math operators and functions
 #'
 '+.generic_spct' <- function(e1, e2 = NULL) {
-  unit <- getOption("photobiology.radiation.unit", default = "energy")
   if (is.null(e2)) {
-    e2 <- 0.0
-  }
-  if (unit == "energy") {
-    return(oper.e.generic_spct(e1, e2, `+`))
-  } else if (unit == "photon" || unit == "quantum") {
-    return(oper.q.generic_spct(e1, e2, `+`))
+    # needed to ensure same conversion as if other operator used
+    apply_oper(e1, 1, `*`)
   } else {
-    return(NA)
+    apply_oper(e1, e2, `+`)
   }
 }
 
@@ -1135,17 +555,10 @@ oper.q.generic_spct <- function(e1, e2, oper) {
 #' @family math operators and functions
 #'
 '-.generic_spct' <- function(e1, e2 = NULL) {
-  unit <- getOption("photobiology.radiation.unit", default = "energy")
   if (is.null(e2)) {
-    e2 <- e1
-    e1 <- 0.0
-  }
-  if (unit == "energy") {
-    return(oper.e.generic_spct(e1, e2, `-`))
-  } else if (unit == "photon" || unit == "quantum") {
-    return(oper.q.generic_spct(e1, e2, `-`))
+    apply_oper(e1, -1, `*`)
   } else {
-    return(NA)
+    apply_oper(e1, e2, `-`)
   }
 }
 
@@ -1161,16 +574,8 @@ oper.q.generic_spct <- function(e1, e2, oper) {
 #' @family math operators and functions
 #'
 '^.generic_spct' <- function(e1, e2) {
-  unit <- getOption("photobiology.radiation.unit", default = "energy")
-  if (unit == "energy") {
-    return(oper.e.generic_spct(e1, e2, `^`))
-  } else if (unit %in% c("photon", "quantum")) {
-    return(oper.q.generic_spct(e1, e2, `^`))
-  } else {
-    return(NA)
-  }
+  apply_oper(e1, e2, `^`)
 }
-
 
 # math functions ----------------------------------------------------------
 
@@ -1186,76 +591,77 @@ oper.q.generic_spct <- function(e1, e2, oper) {
 #' @keywords internal
 #'
 f_dispatcher_spct <- function(x, .fun, ...) {
-  if (is.calibration_spct(x)) {
+  # radiation unit
+  .unit.irrad <- getOption("photobiology.radiation.unit",
+                           default = "energy")
+  if (.unit.irrad == "energy") {
+    .fun.irrad <- q2e
+    .name.irrad <- "s.e.irrad"
+    .name.response <- "s.e.response"
+  } else if (.unit.irrad == "photon") {
+    .fun.irrad <- e2q
+    .name.irrad <- "s.q.irrad"
+    .name.response <- "s.q.response"
+  }
+
+  # filter qty
+  .qty.filter <- getOption("photobiology.filter.qty", default = "transmittance")
+  if (.qty.filter == "transmittance") {
+    .fun.filter.qty <- any2T
+     .name.filter.qty <- "Tfr"
+  } else if (.qty.filter == "absorbance") {
+    .fun.filter.qty <- any2A
+    .name.filter.qty <- "A"
+  } else if (.qty.filter == "absorptance") {
+    .fun.filter.qty <- any2Afr
+    .name.filter.qty <- "Afr"
+  }
+
+  # conversion and/or deletion of other quantities
+  if (is.source_spct(x) || is.response_spct(x)) {
+    z <- .fun.irrad(x, action = "replace")
+  } else if (is.filter_spct(x)) {
+    z <- .fun.filter.qty(x, action = "replace")
+  } else {
     z <- x
+  }
+
+  # dispatch
+  if (is.calibration_spct(x)) {
     z[["irrad.mult"]] <- .fun(z[["irrad.mult"]], ...)
     check_spct(z)
     return(z)
   } else if (is.raw_spct(x)) {
-    z <- x
     z[["counts"]] <- .fun(z[["counts"]], ...)
     check_spct(z)
     return(z)
   } else if (is.cps_spct(x)) {
-    z <- x
     z[["cps"]] <- .fun(z[["cps"]], ...)
     check_spct(z)
     return(z)
   } else if (is.filter_spct(x)) {
-    filter.qty <- getOption("photobiology.filter.qty", default="transmittance")
-    if (filter.qty == "transmittance") {
-      z <- A2T(x, action = "replace", byref = FALSE)
-      z[["Tfr"]] <- .fun(z[["Tfr"]], ...)
-    } else if (filter.qty == "absorbance") {
-      z <- T2A(x, action = "replace", byref = FALSE)
-      z[["A"]] <- .fun(z[["A"]], ...)
-    } else {
-      stop("Unrecognized 'filter.qty': ", filter.qty)
-    }
-    check_spct(z)
+     z[[.name.filter.qty]] <- .fun(z[[.name.filter.qty]], ...)
+     check_spct(z)
     return(z)
   } else if (is.reflector_spct(x)) {
-    z <- x
     z[["Rfr"]] <- .fun(z[["Rfr"]], ...)
     check_spct(z)
     return(z)
   } else if (is.source_spct(x)) {
-    unit <- getOption("photobiology.radiation.unit", default = "energy")
-    if (unit == "energy") {
-      z <- q2e(x, action = "replace", byref = FALSE)
-      z[["s.e.irrad"]] <- .fun(z[["s.e.irrad"]], ...)
+      z[[.name.irrad]] <- .fun(z[[.name.irrad]], ...)
       check_spct(z)
       return(z)
-    } else if (unit == "photon" || unit == "quantum") {
-      z <- e2q(x, action = "replace", byref = FALSE)
-      z[["s.q.irrad"]] <- .fun(z[["s.q.irrad"]], ...)
-      check_spct(z)
-      return(z)
-    } else {
-      return(source_mspct())
-    }
   } else if (is.response_spct(x)) {
-    unit <- getOption("photobiology.radiation.unit", default = "energy")
-    if (unit == "energy") {
-      z <- q2e(x, action = "replace", byref = FALSE)
-      z[["s.e.response"]] <- .fun(z[["s.e.response"]], ...)
+      z[[.name.response]] <- .fun(z[[.name.response]], ...)
       return(z)
-    } else if (unit == "photon" || unit == "quantum") {
-      z <- e2q(x, action = "replace", byref = FALSE)
-      z[["s.q.response"]] <- .fun(z[["s.q.response"]], ...)
-      check_spct(z)
-      return(z)
-    }
   } else if (is.chroma_spct(x)) {
-    z <- x
     z[["x"]] <- .fun(z[["x"]], ...)
     z[["y"]] <- .fun(z[["y"]], ...)
     z[["z"]] <- .fun(z[["z"]], ...)
     check_spct(z)
     return(z)
   } else {
-      warning("Function not implemented for ", class(x)[1], " objects.")
-    return(NA)
+      stop("Function not implemented for ", class(x)[1], " objects.")
   }
 }
 
@@ -1481,8 +887,14 @@ atan.generic_spct <- function(x) {
 #'
 #' @param x an R object
 #' @param action a character string
-#' @param byref logical indicating if new object will be created by reference or by copy of x
+#' @param byref logical indicating if new object will be created by reference or
+#'   by copy of \code{x}
 #' @param ... not used in current version
+#'
+#' @return A copy of \code{x} with a column \code{Tfr} added and \code{A} and
+#'   \code{Afr} possibly deleted except for \code{w.length}. If \code{action =
+#'   "replace"}, in all cases, the additional columns are removed, even if no
+#'   column needs to be added.
 #'
 #' @export A2T
 #' @family quantity conversion functions
@@ -1494,6 +906,15 @@ A2T <- function(x, action, byref, ...) UseMethod("A2T")
 #' @export
 #'
 A2T.default <- function(x, action=NULL, byref = FALSE, ...) {
+  warning("'A2T()' not implemented for class \"", class(x)[1], "\".")
+  return(x)
+}
+
+#' @describeIn A2T method for numeric vectors
+#'
+#' @export
+#'
+A2T.numeric <- function(x, action=NULL, byref = FALSE, ...) {
   return(10^-x)
 }
 
@@ -1505,15 +926,20 @@ A2T.filter_spct <- function(x, action="add", byref = FALSE, ...) {
   if (byref) {
     name <- substitute(x)
   }
-  if (exists("Tfr", x, inherits=FALSE)) {
+  if (exists("Tfr", x, inherits = FALSE)) {
     NULL
-  } else if (exists("A", x, inherits=FALSE)) {
+  } else if (exists("A", x, inherits = FALSE)) {
     x[["Tfr"]] <- 10^-x[["A"]]
   } else {
-    x[["Tfr"]] <- NA
+    x[["Tfr"]] <- NA_real_
+    action <- "add"
+    warning("'A' not available in 'A2T()', ignoring \"replace\" action.")
   }
-  if (action=="replace" && exists("A", x, inherits=FALSE)) {
+  if (action=="replace" && exists("A", x, inherits = FALSE)) {
     x[["A"]] <- NULL
+  }
+  if (action=="replace" && exists("Afr", x, inherits = FALSE)) {
+    x[["Afr"]] <- NULL
   }
   if (byref && is.name(name)) { # this is a temporary safe net
     name <- as.character(name)
@@ -1563,6 +989,11 @@ A2T.filter_mspct <- function(x,
 #' @param clean logical replace off-boundary values before conversion
 #' @param ... not used in current version
 #'
+#' @return A copy of \code{x} with a column \code{A} added and other columns
+#'   possibly deleted except for \code{w.length}. If \code{action = "replace"},
+#'   in all cases, the additional columns are removed, even if no column needs
+#'   to be added.
+#'
 #' @export T2A
 #' @family quantity conversion functions
 #'
@@ -1572,7 +1003,16 @@ T2A <- function(x, action, byref, clean, ...) UseMethod("T2A")
 #'
 #' @export
 #'
-T2A.default <- function(x, action=NULL, byref = FALSE, clean = TRUE, ...) {
+T2A.default <- function(x, action=NULL, byref = FALSE, ...) {
+  warning("'T2A()' not implemented for class \"", class(x)[1], "\".")
+  return(x)
+}
+
+#' @describeIn T2A Method for numeric vectors
+#'
+#' @export
+#'
+T2A.numeric <- function(x, action=NULL, byref = FALSE, clean = TRUE, ...) {
   if (clean) {
     Tfr.zero <- getOption("photobiology.Tfr.zero", default = 0)
     if (any(x < Tfr.zero)) {
@@ -1592,19 +1032,24 @@ T2A.filter_spct <- function(x, action="add", byref = FALSE, clean = TRUE, ...) {
   if (byref) {
     name <- substitute(x)
   }
-  if (exists("A", x, inherits=FALSE)) {
+  if (exists("A", x, inherits = FALSE)) {
     NULL
-  } else if (exists("Tfr", x, inherits=FALSE)) {
+  } else if (exists("Tfr", x, inherits = FALSE)) {
     if (clean) {
       # we need to avoid infinite recursion
       using_Tfr(x <- clean(x))
     }
     x[["A"]] <- -log10(x[["Tfr"]])
   } else {
-    x[["A"]] <- NA
+    x[["A"]] <- NA_real_
+    action <- "add"
+    warning("'Tfr' not available in 'T2A()', ignoring \"replace\" action.")
   }
-  if (action=="replace" && exists("Tfr", x, inherits=FALSE)) {
+  if (action=="replace" && exists("Tfr", x, inherits = FALSE)) {
     x[["Tfr"]] <- NULL
+  }
+  if (action=="replace" && exists("Afr", x, inherits = FALSE)) {
+    x[["Afr"]] <- NULL
   }
   if (byref && is.name(name)) {  # this is a temporary safe net
     name <- as.character(name)
@@ -1659,6 +1104,11 @@ T2A.filter_mspct <- function(x,
 #' @param clean logical replace off-boundary values before conversion
 #' @param ... not used in current version
 #'
+#' @return A copy of \code{x} with a column \code{Afr} added and other columns
+#'   possibly deleted except for \code{w.length}. If \code{action = "replace"},
+#'   in all cases, the additional columns are removed, even if no column needs
+#'   to be added.
+#'
 #' @export T2Afr
 #' @family quantity conversion functions
 #'
@@ -1671,16 +1121,41 @@ T2Afr <- function(x, action, byref, clean, ...) UseMethod("T2Afr")
 #'
 #' @export
 #'
-T2Afr.default <- function(x, action=NULL, byref = FALSE, clean = FALSE, ...) {
-  if (clean) {
-    Tfr.zero <- getOption("photobiology.Tfr.zero", default = 0)
-    if (any(x < Tfr.zero)) {
-      warning("Replacing ", sum(x < Tfr.zero), " values < ",
-              Tfr.zero, " with ", Tfr.zero)
-      x <- ifelse(x <= 0, Tfr.zero, x)
-    }
+T2Afr.default <- function(x,
+                          action = NULL,
+                          byref = FALSE,
+                          clean = FALSE,
+                          ...) {
+  warning("'T2Afr()' not implemented for class \"", class(x)[1], "\".")
+  x
   }
-  return(1 - x)
+
+#' @describeIn T2Afr Default method for generic function
+#'
+#' @param Rfr numeric vector. Spectral reflectance o reflectance factor.
+#'   Set to zero if \code{x} is internal reflectance,
+#' @export
+#'
+T2Afr.numeric <- function(x,
+                          action = NULL,
+                          byref = FALSE,
+                          clean = FALSE,
+                          Rfr = NA_real_,
+                          ...) {
+  if (byref) {
+    stop("Conversion by reference not supported for \"numeric\" objects.")
+  }
+  if (is.na(Rfr)) {
+    warning("Convertion requires 'Rfr' to be known.")
+  }
+  if (any(Rfr > 1) || any(Rfr < 0)) {
+    warning("Bad 'Tfr' input valies.")
+  }
+  if (any(x > 1) || any(x < 0)) {
+    warning("Bad 'Tfr' input valies.")
+  }
+  Tfr.internal <- x * (1 - Rfr)
+  1 - Tfr.internal
 }
 
 #' @describeIn T2Afr Method for filter spectra
@@ -1695,25 +1170,52 @@ T2Afr.filter_spct <- function(x,
   if (byref) {
     name <- substitute(x)
   }
-  Tfr.type <- getTfrType(x)
-  if (exists("Afr", x, inherits=FALSE)) {
+  current.Tfr.type <- getTfrType(x)
+  if (exists("Afr", x, inherits = FALSE)) {
     NULL
-  } else {
-    x <- A2T(x)
+  } else if (exists("Tfr", x, inherits = FALSE)) {
     if (clean) {
       x <- using_Tfr(clean(x))
     }
-    x[["Afr"]] <- 1 - x[["Tfr"]]
-    setAfrType(x, Tfr.type)
+    if (current.Tfr.type == "total") {
+      if (exists("Rfr", x, inherits = FALSE)) {
+        x[["Afr"]] <- 1 - x[["Tfr"]] - x[["Rfr"]]
+      } else {
+        x <- convertTfrType(x, "internal")
+        x[["Afr"]] <- 1 - x[["Tfr"]]
+        if (all(is.na(x[["Afr"]]))) {
+          action <- "add"
+          warning("'Tfr.type' or 'Rfr.constant' not available in ')'.")
+        }
+      }
+    } else if (current.Tfr.type == "internal") {
+      x[["Afr"]] <- 1 - x[["Tfr"]]
+    }
+  } else {
+    x[["Afr"]] <- NA_real_
+    action <- "add"
+    warning("'Tfr' not available in 'T2Afr()'.")
   }
-  if (action=="replace" && exists("Tfr", x, inherits=FALSE)) {
+  if (action == "replace" && exists("A", x, inherits = FALSE)) {
+    x[["A"]] <- NULL
+  }
+  if (action == "replace" && exists("Tfr", x, inherits = FALSE)) {
     x[["Tfr"]] <- NULL
   }
+  if (current.Tfr.type == "total") {
+    if (action == "add") {
+      x <- convertTfrType(x, Tfr.type = "total")
+    } else {
+      # no Tfr stored in object, but keep for future conversion operations
+      x <- setTfrType(x, "total")
+    }
+  }
+
   if (byref && is.name(name)) {  # this is a temporary safe net
     name <- as.character(name)
     assign(name, x, parent.frame(), inherits = TRUE)
   }
-  return(x)
+  x
 }
 
 #' @describeIn T2Afr Method for object spectra
@@ -1727,32 +1229,37 @@ T2Afr.object_spct <- function(x,
   if (byref) {
     name <- substitute(x)
   }
-  if (exists("Afr", x, inherits=FALSE)) {
+  if (exists("Afr", x, inherits = FALSE)) {
     NULL
-  } else {
+  } else if (exists("Tfr", x, inherits = FALSE)) {
     if (clean) {
       x <- using_Tfr(clean(x))
     }
-    Tfr.type <- getTfrType(x)
-    if (Tfr.type == "total") {
-      x[["Afr"]] <- 1 - x[["Tfr"]]
-    } else if ((Tfr.type == "internal")) {
-      x[["Afr"]] <- 1 - (x[["Tfr"]] / (1 - x[["Rfr"]]))
-    } else {
-      stop("Invalid 'Tfr.type' attribute: ", Tfr.type)
+    current.Tfr.type <- getTfrType(x)
+    if (current.Tfr.type == "internal") {
+      x <- convertTfrType(x, "total")
     }
-    setAfrType(x, "total")
+    x[["Afr"]] <- 1 - x[["Tfr"]] - x[["Rfr"]]
+    if (current.Tfr.type == "internal") {
+      x <- convertTfrType(x, Tfr.type = "internal")
+    }
+  } else {
+    x[["Afr"]] <- NA_real_
+    action <- "add"
+    warning("'Tfr' not available in 'T2Afr()', ignoring \"replace\" action.")
   }
+  if (action == "replace" && exists("Tfr", x, inherits = FALSE)) {
+    x[["Tfr"]] <- NULL
+  }
+  if (action == "replace" && exists("A", x, inherits = FALSE)) {
+    x[["A"]] <- NULL
+  }
+
   if (byref && is.name(name)) {  # this is a temporary safe net
     name <- as.character(name)
     assign(name, x, parent.frame(), inherits = TRUE)
   }
-  if (any((x[["Afr"]] < 0) | (x[["Afr"]] > 1))) {
-    warning("Off-boundary absorptance values generated (range = ",
-            formatted_range(x[["Afr"]]), ")!",
-            "Possible causes: fluorescence, measurement error or bad estimate of reflectance.")
-  }
-  return(x)
+  x
 }
 
 #' @describeIn T2Afr Method for collections of filter spectra
@@ -1790,112 +1297,153 @@ T2Afr.filter_mspct <- function(x,
 #'
 T2Afr.object_mspct <- T2Afr.filter_mspct
 
-# T2T ---------------------------------------------------------------------
+# Afr2T ---------------------------------------------------------------------
 
-#' Convert transmittance type.
+#' Convert transmittance into absorptance.
 #'
-#' Function that allows conversion between internal and total transmittance.
+#' Function that converts transmittance (fraction) into absorptance (fraction).
+#' If reflectance (fraction) is available, it allows conversions between
+#' internal and total absorptance.
 #'
-#' @param x,y R objects
+#' @param x an R object
+#' @param action character Allowed values "replace" and "add"
 #' @param byref logical indicating if new object will be created by reference or by copy of x
-#' @param Tfr.type.out character One of "total" or "internal"
+#' @param clean logical replace off-boundary values before conversion
 #' @param ... not used in current version
 #'
-#' @export T2T
+#' @return A copy of \code{x} with a column \code{Tfr} added and other columns
+#'   possibly deleted except for \code{w.length}. If \code{action = "replace"},
+#'   in all cases, the additional columns are removed, even if no column needs
+#'   to be added.
+#'
+#' @export
+#'
 #' @family quantity conversion functions
 #'
-T2T <- function(x, y, byref, Tfr.type.out, ...) UseMethod("T2T")
+#' @examples
+#' T2Afr(Ler_leaf.spct)
+#'
+Afr2T <- function(x, action, byref, clean, ...) UseMethod("Afr2T")
 
-#' @describeIn T2T Default method
+#' @describeIn Afr2T Default method for generic function
 #'
 #' @export
 #'
-T2T.default <- function(x, y, byref = NULL, Tfr.type.out = NULL, ...) {
-  stop("Method 'T2T()' not implemented for class: ", class(x))
+Afr2T.default <- function(x,
+                          action = NULL,
+                          byref = FALSE,
+                          clean = FALSE,
+                          ...) {
+  warning("'Afr2T()' not implemented for class \"", class(x)[1], "\".")
+  x
 }
 
-#' @describeIn T2T Method for filter spectra
+#' @describeIn Afr2T Default method for generic function
+#'
+#' @param Rfr numeric vector. Spectral reflectance o reflectance factor.
+#'   Set to zero if \code{x} is internal reflectance,
+#' @export
+#'
+Afr2T.numeric <- function(x,
+                          action = NULL,
+                          byref = FALSE,
+                          clean = FALSE,
+                          Rfr = NA_real_,
+                          ...) {
+  if (byref) {
+    stop("Conversion by reference not supported for \"numeric\" objects.")
+  }
+  if (is.na(Rfr)) {
+    warning("Convertion requires 'Rfr'.")
+  }
+  if (any(Rfr > 1) || any(Rfr < 0)) {
+    warning("Bad 'Tfr' input valies.")
+  }
+  if (any(x > 1) || any(x < 0)) {
+    warning("Bad 'Afr' input valies.")
+  }
+  Afr.internal <- x / (1 - Rfr)
+  1 - Afr.internal
+}
+
+#' @describeIn Afr2T Method for filter spectra
 #'
 #' @export
 #'
-T2T.filter_spct <- function(x, y,
-                            byref = FALSE,
-                            Tfr.type.out = "total",
-                            ...) {
-  stopifnot(exists("Tfr", x, inherits=FALSE))
-  Tfr.type <- getTfrType(x)
-  if (Tfr.type == Tfr.type.out) {
-    return(x)
-  }
-  stopifnot(is.reflector_spct(y) ||
-              (is.numeric(y) && ((length(y) == nrow(x)) || (length(y) != 1))))
-  if (is.reflector_spct(y)) {
-    y <- interpolate_spct(y, w.length.out = x[["w.length"]])[["Rfr"]]
-  }
+Afr2T.filter_spct <- function(x,
+                              action = "add",
+                              byref = FALSE,
+                              clean = FALSE,
+                              ...) {
   if (byref) {
     name <- substitute(x)
   }
-  if (Tfr.type == "total" && Tfr.type.out == "internal") {
-    x[["Tfr"]] <- x[["Tfr"]] / (1 - y)
-    setTfrType(x, "internal")
-  } else if (Tfr.type == "internal" && Tfr.type.out == "total") {
-    x[["Tfr"]] <- x[["Tfr"]] * (1 - y)
-    setTfrType(x, "total")
-  } else if (is.na(Tfr.type)) {
-    warning("Conversion failed because of missing 'Tfr.type' attribute.")
+  current.Tfr.type <- getTfrType(x)
+  if (exists("Tfr", x, inherits = FALSE)) {
+    NULL
+  } else if (current.Tfr.type == "internal") {
+    # we assume this is what is desired
+    x[["Tfr"]] <- 1 - x[["Afr"]]
+  } else if (current.Tfr.type == "total") {
+    if (exists("Rfr", x, inherits = FALSE)) {
+      x[["Tfr"]] <- 1 - x[["Afr"]] - x[["Rfr"]]
+    } else {
+      properties <- getFilterProperties(x, return.null = FALSE)
+      x[["Tfr"]] <- 1 - x[["Afr"]] - properties[["Rfr.constant"]]
+    }
+  } else {
+    stop("Invalid 'Tfr.type' attribute: ", current.Tfr.type)
   }
-  setTfrType(x, Tfr.type.out)
+  if (action == "replace" && exists("Tfr", x, inherits = FALSE)) {
+    x[["Afr"]] <- NULL
+  }
+  if (action == "replace" && exists("A", x, inherits = FALSE)) {
+    x[["A"]] <- NULL
+  }
+
   if (byref && is.name(name)) {  # this is a temporary safe net
     name <- as.character(name)
     assign(name, x, parent.frame(), inherits = TRUE)
   }
-  if (any((x[["Tfr"]] < 0) | (x[["Tfr"]] > 1))) {
-    warning("Off-boundary transmittance values generated (range = ",
-            formatted_range(x[["Tfr"]]), ")!",
-            "Possible causes: fluorescence, measurement error or bad estimate of reflectance.")
-  }
-  return(x)
+  check_spct(x)
 }
 
-#' @describeIn T2T Method for object spectra
+#' @describeIn Afr2T Method for object spectra
 #'
 #' @export
 #'
-T2T.object_spct <- function(x, y = NULL,
-                            byref = FALSE,
-                            Tfr.type.out = "total",
-                            ...) {
-  Tfr.type <- getTfrType(x)
-  if (Tfr.type == Tfr.type.out) {
-    return(x)
-  }
-  stopifnot(is.null(y))
+Afr2T.object_spct <- function(x,
+                              action = "add",
+                              byref = FALSE,
+                              clean = FALSE, ...) {
   if (byref) {
     name <- substitute(x)
   }
-  if (Tfr.type == "total" && Tfr.type.out == "internal") {
-    x[["Tfr"]] <- x[["Tfr"]] / (1 - x[["Rfr"]])
-    setTfrType(x, "internal")
-  } else if (Tfr.type == "internal" && Tfr.type.out == "total") {
-    x[["Tfr"]] <- x[["Tfr"]] * (1 - x[["Rfr"]])
-    setTfrType(x, "total")
-  } else if (is.na(Tfr.type)) {
-    warning("Conversion failed because of missing 'Tfr.type' attribute.")
+  current.Tfr.type <- getTfrType(x)
+  if (exists("Tfr", x, inherits = FALSE)) {
+    NULL
+  } else if (current.Tfr.type == "internal") {
+    x[["Tfr"]] <- 1 - x[["Afr"]]
+  } else if (current.Tfr.type == "total") {
+      x[["Tfr"]] <- 1 - x[["Afr"]] - x[["Rfr"]]
+  } else {
+    stop("Invalid 'Tfr.type' attribute: ", current.Tfr.type)
   }
+  if (action == "replace" && exists("Tfr", x, inherits = FALSE)) {
+    x[["Afr"]] <- NULL
+  }
+  if (action == "replace" && exists("A", x, inherits = FALSE)) {
+    x[["A"]] <- NULL
+  }
+
   if (byref && is.name(name)) {  # this is a temporary safe net
     name <- as.character(name)
     assign(name, x, parent.frame(), inherits = TRUE)
   }
-  if (any((x[["Tfr"]] < 0) | (x[["Tfr"]] > 1))) {
-    warning("Off-boundary transmittance values generated (range = ",
-            formatted_range(x[["Tfr"]]), ")!",
-            "Possible causes: fluorescence, measurement error or bad estimate of reflectance.")
-  }
-  return(x)
+  check_spct(x)
 }
 
-
-#' @describeIn T2T Method for collections of filter spectra
+#' @describeIn Afr2T Method for collections of filter spectra
 #'
 #' @param .parallel	if TRUE, apply function in parallel, using parallel backend
 #'   provided by foreach
@@ -1907,27 +1455,114 @@ T2T.object_spct <- function(x, y = NULL,
 #'
 #' @export
 #'
-T2T.filter_mspct <- function(x, y,
-                             byref = FALSE,
-                             Tfr.type.out = "total",
-                             ...,
-                             .parallel = FALSE,
-                             .paropts = NULL) {
+Afr2T.filter_mspct <- function(x,
+                               action = "add",
+                               byref = FALSE,
+                               clean = FALSE,
+                               ...,
+                               .parallel = FALSE,
+                               .paropts = NULL) {
   msmsply(x,
-          .fun = T2T,
-          y = y,
+          .fun = T2Afr,
+          action = action,
           byref = byref,
-          Tfr.type.out = Tfr.type.out,
+          clean = FALSE,
           ...,
           .parallel = .parallel,
           .paropts = .paropts)
 }
 
-#' @describeIn T2T Method for collections of object spectra
+#' @describeIn Afr2T Method for collections of object spectra
 #'
 #' @export
 #'
-T2T.object_mspct <- T2T.filter_mspct
+Afr2T.object_mspct <- Afr2T.filter_mspct
+
+# "any" filter conversions ------------------------------------------------
+
+#' Convert filter quantities.
+#'
+#' Functions that convert or add related physical quantities to
+#' \code{filter_spct} or  \code{object_spct} objects. transmittance (fraction)
+#' into absorptance (fraction).
+#'
+#' @param x an filter_spct or a filter_mspct object.
+#' @param action character Allowed values "replace" and "add".
+#' @param clean logical replace off-boundary values before conversion
+#'
+#' @details These functions are dispatchers for \code{\link{A2T}},
+#'   \code{\link{Afr2T}}, \code{\link{T2A}}, and \code{\link{T2Afr}}. The
+#'   dispatch is based on the names of the variables stored in \code{x}. They
+#'   do not support in-place modification of \code{x}.
+#'
+#' @return A copy of \code{x} with the columns for the different quantities
+#'   added or replaced. If \code{action = "replace"}, in all cases, the
+#'   additional columns are removed, even if no column needs to be added.
+#'
+#' @family quantity conversion functions
+#'
+#' @export
+#'
+#' @examples
+#' any2Afr(Ler_leaf.spct)
+#' any2T(Ler_leaf.spct)
+#' any2T(polyester.spct)
+#'
+any2T <- function(x, action = "add", clean = FALSE) {
+  if (is.filter_mspct(x) || is.object_mspct(x)) {
+    return(msmsply(mspct = x,
+                   .fun =  any2T,
+                   action = action,
+                   clean = clean))
+  }
+  stopifnot(is.filter_spct(x) || is.object_spct(x))
+  if (any(c("A", "Tfr") %in% colnames(x))) {
+    A2T(x, action = action, clean = clean, byref = FALSE)
+  } else {
+    Afr2T(x, action = action, clean = clean, byref = FALSE)
+  }
+}
+
+#' @rdname any2T
+#'
+#' @export
+#'
+any2A <- function(x, action = "add", clean = FALSE) {
+  if (is.filter_mspct(x) || is.object_mspct(x)) {
+    return(msmsply(mspct = x,
+                   .fun =  any2A,
+                   action = action,
+                   clean = clean))
+  }
+  stopifnot(is.filter_spct(x) || is.object_spct(x))
+  if (any(c("A", "Tfr") %in% colnames(x))) {
+    T2A(x, action = action, clean = clean, byref = FALSE)
+  } else {
+    Afr2T(x, action = action)
+    T2A(x, action = action, clean = clean, byref = FALSE)
+  }
+}
+
+#' @rdname any2T
+#'
+#' @export
+#'
+any2Afr <- function(x, action = "add", clean = FALSE) {
+  if (is.filter_mspct(x) || is.object_mspct(x)) {
+    return(msmsply(mspct = x,
+                   .fun =  any2Afr,
+                   action = action,
+                   clean = clean))
+  }
+  stopifnot(is.filter_spct(x) || is.object_spct(x))
+  if (any(c("Afr", "Tfr") %in% colnames(x))) {
+    T2Afr(x, action = action, clean = clean, byref = FALSE)
+  } else {
+    A2T(x, action = action)
+    T2Afr(x, action = action, clean = clean, byref = FALSE)
+  }
+}
+
 
 # energy - photon and photon - energy conversions -------------------------
 
@@ -1964,14 +1599,14 @@ e2q.source_spct <- function(x, action="add", byref = FALSE, ...) {
   if (byref) {
     name <- substitute(x)
   }
-  if (exists("s.q.irrad", x, inherits=FALSE)) {
+  if (exists("s.q.irrad", x, inherits = FALSE)) {
     NULL
-  } else if (exists("s.e.irrad", x, inherits=FALSE)) {
+  } else if (exists("s.e.irrad", x, inherits = FALSE)) {
     x[["s.q.irrad"]] <- x[["s.e.irrad"]] * e2qmol_multipliers(x[["w.length"]])
   } else {
     x[["s.q.irrad"]] <- NA
   }
-  if (action=="replace" && exists("s.e.irrad", x, inherits=FALSE)) {
+  if (action=="replace" && exists("s.e.irrad", x, inherits = FALSE)) {
     x[["s.e.irrad"]] <- NULL
   }
   if (byref && is.name(name)) {  # this is a temporary safe net
@@ -1989,14 +1624,14 @@ e2q.response_spct <- function(x, action="add", byref = FALSE, ...) {
   if (byref) {
     name <- substitute(x)
   }
-  if (exists("s.q.response", x, inherits=FALSE)) {
+  if (exists("s.q.response", x, inherits = FALSE)) {
     NULL
-  } else if (exists("s.e.response", x, inherits=FALSE)) {
+  } else if (exists("s.e.response", x, inherits = FALSE)) {
     x[["s.q.response"]] <- x[["s.e.response"]] / e2qmol_multipliers(x[["w.length"]])
   } else {
     x[["s.q.response"]] <- NA
   }
-  if (action=="replace" && exists("s.e.response", x, inherits=FALSE)) {
+  if (action=="replace" && exists("s.e.response", x, inherits = FALSE)) {
     x[["s.e.response"]] <- NULL
   }
   if (byref && is.name(name)) {  # this is a temporary safe net
@@ -2084,14 +1719,14 @@ q2e.source_spct <- function(x, action="add", byref = FALSE, ...) {
   if (byref) {
     name <- substitute(x)
   }
-  if (exists("s.e.irrad", x, inherits=FALSE)) {
+  if (exists("s.e.irrad", x, inherits = FALSE)) {
     NULL
-  } else if (exists("s.q.irrad", x, inherits=FALSE)) {
+  } else if (exists("s.q.irrad", x, inherits = FALSE)) {
     x[["s.e.irrad"]] <- x[["s.q.irrad"]] / e2qmol_multipliers(x[["w.length"]])
   } else {
     x[["s.e.irrad"]] <- NA
   }
-  if (action=="replace" && exists("s.q.irrad", x, inherits=FALSE)) {
+  if (action=="replace" && exists("s.q.irrad", x, inherits = FALSE)) {
     x[["s.q.irrad"]] <- NULL
   }
   if (byref && is.name(name)) {  # this is a temporary safe net
@@ -2109,14 +1744,14 @@ q2e.response_spct <- function(x, action="add", byref = FALSE, ...) {
   if (byref) {
     name <- substitute(x)
   }
-  if (exists("s.e.response", x, inherits=FALSE)) {
+  if (exists("s.e.response", x, inherits = FALSE)) {
     NULL
-  } else if (exists("s.q.response", x, inherits=FALSE)) {
+  } else if (exists("s.q.response", x, inherits = FALSE)) {
     x[["s.e.response"]] <- x[["s.q.response"]] * e2qmol_multipliers(x[["w.length"]])
   } else {
     x[["s.e.response"]] <- NA
   }
-  if (action=="replace" && exists("s.q.response", x, inherits=FALSE)) {
+  if (action=="replace" && exists("s.q.response", x, inherits = FALSE)) {
     x[["s.q.response"]] <- NULL
   }
   if (byref && is.name(name)) {  # this is a temporary safe net

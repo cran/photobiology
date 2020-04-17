@@ -4,7 +4,13 @@
 \alias{wb2tagged_spct}
 \title{Create tagged spectrum from wavebands}
 \usage{
-wb2tagged_spct(w.band, use.hinges = TRUE, short.names = TRUE, ...)
+wb2tagged_spct(
+  w.band,
+  use.hinges = TRUE,
+  short.names = TRUE,
+  chroma.type = "CMF",
+  ...
+)
 }
 \arguments{
 \item{w.band}{waveband or list of waveband objects The waveband(s) determine
@@ -17,6 +23,10 @@ the boundaries of the wavebands.}
 
 \item{short.names}{logical Flag indicating whether to use short or long names
 for wavebands.}
+
+\item{chroma.type}{character telling whether "CMF", "CC", or "both" should be
+returned for human vision, or an object of class \code{chroma_spct} for any
+other trichromic visual system.}
 
 \item{...}{ignored (possibly used by derived methods).}
 }

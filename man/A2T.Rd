@@ -3,6 +3,7 @@
 \name{A2T}
 \alias{A2T}
 \alias{A2T.default}
+\alias{A2T.numeric}
 \alias{A2T.filter_spct}
 \alias{A2T.filter_mspct}
 \title{Convert absorbance into transmittance}
@@ -10,6 +11,8 @@
 A2T(x, action, byref, ...)
 
 \method{A2T}{default}(x, action = NULL, byref = FALSE, ...)
+
+\method{A2T}{numeric}(x, action = NULL, byref = FALSE, ...)
 
 \method{A2T}{filter_spct}(x, action = "add", byref = FALSE, ...)
 
@@ -20,7 +23,8 @@ A2T(x, action, byref, ...)
 
 \item{action}{a character string}
 
-\item{byref}{logical indicating if new object will be created by reference or by copy of x}
+\item{byref}{logical indicating if new object will be created by reference or
+by copy of \code{x}}
 
 \item{...}{not used in current version}
 
@@ -33,12 +37,20 @@ your code relies on external data or packages: use the .export and
 .packages arguments to supply them so that all cluster nodes have the
 correct environment set up for computing.}
 }
+\value{
+A copy of \code{x} with a column \code{Tfr} added and \code{A} and
+  \code{Afr} possibly deleted except for \code{w.length}. If \code{action =
+  "replace"}, in all cases, the additional columns are removed, even if no
+  column needs to be added.
+}
 \description{
 Function that converts absorbance (a.u.) into transmittance (fraction).
 }
 \section{Methods (by class)}{
 \itemize{
 \item \code{default}: Default method for generic function
+
+\item \code{numeric}: method for numeric vectors
 
 \item \code{filter_spct}: Method for filter spectra
 
@@ -47,9 +59,10 @@ Function that converts absorbance (a.u.) into transmittance (fraction).
 
 \seealso{
 Other quantity conversion functions: 
+\code{\link{Afr2T}()},
 \code{\link{T2Afr}()},
 \code{\link{T2A}()},
-\code{\link{T2T}()},
+\code{\link{any2T}()},
 \code{\link{as_quantum}()},
 \code{\link{e2qmol_multipliers}()},
 \code{\link{e2quantum_multipliers}()},

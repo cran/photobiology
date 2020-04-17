@@ -224,16 +224,17 @@ peaks(x, span, ignore_threshold, strict, na.rm, ...)
 \arguments{
 \item{x}{an R object}
 
-\item{span}{a peak is defined as an element in a sequence which is greater
-than all other elements within a window of width \code{span} centered at
-that element. Use \code{NULL} for the global peak.}
+\item{span}{integer A peak is defined as an element in a sequence which is
+greater than all other elements within a window of width \code{span}
+centered at that element. Use \code{NULL} for the global peak.}
 
-\item{ignore_threshold}{numeric value between 0.0 and 1.0 indicating the
+\item{ignore_threshold}{numeric Value between 0.0 and 1.0 indicating the
 relative size compared to tallest peak threshold below which peaks will be
-ignored.}
+ignored. Negative values set a threshold so that the tallest peaks are
+ignored, instead of the shortest.}
 
-\item{strict}{logical flag: if TRUE, an element must be strictly greater than
-all other values in its window to be considered a peak. Default: TRUE.}
+\item{strict}{logical If \code{TRUE}, an element must be strictly greater
+than all other values in its window to be considered a peak.}
 
 \item{na.rm}{logical indicating whether \code{NA} values should be stripped
 before searching for peaks.}
@@ -306,6 +307,11 @@ to local maxima.
 \item \code{raw_mspct}: Method for "raw_mspct" objects.
 }}
 
+\note{
+Thresholds for ignoring peaks are applied after peaks are searched for,
+and negative threshold values can in some cases result in no peaks being
+returned.
+}
 \examples{
 peaks(sun.spct, span = 51)
 peaks(sun.spct, span = NULL)
