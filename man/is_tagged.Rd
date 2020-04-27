@@ -2,7 +2,7 @@
 % Please edit documentation in R/spct.classes.r
 \name{is_tagged}
 \alias{is_tagged}
-\title{Query if it is a spectrum is tagged}
+\title{Query if a spectrum is tagged}
 \usage{
 is_tagged(x)
 }

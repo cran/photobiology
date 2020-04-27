@@ -36,7 +36,7 @@ before the computation proceeds.}
 \value{
 If \code{x} is a collection spectral of objects, such as a
   "filter_mspct" object, the returned object is of same class as the members
-  of the collection, such as "filter_spct", containing the media spectrum.
+  of the collection, such as "filter_spct", containing the median spectrum.
 }
 \description{
 A method to compute the median of values across members of a collections of
