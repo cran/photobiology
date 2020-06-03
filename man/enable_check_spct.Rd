@@ -3,11 +3,23 @@
 \name{enable_check_spct}
 \alias{enable_check_spct}
 \alias{disable_check_spct}
+\alias{set_check_spct}
 \title{Enable or disable checks}
 \usage{
 enable_check_spct()
 
 disable_check_spct()
+
+set_check_spct(x)
+}
+\arguments{
+\item{x}{logical Flag to enable (TRUE), disable (FALSE) or unset (NULL)
+option.}
+}
+\value{
+The previous value of the option, which can be passed as argument
+  to function \code{set_check_spct()} to restore the previous state of the
+  option.
 }
 \description{
 Choose between protection against errors or faster performance by enabling

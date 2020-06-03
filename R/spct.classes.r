@@ -26,10 +26,14 @@ spct_classes <- function() {
 #'
 #' @family data validity check functions
 #'
+#' @return The previous value of the option, which can be passed as argument
+#'   to function \code{set_check_spct()} to restore the previous state of the
+#'   option.
+#'
 #' @export
 #'
 enable_check_spct <- function() {
-  options(photobiology.check.spct = TRUE)
+  options(photobiology.check.spct = TRUE)[[1]]
 }
 
 #' @rdname enable_check_spct
@@ -37,7 +41,18 @@ enable_check_spct <- function() {
 #' @export
 #'
 disable_check_spct <- function() {
-  options(photobiology.check.spct = FALSE)
+  options(photobiology.check.spct = FALSE)[[1]]
+}
+
+#' @rdname enable_check_spct
+#'
+#' @param x logical Flag to enable (TRUE), disable (FALSE) or unset (NULL)
+#'   option.
+#'
+#' @export
+#'
+set_check_spct <- function(x) {
+  options(photobiology.check.spct = x)[[1]]
 }
 
 #' Check validity of spectral objects
@@ -133,6 +148,7 @@ check_spct.generic_spct <-
           if (is.unsorted(-x[["w.length"]], na.rm = TRUE, strictly = TRUE)) {
             stop("'w.length' must be sorted and have unique values")
           } else {
+            # if unsorted is TRUE, then nrow >= 1 is TRUE
             # w.length in decreasing order, which we reverse
             x <- x[nrow(x):1, ]
           }
@@ -642,11 +658,11 @@ check_spct.source_spct <-
       min.limit <- -0.10 # we accept small negative values
       if (exists("s.e.irrad", x, inherits = FALSE) &&
           !all(is.na(x[["s.e.irrad"]]))) {
-        s.e.range <- range(0, x$s.e.irrad, na.rm = TRUE)
-        s.e.spread <- diff(s.e.range)
+        s.e.range <- range(x$s.e.irrad, na.rm = TRUE)
+        s.e.spread <- s.e.range[2] # for irradiance zero is meaningful
         # we need to be fairly lax as dark reference spectra may have
         # proportionally lots of noise.
-        if (s.e.range[1] < (min.limit * (max(s.e.spread, 0.04)) )) {
+        if (s.e.range[1] < (min.limit * max(s.e.spread, 0.04) )) {
           message.text <-
             paste(
               "Negative spectral energy irradiance values; minimum s.e.irrad =",
@@ -666,7 +682,7 @@ check_spct.source_spct <-
       if (exists("s.q.irrad", x, inherits = FALSE) &&
           !all(is.na(x[["s.q.irrad"]]))) {
         s.q.range <- range(x$s.q.irrad, na.rm = TRUE)
-        s.q.spread <- diff(s.q.range)
+        s.q.spread <- s.q.range[2] # zero is meaningful
         # we need to be fairly lax as dark reference spectra may have
         # proportionally lots of noise.
         if (s.q.range[1] < (min.limit * (max(s.q.spread, 1e-5)) )) {
@@ -765,6 +781,9 @@ check_spct.chroma_spct <-
 #' by reference!}
 #'
 #' @param x an R object.
+#' @param keep.classes character vector Names of classes to keep. Can be used
+#'   to retain base class "generic_spct".
+#'
 #' @export
 #'
 #' @note If \code{x} is an object of any of the spectral classes defined
@@ -785,11 +804,14 @@ check_spct.chroma_spct <-
 #' class(sun.spct)
 #' class(my.spct)
 #'
-rmDerivedSpct <- function(x) {
+rmDerivedSpct <- function(x, keep.classes = NULL) {
   name <- substitute(x)
   allclasses <- class(x)
-  class(x) <- setdiff(allclasses, spct_classes())
-  attr(x, "spct.version") <- NULL
+  classes2remove <- setdiff(spct_classes(), keep.classes)
+  class(x) <- setdiff(allclasses, classes2remove)
+  if (!is.generic_spct(x)) {
+    attr(x, "spct.version") <- NULL
+  }
   if (is.name(name)) {
     name <- as.character(name)
     assign(name, x, parent.frame(), inherits = TRUE)
@@ -808,7 +830,7 @@ rmDerivedSpct <- function(x) {
 #'    stored logitudinally (required if mulitple.wl > 1).
 #'
 #' @export
-#' @exportClass generic_spct
+#'
 #'
 #' @return x
 #' @note This method alters x itself by reference and in addition
@@ -854,7 +876,7 @@ setGenericSpct <-
 #' @describeIn setGenericSpct Set class of a an object to "calibration_spct".
 #'
 #' @export
-#' @exportClass calibration_spct
+#'
 #'
 setCalibrationSpct <-
   function(x,
@@ -875,7 +897,7 @@ setCalibrationSpct <-
 #' @describeIn setGenericSpct Set class of a an object to "raw_spct".
 #'
 #' @export
-#' @exportClass cps_spct
+#'
 #'
 setRawSpct <-
   function(x,
@@ -896,7 +918,7 @@ setRawSpct <-
 #' @describeIn setGenericSpct Set class of a an object to "cps_spct".
 #'
 #' @export
-#' @exportClass cps_spct
+#'
 #'
 setCpsSpct <-
   function(x,
@@ -926,7 +948,7 @@ setCpsSpct <-
 #' @param strict.range logical Flag indicating whether off-range values result in an
 #'   error instead of a warning.
 #' @export
-#' @exportClass filter_spct
+#'
 #'
 #' @note For non-diffusing materials like glass an approximate \code{Rfr.constant}
 #'   value can be used to interconvert "total" and "internal" transmittance
@@ -971,7 +993,7 @@ setFilterSpct <-
 #'
 #' @param Rfr.type character A string, either "total" or "specular".
 #' @export
-#' @exportClass reflector_spct
+#'
 #'
 setReflectorSpct <-
   function(x,
@@ -1003,7 +1025,7 @@ setReflectorSpct <-
 #' @describeIn setGenericSpct Set class of an object to "object_spct".
 #'
 #' @export
-#' @exportClass object_spct
+#'
 #'
 setObjectSpct <-
   function(x,
@@ -1048,7 +1070,7 @@ setObjectSpct <-
 #'
 #' @param time.unit character A string "second", "day" or "exposure".
 #' @export
-#' @exportClass response_spct
+#'
 #'
 setResponseSpct <-
   function(x,
@@ -1072,7 +1094,7 @@ setResponseSpct <-
 #'
 #' @param bswf.used character A string, either "none" or the name of a BSWF.
 #' @export
-#' @exportClass source_spct
+#'
 #'
 setSourceSpct <-
   function(x,
@@ -1098,7 +1120,7 @@ setSourceSpct <-
 #' @describeIn setGenericSpct Set class of an object to "chroma_spct".
 #'
 #' @export
-#' @exportClass chroma_spct
+#'
 #'
 setChromaSpct <-
   function(x,
@@ -1137,8 +1159,8 @@ setChromaSpct <-
 #' is.generic_spct(sun.spct)
 #' is.generic_spct(sun.spct)
 #'
-#' @export is.generic_spct
-#' @rdname is.generic_spct
+#' @export
+#'
 #' @examples
 #' is.source_spct(sun.spct)
 #' is.filter_spct(sun.spct)
@@ -2653,6 +2675,7 @@ setInstrDesc <- function(x, instr.desc) {
 #'
 #' @return list (depends on instrument type)
 #'
+#'
 #' @export
 #' @family measurement metadata functions
 #'
@@ -2818,6 +2841,7 @@ setInstrSettings <- function(x, instr.settings) {
 #' @param x a generic_spct object
 #'
 #' @return list
+#'
 #'
 #' @export
 #'
@@ -3089,6 +3113,7 @@ getWhatMeasured.generic_mspct <- function(x,
 #' @note This function alters \code{x} itself by reference and in addition
 #'   returns \code{x} invisibly. If \code{x} is not a filter_spct object,
 #'   \code{x} is not modified.
+#'
 #'
 #' @export
 #' @family measurement metadata functions

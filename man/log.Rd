@@ -22,11 +22,24 @@ log10.generic_spct(x)
 \item{base}{a positive number: the base with respect to which logarithms are
 computed. Defaults to e=exp(1).}
 }
+\value{
+An object of the same class as \code{x}.
+}
 \description{
 Logarithms and Exponentials for Spectra. The functions are applied to the
 spectral data, not the wavelengths. The quantity in the spectrum to which the
 function is applied depends on the class of \code{x} and the current value of
 output options
+}
+\note{
+In most cases a logarithm of an spectral quantity will yield off-range
+  values. For this reason unless \code{x} is an object of base class
+  \code{generic_spct}, checks will not be passed, resulting in warnings or
+  errors.
+}
+\examples{
+log10(as.generic_spct(sun.spct))
+
 }
 \seealso{
 Other math operators and functions: 

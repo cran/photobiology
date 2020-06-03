@@ -36,8 +36,10 @@ list of wavebands as second argument.}
 \item{...}{additional arguments passed to f}
 }
 \value{
-A numeric value for the index, or a tibble depending on whether
-  a spectrum or a collection of spectra is passed as first argument.
+A named numeric value for the index, or a tibble depending on whether
+  a spectrum or a collection of spectra is passed as first argument. If
+  the wavelength range of \code{spct} does not fully overlap with both
+  wavebands \code{NA} is silently returned.
 }
 \description{
 This method returns a normalized difference index value for an arbitrary

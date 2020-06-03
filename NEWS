@@ -1,12 +1,26 @@
+photobiology 0.10.3 (2020-06-03)
+================================
+
+* Handle gracefully bad data input in normalised_diff_ind().
+* Implement Fresnel's formulae for computation of reflectance of a plane
+interface from relative refractive index.
+* Implement Fraunhofer's formulae for computation of diffraction in a single
+slit and diffraction plus interference in a double slit.
+* Enhance as_tod() and implement format() and print() methods for time-of-day.
+* Update tag() to use precomputed color definitions, when possible, to improve
+performance.
+* BUG FIX: Remove bad class exports from NAMESPACE.
+* New features of dplyr (>= 1.0.0) are used, so this new version is required.
+
 photobiology 0.10.2 (2020-04-26)
 ================================
 
-- Fix bug in color_of().
-- Fix bug in merge2object_spct().
-- Fix bug in merge_attributes().
-- Fix bug in interpolate_spct().
-- Fix bug in Extract [ ].
-- Rebuild white LED example spectra.
+* Fix bug in color_of().
+* Fix bug in merge2object_spct().
+* Fix bug in merge_attributes().
+* Fix bug in interpolate_spct().
+* Fix bug in Extract [ ].
+* Rebuild white LED example spectra.
 
 photobiology 0.10.1 (2020-04-17)
 ================================
@@ -52,9 +66,9 @@ consistent.
 * T2T(), setAfrType(), getAfrType(). No deprecation as not used.
 
 *****************************************************************************
-Full functionality of convertThickness() and convertTfrType() requires
+Full functionality of convertThickness() and convertTfrType() requires that
 filter_spct objects have the new "filter.properties" attribute or that they
-contain like object_spct objects a column "Rfr" with reflectance data.
+contain a column "Rfr" with reflectance data like object_spct objects do.
 *****************************************************************************
 
 photobiology 0.10.0 (2020-04-02)

@@ -2,17 +2,35 @@
 % Please edit documentation in R/sun.calc.r
 \name{as_tod}
 \alias{as_tod}
-\title{Convert date to time-of-day in hours, minutes or seconds}
+\title{Convert datetime to time-of-day}
 \usage{
 as_tod(x, unit.out = "hours", tz = NULL)
 }
 \arguments{
 \item{x}{a datetime object accepted by lubridate functions}
 
-\item{unit.out}{character string, One of "datetime", "hour", "minute", or "second".}
+\item{unit.out}{character string, One of "tod_time", "hours", "minutes", or "seconds".}
 
 \item{tz}{character string indicating time zone to be used in output.}
 }
+\value{
+A numeric vector of the same length as \code{x}. If
+  \code{unit.out = "tod_time"} an object of class \code{"tod_time"} which
+  the same as for \code{unit.out = "hours"} but with the class attribute
+  set, which dispatches to special \code{format()} nad \code{print()}
+  methods.
+}
 \description{
-Convert date to time-of-day in hours, minutes or seconds
+Convert a datetime into a time of day expressed in hours, minutes or seconds
+from midnight in local time for a time zone. This conversion is useful when
+time-series data for different days needs to be compared or plotted based on
+the local time-of-day.
+}
+\examples{
+library(lubridate)
+my_instants <- ymd_hms("2020-05-17 12:05:03") + days(c(0, 30))
+my_instants
+as_tod(my_instants)
+as_tod(my_instants, unit.out = "tod_time")
+
 }

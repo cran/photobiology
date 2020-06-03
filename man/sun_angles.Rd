@@ -116,8 +116,10 @@ related to the estimation of atmospheric refraction (about 0.1 degrees).
 Other astronomy related functions: 
 \code{\link{day_night}()},
 \code{\link{format.solar_time}()},
+\code{\link{format.tod_time}()},
 \code{\link{is.solar_time}()},
 \code{\link{print.solar_time}()},
+\code{\link{print.tod_time}()},
 \code{\link{solar_time}()}
 }
 \concept{astronomy related functions}

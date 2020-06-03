@@ -207,8 +207,8 @@ summary_spct_classes <- function() {
 #' @note Derived types also return TRUE for a query for a base type such as
 #' \code{generic_spct}.
 #'
-#' @export is.summary_generic_spct
-#' @rdname is.summary_generic_spct
+#' @export
+#'
 #' @examples
 #' sm <- summary(sun.spct)
 #' is.summary_source_spct(sm)
@@ -277,6 +277,15 @@ is.any_summary_spct <- function(x) {
 #'   current version
 #'
 #' @return A summary object matching the class of \code{object}.
+#'
+#'
+#'
+#'
+#'
+#'
+#'
+#'
+#'
 #'
 #' @export
 #' @method summary generic_spct

@@ -4,10 +4,13 @@
 \alias{rmDerivedSpct}
 \title{Remove "generic_spct" and derived class attributes.}
 \usage{
-rmDerivedSpct(x)
+rmDerivedSpct(x, keep.classes = NULL)
 }
 \arguments{
 \item{x}{an R object.}
+
+\item{keep.classes}{character vector Names of classes to keep. Can be used
+to retain base class "generic_spct".}
 }
 \value{
 A character vector containing the removed class attribute values.

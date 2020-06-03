@@ -19,7 +19,9 @@ Query class
 Other astronomy related functions: 
 \code{\link{day_night}()},
 \code{\link{format.solar_time}()},
+\code{\link{format.tod_time}()},
 \code{\link{print.solar_time}()},
+\code{\link{print.tod_time}()},
 \code{\link{solar_time}()},
 \code{\link{sun_angles}()}
 }

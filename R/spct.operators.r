@@ -677,6 +677,17 @@ f_dispatcher_spct <- function(x, .fun, ...) {
 #' @param x an object of class "generic_spct"
 #' @param base a positive number: the base with respect to which logarithms are
 #'   computed. Defaults to e=exp(1).
+#'
+#' @return An object of the same class as \code{x}.
+#'
+#' @note In most cases a logarithm of an spectral quantity will yield off-range
+#'   values. For this reason unless \code{x} is an object of base class
+#'   \code{generic_spct}, checks will not be passed, resulting in warnings or
+#'   errors.
+#'
+#' @examples
+#' log10(as.generic_spct(sun.spct))
+#'
 #' @export
 #' @family math operators and functions
 #'
@@ -896,7 +907,7 @@ atan.generic_spct <- function(x) {
 #'   "replace"}, in all cases, the additional columns are removed, even if no
 #'   column needs to be added.
 #'
-#' @export A2T
+#' @export
 #' @family quantity conversion functions
 #'
 A2T <- function(x, action, byref, ...) UseMethod("A2T")
@@ -994,7 +1005,7 @@ A2T.filter_mspct <- function(x,
 #'   in all cases, the additional columns are removed, even if no column needs
 #'   to be added.
 #'
-#' @export T2A
+#' @export
 #' @family quantity conversion functions
 #'
 T2A <- function(x, action, byref, clean, ...) UseMethod("T2A")
@@ -1109,7 +1120,7 @@ T2A.filter_mspct <- function(x,
 #'   in all cases, the additional columns are removed, even if no column needs
 #'   to be added.
 #'
-#' @export T2Afr
+#' @export
 #' @family quantity conversion functions
 #'
 #' @examples
@@ -1578,7 +1589,7 @@ any2Afr <- function(x, action = "add", clean = FALSE) {
 #' @param byref logical indicating if new object will be created by reference or by copy of x
 #' @param ... not used in current version
 #'
-#' @export e2q
+#' @export
 #' @family quantity conversion functions
 #'
 e2q <- function(x, action, byref, ...) UseMethod("e2q")
@@ -1698,7 +1709,7 @@ e2q.response_mspct <- function(x,
 #' @param byref logical indicating if new object will be created by reference or by copy of x
 #' @param ... not used in current version
 #'
-#' @export q2e
+#' @export
 #' @family quantity conversion functions
 #'
 q2e <- function(x, action, byref, ...) UseMethod("q2e")

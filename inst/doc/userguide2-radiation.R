@@ -734,8 +734,8 @@ q_ratio(filtered_sun,
 
 ## -----------------------------------------------------------------------------
 normalized_diff_ind(sun.spct,
-                    waveband(c(400, 700)), waveband(c(700, 1100)),
-                    irrad)
+                    waveband(c(400, 500)), waveband(c(600, 700)),
+                    q_irrad)
 
 ## -----------------------------------------------------------------------------
 transmittance(polyester.spct, list(UVB.wb, UVA.wb, PAR.wb))
@@ -803,14 +803,14 @@ integrate_spct(sun.spct)
 ## -----------------------------------------------------------------------------
 average_spct(sun.spct)
 
-## ---- eval=FALSE--------------------------------------------------------------
-#  compare_spct(source_mspct(list(sun1 = sun.spct, sun2 = sun.spct * 2)))
+## -----------------------------------------------------------------------------
+compare_spct(source_mspct(list(sun1 = sun.spct, sun2 = sun.spct * 2)))
 
-## ---- eval=FALSE--------------------------------------------------------------
-#  compare_spct(filter_mspct(list(pet = polyester.spct,
-#                                yllw = yellow_gel.spct)),
-#               w.band = 50,
-#              .comparison.fun = `<`)
+## -----------------------------------------------------------------------------
+compare_spct(filter_mspct(list(pet = polyester.spct,
+                              yllw = yellow_gel.spct)),
+             w.band = 50,
+            .comparison.fun = `<`)
 
 ## -----------------------------------------------------------------------------
 color_of(550) # green

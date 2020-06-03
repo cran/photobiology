@@ -10,6 +10,7 @@
 \alias{color_of.source_mspct}
 \alias{colour_of}
 \alias{color}
+\alias{fast_color_of_wl}
 \title{Color of an object}
 \usage{
 color_of(x, ...)
@@ -29,6 +30,8 @@ color_of(x, ...)
 colour_of(x, ...)
 
 color(x, ...)
+
+fast_color_of_wl(x, type = "CMF", ...)
 }
 \arguments{
 \item{x}{an R object.}

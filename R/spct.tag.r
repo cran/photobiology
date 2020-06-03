@@ -14,7 +14,7 @@
 #' @return A copy of \code{x} expanded with additional columns with
 #'   color-related information.
 #'
-#' @export tag
+#' @export
 #'
 #' @family tagging and related functions
 #'
@@ -136,7 +136,7 @@ tag.generic_spct <- function(x,
     wbs.rgb[i] <- color_of(wb, type = chroma.type)[1]
   }
   # We add the waveband-independent tags to the spectrum
-  x[["wl.color"]] <- color_of(x[["w.length"]], type = chroma.type)
+  x[["wl.color"]] <- fast_color_of_wl(x[["w.length"]], type = chroma.type)
   # We add the waveband-dependent tags to the spectrum
   n <- i
   x[["wb.color"]] <- NA
@@ -388,7 +388,7 @@ wb2rect_spct <- function(w.band, short.names = TRUE, chroma.type = "CMF") {
 #' @param x an R object.
 #' @param ... ignored (possibly used by derived methods).
 #'
-#' @export untag
+#' @export
 #'
 #' @family tagging and related functions
 #'
