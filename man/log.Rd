@@ -37,10 +37,6 @@ In most cases a logarithm of an spectral quantity will yield off-range
   \code{generic_spct}, checks will not be passed, resulting in warnings or
   errors.
 }
-\examples{
-log10(as.generic_spct(sun.spct))
-
-}
 \seealso{
 Other math operators and functions: 
 \code{\link{MathFun}},

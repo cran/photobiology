@@ -11,6 +11,7 @@
 \alias{colour_of}
 \alias{color}
 \alias{fast_color_of_wl}
+\alias{fast_color_of_wb}
 \title{Color of an object}
 \usage{
 color_of(x, ...)
@@ -32,6 +33,8 @@ colour_of(x, ...)
 color(x, ...)
 
 fast_color_of_wl(x, type = "CMF", ...)
+
+fast_color_of_wb(x, type = "CMF", ...)
 }
 \arguments{
 \item{x}{an R object.}
@@ -80,6 +83,20 @@ numeric values representing a wavelengths in nm.
 When \code{x} is a list but not a waveband, if a method  \code{color_of}
   is not available for the class of each element of the list, then
   \code{color_of.default} will be called.
+
+Function \code{fast_color_of_wl()} should be used only when high
+  performance is needed. It speeds up performance by rounding the wavelength
+  values in the numeric vector passed as argument to \code{x} and then
+  retrieves the corresponding pre-computed color definitions if \code{type}
+  is either \code{"CMF"} or \code{"CC"}. In other cases it falls-back to
+  calling \code{color_of.numeric()}. Returned color definitions always have
+  default names irrespective of names of \code{x}, which is different from
+  the behavior of \code{color_of()} methods.
+
+  Function \code{fast_color_of_wb()} accepts waveband objects and lists of
+  waveband objects. If all wavebands are narrow, it issues a vectotized
+  call to \code{fast_color_of_wl()} with a vector of waveband midpoint
+  wavelengths.
 }
 \section{Deprecated}{
  Use of color() is deprecated as this wrapper function

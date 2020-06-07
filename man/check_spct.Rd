@@ -15,14 +15,15 @@
 \alias{check_spct.chroma_spct}
 \title{Check validity of spectral objects}
 \usage{
-check_spct(x, byref, strict.range, ...)
+check_spct(x, byref, strict.range, force = FALSE, ...)
 
-\method{check_spct}{default}(x, byref = FALSE, strict.range = NA, ...)
+\method{check_spct}{default}(x, byref = FALSE, strict.range = NA, force = FALSE, ...)
 
 \method{check_spct}{generic_spct}(
   x,
   byref = TRUE,
   strict.range = NA,
+  force = FALSE,
   multiple.wl = getMultipleWl(x),
   ...
 )
@@ -31,6 +32,7 @@ check_spct(x, byref, strict.range, ...)
   x,
   byref = TRUE,
   strict.range = getOption("photobiology.strict.range", default = FALSE),
+  force = FALSE,
   multiple.wl = getMultipleWl(x),
   ...
 )
@@ -39,6 +41,7 @@ check_spct(x, byref, strict.range, ...)
   x,
   byref = TRUE,
   strict.range = getOption("photobiology.strict.range", default = FALSE),
+  force = FALSE,
   multiple.wl = getMultipleWl(x),
   ...
 )
@@ -47,6 +50,7 @@ check_spct(x, byref, strict.range, ...)
   x,
   byref = TRUE,
   strict.range = getOption("photobiology.strict.range", default = FALSE),
+  force = FALSE,
   multiple.wl = getMultipleWl(x),
   ...
 )
@@ -55,6 +59,7 @@ check_spct(x, byref, strict.range, ...)
   x,
   byref = TRUE,
   strict.range = getOption("photobiology.strict.range", default = FALSE),
+  force = FALSE,
   multiple.wl = getMultipleWl(x),
   ...
 )
@@ -63,6 +68,7 @@ check_spct(x, byref, strict.range, ...)
   x,
   byref = TRUE,
   strict.range = getOption("photobiology.strict.range", default = FALSE),
+  force = FALSE,
   multiple.wl = getMultipleWl(x),
   ...
 )
@@ -71,6 +77,7 @@ check_spct(x, byref, strict.range, ...)
   x,
   byref = TRUE,
   strict.range = getOption("photobiology.strict.range", default = FALSE),
+  force = FALSE,
   multiple.wl = getMultipleWl(x),
   ...
 )
@@ -79,6 +86,7 @@ check_spct(x, byref, strict.range, ...)
   x,
   byref = TRUE,
   strict.range = NA,
+  force = FALSE,
   multiple.wl = getMultipleWl(x),
   ...
 )
@@ -87,6 +95,7 @@ check_spct(x, byref, strict.range, ...)
   x,
   byref = TRUE,
   strict.range = getOption("photobiology.strict.range", default = FALSE),
+  force = FALSE,
   multiple.wl = getMultipleWl(x),
   ...
 )
@@ -95,6 +104,7 @@ check_spct(x, byref, strict.range, ...)
   x,
   byref = TRUE,
   strict.range = getOption("photobiology.strict.range", default = FALSE),
+  force = FALSE,
   multiple.wl = getMultipleWl(x),
   ...
 )
@@ -107,6 +117,8 @@ by copy of \code{x}}
 
 \item{strict.range}{logical indicating whether off-range values result in an
 error instead of a warning, \code{NA} disables the test.}
+
+\item{force}{logical If TRUE check is done even if checks are disabled.}
 
 \item{...}{additional param possible in derived methods}
 

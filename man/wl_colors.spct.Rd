@@ -5,14 +5,14 @@
 \alias{wl_colors.spct}
 \title{Precomputed rgb colors}
 \format{
-A \code{generic_spct} object with 9001 rows and 3 variables.
+A \code{generic_spct} object with 3901 rows and 3 variables.
 }
 \usage{
 wl_colors.spct
 }
 \description{
-A dataset containing wavelengths at a 0.1 nm interval (100 nm to
-  1000 nm) and the corresponding CMF and CC colors for human vision.
+A dataset containing wavelengths at a 1 nm interval (100 nm to
+  4000 nm) and the corresponding CMF and CC colors for human vision.
 }
 \details{
 \itemize{

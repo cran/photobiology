@@ -61,111 +61,116 @@ tag.default <- function(x, ...) {
 #' tag(sun.spct)
 #' tag(sun.spct, list(A = waveband(c(300,3005))))
 #'
-tag.generic_spct <- function(x,
-                             w.band = NULL,
-                             wb.trim = getOption("photobiology.waveband.trim", default = TRUE),
-                             use.hinges = TRUE,
-                             short.names = TRUE,
-                             chroma.type = "CMF",
-                             byref = FALSE, ...) {
-  name <- substitute(x)
-  if (is_tagged(x)) {
-    warning("Overwriting old tags in spectrum")
-    untag(x, byref = TRUE)
-  }
-  # we add a waveband for the whole spectrum
-  if (length(w.band) == 0) {
-    w.band <- waveband(x)
-  }
-  # If the waveband is a missing value we add missing values as tags
-  if (all(is.na(w.band))) {
-    x$wl.color <- NA_character_
-    x$wb.color <- NA_character_
-    x$wb.f <- factor(NA_character_)
+tag.generic_spct <-
+  function(x,
+           w.band = NULL,
+           wb.trim = getOption("photobiology.waveband.trim", default = TRUE),
+           use.hinges = TRUE,
+           short.names = TRUE,
+           chroma.type = "CMF",
+           byref = FALSE, ...) {
+    name <- substitute(x)
+    if (is_tagged(x)) {
+      warning("Overwriting old tags in spectrum")
+      untag(x, byref = TRUE)
+    }
+    # we add a waveband for the whole spectrum
+    if (length(w.band) == 0) {
+      w.band <- waveband(x)
+    }
+    # If the waveband is a missing value we add missing values as tags
+    if (all(is.na(w.band))) {
+      x$wl.color <- NA_character_
+      x$wb.color <- NA_character_
+      x$wb.f <- factor(NA_character_)
+      return(x)
+    }
+    if (is.waveband(w.band)) {
+      # if the argument is a single w.band, we enclose it in a list so that the
+      # for loop works as expected. This lets us treat as any other case.
+      w.band <- list(w.band)
+    }
+    # we delete or trim the wavebands that are not fully within the
+    # spectral data wavelength range
+    w.band <- trim_waveband(w.band = w.band, range = x, trim = wb.trim)
+    # we check if the list members are named, if not we use the names of the
+    # wavebands
+    wbs.number <- length(w.band) # number of wavebands
+    wbs.name <- names(w.band) # their names in the list
+    if (is.null(wbs.name)) {
+      wbs.name <- character(wbs.number)
+    }
+    # The default is calculated based of the stepsize
+    if (is.null(use.hinges)) {
+      use.hinges <- auto_hinges(x[["w.length"]])
+    }
+    # we collect all hinges and insert them in one go
+    if (use.hinges) {
+      all.hinges <- numeric()
+      for (wb in w.band) {
+        if (length(wb$hinges) > 0) {
+          all.hinges <- c(all.hinges, wb$hinges)
+        }
+      }
+      x <- insert_spct_hinges(x, all.hinges)
+    }
+
+    # We iterate through the list of wavebands collecting their names, colors and
+    # boundaries
+    wbs.rgb <- character(wbs.number)
+    wbs.wl.low <- wbs.wl.high <- numeric(wbs.number)
+    i <- 0L
+    for (wb in w.band) {
+      i <- i + 1L
+      if (wbs.name[i] == "") {
+        if (short.names) {
+          name.temp <- labels(wb)[["label"]]
+          wbs.name[i] <- ifelse(grepl("^range.", name.temp, ignore.case = TRUE),
+                                paste("wb", i, sep = ""),
+                                name.temp)
+        } else {
+          wbs.name[i] <- labels(wb)[["name"]]
+        }
+      }
+      wbs.wl.low[i] <- min(wb)
+      wbs.wl.high[i] <- max(wb)
+      wbs.rgb[i] <- fast_color_of_wb(wb, type = chroma.type)[1]
+    }
+    # We add the waveband-independent tags to the spectrum
+    x[["wl.color"]] <- fast_color_of_wl(x[["w.length"]], type = chroma.type)
+    # We add the waveband-dependent tags to the spectrum
+    n <- i
+    x[["wb.color"]] <- NA
+    x[["wb.f"]] <- NA
+    for (i in seq_len(n)) {
+      if (i < n) {
+        selector <- x[["w.length"]] >= wbs.wl.low[i] & x[["w.length"]] < wbs.wl.high[i]
+      } else {
+        selector <- x[["w.length"]] >= wbs.wl.low[i] & x[["w.length"]] <= wbs.wl.high[i]
+      }
+      x[selector, "wb.f"] <- wbs.name[i]
+      x[selector, "wb.color"] <- wbs.rgb[i]
+    }
+    x[["wb.f"]] <- factor(x[["wb.f"]], levels = wbs.name)
+    # We add an attribute with tagging data
+    #   field "valid" is a patch to solve a bug in a quick and safe way
+    tag.data <- list(valid = TRUE, # NA's in time.unit at position 1 results in bug
+                     time.unit = getTimeUnit(x),
+                     wb.key.name = "Bands",
+                     wl.color = TRUE,
+                     wb.color = TRUE,
+                     wb.num = n,
+                     wb.colors = wbs.rgb[1:n],
+                     wb.names = wbs.name[1:n],
+                     wb.list = w.band)
+    attr(x, "spct.tags") <- tag.data
+    # to assign by reference we need to assign the new data frame to the old one
+    if (byref & is.name(name)) {
+      name <- as.character(name)
+      assign(name, x, parent.frame(), inherits = TRUE)
+    }
     return(x)
   }
-  if (is.waveband(w.band)) {
-    # if the argument is a single w.band, we enclose it in a list so that the
-    # for loop works as expected. This lets us treat as any other case.
-    w.band <- list(w.band)
-  }
-  # we delete or trim the wavebands that are not fully within the
-  # spectral data wavelength range
-  w.band <- trim_waveband(w.band = w.band, range = x, trim = wb.trim)
-  # we check if the list members are named, if not we use the names of the
-  # wavebands
-  wbs.number <- length(w.band) # number of wavebands
-  wbs.name <- names(w.band) # their names in the list
-  if (is.null(wbs.name)) {
-    wbs.name <- character(wbs.number)
-  }
-  # The default is calculated based of the stepsize
-  if (is.null(use.hinges)) {
-    use.hinges <- auto_hinges(x[["w.length"]])
-  }
-  # we collect all hinges and insert them in one go
-  if (use.hinges) {
-    all.hinges <- numeric()
-    for (wb in w.band) {
-      if (length(wb$hinges) > 0) {
-        all.hinges <- c(all.hinges, wb$hinges)
-      }
-    }
-    x <- insert_spct_hinges(x, all.hinges)
-  }
-
-  # We iterate through the list of wavebands collecting their names, colors and
-  # boundaries
-  wbs.rgb <- character(wbs.number)
-  wbs.wl.low <- wbs.wl.high <- numeric(wbs.number)
-  i <- 0L
-  for (wb in w.band) {
-    i <- i + 1L
-    if (wbs.name[i] == "") {
-      if (short.names) {
-        name.temp <- labels(wb)[["label"]]
-        wbs.name[i] <- ifelse(grepl("^range.", name.temp, ignore.case = TRUE),
-                              paste("wb", i, sep = ""),
-                              name.temp)
-      } else {
-        wbs.name[i] <- labels(wb)[["name"]]
-      }
-    }
-    wbs.wl.low[i] <- min(wb)
-    wbs.wl.high[i] <- max(wb)
-    wbs.rgb[i] <- color_of(wb, type = chroma.type)[1]
-  }
-  # We add the waveband-independent tags to the spectrum
-  x[["wl.color"]] <- fast_color_of_wl(x[["w.length"]], type = chroma.type)
-  # We add the waveband-dependent tags to the spectrum
-  n <- i
-  x[["wb.color"]] <- NA
-  x[["wb.f"]] <- NA
-  for (i in 1L:n) {
-    selector <- x[["w.length"]] >= wbs.wl.low[i] & x[["w.length"]] < wbs.wl.high[i]
-    x[selector, "wb.f"] <- wbs.name[i]
-    x[selector, "wb.color"] <- wbs.rgb[i]
-  }
-  x[["wb.f"]] <- factor(x[["wb.f"]], levels = wbs.name)
-  # We add an attribute with tagging data
-  #   field "valid" is a patch to solve a bug in a quick and safe way
-  tag.data <- list(valid = TRUE, # NA's in time.unit at position 1 results in bug
-                   time.unit = getTimeUnit(x),
-                   wb.key.name = "Bands",
-                   wl.color = TRUE,
-                   wb.color = TRUE,
-                   wb.num = n,
-                   wb.colors = wbs.rgb[1:n],
-                   wb.names = wbs.name[1:n],
-                   wb.list = w.band)
-  attr(x, "spct.tags") <- tag.data
-  # to assign by reference we need to assign the new data frame to the old one
-  if (byref & is.name(name)) {
-    name <- as.character(name)
-    assign(name, x, parent.frame(), inherits = TRUE)
-  }
-  return(x)
-}
 
 #' @describeIn tag Tag one of \code{generic_mspct}, and derived classes including
 #'   \code{source_mspct}, \code{filter_mspct}, \code{reflector_mspct},
@@ -373,9 +378,77 @@ wb2rect_spct <- function(w.band, short.names = TRUE, chroma.type = "CMF") {
                    wb.list = w.band)
   attr(new.spct, "spct.tags") <- tag.data
 
-  return(new.spct)
+  new.spct
 }
 
+#' @rdname wb2rect_spct
+#'
+#' @param simplify logical Flag indicating whether to merge neighboring
+#'   rectangles of equal color. Simplification is done only for narrow
+#'   wavebands.
+#'
+#' @note Function \code{fast_wb2rect_spct()} differs from \code{wb2rect_spct()}
+#'   in that it computes colors for narrow wavebands based on the midpoint
+#'   wavelength and uses vectorization when possible. It always returns color
+#'   definitions with short names, which are also used as waveband names for
+#'   narrow wavebands and merged wavebands. The purpose of merging of rectangles
+#'   is to speed up rendering and to reduce the size of vector graphics output.
+#'   This function should be used with care as the color definitions returned
+#'   are only approximate and original waveband names can be lost.
+#'
+#' @export
+#'
+fast_wb2rect_spct <- function(w.band, chroma.type = "CMF", simplify = TRUE) {
+  if (is.waveband(w.band)) {
+    w.band <- list(w.band)
+  }
+  wbs.wds <- sapply(w.band, expanse)
+  if (any(wbs.wds >= 10)) {
+    wb2rect_spct(w.band = w.band,
+                 short.names = TRUE,
+                 chroma.type = chroma.type)
+  } else {
+    wbs.number <- length(w.band) # number of wavebands in list
+    wbs.wl.mid <- sapply(w.band, wl_midpoint)
+    wbs.wl.high <- sapply(w.band, wl_max)
+    wbs.wl.low <- sapply(w.band, wl_min)
+    wbs.rgb <- fast_color_of_wl(wbs.wl.mid)
+    if (simplify) {
+      rgb.rle <- rle(wbs.rgb)
+      new.nrow <- length(rgb.rle$lengths)
+      runs.ends <- cumsum(rgb.rle$lengths)
+      runs.start <- c(1L, runs.ends[-new.nrow] + 1L)
+      wbs.wl.low <- wbs.wl.low[runs.start]
+      wbs.wl.high <- wbs.wl.high[runs.ends]
+      wbs.wl.mid <- wbs.wl.low + (wbs.wl.high - wbs.wl.low) / 2
+      wbs.rgb <- wbs.rgb[runs.ends]
+    }
+    wb.names <- names(wbs.rgb)
+    new.spct <- tibble::tibble(w.length = wbs.wl.mid,
+                               counts = 0, cps = 0,
+                               s.e.irrad = 0, s.q.irrad = 0,
+                               Tfr = 0, Rfl = 0,
+                               s.e.response = 0,
+                               wl.color = wbs.rgb,
+                               wb.color = wbs.rgb,
+                               wb.name = wb.names,
+                               wb.f = factor(wb.names, levels = wb.names),
+                               wl.high = wbs.wl.high, wl.low = wbs.wl.low,
+                               y = 0)
+    setGenericSpct(new.spct)
+    tag.data <- list(time.unit = "none",
+                     wb.key.name = "Bands",
+                     wl.color = TRUE,
+                     wb.color = TRUE,
+                     wb.num = new.nrow,
+                     wb.colors = wbs.rgb,
+                     wb.names = wb.names,
+                     wb.list = if(simplify) list() else w.band)
+    attr(new.spct, "spct.tags") <- tag.data
+
+    new.spct
+  }
+}
 
 # untag -------------------------------------------------------------------
 
