@@ -4,10 +4,13 @@
 \alias{getScaled}
 \title{Get the "scaled" attribute}
 \usage{
-getScaled(x)
+getScaled(x, .force.list = FALSE)
 }
 \arguments{
 \item{x}{a generic_spct object}
+
+\item{.force.list}{logical If \code{TRUE} always silently return a
+list, with \code{FALSE} encoded field \code{multiplier = 1}.}
 }
 \value{
 logical

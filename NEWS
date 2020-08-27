@@ -1,3 +1,21 @@
+photobiology 0.10.5 (2020-08-15)
+================================
+
+* Make the precomputed color data private.
+* Add method drop_user_cols() to remove user-defined columns from spectra.
+* Add method collect2mspct() and rename method uncollect() into
+uncollect2spct().
+* Add method spct_metadata() to query the value of metadata attributes.
+* Revise add_attr2tb() expanding support to all metadata attributes.
+* Revise rbindspct() to gracefully handle duplicate member names in its input.
+* Revise smooth_spct() methods: new parameter wl.range and bug fix handling of
+strength in "custom" method.
+* Revise compare_spct() function to accept scaled and normalized spectra with
+a warning.
+* Implement attribute "response.type" to distinguish between response spectra
+and action spectra stored in response_spct objects. Add methods
+setResponseType() and getResponseType().
+
 photobiology 0.10.4 (2020-06-05)
 ================================
 - Bug fixes.
@@ -5,16 +23,17 @@ photobiology 0.10.4 (2020-06-05)
 'ggspectra'.
 
 * Handle gracefully and consistently special input in fast_color_of_wl().
-* Add fast_wb2rect_spct() that uses precomputed color definitions for narrow
-wavebands and optionaly simplifies the returned spectrum by merging neighboring
+* Add fast_wb2rect_spct(), which uses precomputed color definitions for narrow
+wavebands and optionally simplifies the returned spectrum by merging neighboring
 rectangles of identical color.
 * Add fast_color_of_wb() that uses precomputed color definitions for narrow
 wavebands.
 * Add parameter force to check_spct() methods, so that critical checks cannot
 be disabled.
 * Implement math functions for class generic_spct.
-* BUG FIX: WARNING in CRAN check because of bad example in docs.
-* BUG FIX: tag() would fail to assign wb.color and wb.name to longest w.length.
+* BUG FIX: ERROR in CRAN check because of bad example in docs.
+* BUG FIX: tag() would fail to assign wb.color and wb.name to longest w.length
+value in spectrum.
 
 photobiology 0.10.3 (2020-06-03)
 ================================

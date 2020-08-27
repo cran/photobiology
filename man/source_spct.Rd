@@ -71,6 +71,7 @@ response_spct(
   s.e.response = NULL,
   s.q.response = NULL,
   time.unit = c("second", "day", "exposure"),
+  response.type = c("response", "action"),
   comment = NULL,
   multiple.wl = 1L,
   idfactor = NULL,
@@ -174,6 +175,8 @@ nm-1 or J d-1 m-2 nm-1}
 
 \item{s.q.response}{numeric vector with spectral photon irradiance in mol s-1
 m-2 nm-1 or mol d-1 m-2 nm-1}
+
+\item{response.type}{a character string, either "response" or "action".}
 
 \item{Tfr}{numeric vector with spectral transmittance as fraction of one}
 

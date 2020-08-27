@@ -11,7 +11,7 @@ setFilterProperties(
   pass.null = FALSE,
   Rfr.constant = NA_real_,
   thickness = NA_real_,
-  attenuation.mode = NA
+  attenuation.mode = NA_character_
 )
 
 filter_properties(x) <- value
@@ -31,8 +31,8 @@ filter.properties is NULL.}
 
 \item{thickness}{numeric The thickness of the material.}
 
-\item{attenuation.mode}{character One of "reflection", "absorption" or
-"mixed".}
+\item{attenuation.mode}{character One of "reflection", "absorption",
+"absorption.layer" or "mixed".}
 }
 \value{
 \code{x}
@@ -52,6 +52,15 @@ Storing filter properties allows inter-conversion between internal
 This function alters \code{x} itself by reference and in addition
   returns \code{x} invisibly. If \code{x} is not a filter_spct object,
   \code{x} is not modified.
+
+  The values of `attenuation.mode` "reflection" and "absorption" should be
+  used when one of these processes is clearly the main one; "mixed" is for
+  cases when they both play a role, i.e., when a simple correction using a
+  single value of Rfr across wavelengths is not possible; "absorption.layer"
+  is for cases when a thin absorbing layer is deposited on the surface of a
+  transparent support or enclosed between two sheets of glass or other
+  transparent material. If in doubt, set this to NA to ensure that
+  computation of spectra for other thicknesses remains disabled.
 }
 \examples{
 
@@ -68,6 +77,7 @@ filter_properties(my.spct)
 }
 \seealso{
 Other measurement metadata functions: 
+\code{\link{add_attr2tb}()},
 \code{\link{getFilterProperties}()},
 \code{\link{getHowMeasured}()},
 \code{\link{getInstrDesc}()},
@@ -86,6 +96,7 @@ Other measurement metadata functions:
 \code{\link{setWhenMeasured}()},
 \code{\link{setWhereMeasured}()},
 \code{\link{spct_attr2tb}()},
+\code{\link{spct_metadata}()},
 \code{\link{trimInstrDesc}()},
 \code{\link{trimInstrSettings}()}
 }

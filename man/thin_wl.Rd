@@ -159,6 +159,8 @@ wl_stepsize(thinned.spct)
 }
 \seealso{
 Other experimental utility functions: 
-\code{\link{uncollect}()}
+\code{\link{collect2mspct}()},
+\code{\link{drop_user_cols}()},
+\code{\link{uncollect2spct}()}
 }
 \concept{experimental utility functions}

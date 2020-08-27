@@ -14,7 +14,9 @@ as.response_spct(x, ...)
 
 \item{...}{other arguments passed to "set" functions}
 
-\item{time.unit}{character A string, "second", "day" or "exposure"}
+\item{time.unit}{character string indicating the time unit used for spectral
+irradiance or exposure ("second" , "day" or "exposure") or an object of
+class duration as defined in package lubridate.}
 }
 \value{
 A copy of \code{x} converted into a \code{response_spct} object.

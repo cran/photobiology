@@ -65,7 +65,13 @@ setObjectSpct(
   idfactor = NULL
 )
 
-setResponseSpct(x, time.unit = "second", multiple.wl = 1L, idfactor = NULL)
+setResponseSpct(
+  x,
+  time.unit = "second",
+  response.type = "response",
+  multiple.wl = 1L,
+  idfactor = NULL
+)
 
 setSourceSpct(
   x,
@@ -89,7 +95,9 @@ stored logitudinally (required if mulitple.wl > 1).}
 \item{strict.range}{logical Flag indicating whether off-range values result in an
 error instead of a warning.}
 
-\item{time.unit}{character A string "second", "day" or "exposure".}
+\item{time.unit}{character string indicating the time unit used for spectral
+irradiance or exposure ("second" , "day" or "exposure") or an object of
+class duration as defined in package lubridate.}
 
 \item{Tfr.type}{character A string, either "total" or "internal".}
 
@@ -101,6 +109,8 @@ error instead of a warning.}
 "mixed".}
 
 \item{Rfr.type}{character A string, either "total" or "specular".}
+
+\item{response.type}{a character string, either "response" or "action".}
 
 \item{bswf.used}{character A string, either "none" or the name of a BSWF.}
 }

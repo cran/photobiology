@@ -178,6 +178,12 @@ rbindspct <- function(l, use.names = TRUE, fill = TRUE, idfactor = TRUE, attrs.s
   names.spct <- names(l)
   if (is.null(names.spct) || anyNA(names.spct) || length(names.spct) < length(l)) {
     names.spct <- paste("spct", seq_along(l), sep = "_")
+  } else {
+    if (anyDuplicated(names.spct)) {
+      warning("Duplicated member names have been de-ambiguated before binding spectra.")
+      names.spct <- make.unique(names.spct, sep = "_")
+      names(l) <- names.spct
+    }
   }
   if (add.idfactor) {
     ans[[idfactor]] <- factor(rep(names.spct, times = sapply(l, FUN = nrow)),
@@ -201,6 +207,7 @@ rbindspct <- function(l, use.names = TRUE, fill = TRUE, idfactor = TRUE, attrs.s
     when.measured <- getWhenMeasured(l[[idxs]])
     where.measured <- getWhereMeasured(l[[idxs]])
     what.measured <- getWhatMeasured(l[[idxs]])
+    how.measured <- getHowMeasured(l[[idxs]])
   } else {
     for (i in idxs) {
       temp <- comment(l[[i]])
@@ -224,6 +231,8 @@ rbindspct <- function(l, use.names = TRUE, fill = TRUE, idfactor = TRUE, attrs.s
     where.measured <- dplyr::bind_rows(lapply(l[idxs], getWhereMeasured), .id = "spct.idx")
     what.measured <- lapply(l[idxs], getWhatMeasured)
     names(what.measured) <- names.spct[idxs]
+    how.measured <- lapply(l[idxs], getHowMeasured)
+    names(how.measured) <- names.spct[idxs]
   }
 
   if (l.class == "source_spct") {
@@ -324,6 +333,7 @@ rbindspct <- function(l, use.names = TRUE, fill = TRUE, idfactor = TRUE, attrs.s
   setWhenMeasured(ans, when.measured)
   setWhereMeasured(ans, where.measured)
   setWhatMeasured(ans, what.measured)
+  setHowMeasured(ans, how.measured)
   setInstrDesc(ans, instr.desc)
   setInstrSettings(ans, instr.settings)
   ans
@@ -436,11 +446,11 @@ subset.generic_spct <- function(x, subset, select, drop = FALSE, ...) {
 #' @method [ generic_spct
 #'
 #' @examples
-#' sun.spct[sun.spct$w.length > 400, ]
+#' sun.spct[sun.spct[["w.length"]] > 400, ]
 #' subset(sun.spct, w.length > 400)
 #'
 #' tmp.spct <- sun.spct
-#' tmp.spct[tmp.spct$s.e.irrad < 1e-5 , "s.e.irrad"] <- 0
+#' tmp.spct[tmp.spct[["s.e.irrad"]] < 1e-5 , "s.e.irrad"] <- 0
 #' e2q(tmp.spct[ , c("w.length", "s.e.irrad")]) # restore data consistency!
 #'
 #' @rdname extract

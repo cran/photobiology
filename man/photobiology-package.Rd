@@ -87,7 +87,7 @@ spectral data. Methods in Ecology and Evolution, 4(10):906-913.
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://docs.r4photobiology.info/photobiology}
+  \item \url{https://docs.r4photobiology.info/photobiology/}
   \item \url{https://bitbucket.org/aphalo/photobiology}
   \item Report bugs at \url{https://bitbucket.org/aphalo/photobiology/issues}
 }

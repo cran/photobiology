@@ -5,15 +5,20 @@
 \alias{getNormalised}
 \title{Get the "normalized" attribute}
 \usage{
-getNormalized(x)
+getNormalized(x, .force.numeric = FALSE)
 
-getNormalised(x)
+getNormalised(x, .force.numeric = FALSE)
 }
 \arguments{
 \item{x}{a generic_spct object}
+
+\item{.force.numeric}{logical If \code{TRUE} always silently return a
+numeric value, with \code{FALSE} encoded as zero, and character values
+as \code{NA}.}
 }
 \value{
-character or numeric or logical
+numeric or logical (possibly character for objects created with
+  earlier versions).
 }
 \description{
 Function to read the "normalized" attribute of an existing generic_spct

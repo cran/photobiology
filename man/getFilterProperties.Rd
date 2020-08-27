@@ -19,7 +19,7 @@ filter_properties(x, return.null, ...)
 
 \method{getFilterProperties}{summary_filter_spct}(x, return.null = FALSE, ...)
 
-\method{getFilterProperties}{generic_mspct}(x, ..., idx = "spct.idx")
+\method{getFilterProperties}{generic_mspct}(x, return.null = FALSE, ..., idx = "spct.idx")
 }
 \arguments{
 \item{x}{a filter_spct object}
@@ -63,6 +63,7 @@ filter_properties(polyester.spct)
 }
 \seealso{
 Other measurement metadata functions: 
+\code{\link{add_attr2tb}()},
 \code{\link{getHowMeasured}()},
 \code{\link{getInstrDesc}()},
 \code{\link{getInstrSettings}()},
@@ -81,6 +82,7 @@ Other measurement metadata functions:
 \code{\link{setWhenMeasured}()},
 \code{\link{setWhereMeasured}()},
 \code{\link{spct_attr2tb}()},
+\code{\link{spct_metadata}()},
 \code{\link{trimInstrDesc}()},
 \code{\link{trimInstrSettings}()}
 }

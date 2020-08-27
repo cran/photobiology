@@ -40,6 +40,7 @@ Vectors of character strings passed as argument to \code{attributes}
 \code{\link{get_attributes}}
 
 Other measurement metadata functions: 
+\code{\link{add_attr2tb}()},
 \code{\link{getFilterProperties}()},
 \code{\link{getHowMeasured}()},
 \code{\link{getInstrDesc}()},
@@ -58,6 +59,7 @@ Other measurement metadata functions:
 \code{\link{setWhenMeasured}()},
 \code{\link{setWhereMeasured}()},
 \code{\link{spct_attr2tb}()},
+\code{\link{spct_metadata}()},
 \code{\link{trimInstrDesc}()},
 \code{\link{trimInstrSettings}()}
 }

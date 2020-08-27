@@ -28,6 +28,7 @@ or of class waveband. Only attributes defined and/or set by package
 }
 \seealso{
 Other measurement metadata functions: 
+\code{\link{add_attr2tb}()},
 \code{\link{getFilterProperties}()},
 \code{\link{getHowMeasured}()},
 \code{\link{getInstrDesc}()},
@@ -46,6 +47,7 @@ Other measurement metadata functions:
 \code{\link{setWhatMeasured}()},
 \code{\link{setWhenMeasured}()},
 \code{\link{setWhereMeasured}()},
+\code{\link{spct_metadata}()},
 \code{\link{trimInstrDesc}()},
 \code{\link{trimInstrSettings}()}
 }

@@ -693,13 +693,13 @@ Starting from a collection of spectra we may want to obtain a single spectrum co
 
 The calculations are done wavelength by wavelength yielding a spectrum at the same wavelengths than those in the input. Removal of `NA` values is done wavelength by wavelength. As shown in the table above, depending on the operation the returned quantity may be equivalent or not to the quantity in the input. When the quantity changes, even if units of expression remain the same, the name of the variable and class of the returned spectrum are different to those in the input.
 
-Computing the mean returns values of the same quantity as in the input, and we obtain a `source_spct` object.
+Methods in this "family" are fast and are specially useful for large collections of spectra containing even thousands of individual spectra. Nonetheless, for the example below we use a collection of two spectra. As computing the mean returns values of the same quantity as in the input the returned value is a `source_spct` object, in other words of the same class as the members of `two.mspct`.
 
 ```{r}
 s_mean(two.mspct)
 ```
 
-If we compute the standard error, the quantity returned is not the same. The object returned is in this case a `generic_spct` and the variable name has been tagged with `.se`.
+When we compute the standard error, the quantity returned is not the same. Consequently, the object returned is in this case a `generic_spct` instead of `source_spc` as it does not contain spectral irradiance data as the input did. The variable name is in addition tagged with `.se` to _advertise_ the change in the quantity.
 
 ```{r}
 s_se(two.mspct)
@@ -711,7 +711,7 @@ We can also compute both the mean and standard error simultaneously.
 s_mean_se(two.mspct)
 ```
 
-The other functions in these family function in a similar way to those described here.
+The other functions in this family work in a similar way to those described here.
 
 ### Convolution
 
@@ -758,8 +758,7 @@ two.mspct
 
 Other methods available are `getWhereMeasured` and `setWhereMeasured`, and `getWhatMeasured` and `setWhatMeasured`.
 
-Functions `when.measured2tb()`, `geocode2tb()`, `lon2tb()`, `lat2tb()` and `what.measured2tb()` extract these same attributes from collection members into a tibble or data frame.  In contrast to the "get" methods described above, if an existing data frame or tibble with a matching number of rows is passed as second argument, the values for the attribute are saved into a new column appended at the right edge of the tibble or
-data frame.
+Functions `when.measured2tb()`, `geocode2tb()`, `lon2tb()`, `lat2tb()` and `what.measured2tb()` extract these same attributes from collection members into a tibble or data frame.  In contrast to the "get" methods described above, if an existing data frame or tibble with a matching number of rows is passed as second argument, the values for the attribute are saved into a new column appended at the right edge of the tibble or data frame.
 
 ```{r}
 when_measured2tb(two.mspct)
@@ -771,8 +770,23 @@ By default the new column is named after the name of the attribute, but this def
 when_measured2tb(two.mspct, col.names = c(when.measured = "time"))
 ```
 
-Function `add_attr2tb()` adds one or more columns with attributes to a tibble
-or data frame. We here also demonstrate that because the data frame object is passed to the first positional argument, we can use a _pipe_.
+Function `spct_metadata()` returns the metadata in a tibble. Unless the user
+supplies a list of names of attributes, all applicable metadata values are
+returned. A single spectrum or a collection of spectra can be passed. By default
+columns containing only missing data are dropped.
+
+```{r}
+spct_metadata(two.mspct)
+```
+
+```{r}
+spct_metadata(two.mspct, 
+              col.names = c("when.measured" = "time", 
+                            "where.measured" = "geocode"),
+              unnest = FALSE)
+```
+
+Function `add_attr2tb()` adds one or more columns with attributes to a tibble or data frame. We here also demonstrate that because the data frame object is passed to the first positional argument, we can use a _pipe_. This difference in interface is the main difference between this function and `spct_metadata()`.
 
 ```{r}
 q_irrad(two.mspct) %>%
@@ -1358,7 +1372,7 @@ spikes(my_sun.spct)
 
 ### Smoothing of spectra
 
-We can use smoothing both to average out random variation among nearby pixels caused by measuring noise, or to filter out the real fine structure of a spectrum to better assess the larger features. The methods described here work by averaging the spectral data from neighboring wavelengths. The simplest methods are running medians and running means (or "boxcar smoothing" in the terminology used in some software). There are several methods for smoothing available in R based on different algorithms. Some of these methods also automatically set the degree of smoothing based on the data being smoothed. Package 'photobiology' defines function `smooth_spct`, which at the moment supports three different methods. Two are wrappers on R's own methods and a third one, `"custom"`, is designed to use stronger smoothing of values close to zero, where noise in spectral irradiance measurements is proportionally more.
+We can use smoothing both to average out random variation among nearby pixels caused by measuring noise, or to filter out the real fine structure of a spectrum to better assess the larger features. The methods described here work by averaging the spectral data from neighboring wavelengths. The simplest methods are running medians and running means (or "boxcar smoothing" in the terminology used in some software). There are several methods for smoothing available in R based on different algorithms. Some of these methods also automatically set the degree of smoothing based on the data being smoothed. Package 'photobiology' defines function `smooth_spct`, which at the moment supports three different methods. Two are wrappers on R's own methods and a third one, `"custom"`, is designed to use stronger smoothing for values close to zero, where noise in spectral irradiance measurements is proportionally more. The strength of the smoothing and the range of wavelengths operated upon can be adjusted through arguments to parameters. The `comment` attribute is updated.
 
 ```{r}
 smooth_spct(sun.spct)

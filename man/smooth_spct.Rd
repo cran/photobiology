@@ -10,30 +10,70 @@
 \alias{smooth_spct.generic_mspct}
 \title{Smooth a spectrum}
 \usage{
-smooth_spct(x, method, strength, ...)
+smooth_spct(x, method, strength, wl.range, ...)
 
-\method{smooth_spct}{default}(x, method, strength, ...)
+\method{smooth_spct}{default}(x, method, strength, wl.range, ...)
 
-\method{smooth_spct}{source_spct}(x, method = "custom", strength = 1, na.rm = FALSE, ...)
+\method{smooth_spct}{source_spct}(
+  x,
+  method = "custom",
+  strength = 1,
+  wl.range = NULL,
+  na.rm = FALSE,
+  ...
+)
 
-\method{smooth_spct}{filter_spct}(x, method = "custom", strength = 1, na.rm = FALSE, ...)
+\method{smooth_spct}{filter_spct}(
+  x,
+  method = "custom",
+  strength = 1,
+  wl.range = NULL,
+  na.rm = FALSE,
+  ...
+)
 
-\method{smooth_spct}{reflector_spct}(x, method = "custom", strength = 1, na.rm = FALSE, ...)
+\method{smooth_spct}{reflector_spct}(
+  x,
+  method = "custom",
+  strength = 1,
+  wl.range = NULL,
+  na.rm = FALSE,
+  ...
+)
 
-\method{smooth_spct}{response_spct}(x, method = "custom", strength = 1, na.rm = FALSE, ...)
+\method{smooth_spct}{response_spct}(
+  x,
+  method = "custom",
+  strength = 1,
+  wl.range = NULL,
+  na.rm = FALSE,
+  ...
+)
 
-\method{smooth_spct}{generic_mspct}(x, method = "custom", strength = 1, na.rm = FALSE, ...)
+\method{smooth_spct}{generic_mspct}(
+  x,
+  method = "custom",
+  strength = 1,
+  wl.range = NULL,
+  na.rm = FALSE,
+  ...
+)
 }
 \arguments{
 \item{x}{an R object.}
 
 \item{method}{a character string "custom", "lowess", "supsmu".}
 
-\item{strength}{numeric value to adjust the degree of smoothing.}
+\item{strength}{numeric value to adjust the degree of smoothing. Ignored if
+method-specific parameters are passed through \code{...}.}
+
+\item{wl.range}{any R object on which applying the method \code{range()}
+yields a vector of two numeric values, describing a range of wavelengths
+(nm). \code{NA} is interpreted as data's own min or max value.}
 
 \item{...}{other parameters passed to the underlying smoothing functions.}
 
-\item{na.rm}{logical A value indicating whether NA values should be stripped
+\item{na.rm}{logical A flag indicating whether NA values should be stripped
 before the computation proceeds.}
 }
 \value{
@@ -75,6 +115,8 @@ Method "custom" is our home-brewed method which applies strong
 
 my.spct <- clip_wl(sun.spct, c(400, 500))
 smooth_spct(my.spct)
+smooth_spct(my.spct, method = "custom", strength = 1)
+smooth_spct(my.spct, method = "custom", strength = 4)
 smooth_spct(my.spct, method = "supsmu", strength = 4)
 
 }

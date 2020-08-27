@@ -13,8 +13,9 @@ setTimeUnit(
 \arguments{
 \item{x}{a source_spct object}
 
-\item{time.unit}{a character string, either "second", "hour", "day",
-"exposure" or "none", or a lubridate::duration}
+\item{time.unit}{character string indicating the time unit used for spectral
+irradiance or exposure ("second" , "day" or "exposure") or an object of
+class duration as defined in package lubridate.}
 
 \item{override.ok}{logical Flag that can be used to silence warning when
 overwriting an existing attribute value (used internally)}

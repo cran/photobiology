@@ -103,9 +103,9 @@ Meeus, J. (1998) Astronomical Algorithms, 2 ed., Willmann-Bell, Richmond,
 VA, USA. ISBN 978-0943396613.
 
 A different implementation is available at
-\url{https://www.nefsc.noaa.gov/AstroCalc4R/} and in R paclage
-\code{\link[fishmethods]{astrocalc4r}}. In 'fishmethods' (= 1.11-0) there
-is a bug in function astrocalc4r() that affects sunrise and sunset times.
+\url{https://apps-nefsc.fisheries.noaa.gov/AstroCalc4R/} and in R paclage
+'fishmethods'. In 'fishmethods' (= 1.11-0) there is a bug in function
+astrocalc4r() that affects sunrise and sunset times.
 
 An interactive web page using the same algorithms is available at
 \url{https://www.esrl.noaa.gov/gmd/grad/solcalc/}. There are small

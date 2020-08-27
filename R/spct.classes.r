@@ -135,7 +135,7 @@ check_spct.generic_spct <-
 
     if (nrow(x)) {
       wl.min <- min(x[["w.length"]], na.rm = TRUE)
-      #  wl.max <- max(x$w.length, na.rm = TRUE)
+      #  wl.max <- max(x[["w.length"]], na.rm = TRUE)
       if (wl.min == Inf) {
         warning("No valid 'w.length' values found") # could be stop()
       } else if (wl.min < 1) {
@@ -411,9 +411,9 @@ check_spct.reflector_spct <-
            ...) {
 
     range_check <- function(x, strict.range) {
-      if (!all(is.na(x$Rfr))) {
-        Rfr.min <- min(x$Rfr, na.rm = TRUE)
-        Rfr.max <- max(x$Rfr, na.rm = TRUE)
+      if (!all(is.na(x[["Rfr"]]))) {
+        Rfr.min <- min(x[["Rfr"]], na.rm = TRUE)
+        Rfr.max <- max(x[["Rfr"]], na.rm = TRUE)
         if (Rfr.min < -1e-4 ||  Rfr.max > 1 + 1e-6) {
           message.text <-
             paste0(
@@ -525,7 +525,7 @@ check_spct.object_spct <-
     }
 
     range_check_Rfr <- function(x, strict.range) {
-      if (!all(is.na(x$Rfr))) {
+      if (!all(is.na(x[["Rfr"]]))) {
         Rfr.min <- min(x[["Rfr"]], na.rm = TRUE)
         Rfr.max <- max(x[["Rfr"]], na.rm = TRUE)
         if (!is.na(Rfr.min) && !is.na(Rfr.max)) {
@@ -672,7 +672,7 @@ check_spct.source_spct <-
       min.limit <- -0.10 # we accept small negative values
       if (exists("s.e.irrad", x, inherits = FALSE) &&
           !all(is.na(x[["s.e.irrad"]]))) {
-        s.e.range <- range(x$s.e.irrad, na.rm = TRUE)
+        s.e.range <- range(x[["s.e.irrad"]], na.rm = TRUE)
         s.e.spread <- s.e.range[2] # for irradiance zero is meaningful
         # we need to be fairly lax as dark reference spectra may have
         # proportionally lots of noise.
@@ -695,7 +695,7 @@ check_spct.source_spct <-
       }
       if (exists("s.q.irrad", x, inherits = FALSE) &&
           !all(is.na(x[["s.q.irrad"]]))) {
-        s.q.range <- range(x$s.q.irrad, na.rm = TRUE)
+        s.q.range <- range(x[["s.q.irrad"]], na.rm = TRUE)
         s.q.spread <- s.q.range[2] # zero is meaningful
         # we need to be fairly lax as dark reference spectra may have
         # proportionally lots of noise.
@@ -1083,18 +1083,23 @@ setObjectSpct <-
 
 #' @describeIn setGenericSpct Set class of an object to "response_spct".
 #'
-#' @param time.unit character A string "second", "day" or "exposure".
+#' @param time.unit character string indicating the time unit used for spectral
+#'   irradiance or exposure ("second" , "day" or "exposure") or an object of
+#'   class duration as defined in package lubridate.
+#' @param response.type a character string, either "response" or "action".
 #' @export
 #'
 #'
 setResponseSpct <-
   function(x,
-           time.unit="second",
+           time.unit = "second",
+           response.type = "response",
            multiple.wl = 1L,
            idfactor = NULL) {
     name <- substitute(x)
     setGenericSpct(x, multiple.wl = multiple.wl, idfactor = idfactor)
     class(x) <- c("response_spct", class(x))
+    setResponseType(x, response.type)
     setTimeUnit(x, time.unit)
     x <- check_spct(x)
     #  setkey_spct(x, w.length)
@@ -1428,8 +1433,9 @@ is_transmittance_based <- function(x) {
 #' Function to set by reference the "time.unit" attribute
 #'
 #' @param x a source_spct object
-#' @param time.unit a character string, either "second", "hour", "day",
-#'   "exposure" or "none", or a lubridate::duration
+#' @param time.unit character string indicating the time unit used for spectral
+#'   irradiance or exposure ("second" , "day" or "exposure") or an object of
+#'   class duration as defined in package lubridate.
 #' @param override.ok logical Flag that can be used to silence warning when
 #'   overwriting an existing attribute value (used internally)
 #'
@@ -1651,6 +1657,96 @@ char2duration <- function(time.unit) {
   return(time.duration)
 }
 
+# response.type attribute ------------------------------------------------------
+
+#' Set the "response.type" attribute
+#'
+#' Function to set by reference the "response.type" attribute of an existing
+#' response_spct object.
+#'
+#' Objects of class \code{response_spct()} can contain data for a response
+#' spectrum or an action spectrum. Response spectra are measured using the
+#' same photon (or energy) irradiance at each wavelength. Action spectra are
+#' derived from dose response curves at each wavelength, and responsivity
+#' at each wavelength is expressed as the reciprocal of the photon fluence
+#' required to obtain a fixed level of response.
+#'
+#' @param x a response_spct object
+#' @param response.type a character string, either "response" or "action"
+#'
+#' @return x
+#' @note This function alters x itself by reference and in addition returns x
+#'   invisibly. If x is not a response_spct object, x is not modified The
+#'   behaviour of this function is 'unusual' in that the default for parameter
+#'   \code{response.type} is used only if \code{x} does not already have this
+#'   attribute set.
+#'
+#' @export
+#' @family response type attribute functions
+#' @examples
+#' my.spct <- ccd.spct
+#' setResponseType(my.spct, "action")
+#'
+setResponseType <- function(x,
+                            response.type = c("response", "action")) {
+  name <- substitute(x)
+  if (length(response.type) > 1) {
+    if (getResponseType(x) != "unknown") {
+      response.type <- getResponseType(x)
+    } else {
+      response.type <- response.type[[1]]
+    }
+  }
+  if (is.response_spct(x) || is.summary_response_spct(x)) {
+    if  (!(response.type %in% c("response", "action", "unknown"))) {
+      warning("Invalid 'response.type' argument, only 'response' and 'action' supported.")
+      return(x)
+    }
+    attr(x, "response.type") <- response.type
+    if (is.name(name)) {
+      name <- as.character(name)
+      assign(name, x, parent.frame(), inherits = TRUE)
+    }
+  }
+  invisible(x)
+}
+
+#' Get the "response.type" attribute
+#'
+#' Function to read the "response.type" attribute of an existing response_spct
+#' object.
+#'
+#' Objects of class \code{response_spct()} can contain data for a response
+#' spectrum or an action spectrum. Response spectra are measured using the
+#' same photon (or energy) irradiance at each wavelength. Action spectra are
+#' derived from dose response curves at each wavelength, and responsivity
+#' at each wavelength is expressed as the reciprocal of the photon fluence
+#' required to obtain a fixed level of response.
+#'
+#' @param x a response_spct object
+#'
+#' @return character string
+#'
+#' @note If x is not a \code{response_spct} object, \code{NA} is returned.
+#'
+#' @export
+#' @family response.type attribute functions
+#' @examples
+#' getResponseType(ccd.spct)
+#' getResponseType(sun.spct)
+#'
+getResponseType <- function(x) {
+  if (is.response_spct(x) || is.summary_response_spct(x)) {
+    response.type <- attr(x, "response.type", exact = TRUE)
+    if (is.null(response.type) || is.na(response.type)) {
+      # need to handle objects created with old versions
+      response.type <- "unknown"
+    }
+    return(response.type[[1]])
+  } else {
+    return(NA_character_)
+  }
+}
 
 # bswf attribute -----------------------------------------------------
 
@@ -2096,1009 +2192,6 @@ getIdFactor <- function(x) {
   idfactor
 }
 
-
-# when.measured ---------------------------------------------------------------
-
-#' Set the "when.measured" attribute
-#'
-#' Function to set by reference the "when" attribute  of an existing
-#' generic_spct or an object of a class derived from generic_spct.
-#'
-#' @param x a generic_spct object
-#' @param when.measured,value POSIXct to add as attribute, or a list of POSIXct.
-#' @param ... Allows use of additional arguments in methods for other classes.
-#'
-#' @return x
-#' @note This method alters x itself by reference and in addition
-#'   returns x invisibly. If x is not a generic_spct or an object of a class derived from
-#'   generic_spct, x is not modified. If \code{when} is not a POSIXct object
-#'   or \code{NULL} an error is triggered. A \code{POSIXct} describes an
-#'   instant in time (date plus time-of-day plus time zone).
-#'
-#' @export
-#' @family measurement metadata functions
-#' @examples
-#' my.spct <- sun.spct
-#' when_measured(my.spct)
-#' when_measured(my.spct) <- lubridate::ymd_hms("2020-01-01 08:00:00")
-#' when_measured(my.spct)
-#'
-setWhenMeasured <- function(x, when.measured, ...) UseMethod("setWhenMeasured")
-
-#' @rdname setWhenMeasured
-#'
-#' @export
-#'
-`when_measured<-` <- function(x, value) {
-  setWhenMeasured(x, when.measured = value)
-}
-
-#' @describeIn setWhenMeasured default
-#' @export
-setWhenMeasured.default <- function(x, when.measured, ...) {
-  warning("Default dummy method called.")
-  invisible(x)
-}
-
-#' @describeIn setWhenMeasured generic_spct
-#' @export
-setWhenMeasured.generic_spct <-
-  function(x,
-           when.measured = lubridate::now(tzone = "UTC"),
-           ...) {
-    name <- substitute(x)
-    if (!is.null(when.measured)) {
-      if (!is.list(when.measured)) {
-        when.measured <- list(when.measured)
-      } else if (!length(when.measured) %in% c(1L, getMultipleWl(x))) {
-        warning("Length of 'when.measured' does not match spectrum object")
-      }
-      if (all(sapply(when.measured, lubridate::is.instant))) {
-        when.measured <-
-          lapply(when.measured, lubridate::with_tz, tzone = "UTC")
-      }
-      if (is.list(when.measured) && length(when.measured) == 1) {
-        when.measured <- when.measured[[1]]
-      }
-    }
-    attr(x, "when.measured") <- when.measured
-    if (is.name(name)) {
-      name <- as.character(name)
-      assign(name, x, parent.frame(), inherits = TRUE)
-    }
-    invisible(x)
-  }
-
-#' @describeIn setWhenMeasured summary_generic_spct
-#' @export
-#'
-setWhenMeasured.summary_generic_spct <-
-  function(x,
-           when.measured = lubridate::now(tzone = "UTC"),
-           ...) {
-    name <- substitute(x)
-    if (!is.null(when.measured)) {
-      if (!is.list(when.measured)) {
-        when.measured <- list(when.measured)
-      } else if (!length(when.measured) %in% c(1L, getMultipleWl(x))) {
-        warning("Length of 'when.measured' does not match spectrum object")
-      }
-      if (all(sapply(when.measured, lubridate::is.instant))) {
-        when.measured <-
-          lapply(when.measured, lubridate::with_tz, tzone = "UTC")
-      }
-      if (is.list(when.measured) && length(when.measured) == 1) {
-        when.measured <- when.measured[[1]]
-      }
-    }
-    attr(x, "when.measured") <- when.measured
-    if (is.name(name)) {
-      name <- as.character(name)
-      assign(name, x, parent.frame(), inherits = TRUE)
-    }
-    invisible(x)
-  }
-
-#' @describeIn setWhenMeasured generic_mspct
-#' @export
-setWhenMeasured.generic_mspct <-
-  function(x,
-           when.measured = lubridate::now(tzone = "UTC"),
-           ...) {
-    name <- substitute(x)
-    stopifnot((lubridate::is.POSIXct(when.measured) && length(when.measured) == 1) ||
-                is.list(when.measured))
-    if (lubridate::is.POSIXct(when.measured) || length(when.measured) == 1) {
-      if (is.list(when.measured)) {
-        when.measured <- when.measured[[1]]
-        stopifnot(lubridate::is.POSIXct(when.measured))
-      }
-      when <- lubridate::with_tz(when.measured, "UTC")
-      x <- msmsply(mspct = x, .fun = setWhenMeasured, when.measured = when)
-    } else if (length(when.measured) == length(x)) {
-      for (i in seq_along(x)) {
-        when <- when.measured[[i]]
-        stopifnot(lubridate::is.POSIXct(when))
-        when <- lubridate::with_tz(when, "UTC")
-        x[[i]] <- setWhenMeasured(x[[i]], when.measured = when)
-      }
-    }
-    if (is.name(name)) {
-      name <- as.character(name)
-      assign(name, x, parent.frame(), inherits = TRUE)
-    }
-    invisible(x)
-  }
-
-#' Get the "when.measured" attribute
-#'
-#' Function to read the "when.measured" attribute of an existing generic_spct
-#' or a generic_mspct.
-#'
-#' @param x a generic_spct object
-#' @param ... Allows use of additional arguments in methods for other classes.
-#'
-#' @return POSIXct An object with date and time.
-#'
-#' @note If x is not a \code{generic_spct} or an object of a derived class
-#'   \code{NA} is returned.
-#'
-#' @export
-#' @family measurement metadata functions
-#' @examples
-#'
-#' when_measured(sun.spct)
-#'
-getWhenMeasured <- function(x, ...) UseMethod("getWhenMeasured")
-
-#' @rdname getWhenMeasured
-#'
-#' @export
-#'
-when_measured <- getWhenMeasured
-
-#' @describeIn getWhenMeasured default
-#' @export
-getWhenMeasured.default <- function(x, ...) {
-  # we return an NA of class POSIXct
-  suppressWarnings(lubridate::ymd_hms(NA_character_, tz = "UTC"))
-}
-
-#' @describeIn getWhenMeasured generic_spct
-#' @export
-getWhenMeasured.generic_spct <- function(x, ...) {
-  when.measured <- attr(x, "when.measured", exact = TRUE)
-  if (is.null(when.measured) ||
-      !all(sapply(when.measured, lubridate::is.instant))) {
-    # need to handle invalid attribute values
-    # we return an NA of class POSIXct
-    when.measured <-
-      suppressWarnings(lubridate::ymd_hms(NA_character_, tz = "UTC"))
-  } else if (lubridate::is.POSIXlt(when.measured)) {
-    when.measured <-
-      as.POSIXct(when.measured, tz = "UTC", origin = lubridate::origin)
-  }
-  when.measured
-}
-
-#' @describeIn getWhenMeasured summary_generic_spct
-#' @export
-getWhenMeasured.summary_generic_spct <- function(x, ...) {
-  when.measured <- attr(x, "when.measured", exact = TRUE)
-  if (is.null(when.measured) ||
-      !all(sapply(when.measured, lubridate::is.instant))) {
-    # need to handle invalid attribute values
-    # we return an NA of class POSIXct
-    when.measured <- suppressWarnings(lubridate::ymd_hms(NA_character_,
-                                                         tz = "UTC"))
-  } else if (lubridate::is.POSIXlt(when.measured)) {
-    when.measured <-
-      as.POSIXct(when.measured, tz = "UTC", origin = lubridate::origin)
-  }
-  when.measured
-}
-
-#' @describeIn getWhenMeasured generic_mspct
-#' @param idx character Name of the column with the names of the members of the
-#'   collection of spectra.
-#' @note The method for collections of spectra returns the
-#'   a tibble with the correct times in TZ = "UTC".
-#' @export
-getWhenMeasured.generic_mspct <- function(x,
-                                          ...,
-                                          idx = "spct.idx") {
-  z <- msdply(mspct = x, .fun = getWhenMeasured, ..., idx = idx, col.names = "when.measured")
-  z[["when.measured"]] <- lubridate::with_tz(z[["when.measured"]], "UTC")
-  z
-}
-
-# where.measured ---------------------------------------------------------------
-
-#' Set the "where.measured" attribute
-#'
-#' Function to set by reference the "where.measured" attribute  of an existing
-#' generic_spct or an object of a class derived from generic_spct.
-#'
-#' @param x a generic_spct object
-#' @param where.measured,value A one row data.frame such as returned by
-#'   function \code{geocode} from package 'ggmap' for a location search.
-#' @param lat numeric Latitude in decimal degrees North
-#' @param lon numeric Longitude in decimal degrees West
-#' @param address character Human readable address
-#' @param ... Allows use of additional arguments in methods for other classes.
-#'
-#' @return x
-#' @note This method alters x itself by reference and in addition
-#'   returns x invisibly. If x is not a generic_spct or an object of a class derived from
-#'   generic_spct, x is not modified. If \code{where} is not a POSIXct object
-#'   or \code{NULL} an error is triggered. A \code{POSIXct} describes an
-#'   instant in time (date plus time-of-day plus time zone). As expected
-#'   passing \code{NULL} as argument for \code{where.measured} unsets the
-#'   attribute.
-#'
-#' @export
-#'
-#' @family measurement metadata functions
-#'
-#' @examples
-#'
-#' my.spct <- sun.spct
-#' where_measured(my.spct)
-#' where_measured(my.spct) <- data.frame(lon = 0, lat = -60)
-#' where_measured(my.spct)
-#'
-setWhereMeasured <-
-  function(x, where.measured, lat, lon, address, ...) UseMethod("setWhereMeasured")
-
-#' @rdname setWhereMeasured
-#'
-#' @export
-#'
-`where_measured<-` <- function(x, value) {
-  setWhereMeasured(x, where.measured = value)
-}
-
-#' @describeIn setWhereMeasured default
-#' @export
-setWhereMeasured.default <- function(x,
-                                     where.measured,
-                                     lat,
-                                     lon,
-                                     address,
-                                     ...) {
-  x
-}
-
-#' @describeIn setWhereMeasured generic_spct
-#' @export
-setWhereMeasured.generic_spct <- function(x,
-                                          where.measured = NA,
-                                          lat = NA,
-                                          lon = NA,
-                                          address = NA,
-                                          ...) {
-  name <- substitute(x)
-  if (!is.null(where.measured)) {
-    if (is.atomic(where.measured) && all(is.na(where.measured))) {
-      # replace missing geocode with a valid one
-      # type conversion needed for NA
-      where.measured <-
-        validate_geocode(data.frame(lon = as.numeric(lon),
-                                    lat = as.numeric(lat),
-                                    address = as.character(address),
-                                    stringsAsFactors = FALSE))
-      stopifnot(is_valid_geocode(where.measured))
-    } else if (is.list(where.measured) && !is.data.frame(where.measured)) {
-      where.measured <- sapply(where.measured, validate_geocode)
-      stopifnot(all(sapply(where.measured, is_valid_geocode)))
-    } else {
-      where.measured <- validate_geocode(where.measured)
-      stopifnot(is_valid_geocode(where.measured))
-    }
-  }
-  attr(x, "where.measured") <- where.measured
-  if (is.name(name)) {
-    name <- as.character(name)
-    assign(name, x, parent.frame(), inherits = TRUE)
-  }
-  invisible(x)
-}
-
-#' @describeIn setWhereMeasured summary_generic_spct
-#'
-#' @export
-setWhereMeasured.summary_generic_spct <- setWhereMeasured.generic_spct
-
-#' @describeIn setWhereMeasured generic_mspct
-#' @note Method for collections of spectra recycles the location information
-#'   only if it is of length one.
-#' @export
-setWhereMeasured.generic_mspct <- function(x,
-                                           where.measured = NA,
-                                           lat = NA,
-                                           lon = NA,
-                                           address = NA,
-                                           ...) {
-  name <- substitute(x)
-  if (!is.null(where.measured)) {
-    if (is.atomic(where.measured) && all(is.na(where.measured))) {
-      # replace missing geocode with a valid one
-      # type conversion needed for NA
-      where.measured <- data.frame(lon = as.numeric(lon),
-                                   lat = as.numeric(lat),
-                                   address = as.character(address),
-                                   stringsAsFactors = FALSE)
-    } else if (!is_valid_geocode(where.measured)) {
-      stop("Bad 'where.measured' argument of class: ", class(where.measured))
-    }
-  }
-  if (is.null(where.measured) ||
-      (is.data.frame(where.measured) && nrow(where.measured) == 1)) {
-    x <- msmsply(mspct = x,
-                 .fun = setWhereMeasured,
-                 where.measured = where.measured)
-  } else if (is.data.frame(where.measured) &&
-             nrow(where.measured) == length(x)) {
-    if (exists("spct.idx", where.measured)) {
-      if (setequal(where.measured[["spct.idx"]], names(x))) {
-        # we use name matching
-        j <- which(colnames(where.measured) != "spct.idx")
-        for (i in names(x)) {
-          wm <- where.measured[where.measured[["spct.idx"]] == i, j]
-          x[[i]] <- setWhereMeasured(x[[i]],
-                                     where.measured = wm)
-        }
-      } else {
-        stop("'spct-idx' values '", where.measured[["spct.idx"]],
-             "' do not match names of spectra in collection.")
-      }
-    } else {
-      # we match by position
-      for (i in seq_along(x)) {
-        x[[i]] <- setWhereMeasured(x[[i]], where.measured = where.measured[i, ])
-      }
-    }
-  } else if (is.list(where.measured) && length(where.measured) == length(x)) {
-    for (i in seq_along(x)) {
-      x[[i]] <- setWhereMeasured(x[[i]], where.measured = where.measured[[i]])
-    }
-  } else {
-    stop("Length of geocode must be either 1, or equal to the number of spectra.")
-  }
-  if (is.name(name)) {
-    name <- as.character(name)
-    assign(name, x, parent.frame(), inherits = TRUE)
-  }
-  invisible(x)
-}
-
-#' Get the "where.measured" attribute
-#'
-#' Function to read the "where.measured" attribute of an existing generic_spct.
-#'
-#' @param x a generic_spct object
-#' @param ... Allows use of additional arguments in methods for other classes.
-#'
-#' @return a data.frame with a single row and at least columns "lon" and "lat".
-#'
-#' @note If x is not a \code{generic_spct} or an object of a derived class
-#'   \code{NA} is returned.
-#'
-#' @export
-#'
-#' @family measurement metadata functions
-#'
-#' @examples
-#' where_measured(sun.spct)
-#'
-getWhereMeasured <- function(x, ...) UseMethod("getWhereMeasured")
-
-#' @rdname getWhereMeasured
-#'
-#' @export
-#'
-where_measured <- getWhereMeasured
-
-#' @describeIn getWhereMeasured default
-#' @export
-getWhereMeasured.default <- function(x, ...) {
-  na_geocode()
-}
-
-#' @describeIn getWhereMeasured generic_spct
-#' @export
-getWhereMeasured.generic_spct <- function(x, ...) {
-  where.measured <- attr(x, "where.measured", exact = TRUE)
-  if (is.null(where.measured)) return(na_geocode())
-
-  if (is.list(where.measured) && !is.data.frame(where.measured)) {
-    x <- dplyr::bind_rows(where.measured)
-  }
-  if (!is.data.frame(where.measured)) {
-    # need to handle invalid or missing attribute values
-    where.measured <- na_geocode()
-  }
-  # needed to clean inconsistent values from previous versions
-  validate_geocode(where.measured)
-}
-
-#' @describeIn getWhereMeasured summary_generic_spct
-#' @export
-getWhereMeasured.summary_generic_spct <- getWhereMeasured.generic_spct
-
-#' @describeIn getWhereMeasured generic_mspct
-#' @param idx character Name of the column with the names of the members of the
-#'   collection of spectra.
-#' @export
-getWhereMeasured.generic_mspct <- function(x,
-                                           ...,
-                                           idx = "spct.idx") {
-  msdply(mspct = x, .fun = getWhereMeasured, ..., idx = idx)
-}
-
-# how.measured attributes -------------------------------------------------
-
-#' Set the "how.measured" attribute
-#'
-#' Function to set by reference the "how.measured" attribute  of an existing
-#' generic_spct or derived-class object.
-#'
-#' @param x a generic_spct object
-#' @param how.measured,value a list
-#'
-#' @return x
-#' @note This function alters x itself by reference and in addition
-#'   returns x invisibly. If x is not a generic_spct object, x is not
-#'   modified.
-#'
-#' @export
-#' @family measurement metadata functions
-#'
-#' @examples
-#'
-#' my.spct <- sun.spct
-#' how_measured(my.spct)
-#' how_measured(my.spct) <- "simulated with a radiation transfer model"
-#' how_measured(my.spct)
-#'
-setHowMeasured <- function(x, how.measured) {
-  name <- substitute(x)
-  if (is.generic_spct(x) || is.summary_generic_spct(x)) {
-    attr(x, "how.measured") <- how.measured
-    if (is.name(name)) {
-      name <- as.character(name)
-      assign(name, x, parent.frame(), inherits = TRUE)
-    }
-  }
-  invisible(x)
-}
-
-#' @rdname setHowMeasured
-#'
-#' @export
-#'
-`how_measured<-` <- function(x, value) {
-  setHowMeasured(x, how.measured = value)
-}
-
-#' Get the "how.measured" attribute
-#'
-#' Function to read the "how.measured" attribute of an existing generic_spct
-#' or a generic_mspct.
-#'
-#' @param x a generic_spct object
-#' @param ... Allows use of additional arguments in methods for other classes.
-#'
-#' @return character vector An object containing a description of the data.
-#'
-#' @export
-#' @family measurement metadata functions
-#'
-#' @examples
-#' how_measured(sun.spct)
-#'
-getHowMeasured <- function(x, ...) UseMethod("getHowMeasured")
-
-#' @rdname getHowMeasured
-#'
-#' @export
-#'
-how_measured <- getHowMeasured
-
-#' @describeIn getHowMeasured default
-#' @export
-getHowMeasured.default <- function(x, ...) {
-  # we return an NA of class character
-  NA_character_
-}
-
-#' @describeIn getHowMeasured generic_spct
-#' @export
-getHowMeasured.generic_spct <- function(x, ...) {
-  how.measured <- attr(x, "how.measured", exact = TRUE)
-  if (is.null(how.measured) || (is.atomic(how.measured) && all(is.na(how.measured)))) {
-    # need to handle objects created with old versions
-    NA_character_
-  } else {
-    how.measured
-  }
-}
-
-#' @describeIn getHowMeasured summary_generic_spct
-#' @export
-getHowMeasured.summary_generic_spct <- function(x, ...) {
-  how.measured <- attr(x, "how.measured", exact = TRUE)
-  if (is.null(how.measured) || (is.atomic(how.measured) && all(is.na(how.measured)))) {
-    # need to handle objects created with old versions
-    NA_character_
-  } else {
-    how.measured
-  }
-}
-
-#' @describeIn getHowMeasured generic_mspct
-#' @param idx character Name of the column with the names of the members of the
-#'   collection of spectra.
-#' @note The method for collections of spectra returns the
-#'   a tibble with a column of character strings.
-#' @export
-#'
-getHowMeasured.generic_mspct <- function(x,
-                                          ...,
-                                          idx = "spct.idx") {
-  msdply(mspct = x, .fun = getHowMeasured, ..., idx = idx, col.names = "how.measured")
-}
-
-##
-
-#' Set the "instr.desc" attribute
-#'
-#' Function to set by reference the "instr.desc" attribute  of an existing
-#' generic_spct or derived-class object.
-#'
-#' @param x a generic_spct object
-#' @param instr.desc a list
-#'
-#' @return x
-#' @note This function alters x itself by reference and in addition
-#'   returns x invisibly. If x is not a generic_spct object, x is not
-#'   modified.
-#'
-#' @note
-#'
-#' @export
-#' @family measurement metadata functions
-#'
-setInstrDesc <- function(x, instr.desc) {
-  name <- substitute(x)
-  if (is.generic_spct(x) || is.summary_generic_spct(x)) {
-    attr(x, "instr.desc") <- instr.desc
-    if (is.name(name)) {
-      name <- as.character(name)
-      assign(name, x, parent.frame(), inherits = TRUE)
-    }
-  }
-  invisible(x)
-}
-
-#' Get the "instr.desc" attribute
-#'
-#' Function to read the "instr.desc" attribute of an existing generic_spct
-#' object.
-#'
-#' @param x a generic_spct object
-#'
-#' @return list (depends on instrument type)
-#'
-#'
-#' @export
-#' @family measurement metadata functions
-#'
-getInstrDesc <- function(x) {
-  if (is.generic_spct(x) || is.summary_generic_spct(x)) {
-    if (isValidInstrDesc(x)) {
-      instr.desc <- attr(x, "instr.desc", exact = TRUE)
-    } else {
-      instr.desc <- list(spectrometer.name = NA_character_,
-                         spectrometer.sn = NA_character_,
-                         bench.grating = NA_character_,
-                         bench.slit = NA_character_)
-    }
-    if (!inherits(instr.desc, "instr_desc") &&
-        !inherits(instr.desc[[1]], "instr_desc")) {
-      class(instr.desc) <- c("instr_desc", class(instr.desc))
-    }
-    instr.desc
-  } else {
-    list()
-  }
-}
-
-#' Trim the "instr.desc" attribute
-#'
-#' Function to trim the "instr.desc" attribute of an existing generic_spct
-#' object, discarding all fields except for `spectrometer.name`,
-#' `spectrometer.sn`, `bench.grating`, `bench.slit`, and calibration name.
-#'
-#' @param x a generic_spct object
-#' @param fields a character vector with the names of the fields to keep,
-#'   or if first member is `"-"`, the names of fields to delete; "*" as
-#'   first member of the vector makes the function a no-op, leaving the spectrum
-#'   object unaltered.
-#'
-#' @return x
-#' @note This function alters x itself by reference and in addition
-#'   returns x invisibly. If x is not a generic_spct object, x is not
-#'   modified.
-#'
-#' @export
-#' @family measurement metadata functions
-#'
-trimInstrDesc <- function(x,
-                          fields = c("time",
-                                     "spectrometer.name",
-                                     "spectrometer.sn",
-                                     "bench.grating",
-                                     "bench.slit")
-) {
-  name <- substitute(x)
-  if ((is.generic_spct(x) || is.summary_generic_spct(x)) &&
-      fields[1] != "*") {
-    instr.desc <- attr(x, "instr.desc", exact = TRUE)
-    if (inherits(instr.desc, "instr_desc") ||
-        "spectrometer.name" %in% names(instr.desc)) {
-      instr.desc <- list(instr.desc)
-    }
-    for (i in seq(along.with = instr.desc)) {
-      if (!(is.null(instr.desc[[i]]) || is.na(instr.desc[[i]]))) {
-        if (fields[1] == "-") {
-          fields.tmp <- setdiff(names(instr.desc[[i]]), fields[-1])
-        } else if (fields[1] == "=") {
-          fields.tmp <- fields[-1]
-        } else {
-          fields.tmp <- fields
-        }
-        instr.desc[[i]] <- instr.desc[[i]][fields.tmp]
-        if (!inherits(instr.desc[[i]], "instr_desc")) {
-          class(instr.desc[[i]]) <- c("instr_desc", class(instr.desc[[i]]))
-        }
-      }
-    }
-    if (length(instr.desc) == 1) {
-      instr.desc <- instr.desc[[1]]
-    }
-    attr(x, "instr.desc") <- instr.desc
-    if (is.name(name)) {
-      name <- as.character(name)
-      assign(name, x, parent.frame(), inherits = TRUE)
-    }
-  }
-  invisible(x)
-}
-
-#' Check the "instr.desc" attribute
-#'
-#' Function to validate the "instr.settings" attribute of an existing generic_spct
-#' object.
-#'
-#' @param x a generic_spct object
-#'
-#' @return logical TRUE if at least instrument name and serial number is found.
-#'
-#' @export
-#'
-#' @family measurement metadata functions
-#'
-isValidInstrDesc <- function(x) {
-  if (is.generic_spct(x) || is.summary_generic_spct(x)) {
-    instr.desc <- attr(x, "instr.desc", exact = TRUE)
-    if (is.null(instr.desc)) {
-      return(FALSE)
-    }
-    if (inherits(instr.desc, "instr_desc") ||
-        "spectrometer.name" %in% names(instr.desc)) {
-      # need to guard in case of objects created with earlier
-      # versions
-      instr.desc <- list(instr.desc)
-    }
-    valid <- TRUE
-    for (desc in instr.desc) {
-      if (length(desc) == 0 || (length(desc) == 1 && is.na(desc))) {
-        # need to handle objects created with old versions
-        valid <- FALSE
-      } else if (is.list(desc)) {
-        valid <- valid &&
-          length(intersect(names(desc),
-                           c("spectrometer.name", "spectrometer.sn"))) != 0
-      } else {
-        valid <- FALSE
-      }
-    }
-  } else {
-    valid <- NA_integer_
-  }
-  valid
-}
-
-#' Set the "instr.settings" attribute
-#'
-#' Function to set by reference the "what.measured" attribute  of an existing
-#' generic_spct or derived-class object.
-#'
-#' @param x a generic_spct object
-#' @param instr.settings a list
-#'
-#' @return x
-#' @note This function alters x itself by reference and in addition
-#'   returns x invisibly. If x is not a generic_spct object, x is not
-#'   modified.
-#'
-#' @export
-#' @family measurement metadata functions
-#'
-setInstrSettings <- function(x, instr.settings) {
-  name <- substitute(x)
-  if (is.generic_spct(x) || is.summary_generic_spct(x)) {
-    attr(x, "instr.settings") <- instr.settings
-    if (is.name(name)) {
-      name <- as.character(name)
-      assign(name, x, parent.frame(), inherits = TRUE)
-    }
-  }
-  invisible(x)
-}
-
-#' Get the "instr.settings" attribute
-#'
-#' Function to read the "instr.settings" attribute of an existing generic_spct
-#' object.
-#'
-#' @param x a generic_spct object
-#'
-#' @return list
-#'
-#'
-#' @export
-#'
-#' @family measurement metadata functions
-#'
-getInstrSettings <- function(x) {
-  if (is.generic_spct(x) || is.summary_generic_spct(x)) {
-    if (isValidInstrSettings(x)) {
-      instr.settings <- attr(x, "instr.settings", exact = TRUE)
-    } else {
-      instr.settings <- list(integ.time = NA_real_,
-                             tot.time = NA_real_,
-                             num.scans = NA_integer_,
-                             rel.signal = NA_real_)
-    }
-    if (!inherits(instr.settings, "instr_settings") &&
-        !inherits(instr.settings[[1]], "instr_settings")) {
-      class(instr.settings) <- c("instr_settings", class(instr.settings))
-    }
-    instr.settings
-  } else {
-    list()
-  }
-}
-
-#' Trim the "instr.settings" attribute
-#'
-#' Function to trim the "instr.settings" attribute of an existing generic_spct
-#' object, by discarding some fields.
-#'
-#' @param x a generic_spct object
-#' @param fields a character vector with the names of the fields to keep,
-#'   or if first member is `"-"`, the names of fields to delete; "*" as
-#'   first member of the vector makes the function a no-op, leaving the spectrum
-#'   object unaltered.
-#'
-#' @return x
-#' @note This function alters x itself by reference and in addition
-#'   returns x invisibly. If x is not a generic_spct object, x is not
-#'   modified.
-#'
-#' @export
-#' @family measurement metadata functions
-#'
-trimInstrSettings <- function(x,
-                              fields = "*" ) {
-  name <- substitute(x)
-  if ((is.generic_spct(x) || is.summary_generic_spct(x)) &&
-      fields[1] != "*") {
-    instr.settings <- attr(x, "instr.settings", exact = TRUE)
-    if (inherits(instr.settings, "instr_settings") ||
-        "integ.time" %in% names(instr.settings)) {
-      instr.settings <- list(instr.settings)
-    }
-    for (i in seq(along.with = instr.settings)) {
-      if (!(is.null(instr.settings[[i]]) || is.na(instr.settings[[i]]))) {
-        if (fields[1] == "-") {
-          fields.tmp <- setdiff(names(instr.settings[[i]]), fields[-1])
-        } else if (fields[1] == "=") {
-          fields.tmp <- fields[-1]
-        } else {
-          fields.tmp <- fields
-        }
-        instr.settings[[i]] <- instr.settings[[i]][fields.tmp]
-        if (!inherits(instr.settings[[i]], "instr_settings")) {
-          class(instr.settings[[i]]) <- c("instr_settings", class(instr.settings[[i]]))
-        }
-      }
-    }
-    if (length(instr.settings) == 1) {
-      instr.settings <- instr.settings[[1]]
-    }
-    attr(x, "instr.settings") <- instr.settings
-    if (is.name(name)) {
-      name <- as.character(name)
-      assign(name, x, parent.frame(), inherits = TRUE)
-    }
-  }
-  invisible(x)
-}
-
-#' Check the "instr.settings" attribute
-#'
-#' Function to validate the "instr.settings" attribute of an existing generic_spct
-#' object.
-#'
-#' @param x a generic_spct object
-#'
-#' @return logical TRUE if at least integration time data is found.
-#'
-#' @export
-#'
-#' @family measurement metadata functions
-#'
-isValidInstrSettings <- function(x) {
-  if (is.generic_spct(x) || is.summary_generic_spct(x)) {
-    instr.settings <- attr(x, "instr.settings", exact = TRUE)
-    if (is.null(instr.settings)) {
-      return(FALSE)
-    }
-    if (inherits(instr.settings, "instr_settings") ||
-        "integ.time" %in% names(instr.settings)) {
-      # need to guard in case of objects created with earlier
-      # versions
-      instr.settings <- list(instr.settings)
-    }
-    valid <- TRUE
-    for (setting in instr.settings) {
-      if (length(setting) == 0 || (length(setting) == 1 && is.na(setting))) {
-        # need to handle objects created with old versions
-        valid <- FALSE
-      } else if (is.list(setting)) {
-        integ.time <- setting[["integ.time"]]
-        if (is.null(integ.time) || any(is.na(integ.time)) || !is.numeric(integ.time)) {
-          valid <- FALSE
-        } # else we keep valid unchanged
-      } else {
-        valid <- FALSE
-      }
-    }
-  } else {
-    valid <- NA_integer_
-  }
-  valid
-}
-
-# what measured attributes -------------------------------------------------
-
-#' Set the "what.measured" attribute
-#'
-#' Function to set by reference the "what.measured" attribute  of an existing
-#' generic_spct or derived-class object.
-#'
-#' @param x a generic_spct object
-#' @param what.measured,value a list
-#'
-#' @return x
-#' @note This function alters x itself by reference and in addition
-#'   returns x invisibly. If x is not a generic_spct object, x is not
-#'   modified.
-#'
-#' @export
-#'
-#' @examples
-#' my.spct <- sun.spct
-#' what_measured(my.spct)
-#' what_measured(my.spct) <- "Sun"
-#' what_measured(my.spct)
-#'
-#' @family measurement metadata functions
-#'
-setWhatMeasured <- function(x, what.measured) {
-  name <- substitute(x)
-  if (is.generic_spct(x) || is.summary_generic_spct(x)) {
-    attr(x, "what.measured") <- what.measured
-    if (is.name(name)) {
-      name <- as.character(name)
-      assign(name, x, parent.frame(), inherits = TRUE)
-    }
-  }
-  invisible(x)
-}
-
-#' @rdname setWhatMeasured
-#'
-#' @export
-#'
-`what_measured<-` <- function(x, value) {
-  setWhatMeasured(x, what.measured = value)
-}
-
-#' Get the "what.measured" attribute
-#'
-#' Function to read the "what.measured" attribute of an existing generic_spct
-#' or a generic_mspct.
-#'
-#' @param x a generic_spct object
-#' @param ... Allows use of additional arguments in methods for other classes.
-#'
-#' @return character vector An object containing a description of the data.
-#'
-#' @export
-#'
-#' @family measurement metadata functions
-#'
-#' @examples
-#'
-#' what_measured(sun.spct)
-#'
-getWhatMeasured <- function(x, ...) UseMethod("getWhatMeasured")
-
-#' @rdname getWhatMeasured
-#'
-#' @export
-#'
-what_measured <- getWhatMeasured
-
-#' @describeIn getWhatMeasured default
-#' @export
-getWhatMeasured.default <- function(x, ...) {
-  # we return an NA of class character
-  NA_character_
-}
-
-#' @describeIn getWhatMeasured generic_spct
-#' @export
-getWhatMeasured.generic_spct <- function(x, ...) {
-  what.measured <- attr(x, "what.measured", exact = TRUE)
-  if (is.null(what.measured) || (is.atomic(what.measured) && all(is.na(what.measured)))) {
-    # need to handle objects created with old versions
-    NA_character_
-  } else {
-    what.measured
-  }
-}
-
-#' @describeIn getWhatMeasured summary_generic_spct
-#' @export
-getWhatMeasured.summary_generic_spct <- function(x, ...) {
-  what.measured <- attr(x, "what.measured", exact = TRUE)
-  if (is.null(what.measured) || (is.atomic(what.measured) && all(is.na(what.measured)))) {
-    # need to handle objects created with old versions
-    NA_character_
-  } else {
-    what.measured
-  }
-}
-
-#' @describeIn getWhatMeasured generic_mspct
-#' @param idx character Name of the column with the names of the members of the
-#'   collection of spectra.
-#' @note The method for collections of spectra returns the
-#'   a tibble with a column of character strings.
-#' @export
-#'
-getWhatMeasured.generic_mspct <- function(x,
-                                          ...,
-                                          idx = "spct.idx") {
-  msdply(mspct = x, .fun = getWhatMeasured, ..., idx = idx, col.names = "what.measured")
-}
-
-
 # "filter.properties" attribute ----------------------------------------------
 
 #' Set the "filter.properties" attribute
@@ -3115,8 +2208,8 @@ getWhatMeasured.generic_mspct <- function(x,
 #'    filter.properties is NULL.
 #' @param Rfr.constant numeric The value of the reflection factor (/1).
 #' @param thickness numeric The thickness of the material.
-#' @param attenuation.mode character One of "reflection", "absorption" or
-#'   "mixed".
+#' @param attenuation.mode character One of "reflection", "absorption",
+#'    "absorption.layer" or "mixed".
 #'
 #' @details Storing filter properties allows inter-conversion between internal
 #'   and total transmittance, as well as computation of transmittance for
@@ -3129,6 +2222,14 @@ getWhatMeasured.generic_mspct <- function(x,
 #'   returns \code{x} invisibly. If \code{x} is not a filter_spct object,
 #'   \code{x} is not modified.
 #'
+#'   The values of `attenuation.mode` "reflection" and "absorption" should be
+#'   used when one of these processes is clearly the main one; "mixed" is for
+#'   cases when they both play a role, i.e., when a simple correction using a
+#'   single value of Rfr across wavelengths is not possible; "absorption.layer"
+#'   is for cases when a thin absorbing layer is deposited on the surface of a
+#'   transparent support or enclosed between two sheets of glass or other
+#'   transparent material. If in doubt, set this to NA to ensure that
+#'   computation of spectra for other thicknesses remains disabled.
 #'
 #' @export
 #' @family measurement metadata functions
@@ -3150,7 +2251,7 @@ setFilterProperties <- function(x,
                                 pass.null = FALSE,
                                 Rfr.constant = NA_real_,
                                 thickness = NA_real_,
-                                attenuation.mode = NA) {
+                                attenuation.mode = NA_character_) {
   name <- substitute(x)
   if (is.filter_spct(x) || is.object_spct(x)) {
     if (!(pass.null && is.null(filter.properties))) {
@@ -3168,12 +2269,48 @@ setFilterProperties <- function(x,
             c("filter_properties", class(filter.properties))
         }
       }
+      if (!is.numeric(filter.properties[["Rfr.constant"]])) {
+        filter.properties[["Rfr.constant"]] <-
+          as.numeric(filter.properties[["Rfr.constant"]])
+      }
+      if (!is.na(filter.properties[["Rfr.constant"]]) &&
+          (filter.properties[["Rfr.constant"]] < 0 ||
+          filter.properties[["Rfr.constant"]] > 0.2)) {
+        warning("Off-range value '",
+                filter.properties[["Rfr.constant"]],
+                "' for \"Rfr.constant\" set to NA")
+        filter.properties[["Rfr.constant"]] <- NA_real_
+      }
+      if (!is.numeric(filter.properties[["thickness"]])) {
+        filter.properties[["thickness"]] <-
+          as.numeric(filter.properties[["thickness"]])
+      }
+      if (!is.na(filter.properties[["thickness"]]) &&
+          filter.properties[["thickness"]] <= 0) {
+        warning("'thickness' (m) <= 0 set to NA")
+        filter.properties[["thickness"]] <- NA_real_
+      }
+      if (!is.character(filter.properties[["attenuation.mode"]])) {
+        filter.properties[["attenuation.mode"]] <-
+          as.character(filter.properties[["attenuation.mode"]])
+       }
+      if (!is.na(filter.properties[["attenuation.mode"]]) &&
+                  !filter.properties[["attenuation.mode"]] %in%
+             c("reflection", "absorption", "absorption.layer", "mixed")) {
+        warning("Bad value '",
+                filter.properties[["attenuation.mode"]],
+                "' for \"attenuation.mode\" set to NA")
+        filter.properties[["attenuation.mode"]] <- NA_character_
+      }
     }
     attr(x, "filter.properties") <- filter.properties
     if (is.name(name)) {
       name <- as.character(name)
       assign(name, x, parent.frame(), inherits = TRUE)
     }
+  } else {
+    warning("'setFilterProperties()' not applicable to objects of class ",
+            class(x)[1], ", skipping.")
   }
   invisible(x)
 }
@@ -3223,11 +2360,20 @@ filter_properties <- getFilterProperties
 getFilterProperties.default <- function(x,
                                         return.null = FALSE,
                                         ...) {
+  if (!is.any_spct(x) && !is.any_summary_spct(x)) {
+    warning("Methods 'getFilterProperties()' not implemented for class: ",
+            class(x)[1])
+  }
   if (return.null) {
     NULL
   } else {
     # we return an NA
-    NA
+    filter.properties <- list(Rfr.constant = NA_real_,
+                              thickness = NA_real_,
+                              attenuation.mode = NA)
+    class(filter.properties) <-
+      c("filter_properties", class(filter.properties))
+    filter.properties
   }
 }
 
@@ -3267,13 +2413,14 @@ getFilterProperties.summary_filter_spct <- getFilterProperties.filter_spct
 #' @export
 #'
 getFilterProperties.generic_mspct <- function(x,
+                                              return.null = FALSE,
                                               ...,
                                               idx = "spct.idx") {
-  msdply(mspct = x,
-         .fun = getFilterProperties,
-         ...,
-         idx = idx,
-         col.names = "filter.properties")
+  l <- mslply(mspct = x, .fun = getFilterProperties, ...)
+  comment(l) <- NULL
+  z <- list(filter.properties = l)
+  z[[idx]] <- factor(names(l), levels = names(l))
+  tibble::as_tibble(z[c(2, 1)])
 }
 
 # Modify filter properties -----------------------------------------------
@@ -3326,7 +2473,10 @@ convertThickness <- function(x, thickness = NULL) {
   if (properties[["attenuation.mode"]] == "mixed") {
     warning("Conversion not possible for non-absorbent materials.")
     return(x * NA_real_)
-  } else if (properties[["attenuation.mode"]] == "reflection") {
+  } else if (properties[["attenuation.mode"]] == "absorption.layer") {
+    warning("Conversion is undefined when absorbing material is layered.")
+    return(x * NA_real_)
+  } else if(properties[["attenuation.mode"]] == "reflection") {
     warning("Transmittance remains unchanged for purely reflective materials.")
     properties[["thickness"]] <- thickness
     setFilterProperties(x, properties)
@@ -3476,4 +2626,3 @@ convertTfrType <- function(x, Tfr.type = NULL) {
   }
   z
 }
-

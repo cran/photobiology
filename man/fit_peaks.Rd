@@ -68,7 +68,7 @@ These functions are not meant for everyday use. Use option
 }
 \examples{
 
-peaks <- find_peaks(sun.spct$s.e.irrad, span = 31)
+peaks <- find_peaks(sun.spct[["s.e.irrad"]], span = 31)
 fit_peaks(sun.spct, peaks, span = 31,
           y.col.name = "s.e.irrad", method = "spline")
 
