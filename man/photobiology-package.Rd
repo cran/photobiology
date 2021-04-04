@@ -6,6 +6,8 @@
 \alias{photobiology-package}
 \title{photobiology: Photobiological Calculations}
 \description{
+\if{html}{\figure{logo.png}{options: align='right' alt='logo' width='120'}}
+
 Definitions of classes, methods, operators and functions for use 
     in photobiology and radiation meteorology and climatology. Calculation of
     effective (weighted) and not-weighted irradiances/doses, fluence rates,
@@ -77,19 +79,19 @@ ISBN 978-952-10-8363-1 (PDF), 978-952-10-8362-4 (paperback). Open access PDF
 download available at https://hdl.handle.net/10138/37558
 
 Aphalo, Pedro J. (2015) The r4photobiology suite. UV4Plants Bulletin, 2015:1,
-21-29. \url{https://doi.org/10.19232/uv4pb.2015.1.14}.
+21-29. \doi{10.19232/uv4pb.2015.1.14}.
 
 Maia, R., Eliason, C. M., Bitton, P. P., Doucet, S. M., Shawkey, M. D. (2013)
 pavo: an R package for the analysis, visualization and organization of
 spectral data. Methods in Ecology and Evolution, 4(10):906-913.
-\url{https://doi.org/10.1111/2041-210X.12069}.
+\doi{10.1111/2041-210X.12069}.
 }
 \seealso{
 Useful links:
 \itemize{
   \item \url{https://docs.r4photobiology.info/photobiology/}
-  \item \url{https://bitbucket.org/aphalo/photobiology}
-  \item Report bugs at \url{https://bitbucket.org/aphalo/photobiology/issues}
+  \item \url{https://github.com/aphalo/photobiology}
+  \item Report bugs at \url{https://github.com/aphalo/photobiology/issues}
 }
 
 }

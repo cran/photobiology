@@ -1,10 +1,12 @@
 
-# photobiology
+# photobiology <img src="man/figures/logo.png" align="right" width="120" />
 
 [![CRAN
 version](https://www.r-pkg.org/badges/version-last-release/photobiology)](https://cran.r-project.org/package=photobiology)
 [![cran
 checks](https://cranchecks.info/badges/worst/photobiology)](https://cran.r-project.org/web/checks/check_results_photobiology.html)
+[![R build
+status](https://github.com/aphalo/photobiology/workflows/R-CMD-check/badge.svg)](https://github.com/aphalo/photobiology/actions)
 
 Package ‘**photobiology**’ defines a system of classes for storing
 spectral data and accompanying metadata. For each of these classes
@@ -46,9 +48,9 @@ sun.
 geocode <- data.frame(lon = 0, lat = 55)
 date <- lubridate::today(tzone = "UTC")
 sunrise_time(date, tz = "UTC", geocode = geocode)
-#> [1] "2020-07-09 03:34:23 UTC"
+#> [1] "2021-04-03 05:25:39 UTC"
 day_length(date, tz = "UTC", geocode = geocode)
-#> [1] 17.03125
+#> [1] 13.25112
 ```
 
 ## Installation
@@ -59,11 +61,22 @@ Installation of the most recent stable version from CRAN:
 install.packages("photobiology")
 ```
 
-Installation of the current unstable version from Bitbucket:
+Once package ‘photobiology’ is installed, installation of the remaining
+or missing packages in the suite from CRAN:
+
+``` r
+intalled_pkgs <- installed.packages()[ , 1]
+missing_pkgs <- setdiff(photobiology::r4p_pkgs, intalled_pkgs)
+if (length(missing_pkgs) > 0) {
+ install.packages(missing_pkgs)
+}
+```
+
+Installation of the current unstable version from GitHub:
 
 ``` r
 # install.packages("devtools")
-devtools::install_bitbucket("aphalo/photobiology")
+devtools::install_github("aphalo/photobiology")
 ```
 
 ## Documentation
@@ -96,7 +109,7 @@ Division of Plant Biology. ISBN 978-952-10-8363-1 (PDF),
 ## Contributing
 
 Pull requests, bug reports, and feature requests are welcome at
-(<https://bitbucket.org/aphalo/photobiology>).
+(<https://github.com/aphalo/photobiology>).
 
 ## Citation
 
@@ -127,6 +140,6 @@ citation("photobiology")
 
 ## License
 
-© 2012-2020 Pedro J. Aphalo (<pedro.aphalo@helsinki.fi>). Released under
+© 2012-2021 Pedro J. Aphalo (<pedro.aphalo@helsinki.fi>). Released under
 the GPL, version 2 or greater. This software carries no warranty of any
 kind.
