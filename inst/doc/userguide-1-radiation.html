@@ -12,7 +12,7 @@
 
 <meta name="author" content="Pedro J. Aphalo" />
 
-<meta name="date" content="2021-04-04" />
+<meta name="date" content="2021-09-29" />
 
 <title>User Guide: 1 Radiation</title>
 
@@ -140,9 +140,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 
 <h1 class="title toc-ignore">User Guide: 1 Radiation</h1>
-<h3 class="subtitle">Package ‘photobiology’ 0.10.6</h3>
+<h3 class="subtitle">Package ‘photobiology’ 0.10.7</h3>
 <h4 class="author">Pedro J. Aphalo</h4>
-<h4 class="date">2021-04-04</h4>
+<h4 class="date">2021-09-29</h4>
 
 
 <div id="TOC">
@@ -1193,8 +1193,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <pre><code>## [1] &quot;generic_mspct&quot; &quot;list&quot;</code></pre>
 <div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(two_gen.mspct, <span class="at">max.level =</span> <span class="dv">1</span>, <span class="at">give.attr =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
 <pre><code>## List of 2
-##  $ sun1: source_spct[,3] [522 x 3] (S3: source_spct/generic_spct/tbl_df/tbl/data.frame)
-##  $ sun2: source_spct[,3] [522 x 3] (S3: source_spct/generic_spct/tbl_df/tbl/data.frame)</code></pre>
+##  $ sun1: source_spct [522 x 3] (S3: source_spct/generic_spct/tbl_df/tbl/data.frame)
+##  $ sun2: source_spct [522 x 3] (S3: source_spct/generic_spct/tbl_df/tbl/data.frame)</code></pre>
 <p>In addition to coercion methods for lists of spectra objects, coercion methods are available for lists of data frames (or tibbles) and from matrix objects.</p>
 <p>One additional feature is that if a single spectrum object or data frame are coerced into a collection of spectra, the behaviour is equivalent to having passed as argument a list containing such object as its only member.</p>
 <div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a>one_sun.mspct <span class="ot">&lt;-</span> <span class="fu">as.source_mspct</span>(sun.spct)</span>
@@ -1202,7 +1202,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <pre><code>## [1] &quot;source_mspct&quot;  &quot;generic_mspct&quot; &quot;list&quot;</code></pre>
 <div class="sourceCode" id="cb77"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(one_sun.mspct, <span class="at">max.level =</span> <span class="dv">1</span>, <span class="at">give.attr =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
 <pre><code>## List of 1
-##  $ spct_1: source_spct[,3] [522 x 3] (S3: source_spct/generic_spct/tbl_df/tbl/data.frame)</code></pre>
+##  $ spct_1: source_spct [522 x 3] (S3: source_spct/generic_spct/tbl_df/tbl/data.frame)</code></pre>
 <p>Sometimes spectral data stored in a matrix need to be coerced into a collection of spectra. Coercion methods are defined also for this cases. Several spectra may be stored in a matrix either by row or by column, but this can be deduced automatically in the case of rectangular matrices. Wavelengths values are not expected to be part of the matrix, and need to be supplied as a separate numeric vector sorted in ascending order. As in a spectrum wavelength values never repeat, the vector of wavelengths is never recycled and uniqueness of values is enforced.</p>
 <p>We here use artificial data, in this first example with spectra saved by column. We assume that the values in the matrix are spectral transmittance stored as percentages (hence “Tpc”).</p>
 <div class="sourceCode" id="cb79"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>, <span class="at">ncol =</span> <span class="dv">2</span>)</span>
@@ -2462,10 +2462,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb198-3"><a href="#cb198-3" aria-hidden="true" tabindex="-1"></a>                            <span class="st">&quot;where.measured&quot;</span> <span class="ot">=</span> <span class="st">&quot;geocode&quot;</span>),</span>
 <span id="cb198-4"><a href="#cb198-4" aria-hidden="true" tabindex="-1"></a>              <span class="at">unnest =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
 <pre><code>## # A tibble: 2 x 3
-##   spct.idx time                geocode             
-##   &lt;fct&gt;    &lt;dttm&gt;              &lt;named list&gt;        
-## 1 A        2015-10-31 08:00:00 &lt;tibble[,3] [1 x 3]&gt;
-## 2 B        2015-10-31 09:00:00 &lt;tibble[,3] [1 x 3]&gt;</code></pre>
+##   spct.idx time                geocode         
+##   &lt;fct&gt;    &lt;dttm&gt;              &lt;named list&gt;    
+## 1 A        2015-10-31 08:00:00 &lt;tibble [1 x 3]&gt;
+## 2 B        2015-10-31 09:00:00 &lt;tibble [1 x 3]&gt;</code></pre>
 <p>Function <code>add_attr2tb()</code> adds one or more columns with attributes to a tibble or data frame. We here also demonstrate that because the data frame object is passed to the first positional argument, we can use a <em>pipe</em>. This difference in interface is the main difference between this function and <code>spct_metadata()</code>.</p>
 <div class="sourceCode" id="cb200"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb200-1"><a href="#cb200-1" aria-hidden="true" tabindex="-1"></a><span class="fu">q_irrad</span>(two.mspct) <span class="sc">%&gt;%</span></span>
 <span id="cb200-2"><a href="#cb200-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_attr2tb</span>(two.mspct, </span>
@@ -5201,7 +5201,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode" id="cb405"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb405-1"><a href="#cb405-1" aria-hidden="true" tabindex="-1"></a>untg.sun.spct <span class="ot">&lt;-</span> <span class="fu">untag</span>(tg.sun.spct)</span>
 <span id="cb405-2"><a href="#cb405-2" aria-hidden="true" tabindex="-1"></a><span class="fu">is_tagged</span>(untg.sun.spct)</span></code></pre></div>
 <pre><code>## [1] FALSE</code></pre>
-<p>In the chuck above, we can see how this works, using in this case the default <code>byref = FALSE</code> which adds the tags to a copy of the spectrum object. In contrast, setting <code>byref = TRUE</code> adds the tags in place, or “by reference”&quot;, to the spct object supplied as argument. Passing arguments by reference is unusual for R and is best avoided.</p>
+<p>In the chuck above, we can see how this works, using in this case the default <code>byref = FALSE</code> which adds the tags to a copy of the spectrum object. In contrast, setting <code>byref = TRUE</code> adds the tags in place, or “by reference”“, to the spct object supplied as argument. Passing arguments by reference is unusual for R and is best avoided.</p>
 <div class="sourceCode" id="cb407"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb407-1"><a href="#cb407-1" aria-hidden="true" tabindex="-1"></a><span class="fu">is_tagged</span>(untg.sun.spct)</span></code></pre></div>
 <pre><code>## [1] FALSE</code></pre>
 <div class="sourceCode" id="cb409"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb409-1"><a href="#cb409-1" aria-hidden="true" tabindex="-1"></a><span class="fu">untag</span>(tg.sun.spct, <span class="at">byref =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
