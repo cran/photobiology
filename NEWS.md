@@ -4,6 +4,15 @@ editor_options:
     wrap: 72
 ---
 
+# photobiology 0.10.8
+
+-   Update functions `normalize()`, `setNormalized()` and `getNormalized()`,
+    and add new function `getNormalization()`. These changes implement the
+    storage in attribute `normalization` of the operation done.
+-   Fix bug in `mat2mspct()` affecting matrices with more than 26 columns and
+    without colnames set. 
+-   Fix bug in `rowwise` methods.
+    
 # photobiology 0.10.7
 
 -   Add function `ET_ref()` for computation of reference

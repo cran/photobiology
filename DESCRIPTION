@@ -1,8 +1,8 @@
 Package: photobiology
 Type: Package
 Title: Photobiological Calculations
-Version: 0.10.7
-Date: 2021-09-28
+Version: 0.10.8
+Date: 2021-12-08
 Authors@R: 
    c(
     person("Pedro J.", "Aphalo", email = "pedro.aphalo@helsinki.fi", role = c("aut", "cre"), comment = c(ORCID = "0000-0003-3385-972X")),
@@ -24,8 +24,9 @@ Depends: R (>= 3.6.0)
 Imports: stats, polynom (>= 1.4-0), tibble (>= 3.0.4), stringr (>=
         1.4.0), lubridate (>= 1.7.8), plyr (>= 1.8.4), dplyr (>=
         1.0.2), tidyr (>= 1.1.2), splus2R (>= 1.2-2), zoo (>= 1.8-8),
-        rlang (>= 0.4.8), rmarkdown (>= 2.4)
-Suggests: knitr (>= 1.30), testthat (>= 2.3.2), roxygen2 (>= 7.1.1)
+        rlang (>= 0.4.8)
+Suggests: knitr (>= 1.30), rmarkdown (>= 2.4), testthat (>= 2.3.2),
+        roxygen2 (>= 7.1.1)
 LazyLoad: yes
 LazyData: yes
 ByteCompile: true
@@ -36,11 +37,11 @@ Encoding: UTF-8
 RoxygenNote: 7.1.2
 VignetteBuilder: knitr
 NeedsCompilation: no
-Packaged: 2021-09-29 09:33:42 UTC; Aphalo
+Packaged: 2021-12-08 10:55:17 UTC; Aphalo
 Author: Pedro J. Aphalo [aut, cre] (<https://orcid.org/0000-0003-3385-972X>),
   Titta K. Kotilainen [ctb] (<https://orcid.org/0000-0002-2822-9734>),
   Glenn Davis [ctb],
   Agnese Fazio [ctb]
 Maintainer: Pedro J. Aphalo <pedro.aphalo@helsinki.fi>
 Repository: CRAN
-Date/Publication: 2021-09-29 12:20:02 UTC
+Date/Publication: 2021-12-08 11:50:02 UTC
