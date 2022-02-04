@@ -4,6 +4,12 @@ editor_options:
     wrap: 72
 ---
 
+# photobiology 0.10.9
+
+-   Update `smooth_spct()` methods so that `NA` values in `wl.range` are handled
+    as documented and consistently with other methods in the package.
+-   Update to accommodate code-breaking change in 'dplyr' (>= 1.0.8).
+    
 # photobiology 0.10.8
 
 -   Update functions `normalize()`, `setNormalized()` and `getNormalized()`,
