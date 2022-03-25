@@ -12,7 +12,7 @@
 
 <meta name="author" content="Pedro J. Aphalo" />
 
-<meta name="date" content="2022-02-04" />
+<meta name="date" content="2022-03-25" />
 
 <title>User Guide: 2 Astronomy and Atmosphere</title>
 
@@ -38,6 +38,7 @@ document.addEventListener('DOMContentLoaded', function(e) {
   div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
   ul.task-list{list-style: none;}
     </style>
+
 
 
 <style type="text/css">
@@ -332,9 +333,9 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 
 <h1 class="title toc-ignore">User Guide: 2 Astronomy and Atmosphere</h1>
-<h3 class="subtitle">Package ‘photobiology’ 0.10.9</h3>
+<h3 class="subtitle">Package ‘photobiology’ 0.10.10</h3>
 <h4 class="author">Pedro J. Aphalo</h4>
-<h4 class="date">2022-02-04</h4>
+<h4 class="date">2022-03-25</h4>
 
 
 <div id="TOC">
@@ -481,7 +482,7 @@ a useful default in some cases.</p>
 <pre><code>## # A tibble: 1 x 12
 ##   time                tz    solartime  longitude latitude address   azimuth
 ##   &lt;dttm&gt;              &lt;chr&gt; &lt;solar_tm&gt;     &lt;dbl&gt;    &lt;dbl&gt; &lt;chr&gt;       &lt;dbl&gt;
-## 1 2022-02-04 01:01:41 UTC   00:47:48           0     51.5 Greenwich    19.5
+## 1 2022-03-24 22:18:37 UTC   22:12:30           0     51.5 Greenwich    328.
 ## # ... with 5 more variables: elevation &lt;dbl&gt;, declination &lt;dbl&gt;,
 ## #   eq.of.time &lt;dbl&gt;, hour.angle &lt;dbl&gt;, distance &lt;dbl&gt;</code></pre>
 <p>A vector of times is accepted as argument, and as performance is
@@ -571,9 +572,9 @@ override it with EET to match the geocodes for Finnish cities.</p>
 <pre><code>## [1] &quot;2015-03-01 EET&quot;  &quot;2015-04-01 EEST&quot; &quot;2015-05-01 EEST&quot; &quot;2015-06-01 EEST&quot;
 ## [5] &quot;2015-07-01 EEST&quot; &quot;2015-08-01 EEST&quot;</code></pre>
 <div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sunrise_time</span>(<span class="fu">now</span>(<span class="st">&quot;UTC&quot;</span>), <span class="at">tz =</span> <span class="st">&quot;UTC&quot;</span>, <span class="at">geocode =</span> my.geocode)</span></code></pre></div>
-<pre><code>## [1] &quot;2022-02-04 06:27:26 UTC&quot;</code></pre>
+<pre><code>## [1] &quot;2022-03-24 04:09:12 UTC&quot;</code></pre>
 <div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sunrise_time</span>(<span class="fu">now</span>(<span class="st">&quot;EET&quot;</span>), <span class="at">tz =</span> <span class="st">&quot;EET&quot;</span>, <span class="at">geocode =</span> my.geocode)</span></code></pre></div>
-<pre><code>## [1] &quot;2022-02-04 06:27:26 EET&quot;</code></pre>
+<pre><code>## [1] &quot;2022-03-24 04:09:12 EET&quot;</code></pre>
 <p>Southern hemisphere latitudes as well as longitudes to the West of
 the Greenwich meridian should be supplied as negative numbers.</p>
 <div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sunrise_time</span>(dates, <span class="at">geocode =</span> <span class="fu">data.frame</span>(<span class="at">lat =</span> <span class="dv">60</span>, <span class="at">lon =</span> <span class="dv">0</span>))</span></code></pre></div>
@@ -697,7 +698,7 @@ coordinates).</p>
 <p>The default for <code>date</code> is the current day, using the
 system time zone settings.</p>
 <div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="fu">noon_time</span>(<span class="at">geocode =</span> my.geocode)</span></code></pre></div>
-<pre><code>## [1] &quot;2022-02-04 10:34:12 UTC&quot;</code></pre>
+<pre><code>## [1] &quot;2022-03-25 10:26:13 UTC&quot;</code></pre>
 <p>Parameter <code>unit.out</code> can be used to obtain the returned
 value expressed as time-of-day in hours, minutes, or seconds since
 midnight, instead of the default <code>datetime</code>.</p>
@@ -753,14 +754,14 @@ numerical value with a decimal fraction using one of hour, minute or
 second as unit of expression.</p>
 <div class="sourceCode" id="cb79"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a>times <span class="ot">&lt;-</span> <span class="fu">now</span>(<span class="at">tzone =</span> <span class="st">&quot;UTC&quot;</span>) <span class="sc">+</span> <span class="fu">hours</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">6</span>)</span>
 <span id="cb79-2"><a href="#cb79-2" aria-hidden="true" tabindex="-1"></a>times</span></code></pre></div>
-<pre><code>## [1] &quot;2022-02-04 01:01:42 UTC&quot; &quot;2022-02-04 02:01:42 UTC&quot;
-## [3] &quot;2022-02-04 03:01:42 UTC&quot; &quot;2022-02-04 04:01:42 UTC&quot;
-## [5] &quot;2022-02-04 05:01:42 UTC&quot; &quot;2022-02-04 06:01:42 UTC&quot;
-## [7] &quot;2022-02-04 07:01:42 UTC&quot;</code></pre>
+<pre><code>## [1] &quot;2022-03-24 22:18:39 UTC&quot; &quot;2022-03-24 23:18:39 UTC&quot;
+## [3] &quot;2022-03-25 00:18:39 UTC&quot; &quot;2022-03-25 01:18:39 UTC&quot;
+## [5] &quot;2022-03-25 02:18:39 UTC&quot; &quot;2022-03-25 03:18:39 UTC&quot;
+## [7] &quot;2022-03-25 04:18:39 UTC&quot;</code></pre>
 <div class="sourceCode" id="cb81"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a><span class="fu">as_tod</span>(times)</span></code></pre></div>
-<pre><code>## [1] 1.028552 2.028552 3.028552 4.028552 5.028552 6.028552 7.028552</code></pre>
+<pre><code>## [1] 22.3108437 23.3108437  0.3108437  1.3108437  2.3108437  3.3108437  4.3108437</code></pre>
 <div class="sourceCode" id="cb83"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb83-1"><a href="#cb83-1" aria-hidden="true" tabindex="-1"></a><span class="fu">as_tod</span>(times, <span class="at">unit.out =</span> <span class="st">&quot;minutes&quot;</span>)</span></code></pre></div>
-<pre><code>## [1]  61.71309 121.71309 181.71309 241.71309 301.71309 361.71309 421.71309</code></pre>
+<pre><code>## [1] 1338.65062 1398.65062   18.65062   78.65062  138.65062  198.65062  258.65062</code></pre>
 </div>
 <div id="relative-air-mass" class="section level2">
 <h2>Relative air mass</h2>
