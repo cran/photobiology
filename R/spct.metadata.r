@@ -588,8 +588,11 @@ getHowMeasured.generic_mspct <- function(x,
 #'   modified.
 #'
 #' @note
+#' The fields to be passed in the list \code{instr.desc} in part vary
+#' depending on the instrument brand and model.
 #'
 #' @export
+#'
 #' @family measurement metadata functions
 #'
 setInstrDesc <- function(x, instr.desc) {
@@ -673,7 +676,7 @@ trimInstrDesc <- function(x,
       instr.desc <- list(instr.desc)
     }
     for (i in seq(along.with = instr.desc)) {
-      if (!(is.null(instr.desc[[i]]) || is.na(instr.desc[[i]]))) {
+      if (!(is.null(instr.desc[[i]]) || all(is.na(instr.desc[[i]])))) {
         if (fields[1] == "-") {
           fields.tmp <- setdiff(names(instr.desc[[i]]), fields[-1])
         } else if (fields[1] == "=") {
@@ -835,7 +838,7 @@ trimInstrSettings <- function(x,
       instr.settings <- list(instr.settings)
     }
     for (i in seq(along.with = instr.settings)) {
-      if (!(is.null(instr.settings[[i]]) || is.na(instr.settings[[i]]))) {
+      if (!(length(instr.settings[[i]]) == 0 || all(is.na(instr.settings[[i]])))) {
         if (fields[1] == "-") {
           fields.tmp <- setdiff(names(instr.settings[[i]]), fields[-1])
         } else if (fields[1] == "=") {

@@ -6,7 +6,7 @@ all_spct_attr.ls <-
     private = c("spct.version",
                 "spct.tags",
                 "na.action"),
-    fragile = c("filter.properties"),
+    fragile = c("filter.properties", "solute.properties"),
     generic_spct = c("comment",
                      "instr.desc",
                      "instr.settings",
@@ -26,6 +26,7 @@ all_spct_attr.ls <-
     object_spct = c("Tfr.type", "Rfr.type", "filter.properties"),
     filter_spct = c("Tfr.type", "Rfr.type", "filter.properties"),
     reflector_spct = c("Tfr.type", "Rfr.type", "filter.properties"),
+    solute_spct = c("K.type", "solute.properties"),
     calibration_spct = character(),
     chroma_spct = character())
 
@@ -292,9 +293,9 @@ merge_attributes.generic_spct <- function(x, y, z,
       attr(z, w) <- att.y
     } else if (length(att.y) == 0L) {
       attr(z, w) <- att.x
-    } else if (any(is.na(att.x)) || any(is.na(att.y)) ||
+    } else if (# any(is.na(att.x)) || any(is.na(att.y)) ||
                class(att.x)[1] != class(att.y)[1] ||
-               length(att.x) != length(att.y) ||
+#               length(att.x) != length(att.y) ||
                xor(is.atomic(att.x), is.atomic(att.y))) {
       attr(z, w) <- ifelse(w %in% c("comment", "time.unit"), NA_character_, NA)
     } else {
@@ -410,6 +411,18 @@ get_attributes.object_spct <- function(x,
   get_attributes.generic_spct(x, which = which,
                               allowed = c(all_spct_attr.ls[["generic_spct"]],
                                           all_spct_attr.ls[["object_spct"]]),
+                              ...)
+}
+
+#' @describeIn get_attributes solute_spct
+#' @export
+#'
+get_attributes.solute_spct <- function(x,
+                                       which = NULL,
+                                       ...) {
+  get_attributes.generic_spct(x, which = which,
+                              allowed = c(all_spct_attr.ls[["generic_spct"]],
+                                          all_spct_attr.ls[["solute_spct"]]),
                               ...)
 }
 

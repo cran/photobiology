@@ -23,7 +23,8 @@ This function alters x itself by reference and in addition
   returns x invisibly. If x is not a generic_spct object, x is not
   modified.
 
-
+The fields to be passed in the list \code{instr.desc} in part vary
+depending on the instrument brand and model.
 }
 \seealso{
 Other measurement metadata functions: 
@@ -32,6 +33,7 @@ Other measurement metadata functions:
 \code{\link{getHowMeasured}()},
 \code{\link{getInstrDesc}()},
 \code{\link{getInstrSettings}()},
+\code{\link{getSoluteProperties}()},
 \code{\link{getWhatMeasured}()},
 \code{\link{getWhenMeasured}()},
 \code{\link{getWhereMeasured}()},
@@ -42,6 +44,7 @@ Other measurement metadata functions:
 \code{\link{setFilterProperties}()},
 \code{\link{setHowMeasured}()},
 \code{\link{setInstrSettings}()},
+\code{\link{setSoluteProperties}()},
 \code{\link{setWhatMeasured}()},
 \code{\link{setWhenMeasured}()},
 \code{\link{setWhereMeasured}()},

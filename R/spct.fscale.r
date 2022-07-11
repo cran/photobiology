@@ -4,23 +4,30 @@
 #'
 #' These methods return a spectral object of the same class as the one
 #' supplied as argument but with the spectral data rescaled based on a summary
-#' function \code{f} applied over a specific \code{range} or wavelengths and a
+#' function \code{f} applied over a specific \code{range} of wavelengths and a
 #' \code{target} value for the summary value.
 #'
 #' @param x An R object
 #' @param ... additional named arguments passed down to \code{f}.
 #'
-#' @note \strong{The default for \code{set.scaled} depends dynamically on the
-#'   passed to \code{target}.} Sometimes we rescale a spectrum to a
-#'   "theoretical" value for the summary, while in other cases we rescale the
-#'   spectrum to a real-world target value of e.g. a reference energy
-#'   irradiance. In the first case we say that the data are expressed in
+#' @details After scaling, applying the function passed as argument to \code{f}
+#'   to the scaled spectrum will return the value passed as argument to
+#'   \code{target}. \strong{The default for \code{set.scaled} depends
+#'   dynamically on the passed to \code{target}.} Sometimes we rescale a
+#'   spectrum to a "theoretical" value for the summary, while in other cases we
+#'   rescale the spectrum to a real-world target value of e.g. a reference
+#'   energy irradiance. In the first case we say that the data are expressed in
 #'   relative units, while in the second case we retain actual physical units.
 #'   To indicate this, this package uses an attribute, which will by default be
 #'   set assuming the first of these two situations when \code{target == 1} and
 #'   not set assuming the second situation otherwise. These defaults can be
 #'   overriden with an explicit \code{logical} argument passed to
 #'   \code{set.scaled}.
+#'
+#' @note Method \code{fscale} is not implemented for \code{solute_spct} objects
+#'   as the spectral data stored in them are a description of an intensive
+#'   property of a substance. To represent solutions of specific concentrations
+#'   of solutes, \code{filter_spct} objects can be used.
 #'
 #' @section Important changes: Metadata describing the rescaling operation are
 #'   stored in an attribute only if \code{set.scaled = TRUE} is passed to the call.
@@ -200,6 +207,27 @@ fscale.reflector_spct <- function(x,
 #'
 #' @export
 #'
+fscale.solute_spct <- function(x,
+                               range = NULL,
+                               f = "mean",
+                               target = 1,
+                               qty.out = NULL,
+                               set.scaled = target == 1,
+                               ...) {
+  col.name <- intersect(c("K.mole", "K.mass"), names(x))
+  fscale_spct(spct = x,
+              range = range,
+              f = f,
+              target = target,
+              col.names = col.name,
+              set.scaled = set.scaled,
+              ...)
+}
+
+#' @describeIn fscale
+#'
+#' @export
+#'
 fscale.raw_spct <- function(x,
                             range = NULL,
                             f = "mean",
@@ -281,6 +309,9 @@ fscale.source_mspct <- function(x,
                                 ...,
                                 .parallel = FALSE,
                                 .paropts = NULL) {
+
+  if (!length(x)) return(x) # class of x in no case changes
+
   msmsply(x,
           fscale,
           range = range,
@@ -307,6 +338,9 @@ fscale.response_mspct <- function(x,
                                   ...,
                                   .parallel = FALSE,
                                   .paropts = NULL) {
+
+  if (!length(x)) return(x) # class of x in no case changes
+
   msmsply(x,
           fscale,
           range = range,
@@ -333,6 +367,9 @@ fscale.filter_mspct <- function(x,
                                 ...,
                                 .parallel = FALSE,
                                 .paropts = NULL) {
+
+  if (!length(x)) return(x) # class of x in no case changes
+
   msmsply(x,
           fscale,
           range = range,
@@ -358,6 +395,9 @@ fscale.reflector_mspct <- function(x,
                                    ...,
                                    .parallel = FALSE,
                                    .paropts = NULL) {
+
+  if (!length(x)) return(x) # class of x in no case changes
+
   msmsply(x,
           fscale,
           range = range,
@@ -365,6 +405,32 @@ fscale.reflector_mspct <- function(x,
           target = target,
           set.scaled = set.scaled,
           qty.out = qty.out,
+          ...,
+          .parallel = .parallel,
+          .paropts = .paropts)
+}
+
+#' @describeIn fscale
+#'
+#' @export
+#'
+fscale.solute_mspct <- function(x,
+                                   range = NULL,
+                                   f = "mean",
+                                   target = 1,
+                                   set.scaled = target == 1,
+                                   ...,
+                                   .parallel = FALSE,
+                                   .paropts = NULL) {
+
+  if (!length(x)) return(x) # class of x in no case changes
+
+  msmsply(x,
+          fscale,
+          range = range,
+          f = f,
+          target = target,
+          set.scaled = set.scaled,
           ...,
           .parallel = .parallel,
           .paropts = .paropts)
@@ -382,6 +448,9 @@ fscale.raw_mspct <- function(x,
                              ...,
                              .parallel = FALSE,
                              .paropts = NULL) {
+
+  if (!length(x)) return(x) # class of x in no case changes
+
   msmsply(x,
           fscale,
           range = range,
@@ -405,6 +474,9 @@ fscale.cps_mspct <- function(x,
                              ...,
                              .parallel = FALSE,
                              .paropts = NULL) {
+
+  if (!length(x)) return(x) # class of x in no case changes
+
   msmsply(x,
           fscale,
           range = range,
@@ -429,6 +501,9 @@ fscale.generic_mspct <- function(x,
                                  ...,
                                  .parallel = FALSE,
                                  .paropts = NULL) {
+
+  if (!length(x)) return(x) # class of x in no case changes
+
   msmsply(x,
           fscale,
           range = range,

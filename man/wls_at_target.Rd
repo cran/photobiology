@@ -9,6 +9,7 @@
 \alias{wls_at_target.response_spct}
 \alias{wls_at_target.filter_spct}
 \alias{wls_at_target.reflector_spct}
+\alias{wls_at_target.solute_spct}
 \alias{wls_at_target.cps_spct}
 \alias{wls_at_target.generic_mspct}
 \title{Find wavelengths values corresponding to a target spectral value}
@@ -17,7 +18,7 @@ wls_at_target(
   x,
   target = NULL,
   interpolate = FALSE,
-  idfactor = FALSE,
+  idfactor = length(target) > 1,
   na.rm = FALSE,
   ...
 )
@@ -26,16 +27,16 @@ wls_at_target(
   x,
   target = NULL,
   interpolate = FALSE,
-  idfactor = FALSE,
+  idfactor = length(target) > 1,
   na.rm = FALSE,
   ...
 )
 
 \method{wls_at_target}{data.frame}(
   x,
-  target = "half.maximum",
+  target = "0.5max",
   interpolate = FALSE,
-  idfactor = FALSE,
+  idfactor = length(target) > 1,
   na.rm = FALSE,
   x.var.name = NULL,
   y.var.name = NULL,
@@ -44,9 +45,9 @@ wls_at_target(
 
 \method{wls_at_target}{generic_spct}(
   x,
-  target = "half.maximum",
+  target = "0.5max",
   interpolate = FALSE,
-  idfactor = FALSE,
+  idfactor = length(target) > 1,
   na.rm = FALSE,
   col.name = NULL,
   y.var.name = col.name,
@@ -55,9 +56,9 @@ wls_at_target(
 
 \method{wls_at_target}{source_spct}(
   x,
-  target = "half.maximum",
+  target = "0.5max",
   interpolate = FALSE,
-  idfactor = FALSE,
+  idfactor = length(target) > 1,
   na.rm = FALSE,
   unit.out = getOption("photobiology.radiation.unit", default = "energy"),
   ...
@@ -65,9 +66,9 @@ wls_at_target(
 
 \method{wls_at_target}{response_spct}(
   x,
-  target = "half.maximum",
+  target = "0.5max",
   interpolate = FALSE,
-  idfactor = FALSE,
+  idfactor = length(target) > 1,
   na.rm = FALSE,
   unit.out = getOption("photobiology.radiation.unit", default = "energy"),
   ...
@@ -75,9 +76,9 @@ wls_at_target(
 
 \method{wls_at_target}{filter_spct}(
   x,
-  target = "half.maximum",
+  target = "0.5max",
   interpolate = FALSE,
-  idfactor = FALSE,
+  idfactor = length(target) > 1,
   na.rm = FALSE,
   filter.qty = getOption("photobiology.filter.qty", default = "transmittance"),
   ...
@@ -85,27 +86,36 @@ wls_at_target(
 
 \method{wls_at_target}{reflector_spct}(
   x,
-  target = "half.maximum",
+  target = "0.5max",
   interpolate = FALSE,
-  idfactor = FALSE,
+  idfactor = length(target) > 1,
+  na.rm = FALSE,
+  ...
+)
+
+\method{wls_at_target}{solute_spct}(
+  x,
+  target = "0.5max",
+  interpolate = FALSE,
+  idfactor = length(target) > 1,
   na.rm = FALSE,
   ...
 )
 
 \method{wls_at_target}{cps_spct}(
   x,
-  target = "half.maximum",
+  target = "0.5max",
   interpolate = FALSE,
-  idfactor = FALSE,
+  idfactor = length(target) > 1,
   na.rm = FALSE,
   ...
 )
 
 \method{wls_at_target}{generic_mspct}(
   x,
-  target = "half.maximum",
+  target = "0.5max",
   interpolate = FALSE,
-  idfactor = FALSE,
+  idfactor = length(target) > 1,
   na.rm = FALSE,
   ...,
   .parallel = FALSE,
@@ -115,16 +125,21 @@ wls_at_target(
 \arguments{
 \item{x}{data.frame or spectrum object.}
 
-\item{target}{numeric value indicating the spectral quantity value for which
-wavelengths are to be searched and interpolated if need. The character
-string "half.maximum" is also accepted as argument.}
+\item{target}{numeric or character vector. A numeric value indicates the spectral
+quantity value for which wavelengths are to be searched. A character
+string representing a number is converted to numeric. A character value
+representing a number followed by a function name, will be also accepted
+and decoded, such that \code{"0.1max"} is interpreted as targeting one
+tenth of the maximum value in the column. The character
+strings "half.maximum" and "HM" are synonyms for "0.5max" while
+"half.range" and "HR" are synonyms for "0.5range".}
 
 \item{interpolate}{logical Indicating whether the nearest wavelength value
 in \code{x} should be returned or a value calculated by linear
 interpolation between wavelength values straddling the target.}
 
 \item{idfactor}{logical or character Generates an index column of factor
-type. If \code{idfactor = TRUE} then the column is auto named spct.idx.
+type. If \code{idfactor = TRUE} then the column is auto named target.idx.
 Alternatively the column name can be directly passed as argument to
 \code{idfactor} as a character string.}
 
@@ -151,11 +166,13 @@ your code relies on external data or packages: use the .export and
 correct environment set up for computing.}
 }
 \value{
-A data.frame or a spectrum object of the same class as \code{x} with
-  fewer rows, possibly even no rows. If \code{FALSE} is passed to
-  \code{interpolate} a subset of \code{x} is returned, otherwise a new object
-  of the same class containing interpolated wavelengths for the \code{target}
-  value is returned.
+A data.frame, a spectrum object or a collection of spectra object of
+  the same class as \code{x} with fewer rows, possibly even no rows. If
+  \code{FALSE} is passed to \code{interpolate} a subset of \code{x} is
+  returned, otherwise a new object of the same class containing interpolated
+  wavelengths for the \code{target} value is returned. As `target` accepts
+  a vector or list as argument, a factor can be added to the output with
+  the corresponding target value.
 }
 \description{
 Find wavelength values corresponding to a target spectral value in a spectrum.
@@ -179,6 +196,8 @@ same class as \code{x}.
 \item \code{filter_spct}: Method for "filter_spct" objects.
 
 \item \code{reflector_spct}: Method for "reflector_spct" objects.
+
+\item \code{solute_spct}: Method for "solute_spct" objects.
 
 \item \code{cps_spct}: Method for "cps_spct" objects.
 

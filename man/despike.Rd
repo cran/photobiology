@@ -10,6 +10,7 @@
 \alias{despike.response_spct}
 \alias{despike.filter_spct}
 \alias{despike.reflector_spct}
+\alias{despike.solute_spct}
 \alias{despike.cps_spct}
 \alias{despike.raw_spct}
 \alias{despike.generic_mspct}
@@ -17,6 +18,7 @@
 \alias{despike.response_mspct}
 \alias{despike.filter_mspct}
 \alias{despike.reflector_mspct}
+\alias{despike.solute_mspct}
 \alias{despike.cps_mspct}
 \alias{despike.raw_mspct}
 \title{Remove spikes from spectrum}
@@ -110,6 +112,16 @@ despike(x, z.threshold, max.spike.width, window.width, method, na.rm, ...)
   ...
 )
 
+\method{despike}{solute_spct}(
+  x,
+  z.threshold = 9,
+  max.spike.width = 8,
+  window.width = 11,
+  method = "run.mean",
+  na.rm = FALSE,
+  ...
+)
+
 \method{despike}{cps_spct}(
   x,
   z.threshold = 9,
@@ -184,6 +196,18 @@ despike(x, z.threshold, max.spike.width, window.width, method, na.rm, ...)
 )
 
 \method{despike}{reflector_mspct}(
+  x,
+  z.threshold = 9,
+  max.spike.width = 8,
+  window.width = 11,
+  method = "run.mean",
+  na.rm = FALSE,
+  ...,
+  .parallel = FALSE,
+  .paropts = NULL
+)
+
+\method{despike}{solute_mspct}(
   x,
   z.threshold = 9,
   max.spike.width = 8,
@@ -286,6 +310,8 @@ source of spikes are "hot pixels" in CCD and diode array detectors.
 
 \item \code{reflector_spct}: Method for "reflector_spct" objects.
 
+\item \code{solute_spct}: Method for "solute_spct" objects.
+
 \item \code{cps_spct}: Method for "cps_spct" objects.
 
 \item \code{raw_spct}: Method for "raw_spct" objects.
@@ -299,6 +325,8 @@ source of spikes are "hot pixels" in CCD and diode array detectors.
 \item \code{filter_mspct}: Method for "filter_mspct" objects.
 
 \item \code{reflector_mspct}: Method for "reflector_mspct" objects.
+
+\item \code{solute_mspct}: Method for "solute_mspct" objects.
 
 \item \code{cps_mspct}: Method for "cps_mspct" objects.
 

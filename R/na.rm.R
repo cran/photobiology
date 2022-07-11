@@ -155,6 +155,17 @@ na.omit.object_spct <- function(object, na.action = "omit", fill = NULL, ...) {
 #'
 #' @export
 #'
+na.omit.solute_spct <- function(object, na.action = "omit", fill = NULL, ...) {
+  na.omit.generic_spct(object = object,
+                       na.action = na.action,
+                       fill = fill,
+                       target.colnames = c("K.mole", "K.mass"))
+}
+
+#' @rdname na.omit
+#'
+#' @export
+#'
 na.omit.cps_spct <- function(object, na.action = "omit", fill = NULL, ...) {
   na.omit.generic_spct(object = object,
                        na.action = na.action,
@@ -258,6 +269,17 @@ na.exclude.object_spct <- function(object, na.action = "exclude", fill = NULL, .
                        na.action = na.action,
                        fill = fill,
                        target.colnames = c("Trf", "Rfr"))
+}
+
+#' @rdname na.omit
+#'
+#' @export
+#'
+na.exclude.solute_spct <- function(object, na.action = "exclude", fill = NULL, ...) {
+  na.omit.generic_spct(object = object,
+                       na.action = na.action,
+                       fill = fill,
+                       target.colnames = c("K.mole", "K.mass"))
 }
 
 #' @rdname na.omit

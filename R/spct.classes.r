@@ -14,7 +14,8 @@ spct_classes <- function() {
     "raw_spct", "cps_spct",
     "filter_spct", "reflector_spct",
     "source_spct", "object_spct",
-    "response_spct", "chroma_spct", "generic_spct")
+    "response_spct", "chroma_spct",
+    "solute_spct", "generic_spct")
 }
 
 # check -------------------------------------------------------------------
@@ -396,6 +397,67 @@ check_spct.filter_spct <-
       if (exists("A", x, mode = "numeric", inherits = FALSE) && anyNA(x[["A"]])) {
         warning("At least one NA in 'A'")
       }
+    }
+    x
+  }
+
+#' @describeIn check_spct Specialization for solute_spct.
+#' @export
+check_spct.solute_spct <-
+  function(x,
+           byref = TRUE,
+           strict.range = getOption("photobiology.strict.range", default = FALSE),
+           force = FALSE,
+           multiple.wl = getMultipleWl(x),
+           ...) {
+
+    range_check <- function(x, strict.range, k.base) {
+      K.col <- paste("K", k.base, sep = ".")
+      stopifnot(K.col %in% names(x))
+
+      if (!all(is.na(x[[K.col]]))) {
+        K.col.min <- min(x[[K.col]], na.rm = TRUE)
+        K.col.max <- max(x[[K.col]], na.rm = TRUE)
+        if (K.col.min < -1e-4) {
+          message.text <-
+            paste0(
+              "Negative attenuation values [",
+              formatted_range(c(K.col.min, K.col.max)),
+              "]",
+              sep = ""
+            )
+          if (is.null(strict.range) || is.na(strict.range)) {
+            message(message.text)
+          } else if (strict.range) {
+            stop(message.text)
+          } else if (!strict.range) {
+            warning(message.text)
+          } else {
+            stop ("Bad argument for 'strict.range': ", strict.range)
+          }
+        }
+      }
+    }
+
+    x <- check_spct.generic_spct(x, multiple.wl = multiple.wl)
+    if (is.null(getKType(x))) {
+      setKType(x, "attenaution")
+      warning("Missing K.type attribute replaced by 'attenuation'")
+    }
+
+    if (exists("K.mole", x, mode = "numeric", inherits = FALSE)) {
+      range_check(x, strict.range = strict.range, k.base = "mole")
+      if (getOption("photobiology.verbose") && anyNA(x[["K.mole"]])) {
+        warning("At least one NA in 'K.mole'")
+      }
+    } else if (exists("K.mass", x, mode = "numeric", inherits = FALSE)) {
+      range_check(x, strict.range = strict.range, k.base = "mass")
+      if (getOption("photobiology.verbose") && anyNA(x[["K.mass"]])) {
+        warning("At least one NA in 'K.mass'")
+      }
+    } else {
+      warning("No coefficient of attenuation data found in solute_spct")
+      x[["K.mole"]] <- NA_real_
     }
     x
   }
@@ -964,8 +1026,13 @@ setCpsSpct <-
 #'   error instead of a warning.
 #' @export
 #'
+#' @section Warning!: Not entering metadata when creating an object will limit the available
+#'    operations!
 #'
-#' @note For non-diffusing materials like glass an approximate \code{Rfr.constant}
+#' @note "internal" transmittance is defined as the transmittance of the
+#'   material body itself, while "total" transmittance includes the effects of
+#'   surface reflectance on the amount of light transmitted.
+#'   For non-diffusing materials like glass an approximate \code{Rfr.constant}
 #'   value can be used to interconvert "total" and "internal" transmittance
 #'   values. Use \code{NA} if not known, or not applicable, e.g., for materials
 #'   subject to internal scattering.
@@ -975,7 +1042,7 @@ setFilterSpct <-
            Tfr.type = c("total", "internal"),
            Rfr.constant = NA_real_,
            thickness = NA_real_,
-           attenuation.mode = NA,
+           attenuation.mode = NA_character_,
            strict.range = getOption("photobiology.strict.range", default = FALSE),
            multiple.wl = 1L,
            idfactor = NULL) {
@@ -1004,6 +1071,65 @@ setFilterSpct <-
     invisible(x)
   }
 
+#' @describeIn setGenericSpct Set class of an object to "solute_spct".
+#'
+#' @param K.type character A string, either "attenuation", "absorption" or
+#'   "scattering".
+#' @param mass numeric The mass in Dalton (Da = g/mol).
+#' @param formula character The molecular formula.
+#' @param structure raster A bitmap of the structure.
+#' @param name character The name of the substance. A named character
+#'     vector, with member names such as "IUPAC" for the authority.
+#' @param ID character The name of the substance. A named character
+#'     vector, with member names such as "ChemSpider" or "PubChen" for the
+#'     authority.
+#'
+#' @export
+#'
+#'
+#' @note For non-diffusing materials like glass an approximate \code{Rfr.constant}
+#'   value can be used to interconvert "total" and "internal" transmittance
+#'   values. Use \code{NA} if not known, or not applicable, e.g., for materials
+#'   subject to internal scattering.
+#'
+setSoluteSpct <-
+  function(x,
+           K.type = c("attenuation", "absorption", "scattering"),
+           name = NA_character_,
+           mass = NA_character_,
+           formula = NA_character_,
+           structure = grDevices::as.raster(matrix()),
+           ID = NA_character_,
+           strict.range = getOption("photobiology.strict.range", default = FALSE),
+           multiple.wl = 1L,
+           idfactor = NULL) {
+    name <- substitute(x)
+    if (is.solute_spct(x) &&
+        getKType(x) != "unknown") {
+      if (length(K.type) > 1) {
+        K.type <- getKType(x)
+      } else if (K.type != getKType(x)) {
+        warning("Overwriting attribute 'K.type' from ", getKType(x),
+                " into ", K.type)
+      }
+    }
+    setGenericSpct(x, multiple.wl = multiple.wl, idfactor = idfactor)
+    class(x) <- c("solute_spct", class(x))
+    setKType(x, K.type[1])
+    setSoluteProperties(x,
+                        pass.null = FALSE,
+                        mass = mass,
+                        formula = formula,
+                        structure = structure,
+                        name = name)
+    x <- check_spct(x, strict.range = strict.range)
+    if (is.name(name)) {
+      name <- as.character(name)
+      assign(name, x, parent.frame(), inherits = TRUE)
+    }
+    invisible(x)
+  }
+
 #' @describeIn setGenericSpct Set class of a an object to "reflector_spct".
 #'
 #' @param Rfr.type character A string, either "total" or "specular".
@@ -1012,7 +1138,7 @@ setFilterSpct <-
 #'
 setReflectorSpct <-
   function(x,
-           Rfr.type=c("total", "specular"),
+           Rfr.type = c("total", "specular"),
            strict.range = getOption("photobiology.strict.range", default = FALSE),
            multiple.wl = 1L,
            idfactor = NULL) {
@@ -1050,9 +1176,6 @@ setObjectSpct <-
            multiple.wl = 1L,
            idfactor = NULL) {
     name <- substitute(x)
-    if (Tfr.type == "total" && Rfr.type != "total") {
-      warning("Rfr is not \"total\", making conversions between Afr and Tfr impossible.")
-    }
     if ((is.filter_spct(x) || is.object_spct(x)) && getTfrType(x) != "unknown") {
       if (length(Tfr.type) > 1) {
         Tfr.type <- getTfrType(x)
@@ -1060,6 +1183,8 @@ setObjectSpct <-
         warning("Overwriting attribute 'Tfr.type' from ", getTfrType(x),
                 " into ", Tfr.type)
       }
+    } else {
+      Tfr.type <- Tfr.type[1]
     }
     if ((is.reflector_spct(x) || is.object_spct(x)) && getRfrType(x) != "unknown") {
       if (length(Rfr.type) > 1) {
@@ -1068,6 +1193,11 @@ setObjectSpct <-
         warning("Overwriting attribute 'Rfr.type' from ", getRfrType(x),
                 " into ", Rfr.type)
       }
+    } else {
+      Rfr.type <- Rfr.type[1]
+    }
+    if (Tfr.type == "total" && Rfr.type != "total") {
+      message("Rfr is not \"total\", making conversions between Afr and Tfr impossible.")
     }
     setGenericSpct(x, multiple.wl = multiple.wl, idfactor = idfactor)
     class(x) <- c("object_spct", class(x))
@@ -1228,6 +1358,11 @@ is.reflector_spct <- function(x) inherits(x, "reflector_spct")
 #' @export
 #'
 is.object_spct <- function(x) inherits(x, "object_spct")
+
+#' @rdname is.generic_spct
+#' @export
+#'
+is.solute_spct <- function(x) inherits(x, "solute_spct")
 
 #' @rdname is.generic_spct
 #' @export
@@ -1425,6 +1560,41 @@ is_transmittance_based <- function(x) {
   }
 }
 
+# is_mole_based ---------------------------------------------------------
+
+#' Query if a spectrum contains mole or mass based data
+#'
+#' Functions to check if an solute attenuation spectrum contains coefficients
+#' on expressed on mole of mass base.
+#'
+#' @param x an R object
+#'
+#' @return \code{is_mole_based} returns TRUE if its argument is a
+#'   \code{solute_spct} object that contains spectral \code{K.mole} data and
+#'   \code{FALSE} if it contains \code{K.mass} data, but returns NA for any
+#'   other R object, including those belonging other \code{generic_spct}-derived
+#'   classes. \code{is_mass_based} returns the complement of
+#'   \code{is_mole_based}.
+#'
+#' @export
+#' @family query units functions
+#'
+#' @examples
+#' print("missing example")
+#'
+is_mole_based <- function(x) {
+  if (is.solute_spct(x) || is.summary_solute_spct(x)) {
+    return("K.mole" %in% names(x))
+  } else {
+    return(NA_integer_)
+  }
+}
+
+#' @rdname is_mole_based
+#'
+is_mass_based <- function(x) {
+  !is_mole_based(x)
+}
 
 # time.unit attribute -----------------------------------------------------
 
@@ -1977,6 +2147,82 @@ getRfrType <- function(x) {
       Rfr.type <- "unknown"
     }
     return(Rfr.type[[1]])
+  } else {
+    return(NA_character_)
+  }
+}
+
+# Tfr.type attribute ------------------------------------------------------
+
+#' Set the "K.type" attribute
+#'
+#' Function to set by reference the "K.type" attribute of an existing
+#' solute_spct object
+#'
+#' @param x a solute_spct or a summary_solute_spct object.
+#' @param K.type character A string, either "attenuation", "absorption" or
+#'   "scattering".
+#'
+#' @return x
+#' @note This function alters x itself by reference and in addition
+#'   returns x invisibly. If x is not a solute_spct object, x is not modified
+#'   The behaviour of this function is 'unusual' in that the default for
+#'   parameter \code{K.type} is used only if \code{x} does not already have
+#'   this attribute set.
+#'
+#' @export
+#' @family K attribute functions
+#' @examples
+#' print("missing example")
+#'
+setKType <- function(x,
+                     K.type = c("attenuation", "absorption", "scattering")) {
+  name <- substitute(x)
+  if (length(K.type) > 1) {
+    if (getKType(x) != "unknown") {
+      K.type <- getKType(x)
+    } else {
+      K.type <- K.type[[1]]
+    }
+  }
+  if (is.solute_spct(x) || is.summary_solute_spct(x)) {
+    if  (!(K.type %in% c("attenuation", "absorption", "scattering"))) {
+      warning("Invalid 'K.type' argument, only 'attenuation', 'absorption' and 'scattering' supported.")
+      return(x)
+    }
+    attr(x, "K.type") <- K.type
+    if (is.name(name)) {
+      name <- as.character(name)
+      assign(name, x, parent.frame(), inherits = TRUE)
+    }
+  }
+  invisible(x)
+}
+
+#' Get the "K.type" attribute
+#'
+#' Function to read the "K.type" attribute of an existing solute_spct object.
+#'
+#' @param x a solute_spct object
+#'
+#' @return character string
+#'
+#' @note If x is not a \code{solute_spct} or a \code{summary_solute_spct} object,
+#'   \code{NA} is returned.
+#'
+#' @export
+#' @family K attribute functions
+#' @examples
+#' print("missing example")
+#'
+getKType <- function(x) {
+  if (is.solute_spct(x) || is.summary_solute_spct(x)) {
+    K.type <- attr(x, "K.type", exact = TRUE)
+    if (is.null(K.type) || is.na(K.type)) {
+      # need to handle corrupted objects
+      K.type <- "unknown"
+    }
+    return(K.type[[1]])
   } else {
     return(NA_character_)
   }
@@ -2564,7 +2810,7 @@ convertTfrType <- function(x, Tfr.type = NULL) {
     return(invisible(x))
   }
 
-  if (is.null(Tfr.type) || Tfr.type == getTfrType(x)) {
+  if (is.null(Tfr.type) || Tfr.type[1] == getTfrType(x)[1]) {
     # nothing to do
     return(invisible(x))
   }
@@ -2625,4 +2871,234 @@ convertTfrType <- function(x, Tfr.type = NULL) {
     }
   }
   z
+}
+
+# "solute.properties" attribute ----------------------------------------------
+
+#' Set the "solute.properties" attribute
+#'
+#' Function to set by reference the \code{"solute.properties"} attribute of an existing
+#' \code{solute_spct} object.
+#'
+#' @param x solute_spct A spectrum of coefficients of attenuation.
+#' @param solute.properties,value a list with fields named \code{"mass"}, \code{"formula"},
+#'   \code{"structure"}, \code{"name"} and \code{"ID"}.
+#' @param pass.null logical If \code{TRUE}, the parameters to the next three
+#'    parameters will be always ignored, otherwise they will be used to
+#'    build an object of class \code{"solute.properties"} when the argument to
+#'    \code{solute.properties} is \code{NULL}.
+#' @param mass numeric The mass in Dalton (Da = g/mol).
+#' @param formula character The molecular formula.
+#' @param structure raster A bitmap of the structure.
+#' @param name character The name of the substance. A named character
+#'     vector, with member names such as "IUPAC" for the authority.
+#' @param ID character The name of the substance. A named character
+#'     vector, with member names such as "ChemSpider" or "PubChen" for the
+#'     authority.
+#'
+#' @details Storing solute properties allows inter-conversion between bases
+#'   of expression, and ensures the unambiguous identification of the substances
+#'   to which the spectral data refer. The parameter \code{pass.null} makes
+#'   it possible to remove the attribute.
+#'
+#' @return \code{x}
+#' @note This function alters \code{x} itself by reference and in addition
+#'   returns \code{x} invisibly. If \code{x} is not a filter_spct object,
+#'   \code{x} is not modified.
+#'
+#' @export
+#' @family measurement metadata functions
+#'
+#' @examples
+#'
+#' solute.properties <-
+#'   list(formula = c(text = "H2O", html = "H<sub>2</sub>", TeX = "$H_2O$"),
+#'        name = c("water", IUPAC = "oxidane"),
+#'        structure = grDevices::as.raster(matrix()),
+#'        mass = 18.015, # Da
+#'        ID = c(ChemSpider = "917", CID = "962"))
+#' my.spct <- solute_spct()
+#' solute_properties(my.spct) <- solute.properties
+#' solute_properties(my.spct)
+#' solute_properties(my.spct) <- NULL
+#' solute_properties(my.spct)
+#' solute_properties(my.spct, return.null = TRUE)
+#' solute_properties(my.spct)
+#'
+setSoluteProperties <- function(x,
+                                solute.properties = NULL,
+                                pass.null = FALSE,
+                                mass = NA_real_,
+                                formula = NULL,
+                                structure = grDevices::as.raster(matrix()),
+                                name = NA_character_,
+                                ID = NA_character_) {
+  obj.name <- substitute(x)
+  if (is.solute_spct(x)) {
+    if (!(pass.null && is.null(solute.properties))) {
+      if (is.null(solute.properties)) {
+        solute.properties <- list(mass = mass,
+                                  formula = formula,
+                                  structure = structure,
+                                  name = name,
+                                  ID = ID)
+        class(solute.properties) <-
+          c("solute_properties", class(solute.properties))
+      } else {
+        stopifnot(setequal(names(solute.properties),
+                           c("mass", "formula", "structure", "name", "ID")))
+        if (class(solute.properties)[1] != "solute_properties") {
+          class(solute.properties) <-
+            c("solute_properties", class(solute.properties))
+        }
+      }
+      if (!is.numeric(solute.properties[["mass"]])) {
+        solute.properties[["mass"]] <-
+          as.numeric(solute.properties[["mass"]])
+      }
+      if (!is.na(solute.properties[["mass"]]) &&
+          solute.properties[["mass"]] <= 1) {
+        warning("Found 'mass' (Da = g/mol) <= 1 and set it to NA")
+        solute.properties[["mass"]] <- NA_real_
+      }
+      if (!is.character(solute.properties[["formula"]])) {
+        solute.properties[["formula"]] <-
+          as.character(solute.properties[["formula"]])
+      }
+      if (!grDevices::is.raster(solute.properties[["structure"]])) {
+        solute.properties[["structure"]] <-
+          grDevices::as.raster(solute.properties[["structure"]])
+      }
+      if (!is.character(solute.properties[["name"]])) {
+        solute.properties[["name"]] <-
+          as.character(solute.properties[["name"]])
+      }
+      if (!is.character(solute.properties[["ID"]])) {
+        solute.properties[["ID"]] <-
+          as.character(solute.properties[["ID"]])
+      }
+    }
+    attr(x, "solute.properties") <- solute.properties
+    if (is.name(obj.name)) {
+      obj.name <- as.character(obj.name)
+      assign(obj.name, x, parent.frame(), inherits = TRUE)
+    }
+  } else {
+    warning("'setSoluteProperties()' not applicable to objects of class ",
+            class(x)[1], ", skipping.")
+  }
+  invisible(x)
+}
+
+#' @rdname setSoluteProperties
+#'
+#' @export
+#'
+`solute_properties<-` <- function(x,
+                                  value = NULL) {
+  setSoluteProperties(x = x,
+                      solute.properties = value,
+                      pass.null = TRUE)
+}
+
+#' Get the "solute.properties" attribute
+#'
+#' Function to read the \code{"solute.properties"} attribute of an existing
+#' \code{solute_spct} or a \code{solute_mspct} objects.
+#'
+#' @param x solute_spct A spectrum of coefficients of attenuation.
+#' @param return.null logical If true, \code{NULL} is returned if the attribute
+#'   is not set, otherwise the expected list is returned with all fields set to
+#'   \code{NA}.
+#' @param ... Allows use of additional arguments in methods for other classes.
+#'
+#' @return a \code{list} with fields named \code{"mass"}, \code{"formula"},
+#'   \code{"structure"}, \code{"name"} and \code{"ID"}. If the attribute is not
+#'   set, and \code{return.null} is \code{FALSE}, a list with fields set to
+#'   \code{NA} is returned, otherwise, \code{NULL}.
+#'
+#' @export
+#' @family measurement metadata functions
+#'
+#' @examples
+#' solute_properties(water.spct)
+#'
+getSoluteProperties <- function(x, return.null, ...) UseMethod("getSoluteProperties")
+
+#' @rdname getSoluteProperties
+#'
+#' @export
+#'
+solute_properties <- getSoluteProperties
+
+#' @describeIn getSoluteProperties default
+#' @export
+getSoluteProperties.default <- function(x,
+                                        return.null = FALSE,
+                                        ...) {
+  if (!is.any_spct(x) && !is.any_summary_spct(x)) {
+    warning("Methods 'getSoluteProperties()' not implemented for class: ",
+            class(x)[1])
+  }
+  if (return.null) {
+    NULL
+  } else {
+    # we return an NA
+    solute.properties <- list(mass = NA_real_,
+                              formula = NA_character_,
+                              structure = grDevices::as.raster(matrix()),
+                              name = NA_character_,
+                              ID = NA_character_)
+    class(solute.properties) <-
+      c("solute_properties", class(solute.properties))
+    solute.properties
+  }
+}
+
+#' @describeIn getSoluteProperties solute_spct
+#' @export
+getSoluteProperties.solute_spct <- function(x,
+                                            return.null = FALSE,
+                                            ...) {
+  solute.properties <- attr(x, "solute.properties", exact = TRUE)
+  if (is.null(solute.properties)) {
+    if (!return.null) {
+      # need to handle objects created with old versions
+      solute.properties <- list(mass = NA_real_,
+                                formula = NA_character_,
+                                structure = grDevices::as.raster(matrix()),
+                                name = NA_character_,
+                                ID = NA_character_)
+      class(solute.properties) <-
+        c("solute_properties", class(solute.properties))
+    }
+  } else {
+    stopifnot(setequal(names(solute.properties),
+                       c("mass", "formula", "structure", "name", "ID")))
+  }
+  solute.properties
+}
+
+#' @describeIn getSoluteProperties summary_solute_spct
+#'
+#' @export
+#'
+getSoluteProperties.summary_solute_spct <- getSoluteProperties.solute_spct
+
+#' @describeIn getSoluteProperties solute_mspct
+#' @param idx character Name of the column with the names of the members of the
+#'   collection of spectra.
+#' @note The method for collections of spectra returns the
+#'   a tibble with a column of lists.
+#' @export
+#'
+getSoluteProperties.solute_mspct <- function(x,
+                                             return.null = FALSE,
+                                             ...,
+                                             idx = "spct.idx") {
+  l <- mslply(mspct = x, .fun = getSoluteProperties, ...)
+  comment(l) <- NULL
+  z <- list(solute.properties = l)
+  z[[idx]] <- factor(names(l), levels = names(l))
+  tibble::as_tibble(z[c(2, 1)])
 }

@@ -223,6 +223,31 @@ normalize.reflector_spct <-
                    na.rm = na.rm)
   }
 
+#' @describeIn normalize Normalize a solute spectrum.
+#'
+#' @export
+#'
+normalize.solute_spct <-
+  function(x,
+           ...,
+           range = NULL,
+           norm = "max",
+           keep.scaling = FALSE,
+           na.rm = FALSE) {
+    cols <- intersect(c("K.mole", "K.mass"), names(x))
+    if (length(cols) == 1) {
+      col.name <- cols
+    } else {
+      stop("Invalid number of columns found:", length(cols))
+    }
+    normalize_spct(spct = x,
+                   range = range,
+                   norm = norm,
+                   col.names = col.name,
+                   keep.scaling = keep.scaling,
+                   na.rm = na.rm)
+  }
+
 #' @describeIn normalize Normalize a raw spectrum.
 #'
 #' @export
@@ -311,6 +336,9 @@ normalize.source_mspct <-
            na.rm = FALSE,
            .parallel = FALSE,
            .paropts = NULL) {
+
+    if (!length(x)) return(x) # class of x in no case changes
+
     msmsply(x,
             normalize,
             range = range,
@@ -337,6 +365,9 @@ normalize.response_mspct <-
            na.rm = FALSE,
            .parallel = FALSE,
            .paropts = NULL) {
+
+    if (!length(x)) return(x) # class of x in no case changes
+
     msmsply(x,
             normalize,
             range = range,
@@ -363,6 +394,9 @@ normalize.filter_mspct <-
            na.rm = FALSE,
            .parallel = FALSE,
            .paropts = NULL) {
+
+    if (!length(x)) return(x) # class of x in no case changes
+
     msmsply(x,
             normalize,
             range = range,
@@ -387,6 +421,9 @@ normalize.reflector_mspct <- function(x,
                                       na.rm = FALSE,
                                       .parallel = FALSE,
                                       .paropts = NULL) {
+
+  if (!length(x)) return(x) # class of x in no case changes
+
   msmsply(x,
           normalize,
           range = range,
@@ -410,6 +447,9 @@ normalize.raw_mspct <- function(x,
                                 na.rm = FALSE,
                                 .parallel = FALSE,
                                 .paropts = NULL) {
+
+  if (!length(x)) return(x) # class of x in no case changes
+
   msmsply(x,
           normalize,
           range = range,
@@ -431,6 +471,9 @@ normalize.cps_mspct <- function(x,
                                 na.rm = FALSE,
                                 .parallel = FALSE,
                                 .paropts = NULL) {
+
+  if (!length(x)) return(x) # class of x in no case changes
+
   msmsply(x,
           normalize,
           range = range,
@@ -455,7 +498,10 @@ normalize_spct <- function(spct,
 
   # handle "skip" early so that long-from multiple spectra or missing columns
   # do not trigger errors
-  if (is.na(norm) || is.null(norm) || norm == "skip") {
+  if (is.na(norm) ||
+      is.null(norm) ||
+      norm == "skip" ||
+      (norm == "update" && !is_normalized(spct))) {
     return(spct)
   }
 

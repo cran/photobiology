@@ -125,6 +125,26 @@ clean.reflector_spct <-
                ...)
   }
 
+#' @describeIn clean Replace off-range values in a solute spectrum
+#'
+#' @export
+#'
+clean.solute_spct <-
+  function(x,
+           range = x,
+           range.s.data = c(0, NA),
+           fill = range.s.data,
+           ...) {
+    col.name <- intersect(c("K.mole", "K.mass"), names(x))
+    stopifnot(length(col.name) == 1L)
+    clean_spct(x = x,
+               range = range,
+               range.s.data = range.s.data,
+               fill = fill,
+               col.names = col.name,
+               ...)
+  }
+
 #' @describeIn clean Replace off-range values in an object spectrum
 #'
 #' @param min.Afr numeric Gives the minimum value accepted for the computed
@@ -419,6 +439,38 @@ clean.object_mspct <-
               range.s.data = range.s.data,
               fill = fill,
               min.Afr = min.Afr,
+              ...,
+              .parallel = .parallel,
+              .paropts = .paropts)
+    }
+  }
+
+#' @describeIn clean
+#'
+#' @export
+#'
+clean.solute_mspct <-
+  function(x,
+           range = NULL,
+           range.s.data = c(0, NA),
+           fill = range.s.data,
+           ...,
+           .parallel = FALSE,
+           .paropts = NULL) {
+    if (is.null(range)) {
+      msmsply(mspct = x,
+              .fun = clean,
+              range.s.data = range.s.data,
+              fill = fill,
+              ...,
+              .parallel = .parallel,
+              .paropts = .paropts)
+    } else {
+      msmsply(mspct = x,
+              .fun = clean,
+              range = range,
+              range.s.data = range.s.data,
+              fill = fill,
               ...,
               .parallel = .parallel,
               .paropts = .paropts)

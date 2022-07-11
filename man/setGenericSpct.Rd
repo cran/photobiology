@@ -6,6 +6,7 @@
 \alias{setRawSpct}
 \alias{setCpsSpct}
 \alias{setFilterSpct}
+\alias{setSoluteSpct}
 \alias{setReflectorSpct}
 \alias{setObjectSpct}
 \alias{setResponseSpct}
@@ -42,7 +43,20 @@ setFilterSpct(
   Tfr.type = c("total", "internal"),
   Rfr.constant = NA_real_,
   thickness = NA_real_,
-  attenuation.mode = NA,
+  attenuation.mode = NA_character_,
+  strict.range = getOption("photobiology.strict.range", default = FALSE),
+  multiple.wl = 1L,
+  idfactor = NULL
+)
+
+setSoluteSpct(
+  x,
+  K.type = c("attenuation", "absorption", "scattering"),
+  name = NA_character_,
+  mass = NA_character_,
+  formula = NA_character_,
+  structure = grDevices::as.raster(matrix()),
+  ID = NA_character_,
   strict.range = getOption("photobiology.strict.range", default = FALSE),
   multiple.wl = 1L,
   idfactor = NULL
@@ -108,6 +122,22 @@ class duration as defined in package lubridate.}
 \item{attenuation.mode}{character One of "reflection", "absorption" or
 "mixed".}
 
+\item{K.type}{character A string, either "attenuation", "absorption" or
+"scattering".}
+
+\item{name}{character The name of the substance. A named character
+vector, with member names such as "IUPAC" for the authority.}
+
+\item{mass}{numeric The mass in Dalton (Da = g/mol).}
+
+\item{formula}{character The molecular formula.}
+
+\item{structure}{raster A bitmap of the structure.}
+
+\item{ID}{character The name of the substance. A named character
+vector, with member names such as "ChemSpider" or "PubChen" for the
+authority.}
+
 \item{Rfr.type}{character A string, either "total" or "specular".}
 
 \item{response.type}{a character string, either "response" or "action".}
@@ -131,6 +161,8 @@ class to "generic_spct".
 
 \item \code{setFilterSpct}: Set class of an object to "filter_spct".
 
+\item \code{setSoluteSpct}: Set class of an object to "solute_spct".
+
 \item \code{setReflectorSpct}: Set class of a an object to "reflector_spct".
 
 \item \code{setObjectSpct}: Set class of an object to "object_spct".
@@ -146,11 +178,24 @@ class to "generic_spct".
 This method alters x itself by reference and in addition
   returns x invisibly.
 
+"internal" transmittance is defined as the transmittance of the
+  material body itself, while "total" transmittance includes the effects of
+  surface reflectance on the amount of light transmitted.
+  For non-diffusing materials like glass an approximate \code{Rfr.constant}
+  value can be used to interconvert "total" and "internal" transmittance
+  values. Use \code{NA} if not known, or not applicable, e.g., for materials
+  subject to internal scattering.
+
 For non-diffusing materials like glass an approximate \code{Rfr.constant}
   value can be used to interconvert "total" and "internal" transmittance
   values. Use \code{NA} if not known, or not applicable, e.g., for materials
   subject to internal scattering.
 }
+\section{Warning!}{
+ Not entering metadata when creating an object will limit the available
+   operations!
+}
+
 \examples{
 my.df <- data.frame(w.length = 300:309, s.e.irrad = rep(100, 10))
 is.source_spct(my.df)

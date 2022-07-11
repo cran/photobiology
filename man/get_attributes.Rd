@@ -7,6 +7,7 @@
 \alias{get_attributes.filter_spct}
 \alias{get_attributes.reflector_spct}
 \alias{get_attributes.object_spct}
+\alias{get_attributes.solute_spct}
 \alias{get_attributes.waveband}
 \title{Get the metadata attributes}
 \usage{
@@ -21,6 +22,8 @@ get_attributes(x, which, ...)
 \method{get_attributes}{reflector_spct}(x, which = NULL, ...)
 
 \method{get_attributes}{object_spct}(x, which = NULL, ...)
+
+\method{get_attributes}{solute_spct}(x, which = NULL, ...)
 
 \method{get_attributes}{waveband}(x, which = NULL, ...)
 }
@@ -66,6 +69,8 @@ Vectors of character strings passed as argument to \code{which} are
 
 \item \code{object_spct}: object_spct
 
+\item \code{solute_spct}: solute_spct
+
 \item \code{waveband}: waveband
 }}
 
@@ -78,6 +83,7 @@ Other measurement metadata functions:
 \code{\link{getHowMeasured}()},
 \code{\link{getInstrDesc}()},
 \code{\link{getInstrSettings}()},
+\code{\link{getSoluteProperties}()},
 \code{\link{getWhatMeasured}()},
 \code{\link{getWhenMeasured}()},
 \code{\link{getWhereMeasured}()},
@@ -88,6 +94,7 @@ Other measurement metadata functions:
 \code{\link{setHowMeasured}()},
 \code{\link{setInstrDesc}()},
 \code{\link{setInstrSettings}()},
+\code{\link{setSoluteProperties}()},
 \code{\link{setWhatMeasured}()},
 \code{\link{setWhenMeasured}()},
 \code{\link{setWhereMeasured}()},

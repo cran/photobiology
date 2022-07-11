@@ -6,6 +6,7 @@
 \alias{clean.source_spct}
 \alias{clean.filter_spct}
 \alias{clean.reflector_spct}
+\alias{clean.solute_spct}
 \alias{clean.object_spct}
 \alias{clean.response_spct}
 \alias{clean.cps_spct}
@@ -15,6 +16,7 @@
 \alias{clean.filter_mspct}
 \alias{clean.reflector_mspct}
 \alias{clean.object_mspct}
+\alias{clean.solute_mspct}
 \alias{clean.response_mspct}
 \alias{clean.cps_mspct}
 \alias{clean.raw_mspct}
@@ -44,6 +46,8 @@ clean(x, range, range.s.data, fill, ...)
 )
 
 \method{clean}{reflector_spct}(x, range = x, range.s.data = c(0, 1), fill = range.s.data, ...)
+
+\method{clean}{solute_spct}(x, range = x, range.s.data = c(0, NA), fill = range.s.data, ...)
 
 \method{clean}{object_spct}(
   x,
@@ -120,6 +124,16 @@ clean(x, range, range.s.data, fill, ...)
   range.s.data = c(0, 1),
   fill = range.s.data,
   min.Afr = NULL,
+  ...,
+  .parallel = FALSE,
+  .paropts = NULL
+)
+
+\method{clean}{solute_mspct}(
+  x,
+  range = NULL,
+  range.s.data = c(0, NA),
+  fill = range.s.data,
   ...,
   .parallel = FALSE,
   .paropts = NULL
@@ -220,6 +234,8 @@ objects instead of vectors.
 
 \item \code{reflector_spct}: Replace off-range values in a reflector spectrum
 
+\item \code{solute_spct}: Replace off-range values in a solute spectrum
+
 \item \code{object_spct}: Replace off-range values in an object spectrum
 
 \item \code{response_spct}: Replace off-range values in a response spectrum
@@ -237,6 +253,8 @@ objects instead of vectors.
 \item \code{reflector_mspct}: 
 
 \item \code{object_mspct}: 
+
+\item \code{solute_mspct}: 
 
 \item \code{response_mspct}: 
 

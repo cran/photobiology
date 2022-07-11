@@ -9,6 +9,11 @@
 #' zero shift (= additive correction) to the values in the returned object.
 #' Metadata attributes are retained unchanged.
 #'
+#' @note Method \code{fshift} is not implemented for \code{solute_spct} objects
+#'   as the spectral data stored in them are a description of an intensive
+#'   property of a substance. To represent solutions of specific concentrations
+#'   of solutes, \code{filter_spct} objects can be used.
+#'
 #' @param x An R object
 #' @param ... additional named arguments passed down to \code{f}.
 #'
@@ -241,6 +246,9 @@ fshift.response_mspct <-
            ...,
            .parallel = FALSE,
            .paropts = NULL) {
+
+    if (!length(x)) return(x) # class of x in no case changes
+
     msmsply(x,
             fshift,
             range = range,
@@ -264,6 +272,9 @@ fshift.filter_mspct <-
            ...,
            .parallel = FALSE,
            .paropts = NULL) {
+
+    if (!length(x)) return(x)
+
     msmsply(x,
             fshift,
             range = range,
@@ -286,6 +297,9 @@ fshift.reflector_mspct <-
            ...,
            .parallel = FALSE,
            .paropts = NULL) {
+
+    if (!length(x)) return(x)
+
     msmsply(x,
             fshift,
             range = range,
@@ -307,6 +321,9 @@ fshift.raw_mspct <-
            ...,
            .parallel = FALSE,
            .paropts = NULL) {
+
+    if (!length(x)) return(x)
+
     msmsply(x,
             fshift,
             range = range,
@@ -327,6 +344,9 @@ fshift.cps_mspct <-
            ...,
            .parallel = FALSE,
            .paropts = NULL) {
+
+    if (!length(x)) return(x)
+
     msmsply(x,
             fshift,
             range = range,
@@ -348,6 +368,9 @@ fshift.generic_mspct <-
            ...,
            .parallel = FALSE,
            .paropts = NULL) {
+
+    if (!length(x)) return(x)
+
     msmsply(x,
             fshift,
             range = range,

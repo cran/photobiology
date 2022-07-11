@@ -7,6 +7,7 @@
 \alias{fscale.response_spct}
 \alias{fscale.filter_spct}
 \alias{fscale.reflector_spct}
+\alias{fscale.solute_spct}
 \alias{fscale.raw_spct}
 \alias{fscale.cps_spct}
 \alias{fscale.generic_spct}
@@ -14,6 +15,7 @@
 \alias{fscale.response_mspct}
 \alias{fscale.filter_mspct}
 \alias{fscale.reflector_mspct}
+\alias{fscale.solute_mspct}
 \alias{fscale.raw_mspct}
 \alias{fscale.cps_mspct}
 \alias{fscale.generic_mspct}
@@ -54,6 +56,16 @@ fscale(x, ...)
 )
 
 \method{fscale}{reflector_spct}(
+  x,
+  range = NULL,
+  f = "mean",
+  target = 1,
+  qty.out = NULL,
+  set.scaled = target == 1,
+  ...
+)
+
+\method{fscale}{solute_spct}(
   x,
   range = NULL,
   f = "mean",
@@ -119,6 +131,17 @@ fscale(x, ...)
   f = "mean",
   target = 1,
   qty.out = NULL,
+  set.scaled = target == 1,
+  ...,
+  .parallel = FALSE,
+  .paropts = NULL
+)
+
+\method{fscale}{solute_mspct}(
+  x,
+  range = NULL,
+  f = "mean",
+  target = 1,
   set.scaled = target == 1,
   ...,
   .parallel = FALSE,
@@ -204,8 +227,23 @@ a new object of the same class as \code{x}.
 \description{
 These methods return a spectral object of the same class as the one
 supplied as argument but with the spectral data rescaled based on a summary
-function \code{f} applied over a specific \code{range} or wavelengths and a
+function \code{f} applied over a specific \code{range} of wavelengths and a
 \code{target} value for the summary value.
+}
+\details{
+After scaling, applying the function passed as argument to \code{f}
+  to the scaled spectrum will return the value passed as argument to
+  \code{target}. \strong{The default for \code{set.scaled} depends
+  dynamically on the passed to \code{target}.} Sometimes we rescale a
+  spectrum to a "theoretical" value for the summary, while in other cases we
+  rescale the spectrum to a real-world target value of e.g. a reference
+  energy irradiance. In the first case we say that the data are expressed in
+  relative units, while in the second case we retain actual physical units.
+  To indicate this, this package uses an attribute, which will by default be
+  set assuming the first of these two situations when \code{target == 1} and
+  not set assuming the second situation otherwise. These defaults can be
+  overriden with an explicit \code{logical} argument passed to
+  \code{set.scaled}.
 }
 \section{Methods (by class)}{
 \itemize{
@@ -218,6 +256,8 @@ function \code{f} applied over a specific \code{range} or wavelengths and a
 \item \code{filter_spct}: 
 
 \item \code{reflector_spct}: 
+
+\item \code{solute_spct}: 
 
 \item \code{raw_spct}: 
 
@@ -233,6 +273,8 @@ function \code{f} applied over a specific \code{range} or wavelengths and a
 
 \item \code{reflector_mspct}: 
 
+\item \code{solute_mspct}: 
+
 \item \code{raw_mspct}: 
 
 \item \code{cps_mspct}: 
@@ -241,17 +283,10 @@ function \code{f} applied over a specific \code{range} or wavelengths and a
 }}
 
 \note{
-\strong{The default for \code{set.scaled} depends dynamically on the
-  passed to \code{target}.} Sometimes we rescale a spectrum to a
-  "theoretical" value for the summary, while in other cases we rescale the
-  spectrum to a real-world target value of e.g. a reference energy
-  irradiance. In the first case we say that the data are expressed in
-  relative units, while in the second case we retain actual physical units.
-  To indicate this, this package uses an attribute, which will by default be
-  set assuming the first of these two situations when \code{target == 1} and
-  not set assuming the second situation otherwise. These defaults can be
-  overriden with an explicit \code{logical} argument passed to
-  \code{set.scaled}.
+Method \code{fscale} is not implemented for \code{solute_spct} objects
+  as the spectral data stored in them are a description of an intensive
+  property of a substance. To represent solutions of specific concentrations
+  of solutes, \code{filter_spct} objects can be used.
 }
 \section{Important changes}{
  Metadata describing the rescaling operation are

@@ -84,26 +84,41 @@
 #' class(spct)
 #'
 rbindspct <- function(l, use.names = TRUE, fill = TRUE, idfactor = TRUE, attrs.source = NULL) {
+  if (is.null(l) || !is.list(l) || length(l) < 1) {
+    # _mspct classes are derived from "list"
+    warning("Argument 'l' should be a non-empty list or a collection of spectra.")
+    return(generic_spct())
+  }
+
   if ((is.null(idfactor) && (!is.null(names(l)))) ||
        (is.logical(idfactor) && idfactor )) {
     idfactor <- "spct.idx"
   }
-  if (use.names && !rlang::is_named(l) && all(sapply(l, getMultipleWl) == 1L)) {
+
+  # we skip spectra with no rows
+  selector <- unname(sapply(l, nrow)) > 0
+
+  if (use.names && !rlang::is_named(l) && all(sapply(l[selector], getMultipleWl) == 1L)) {
     names(l) <- paste("spct", seq_along(l), sep = "_")
   }
   add.idfactor <- is.character(idfactor)
 
-  if (is.null(l) || !is.list(l) || length(l) < 1) {
-    # _mspct classes are derived from "list"
-    warning("Argument 'l' should be a list or a collection of spectra.")
-    return(generic_spct())
-  }
   # We find the most derived common class for spectra
   l.class <- shared_member_class(l)
   if (length(l.class) < 1L) {
-    stop("Argument 'l' should contain only spectra.")
+    stop("Argument 'l' should contain spectra.")
   } else {
     l.class <- l.class[1L]
+  }
+  if (!any(selector)) {
+    return(do.call(what = l.class, args = list()))
+  }
+  if (length(l[selector]) == 1L) {
+    z <- l[selector][[1L]]
+    if (add.idfactor) {
+      z[[idfactor]] <- names(l[selector])
+    }
+    return(z)
   }
 
   # list may have members which already have multiple spectra in long form
@@ -299,6 +314,15 @@ rbindspct <- function(l, use.names = TRUE, fill = TRUE, idfactor = TRUE, attrs.s
     }
     setObjectSpct(ans, Tfr.type = Tfr.type[1], Rfr.type = Rfr.type[1],
                   multiple.wl = mltpl.wl)
+  } else if (l.class == "solute_spct") {
+    K.type <- sapply(l, FUN = getKType)
+    names(K.type) <- NULL
+    K.type <- unique(K.type)
+    if (length(K.type) > 1L) {
+      warning("Inconsistent 'K.type' among solute spectra in rbindspct")
+      return(reflector_spct())
+    }
+    setSoluteSpct(ans, K.type = K.type, multiple.wl = mltpl.wl)
   } else if (l.class == "response_spct") {
     time.unit <- sapply(l, FUN = getTimeUnit)
     names(time.unit) <- NULL
@@ -654,6 +678,34 @@ subset.generic_spct <- function(x, subset, select, drop = FALSE, ...) {
 #' @export
 #' @rdname extract
 #'
+"[.solute_spct" <-
+  function(x, i, j, drop = NULL) {
+    if (is.null(drop)) {
+      xx <- `[.data.frame`(x, i, j)
+    } else {
+      xx <- `[.data.frame`(x, i, j, drop = drop)
+    }
+    if (is.data.frame(xx)) {
+      if ("w.length" %in% names(xx)) {
+        if (!(getMultipleWl(x) == 1L || nrow(xx) == nrow(x))) {
+          # subsetting of rows can decrease the number of spectra
+          multiple.wl <- findMultipleWl(xx, same.wls = FALSE)
+          xx <- setMultipleWl(xx, multiple.wl)
+        }
+        if (ncol(xx) != ncol(x)) {
+          xx <- copy_attributes(x, xx)
+        }
+        xx <- check_spct(xx)
+      } else {
+        rmDerivedSpct(xx)
+      }
+    }
+    xx
+  }
+
+#' @export
+#' @rdname extract
+#'
 "[.object_spct" <-
   function(x, i, j, drop = NULL) {
     if (is.null(drop)) {
@@ -779,9 +831,17 @@ subset.generic_spct <- function(x, subset, select, drop = FALSE, ...) {
 #'
 "[.generic_mspct" <-
   function(x, i, drop = NULL) {
-    spct.class <- rmDerivedMspct(x)[1]
-    xx <- `[`(x, i)
-    generic_mspct(xx, class = spct.class)
+    old.byrow <- attr(x, "mspct.byrow", exact = TRUE)
+    if (is.null(old.byrow)) {
+      old.byrow <- FALSE
+    }
+    old.class <- rmDerivedMspct(x)
+    x <- `[`(x, i)
+    class(x) <- c(old.class, class(x))
+    attr(x, "mspct.dim") <- length(i)
+    attr(x, "mspct.byrow") <- old.byrow
+    attr(x, "mspct.version") <- 2
+    x
   }
 
 # Not exported
@@ -803,12 +863,19 @@ is.member_class <- function(l, x) {
 "[<-.generic_mspct" <- function(x, i, value) {
   # could be improved to accept derived classes as valid for replacement.
   stopifnot(class(x) == class(value))
-  # could not find a better way of avoiding infinite recursion as '[[<-' is
+  # could not find a better way of avoiding infinite recursion as '[<-' is
   # a primitive with no explicit default method.
-  old.class <- class(x)
-  class(x) <- "list"
+  old.byrow <- attr(x, "mspct.byrow", exact = TRUE)
+  if (is.null(old.byrow)) {
+    old.byrow <- FALSE
+  }
+  old.mspct.dim <- attr(x, "mspct.dim")
+  old.class <- rmDerivedMspct(x)
   x[i] <- value
-  class(x) <- old.class
+  class(x) <- c(old.class, class(x))
+  attr(x, "mspct.dim") <- old.mspct.dim
+  attr(x, "mspct.byrow") <- old.byrow
+  attr(x, "mspct.version") <- 2
   x
 }
 
@@ -850,13 +917,16 @@ is.member_class <- function(l, x) {
   } else {
     dimension <- attr(x, "mspct.dim", exact = TRUE)
   }
-  old.class <- class(x)
   old.byrow <- attr(x, "mspct.byrow", exact = TRUE)
-  class(x) <- "list"
+  if (is.null(old.byrow)) {
+    old.byrow <- FALSE
+  }
+  old.class <- rmDerivedMspct(x)
   x[[name]] <- value
-  class(x) <- old.class
+  class(x) <- c(old.class, class(x))
   attr(x, "mspct.dim") <- dimension
   attr(x, "mspct.byrow") <- old.byrow
+  attr(x, "mspct.version") <- 2
   x
 }
 
