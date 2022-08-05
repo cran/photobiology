@@ -69,11 +69,12 @@ length two. The waveband(s) determine the region(s) of the spectrum that
 are summarized. If a numeric range is supplied a waveband object is
 constructed on the fly from it.}
 
-\item{quantity}{character string One of "average" or "mean", "total",
-"contribution", "contribution.pc", "relative" or "relative.pc".}
+\item{quantity}{character string One of \code{"average"} or \code{"mean"},
+\code{"total"}, \code{"contribution"}, \code{"contribution.pc"},
+\code{"relative"} or \code{"relative.pc"}.}
 
-\item{wb.trim}{logical Flag indicating if wavebands crossing spectral data
-boundaries are trimmed or ignored.}
+\item{wb.trim}{logical if \code{TRUE} wavebands crossing spectral data
+boundaries are trimmed, if \code{FALSE}, they are discarded.}
 
 \item{use.hinges}{logical Flag indicating whether to insert "hinges" into the
 spectral data before integration so as to reduce interpolation errors at
@@ -81,8 +82,9 @@ the boundaries of the wavebands.}
 
 \item{...}{other arguments (possibly used by derived methods).}
 
-\item{naming}{character one of "long", "default", "short" or "none". Used to
-select the type of names to assign to returned value.}
+\item{naming}{character one of \code{"long"}, \code{"default"},
+\code{"short"} or \code{"none"}. Used to select the type of names to assign
+to returned value.}
 
 \item{attr2tb}{character vector, see \code{\link{add_attr2tb}} for the syntax for \code{attr2tb} passed as is to formal parameter \code{col.names}.}
 
@@ -118,17 +120,17 @@ spectral data stored in a \code{filter_spct} or in an \code{object_spct}.
 }
 \section{Methods (by class)}{
 \itemize{
-\item \code{default}: Default for generic function
+\item \code{absorbance(default)}: Default for generic function
 
-\item \code{filter_spct}: Specialization for filter spectra
+\item \code{absorbance(filter_spct)}: Specialization for filter spectra
 
-\item \code{object_spct}: Specialization for object spectra
+\item \code{absorbance(object_spct)}: Specialization for object spectra
 
-\item \code{filter_mspct}: Calculates absorbance from a \code{filter_mspct}
+\item \code{absorbance(filter_mspct)}: Calculates absorbance from a \code{filter_mspct}
 
-\item \code{object_mspct}: Calculates absorbance from a \code{object_mspct}
+\item \code{absorbance(object_mspct)}: Calculates absorbance from a \code{object_mspct}
+
 }}
-
 \note{
 The \code{use.hinges} parameter controls speed optimization. The
   defaults should be suitable in most cases. Only the range of wavelengths in

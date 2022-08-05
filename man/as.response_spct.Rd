@@ -10,13 +10,13 @@ as.response_spct(x, ...)
 \method{as.response_spct}{default}(x, time.unit = "second", ...)
 }
 \arguments{
-\item{x}{an R object}
+\item{x}{an R object.}
 
-\item{...}{other arguments passed to "set" functions}
+\item{...}{other arguments passed to "set" functions.}
 
 \item{time.unit}{character string indicating the time unit used for spectral
-irradiance or exposure ("second" , "day" or "exposure") or an object of
-class duration as defined in package lubridate.}
+irradiance or exposure (\code{"second"}, \code{"day"} or \code{"exposure"})
+or an object of class duration as defined in package lubridate.}
 }
 \value{
 A copy of \code{x} converted into a \code{response_spct} object.
@@ -26,9 +26,9 @@ Return a copy of an R object with its class set to a given type of spectrum.
 }
 \section{Methods (by class)}{
 \itemize{
-\item \code{default}: 
-}}
+\item \code{as.response_spct(default)}: 
 
+}}
 \seealso{
 \code{\link{setGenericSpct}}
 

@@ -34,9 +34,10 @@ is not set, otherwise the expected list is returned with all fields set to
 collection of spectra.}
 }
 \value{
-a list with fields named "Rfr.constant", "thickness" and "attenuation.mode".
-  If the attribute is not set, and \code{return.null} is FALSE, a list with
-  fields set to \code{NA} is returned, otherwise, \code{NULL}.
+a list with fields named \code{"Rfr.constant"} [\eqn{/1}],
+  \code{"thickness"} [\eqn{m}] and \code{"attenuation.mode"}. If the
+  attribute is not set, and \code{return.null} is FALSE, a list with fields
+  set to \code{NA} is returned, otherwise, \code{NULL}.
 }
 \description{
 Function to read the "filter.properties" attribute of an existing filter_spct
@@ -44,18 +45,18 @@ or a filter_mspct.
 }
 \section{Methods (by class)}{
 \itemize{
-\item \code{default}: default
+\item \code{getFilterProperties(default)}: default
 
-\item \code{filter_spct}: generic_spct
+\item \code{getFilterProperties(filter_spct)}: generic_spct
 
-\item \code{summary_filter_spct}: summary_generic_spct
+\item \code{getFilterProperties(summary_filter_spct)}: summary_generic_spct
 
-\item \code{generic_mspct}: filter_mspct
+\item \code{getFilterProperties(generic_mspct)}: filter_mspct
+
 }}
-
 \note{
-The method for collections of spectra returns the
-  a tibble with a column of lists.
+The method for collections of spectra returns the a tibble with a
+  column of lists.
 }
 \examples{
 filter_properties(polyester.spct)

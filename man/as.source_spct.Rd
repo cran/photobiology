@@ -16,18 +16,20 @@ as.source_spct(x, ...)
 )
 }
 \arguments{
-\item{x}{an R object}
+\item{x}{an R object.}
 
-\item{...}{other arguments passed to "set" functions}
+\item{...}{other arguments passed to "set" functions.}
 
 \item{time.unit}{character string indicating the time unit used for spectral
-irradiance or exposure ("second" , "day" or "exposure") or an object of
-class duration as defined in package lubridate.}
+irradiance or exposure (\code{"second"}, \code{"day"} or \code{"exposure"})
+or an object of class duration as defined in package lubridate.}
 
-\item{bswf.used}{character}
+\item{bswf.used}{character A string indicating the BSWF used, if any, for
+spectral effective irradiance or exposure (\code{"none"} or the name of the
+BSWF).}
 
 \item{strict.range}{logical Flag indicating whether off-range values result
-in an error instead of a warning}
+in an error instead of a warning.}
 }
 \value{
 A copy of \code{x} converted into a \code{source_spct} object.
@@ -37,9 +39,9 @@ Return a copy of an R object with its class set to a given type of spectrum.
 }
 \section{Methods (by class)}{
 \itemize{
-\item \code{default}: 
-}}
+\item \code{as.source_spct(default)}: 
 
+}}
 \seealso{
 \code{\link{setGenericSpct}}
 

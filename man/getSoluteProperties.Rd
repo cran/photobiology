@@ -45,18 +45,18 @@ Function to read the \code{"solute.properties"} attribute of an existing
 }
 \section{Methods (by class)}{
 \itemize{
-\item \code{default}: default
+\item \code{getSoluteProperties(default)}: default
 
-\item \code{solute_spct}: solute_spct
+\item \code{getSoluteProperties(solute_spct)}: solute_spct
 
-\item \code{summary_solute_spct}: summary_solute_spct
+\item \code{getSoluteProperties(summary_solute_spct)}: summary_solute_spct
 
-\item \code{solute_mspct}: solute_mspct
+\item \code{getSoluteProperties(solute_mspct)}: solute_mspct
+
 }}
-
 \note{
-The method for collections of spectra returns the
-  a tibble with a column of lists.
+The method for collections of spectra returns the a tibble with a
+  column of lists.
 }
 \examples{
 solute_properties(water.spct)

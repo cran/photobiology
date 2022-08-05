@@ -22,7 +22,9 @@ quantities and for optical properties of objects.
 
 This package is the core of a suite of R packages for photobiological
 calculations described at the
-[r4photobiology](https://www.r4photobiology.info) web site.
+[r4photobiology](https://www.r4photobiology.info) web site and in the
+vignette [The R for Photobiology
+Suite](https://docs.r4photobiology.info/photobiology/articles/userguide-0-r4p-introduction.html).
 
 ## Examples
 
@@ -46,11 +48,11 @@ sun.
 
 ``` r
 geocode <- data.frame(lon = 0, lat = 55)
-date <- lubridate::today(tzone = "UTC")
+date <- lubridate::now(tzone = "UTC")
 sunrise_time(date, tz = "UTC", geocode = geocode)
-#> [1] "2022-07-10 03:35:00 UTC"
+#> [1] "2022-07-22 03:52:12 UTC"
 day_length(date, tz = "UTC", geocode = geocode)
-#> [1] 17.01308
+#> [1] 16.47617
 ```
 
 ## Installation

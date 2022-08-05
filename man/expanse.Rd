@@ -36,26 +36,30 @@ expanse(x, ...)
 collection of spectra.}
 }
 \value{
-A numeric value equal to max(x) - min(x). In the case of spectral
-  objects wavelength difference in nm. For any other R object, according to
-  available definitions of \code{\link{min}} and \code{\link{max}}.
+A numeric value equal to \code{max(x) - min(x)}. In the case of
+  spectral objects wavelength difference [\eqn{nm}]. For any other R object,
+  according to available specialised methods of \code{\link{min}} and
+  \code{\link{max}}.
 }
 \description{
-A function that returns the expanse (max(x) - min(x)) for R objects.
+A method that returns the expanse (\eqn{max(x) - min(x)}) for R objects. In
+particular the wavelength [\eqn{nm}] expanse of the wavelength range of
+objects of classes \code{waveband} or of class \code{generic_spct} or derived
+(or the expanse of values in a \code{numeric} vector).
 }
 \section{Methods (by class)}{
 \itemize{
-\item \code{default}: Default method for generic function
+\item \code{expanse(default)}: Default method for generic function
 
-\item \code{numeric}: Method for "numeric"
+\item \code{expanse(numeric)}: Method for "numeric"
 
-\item \code{waveband}: Method for "waveband"
+\item \code{expanse(waveband)}: Method for "waveband"
 
-\item \code{generic_spct}: Method for "generic_spct"
+\item \code{expanse(generic_spct)}: Method for "generic_spct"
 
-\item \code{generic_mspct}: Method for "generic_mspct" objects.
+\item \code{expanse(generic_mspct)}: Method for "generic_mspct" objects.
+
 }}
-
 \examples{
 expanse(10:20)
 expanse(sun.spct)

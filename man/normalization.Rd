@@ -15,17 +15,20 @@ normalization(x)
 \arguments{
 \item{x}{an R object}
 }
+\value{
+A single numeric value of wavelength [\eqn{nm}].
+}
 \description{
-Normalization wavelength of an R object, retrieved from the object's
+Normalization wavelength [\eqn{nm}] of an R object, retrieved from the object's
 attributes.
 }
 \section{Methods (by class)}{
 \itemize{
-\item \code{default}: Default methods.
+\item \code{normalization(default)}: Default methods.
 
-\item \code{waveband}: Normalization of a \code{\link{waveband}} object.
+\item \code{normalization(waveband)}: Normalization of a \code{\link{waveband}} object.
+
 }}
-
 \seealso{
 Other waveband attributes: 
 \code{\link{is_effective}()},
