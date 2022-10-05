@@ -1,6 +1,6 @@
-4eebfbc9b0a0a821d01c9c7297c15069 *DESCRIPTION
-937c41fd3ef71d5167f35cac0994ff09 *NAMESPACE
-920a671ea1adf039280a6b5fd1d63663 *NEWS.md
+bd654ac0411d0ede4c19628c56cfc89c *DESCRIPTION
+fb84017fe1890a3cc96b24964ec0835f *NAMESPACE
+15ed42b50f7092058567e453a0c60869 *NEWS.md
 91201086d24f322d977c7849d28fbc64 *R/as.energy.r
 a09ab987cb957b0cf1d4eb73c18ad87e *R/as.quantum.mol.r
 83876596423afdb12b9c214469ee17dc *R/as.quantum.r
@@ -45,6 +45,7 @@ d8047d3d19981c16b67e12b2aa526d31 *R/mspct.row.funs.r
 4d74a806482ce40efc8aed938a47df87 *R/mspct.sd.r
 8d0b341c4fbb651ef3ce981300c80c5e *R/mspct.se.r
 5a197079ec4c854843aea03c6b444e0c *R/mspct.sum.r
+31eaf0e44616d998788b80080a61139d *R/mspct.summary.r
 8bad836b92868bb28ea03e5060f15f0d *R/mspct.var.r
 d97bd4cdfe807a319fbdca93aab0d838 *R/na.rm.R
 992a7331eb03a05509c948d9219b8518 *R/normalize.range.arg.r
@@ -61,14 +62,14 @@ ba80343f29bad95b7fac9dd2fd0728ac *R/photons.energy.ratio.r
 4032f9fb30cdaf4ad4c7aa50a6c5fc02 *R/prod.spectra.r
 8029d6f4002927e6e4a55d45c4fe0b8a *R/r4p.pkgs.data.r
 8c55266db9dc8cd6327b614a5fffda8e *R/raw.data.r
-ed9434e514f84dcace0f40f645f58d52 *R/rbindspct.r
+b7c0ff3556c41a946d7900cfbb8eaae6 *R/rbindspct.r
 9f5c51b92600dd903d887e13354b3408 *R/relative-am.r
 23e04d8c8a45d2760691c3345dd064bb *R/response.data.r
 211723594476850b56f4a6be2ef65b9c *R/s.e.irrad2rgb.r
 e7bfcfd984b0e79ef05f9ec36837e78c *R/solutes.data.r
 dc6b10e3d92819d6e37f3ce5d5cbe187 *R/spct.absorbance.R
 a0ffa1b8677205d7bf7a6e28b3e7bc98 *R/spct.absorptance.R
-e551cbcea97dc5bd4a9d18579ee51570 *R/spct.classes.r
+1bb007932969bbc0f51d0c7346c4aa54 *R/spct.classes.r
 57b683fb02b658a817ea2224add19f33 *R/spct.clean.r
 2c206db53362546f8d248eae7a8a3374 *R/spct.compare.r
 c33ae8f4707d61babf1696669bea0989 *R/spct.conversion.R
@@ -76,7 +77,7 @@ b5f8dfb1d7fa29173254b02fc44df12a *R/spct.fscale.r
 ab35f12a22d04412c29c943ce833a76a *R/spct.fshift.r
 5f0384345cb3137a4306ddb2dd31a871 *R/spct.insert.spct.hinges.r
 a33c93e52df3c17bdfb324792bf0b44e *R/spct.integrate.r
-16c9d9e6ace5fb4178c0307ee5cef9e4 *R/spct.irrad.r
+2d23af3d41af2272789536f8288de1f1 *R/spct.irrad.r
 0de781556920e13f7123177977c95d5c *R/spct.metadata.r
 651b111a683bd3fe2f5da83c67733129 *R/spct.new.r
 8cd07a3bc06858be4e63cb4a7f3ce6a3 *R/spct.normalize.r
@@ -88,7 +89,7 @@ fa2b20a500d7dcc81b3c2afdf568db8e *R/spct.response.R
 26a786c651c29b9878600366805a781d *R/spct.rgb.spct.r
 6586bdd05ec00b1cb7e07ad7ac5b0e81 *R/spct.smooth.spct.r
 73f86e372832418bad0584202e77a92e *R/spct.spikes.R
-c8a8e33c52a4dea040843378a9dee1fb *R/spct.summaries.r
+420e4f8009acaaba6d074e6603600692 *R/spct.summaries.r
 f43072b6207e6e130c8ad5170e437edc *R/spct.tag.r
 1d86de5ad0f1859aeae20f1259a52bbe *R/spct.transmittance.r
 4d748154314d3f9b70d518f5b22efee5 *R/spct.trim.r
@@ -103,7 +104,7 @@ c0846567e653081fbbd278e55f9cd3bb *R/subt.spectra.r
 48de74ad7a4e29a99445b0db95ad307a *R/sun.data.r
 3c0e353e5ca157360444c5e704f658bb *R/sysdata.rda
 5d6e345dbf36620ed925bb35669ac7d1 *R/trim.tails.r
-72c6e1eced5de175d6eb83e9d384c8a7 *R/trim.waveband.r
+e5dfb6f6afadcc8a4692bc7b4133c93b *R/trim.waveband.r
 d7d16a09f6c10f0b7608e9d37ac85504 *R/w.length.range2rgb.r
 f9b7266f1da473e91e04221a8a282dab *R/w.length2rgb.r
 956a5628ed00a8c66f34787606b89cb6 *R/water.et.r
@@ -112,7 +113,7 @@ eeb2bc5dd11bc64dbd1701675b549bfc *R/waveband.class.r
 6455b1d8709ef57d3282650a42b51cc0 *R/waveband.new.r
 981f6264c846c8414f6040574db170a0 *R/waveband.ratio.r
 2247b6719b9a5bcd844d720d7c9f2d3a *R/zmspct.classes.R
-9d8c1e1d4711e01a83faed3ecf324ab0 *README.md
+d8ebeafc38fc0dedd04229381712bab9 *README.md
 afbe4209b3bb961ba3e41cbfe79ea507 *build/partial.rdb
 17597f7fe7a5bc47a63d12548197d8b2 *build/vignette.rds
 ab2537995992be434568a303ebda8a83 *data/A.illuminant.spct.rda
@@ -148,13 +149,13 @@ d063f3018be607195e0737aa4729050f *data/yellow.gel.rda
 dc9bf4f6081f41498b4d3a529f64920f *inst/CITATION
 eaa76a561f7f77a04c16281c188b401d *inst/doc/userguide-0-r4p-introduction.R
 c67cf634d58a6731c533747653a0cd55 *inst/doc/userguide-0-r4p-introduction.Rmd
-8722e1a64321ec8afe8c4d08f702c380 *inst/doc/userguide-0-r4p-introduction.html
+9fe50b47357a31444859775bdfd75a05 *inst/doc/userguide-0-r4p-introduction.html
 cc362b2ff3a1cf27efe44252de6db511 *inst/doc/userguide-1-radiation.R
 2f5c528409c89d541872e9b130001096 *inst/doc/userguide-1-radiation.Rmd
-10351bf1d0627de3c4271e51b7490588 *inst/doc/userguide-1-radiation.html
+a1459f099741be95bde137dd090da8a6 *inst/doc/userguide-1-radiation.html
 b3ab6c54111a542e0b67d3969de6c918 *inst/doc/userguide-2-astronomy.R
 5d59a9f0b1540d4362445c0b659ae8f6 *inst/doc/userguide-2-astronomy.Rmd
-1417b8606e2e8c010d950f0f07365191 *inst/doc/userguide-2-astronomy.html
+51711a85fa8e951c0b4e7aadcd58ec61 *inst/doc/userguide-2-astronomy.html
 a1fa1912ee07b9bb4983284de0eca15b *man/A.illuminant.spct.Rd
 38372e93b8c4ddafa9556ca01a032b51 *man/A2T.Rd
 b3c8f0a721bb91086509907be3c550e5 *man/Afr2T.Rd
@@ -368,7 +369,7 @@ d7607cc49985752ef6a066202feb4b5a *man/photons_energy_ratio.Rd
 e882c570fa083c3383570df60fc23eb8 *man/plus-.generic_spct.Rd
 eb9791524bc67cc2d7a0dad210103f69 *man/polyester.spct.Rd
 6c19b43525be7340c64c89876c9bd5ed *man/pow-.generic_spct.Rd
-7293f2ede5510469345df60c256cd92e *man/print.Rd
+d52cc1a6ed5d774cff826f87c93f42ef *man/print.Rd
 ed974d5a93648d935bb814cb41d9a4f0 *man/print.solar_time.Rd
 47efc55ef9c0ace5f97d8c2387c24544 *man/print.summary_generic_spct.Rd
 f7a5eccdfd33505295b2d8d298929bee *man/print.tod_time.Rd
@@ -410,7 +411,7 @@ e456c157c15645dc8fc7aff1d8133308 *man/se.Rd
 4897d156f8767f4c04b4fee7f083324f *man/se.p.Rd
 bb0f640686c22281a391c021080959f6 *man/select_spct_attributes.Rd
 587d48f563e77a5e16197016afdea323 *man/setBSWFUsed.Rd
-5b2d6fd5e91b859694cc94be13edd99a *man/setFilterProperties.Rd
+c807492e9f7f4a375b6bb83909a2819c *man/setFilterProperties.Rd
 0d1da0b71c16fd26c9d90dcde102b6e2 *man/setGenericSpct.Rd
 9430c408b4b5de42d3bc3ae733aa0ed9 *man/setHowMeasured.Rd
 7b892c14746eadbdcbaef1642389018a *man/setIdFactor.Rd
@@ -449,7 +450,7 @@ c206b364811b9c78c4d7fd00801cd44b *man/stepsize.Rd
 e6067b058ee0c293258f95a4658d4886 *man/subset2mspct.Rd
 d8eff8d7090b69613cf548bd970d56a5 *man/subt_spectra.Rd
 fb8afeec07fc90ef77889ce714659643 *man/sum_spectra.Rd
-2edb444fe624f08c324e259aaece66e8 *man/summary.Rd
+5c45c4fb4f4db76c27d52cfefff5f87f *man/summary.Rd
 36dcfc97fc71f37aa0c4f82b1d3c442e *man/summary_spct_classes.Rd
 a1b427057e09a44d2f109187731a19e7 *man/sun.daily.data.Rd
 d6880bc8a9aff0fcaaf9a0a9956d47e5 *man/sun.daily.spct.Rd

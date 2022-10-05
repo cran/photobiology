@@ -1,8 +1,8 @@
 Package: photobiology
 Type: Package
 Title: Photobiological Calculations
-Version: 0.10.12
-Date: 2022-07-21
+Version: 0.10.13
+Date: 2022-10-05
 Authors@R: 
    c(
     person("Pedro J.", "Aphalo", email = "pedro.aphalo@helsinki.fi", role = c("aut", "cre"), comment = c(ORCID = "0000-0003-3385-972X")),
@@ -10,6 +10,7 @@ Authors@R:
     person("Glenn", "Davis", email = "gdavis@gluonics.com", role = "ctb"),
     person("Agnese", "Fazio", email = "agnese.fazio@uni-jena.de", role = "ctb")
     )
+Maintainer: Pedro J. Aphalo <pedro.aphalo@helsinki.fi>
 Description: Definitions of classes, methods, operators and functions for use 
     in photobiology and radiation meteorology and climatology. Calculation of
     effective (weighted) and not-weighted irradiances/doses, fluence rates,
@@ -37,11 +38,10 @@ Encoding: UTF-8
 RoxygenNote: 7.2.1
 VignetteBuilder: knitr
 NeedsCompilation: no
-Packaged: 2022-07-22 22:36:48 UTC; Aphalo
+Packaged: 2022-10-05 18:24:50 UTC; aphalo_2
 Author: Pedro J. Aphalo [aut, cre] (<https://orcid.org/0000-0003-3385-972X>),
   Titta K. Kotilainen [ctb] (<https://orcid.org/0000-0002-2822-9734>),
   Glenn Davis [ctb],
   Agnese Fazio [ctb]
-Maintainer: Pedro J. Aphalo <pedro.aphalo@helsinki.fi>
 Repository: CRAN
-Date/Publication: 2022-08-05 11:50:02 UTC
+Date/Publication: 2022-10-05 20:40:02 UTC
