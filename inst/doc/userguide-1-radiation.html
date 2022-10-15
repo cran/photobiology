@@ -12,7 +12,7 @@
 
 <meta name="author" content="Pedro J. Aphalo" />
 
-<meta name="date" content="2022-10-05" />
+<meta name="date" content="2022-10-13" />
 
 <title>User Guide: 1 Radiation</title>
 
@@ -339,9 +339,9 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 
 <h1 class="title toc-ignore">User Guide: 1 Radiation</h1>
-<h3 class="subtitle">Package ‘photobiology’ 0.10.13</h3>
+<h3 class="subtitle">Package ‘photobiology’ 0.10.14</h3>
 <h4 class="author">Pedro J. Aphalo</h4>
-<h4 class="date">2022-10-05</h4>
+<h4 class="date">2022-10-13</h4>
 
 
 <div id="TOC">
@@ -453,7 +453,13 @@ indexes</a></li>
 wavelengths</a></li>
 </ul></li>
 <li><a href="#comparison-of-spectra" id="toc-comparison-of-spectra">Comparison of spectra</a></li>
+<li><a href="#illumination-and-light-as-seen-by-humans" id="toc-illumination-and-light-as-seen-by-humans">Illumination and light
+as seen by humans</a>
+<ul>
+<li><a href="#illuminance" id="toc-illuminance">Illuminance</a></li>
+<li><a href="#cct-and-cri" id="toc-cct-and-cri">CCT and CRI</a></li>
 <li><a href="#rgb-colours" id="toc-rgb-colours">RGB colours</a></li>
+</ul></li>
 </ul>
 </div>
 
@@ -1889,8 +1895,8 @@ limits the methods that are applicable to the resulting collection.</p>
 ## $source
 ## [1] &quot;source_spct&quot;  &quot;generic_spct&quot;</code></pre>
 </div>
-<div id="using-as.-functions" class="section level4">
-<h4>Using <em>as.</em> functions</h4>
+<div id="using-as.-conversion-functions" class="section level4">
+<h4>Using <em>as.</em> conversion functions</h4>
 <p>The <code>as.</code> coercion methods for collections of spectra, not
 only change the class of the collection object, but can also optionally
 apply the corresponding <code>as.</code> functions to the member
@@ -8481,8 +8487,58 @@ operator.</p>
 ## 4      415    390    440           0.918            0.0000100 TRUE             
 ## # … with 7 more rows</code></pre>
 </div>
-<div id="rgb-colours" class="section level2">
-<h2>RGB colours</h2>
+<div id="illumination-and-light-as-seen-by-humans" class="section level2">
+<h2>Illumination and light as seen by humans</h2>
+<div id="illuminance" class="section level3">
+<h3>Illuminance</h3>
+<p>Illuminance, or luminous flux incident on a surface, is relevant to
+human vision. It is an approximate quantity as the spectral response
+function of human vision varies among individuals, with their age and
+the conditions during measurement. The SI unit for illuminance is lux
+(lx) or lumnes per square meter.</p>
+<p>When function <code>illuminance()</code> is applied to spectral
+(energy) irradiance or spectral photon irradiance, illuminance can be
+directly computed using the same time base of 1 s.</p>
+<div class="sourceCode" id="cb560"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb560-1"><a href="#cb560-1" aria-hidden="true" tabindex="-1"></a><span class="fu">illuminance</span>(sun.spct)</span></code></pre></div>
+<pre><code>##   Ev[lx] 
+## 52191.33 
+## attr(,&quot;time.unit&quot;)
+## [1] &quot;second&quot;
+## attr(,&quot;radiation.unit&quot;)
+## [1] &quot;scaled illuminance [lx]; CIE2deg&quot;</code></pre>
+<p>The response of the human eye depends on the size of the target, and
+response spectra have been defined by CIE for both 2 degrees and 10
+degrees targets.</p>
+<div class="sourceCode" id="cb562"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb562-1"><a href="#cb562-1" aria-hidden="true" tabindex="-1"></a><span class="fu">illuminance</span>(sun.spct, <span class="at">std =</span> <span class="st">&quot;CIE10deg&quot;</span>)</span></code></pre></div>
+<pre><code>##   Ev[lx] 
+## 55066.41 
+## attr(,&quot;time.unit&quot;)
+## [1] &quot;second&quot;
+## attr(,&quot;radiation.unit&quot;)
+## [1] &quot;scaled illuminance [lx]; CIE10deg&quot;</code></pre>
+<p>If one attempts to compute illuminance from spectral fluence or
+radiation spectra expressed as a flux of energy or photons over a period
+of time different to 1 s, the average illuminance is returned, in
+lux.</p>
+<div class="sourceCode" id="cb564"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb564-1"><a href="#cb564-1" aria-hidden="true" tabindex="-1"></a><span class="fu">illuminance</span>(sun.daily.spct)</span></code></pre></div>
+<pre><code>##   Ev[lx] 
+## 24475.59 
+## attr(,&quot;time.unit&quot;)
+## [1] &quot;second&quot;
+## attr(,&quot;radiation.unit&quot;)
+## [1] &quot;mean illuminance [lx]; CIE2deg&quot;</code></pre>
+</div>
+<div id="cct-and-cri" class="section level3">
+<h3>CCT and CRI</h3>
+<p>Colour temperature and colour rendition index can be computed from
+spectral irradiance. Package ‘colorSpec’ implement these and other
+calcualtions related to colour. Package ‘photobiologyInOut’ provides
+wrappers to facilitate the computation of CCT and CRI directly from
+<code>source_spct</code> objects by on-the-fly conversion and calling
+functions from ‘colorSpec’.</p>
+</div>
+<div id="rgb-colours" class="section level3">
+<h3>RGB colours</h3>
 <p>Different <code>color_of()</code> methods allow calculation of RGB
 colour values for light sources or objects. The returned values are R
 colour definitions. Method <code>color_of()</code> works rather
@@ -8490,22 +8546,22 @@ differently depending on the object. The method for <code>numeric</code>
 vectors assumes the numbers are wavelengths in nanometres, and returns a
 vector of colour definitions of the same length assuming monochromatic
 light.</p>
-<div class="sourceCode" id="cb560"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb560-1"><a href="#cb560-1" aria-hidden="true" tabindex="-1"></a><span class="fu">color_of</span>(<span class="dv">550</span>) <span class="co"># green</span></span></code></pre></div>
+<div class="sourceCode" id="cb566"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb566-1"><a href="#cb566-1" aria-hidden="true" tabindex="-1"></a><span class="fu">color_of</span>(<span class="dv">550</span>) <span class="co"># green</span></span></code></pre></div>
 <pre><code>## wl.550.nm.CMF 
 ##     &quot;#00FF00&quot;</code></pre>
-<div class="sourceCode" id="cb562"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb562-1"><a href="#cb562-1" aria-hidden="true" tabindex="-1"></a><span class="fu">color_of</span>(<span class="dv">630</span>) <span class="co"># red</span></span></code></pre></div>
+<div class="sourceCode" id="cb568"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb568-1"><a href="#cb568-1" aria-hidden="true" tabindex="-1"></a><span class="fu">color_of</span>(<span class="dv">630</span>) <span class="co"># red</span></span></code></pre></div>
 <pre><code>## wl.630.nm.CMF 
 ##     &quot;#FF0000&quot;</code></pre>
-<div class="sourceCode" id="cb564"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb564-1"><a href="#cb564-1" aria-hidden="true" tabindex="-1"></a><span class="fu">color_of</span>(<span class="fu">c</span>(<span class="dv">550</span>, <span class="dv">630</span>, <span class="dv">380</span>, <span class="dv">750</span>)) <span class="co"># vectorized</span></span></code></pre></div>
+<div class="sourceCode" id="cb570"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb570-1"><a href="#cb570-1" aria-hidden="true" tabindex="-1"></a><span class="fu">color_of</span>(<span class="fu">c</span>(<span class="dv">550</span>, <span class="dv">630</span>, <span class="dv">380</span>, <span class="dv">750</span>)) <span class="co"># vectorized</span></span></code></pre></div>
 <pre><code>## wl.550.nm.CMF wl.630.nm.CMF wl.380.nm.CMF wl.750.nm.CMF 
 ##     &quot;#00FF00&quot;     &quot;#FF0000&quot;     &quot;#000000&quot;     &quot;#000000&quot;</code></pre>
 <p>The method for <code>source_spct</code> objects returns a single
 colour definition corresponding to the whole spectrum of a light
 sources.</p>
-<div class="sourceCode" id="cb566"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb566-1"><a href="#cb566-1" aria-hidden="true" tabindex="-1"></a><span class="fu">color_of</span>(sun.spct)</span></code></pre></div>
+<div class="sourceCode" id="cb572"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb572-1"><a href="#cb572-1" aria-hidden="true" tabindex="-1"></a><span class="fu">color_of</span>(sun.spct)</span></code></pre></div>
 <pre><code>## source.CMF 
 ##  &quot;#544F4B&quot;</code></pre>
-<div class="sourceCode" id="cb568"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb568-1"><a href="#cb568-1" aria-hidden="true" tabindex="-1"></a><span class="fu">color_of</span>(sun.spct <span class="sc">*</span> yellow_gel.spct)</span></code></pre></div>
+<div class="sourceCode" id="cb574"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb574-1"><a href="#cb574-1" aria-hidden="true" tabindex="-1"></a><span class="fu">color_of</span>(sun.spct <span class="sc">*</span> yellow_gel.spct)</span></code></pre></div>
 <pre><code>## source.CMF 
 ##  &quot;#946000&quot;</code></pre>
 <p>There are no methods for <code>filter_spct</code> and
@@ -8514,26 +8570,27 @@ convolve them with spectral irradiance from a <code>source_spct</code>
 object.</p>
 <p>The method for <code>waveband</code> objects returns one colour
 definition per waveband, corresponding to their central wavelength.</p>
-<div class="sourceCode" id="cb570"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb570-1"><a href="#cb570-1" aria-hidden="true" tabindex="-1"></a><span class="fu">color_of</span>(<span class="fu">waveband</span>(<span class="fu">c</span>(<span class="dv">400</span>, <span class="dv">500</span>), <span class="at">wb.name =</span> <span class="st">&quot;my_BL&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb576"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb576-1"><a href="#cb576-1" aria-hidden="true" tabindex="-1"></a><span class="fu">color_of</span>(<span class="fu">waveband</span>(<span class="fu">c</span>(<span class="dv">400</span>, <span class="dv">500</span>), <span class="at">wb.name =</span> <span class="st">&quot;my_BL&quot;</span>))</span></code></pre></div>
 <pre><code>## my_BL.CMF 
 ## &quot;#000EFF&quot;</code></pre>
 <p>By default CIE coordinates for <em>typical</em> human vision are
 used, but the functions have a parameter that can be used for supplying
 a different chromaticity definition as a <code>chroma_spct</code>
 object.</p>
-<div class="sourceCode" id="cb572"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb572-1"><a href="#cb572-1" aria-hidden="true" tabindex="-1"></a><span class="fu">color_of</span>(sun.spct, <span class="at">chroma.type =</span> <span class="st">&quot;CC&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb578"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb578-1"><a href="#cb578-1" aria-hidden="true" tabindex="-1"></a><span class="fu">color_of</span>(sun.spct, <span class="at">chroma.type =</span> <span class="st">&quot;CC&quot;</span>)</span></code></pre></div>
 <pre><code>## source.CC 
 ## &quot;#B63C37&quot;</code></pre>
-<div class="sourceCode" id="cb574"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb574-1"><a href="#cb574-1" aria-hidden="true" tabindex="-1"></a><span class="fu">color_of</span>(sun.spct, <span class="at">chroma.type =</span> <span class="st">&quot;CMF&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb580"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb580-1"><a href="#cb580-1" aria-hidden="true" tabindex="-1"></a><span class="fu">color_of</span>(sun.spct, <span class="at">chroma.type =</span> <span class="st">&quot;CMF&quot;</span>)</span></code></pre></div>
 <pre><code>## source.CMF 
 ##  &quot;#544F4B&quot;</code></pre>
-<div class="sourceCode" id="cb576"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb576-1"><a href="#cb576-1" aria-hidden="true" tabindex="-1"></a><span class="fu">color_of</span>(sun.spct, <span class="at">chroma.type =</span> beesxyzCMF.spct)</span></code></pre></div>
+<div class="sourceCode" id="cb582"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb582-1"><a href="#cb582-1" aria-hidden="true" tabindex="-1"></a><span class="fu">color_of</span>(sun.spct, <span class="at">chroma.type =</span> beesxyzCMF.spct)</span></code></pre></div>
 <pre><code>## source.chroma 
 ##     &quot;#CD1F11&quot;</code></pre>
 <p>In the case of bees, the RGB values represent a shift towards longer
 wavelengths compared to the true sensitivity. In other words, they are
 translated into colours that humans can see and monitors and printers
 can generate.</p>
+</div>
 </div>
 
 
