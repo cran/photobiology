@@ -12,7 +12,7 @@
 
 <meta name="author" content="Pedro J. Aphalo" />
 
-<meta name="date" content="2022-10-13" />
+<meta name="date" content="2023-01-06" />
 
 <title>User Guide: 2 Astronomy and Atmosphere</title>
 
@@ -339,9 +339,9 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 
 <h1 class="title toc-ignore">User Guide: 2 Astronomy and Atmosphere</h1>
-<h3 class="subtitle">Package ‘photobiology’ 0.10.14</h3>
+<h3 class="subtitle">Package ‘photobiology’ 0.10.15</h3>
 <h4 class="author">Pedro J. Aphalo</h4>
-<h4 class="date">2022-10-13</h4>
+<h4 class="date">2023-01-06</h4>
 
 
 <div id="TOC">
@@ -485,7 +485,7 @@ a useful default in some cases.</p>
 <pre><code>## # A tibble: 1 × 12
 ##   time                tz    solartime  longitude latit…¹ address azimuth eleva…²
 ##   &lt;dttm&gt;              &lt;chr&gt; &lt;solar_tm&gt;     &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt;     &lt;dbl&gt;   &lt;dbl&gt;
-## 1 2022-10-14 21:20:47 UTC   21:34:53           0    51.5 Greenw…    312.   -37.6
+## 1 2023-01-07 16:14:00 UTC   16:07:46           0    51.5 Greenw…    235.   -1.53
 ## # … with 4 more variables: declination &lt;dbl&gt;, eq.of.time &lt;dbl&gt;,
 ## #   hour.angle &lt;dbl&gt;, distance &lt;dbl&gt;, and abbreviated variable names ¹​latitude,
 ## #   ²​elevation</code></pre>
@@ -591,11 +591,11 @@ to be preferred for past dates and the relationship between time zones
 and locations are affected by changes in country boundaries and in
 national laws.</p>
 <div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sunrise_time</span>(<span class="fu">now</span>(<span class="st">&quot;UTC&quot;</span>), <span class="at">geocode =</span> my.geocode)</span></code></pre></div>
-<pre><code>## [1] &quot;2022-10-14 04:57:48 UTC&quot;</code></pre>
+<pre><code>## [1] &quot;2023-01-07 07:19:38 UTC&quot;</code></pre>
 <div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sunrise_time</span>(<span class="fu">now</span>(<span class="st">&quot;EET&quot;</span>), <span class="at">geocode =</span> my.geocode)</span></code></pre></div>
-<pre><code>## [1] &quot;2022-10-14 07:57:48 EEST&quot;</code></pre>
+<pre><code>## [1] &quot;2023-01-07 09:19:38 EET&quot;</code></pre>
 <div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sunrise_time</span>(<span class="fu">now</span>(<span class="st">&quot;Europe/Helsinki&quot;</span>), <span class="at">geocode =</span> my.geocode)</span></code></pre></div>
-<pre><code>## [1] &quot;2022-10-14 07:57:48 EEST&quot;</code></pre>
+<pre><code>## [1] &quot;2023-01-07 09:19:38 EET&quot;</code></pre>
 <hr />
 <p>Be aware of the behaviour of functions <code>ymd()</code>,
 <code>dmy()</code>, <code>ym()</code> and <code>my()</code> from package
@@ -623,27 +623,27 @@ date at any location on Earth.</em></p>
 passed as argument to parameter <code>date</code>, but this can be
 overridden.</p>
 <div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sunrise_time</span>(<span class="at">geocode =</span> my.geocode)</span></code></pre></div>
-<pre><code>## [1] &quot;2022-10-14 04:57:48 UTC&quot;</code></pre>
+<pre><code>## [1] &quot;2023-01-07 07:19:38 UTC&quot;</code></pre>
 <div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sunrise_time</span>(<span class="at">date =</span> <span class="fu">now</span>(<span class="st">&quot;UTC&quot;</span>), <span class="at">geocode =</span> my.geocode)</span></code></pre></div>
-<pre><code>## [1] &quot;2022-10-14 04:57:48 UTC&quot;</code></pre>
+<pre><code>## [1] &quot;2023-01-07 07:19:38 UTC&quot;</code></pre>
 <div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sunrise_time</span>(<span class="at">date =</span> <span class="fu">now</span>(<span class="st">&quot;UTC&quot;</span>), <span class="at">tz =</span> <span class="st">&quot;UTC&quot;</span>, <span class="at">geocode =</span> my.geocode)</span></code></pre></div>
-<pre><code>## [1] &quot;2022-10-14 04:57:48 UTC&quot;</code></pre>
+<pre><code>## [1] &quot;2023-01-07 07:19:38 UTC&quot;</code></pre>
 <div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sunrise_time</span>(<span class="at">date =</span> <span class="fu">now</span>(<span class="st">&quot;EET&quot;</span>), <span class="at">geocode =</span> my.geocode)</span></code></pre></div>
-<pre><code>## [1] &quot;2022-10-14 07:57:48 EEST&quot;</code></pre>
+<pre><code>## [1] &quot;2023-01-07 09:19:38 EET&quot;</code></pre>
 <div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sunrise_time</span>(<span class="at">date =</span> <span class="fu">now</span>(<span class="st">&quot;EET&quot;</span>), <span class="at">tz =</span> <span class="st">&quot;EET&quot;</span>, <span class="at">geocode =</span> my.geocode)</span></code></pre></div>
-<pre><code>## [1] &quot;2022-10-14 07:57:48 EEST&quot;</code></pre>
+<pre><code>## [1] &quot;2023-01-07 09:19:38 EET&quot;</code></pre>
 <div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sunrise_time</span>(<span class="fu">today</span>(<span class="st">&quot;EET&quot;</span>), <span class="at">tz =</span> <span class="st">&quot;EET&quot;</span>, <span class="at">geocode =</span> my.geocode)</span></code></pre></div>
-<pre><code>## [1] &quot;2022-10-15 08:00:16 EEST&quot;</code></pre>
+<pre><code>## [1] &quot;2023-01-07 09:19:38 EET&quot;</code></pre>
 <hr />
 <p>We can also compute the time of solar noon and of sunset.</p>
 <div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">noon_time</span>(<span class="fu">now</span>(<span class="st">&quot;UTC&quot;</span>), <span class="at">geocode =</span> my.geocode)</span></code></pre></div>
-<pre><code>## [1] &quot;2022-10-14 10:06:16 UTC&quot;</code></pre>
+<pre><code>## [1] &quot;2023-01-07 10:26:26 UTC&quot;</code></pre>
 <div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">noon_time</span>(<span class="fu">now</span>(<span class="st">&quot;EET&quot;</span>), <span class="at">geocode =</span> my.geocode)</span></code></pre></div>
-<pre><code>## [1] &quot;2022-10-14 13:06:16 EEST&quot;</code></pre>
+<pre><code>## [1] &quot;2023-01-07 12:26:26 EET&quot;</code></pre>
 <div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sunset_time</span>(<span class="fu">now</span>(<span class="st">&quot;UTC&quot;</span>), <span class="at">geocode =</span> my.geocode)</span></code></pre></div>
-<pre><code>## [1] &quot;2022-10-14 15:14:44 UTC&quot;</code></pre>
+<pre><code>## [1] &quot;2023-01-07 13:33:14 UTC&quot;</code></pre>
 <div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sunset_time</span>(<span class="fu">now</span>(<span class="st">&quot;EET&quot;</span>), <span class="at">geocode =</span> my.geocode)</span></code></pre></div>
-<pre><code>## [1] &quot;2022-10-14 18:14:44 EEST&quot;</code></pre>
+<pre><code>## [1] &quot;2023-01-07 15:33:14 EET&quot;</code></pre>
 <p>Functions <code>day_length()</code> and <code>night_length()</code>
 return the length of time, by default in hours and fraction.</p>
 <div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="fu">day_length</span>(dates, <span class="at">geocode =</span> my.geocode)</span></code></pre></div>
@@ -809,14 +809,14 @@ astronomical position of the sun, time of day is based on the time
 coordinates for a time zone.</p>
 <div class="sourceCode" id="cb95"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb95-1"><a href="#cb95-1" aria-hidden="true" tabindex="-1"></a>times <span class="ot">&lt;-</span> <span class="fu">now</span>(<span class="at">tzone =</span> <span class="st">&quot;UTC&quot;</span>) <span class="sc">+</span> <span class="fu">hours</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">6</span>)</span>
 <span id="cb95-2"><a href="#cb95-2" aria-hidden="true" tabindex="-1"></a>times</span></code></pre></div>
-<pre><code>## [1] &quot;2022-10-14 21:20:49 UTC&quot; &quot;2022-10-14 22:20:49 UTC&quot;
-## [3] &quot;2022-10-14 23:20:49 UTC&quot; &quot;2022-10-15 00:20:49 UTC&quot;
-## [5] &quot;2022-10-15 01:20:49 UTC&quot; &quot;2022-10-15 02:20:49 UTC&quot;
-## [7] &quot;2022-10-15 03:20:49 UTC&quot;</code></pre>
+<pre><code>## [1] &quot;2023-01-07 16:14:02 UTC&quot; &quot;2023-01-07 17:14:02 UTC&quot;
+## [3] &quot;2023-01-07 18:14:02 UTC&quot; &quot;2023-01-07 19:14:02 UTC&quot;
+## [5] &quot;2023-01-07 20:14:02 UTC&quot; &quot;2023-01-07 21:14:02 UTC&quot;
+## [7] &quot;2023-01-07 22:14:02 UTC&quot;</code></pre>
 <div class="sourceCode" id="cb97"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb97-1"><a href="#cb97-1" aria-hidden="true" tabindex="-1"></a><span class="fu">as_tod</span>(times)</span></code></pre></div>
-<pre><code>## [1] 21.3470648 22.3470648 23.3470648  0.3470648  1.3470648  2.3470648  3.3470648</code></pre>
+<pre><code>## [1] 16.23412 17.23412 18.23412 19.23412 20.23412 21.23412 22.23412</code></pre>
 <div class="sourceCode" id="cb99"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb99-1"><a href="#cb99-1" aria-hidden="true" tabindex="-1"></a><span class="fu">as_tod</span>(times, <span class="at">unit.out =</span> <span class="st">&quot;minutes&quot;</span>)</span></code></pre></div>
-<pre><code>## [1] 1280.82389 1340.82389 1400.82389   20.82389   80.82389  140.82389  200.82389</code></pre>
+<pre><code>## [1]  974.0473 1034.0473 1094.0473 1154.0473 1214.0473 1274.0473 1334.0473</code></pre>
 </div>
 <div id="relative-air-mass" class="section level2">
 <h2>Relative air mass</h2>

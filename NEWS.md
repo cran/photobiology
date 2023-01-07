@@ -4,11 +4,31 @@ editor_options:
     wrap: 72
 ---
 
+# photobiology 0.10.15
+
+- Add helper function `spct_wide2long()` a simple pure R replacement for
+  `dplyr::pivot_longer()` for spectra.
+- Revise function `subset2mspct()` to accept collections of spectra and
+  subset (split) members containing multiple spectra in long form.
+- Revise function `subset2mspct()` to accept any valid `spct` object and
+  always return a `mspct` object.
+- Add function `is_daytime()` a wrapper on `day_night()` returning a logical
+  vector.
+- Make the name and label returned by a call to `waveband()` accepting all
+  defaults argument more informative.
+- Update `e2q()` and `q2e()` to better handle previously normalized spectra 
+  passed as arguments: re-normalization is applied by default.
+- Increase accuracy of conversions in `e2q()` and `q2e()`. The change in 
+  computed values is at most 20 parts per million.
+- Add functions for conversions among quantities representable as wave length:
+  `wl2wavenumber()`, `wavenumber2wl()`, `wl2frequency()`, `frequency2wl()`,
+  `wl2energy()` and `energy2wl()`.
+
 # photobiology 0.10.14
 
 - Fix several bugs created by code-breaking changes in 'tidyselect' 1.2.0, and
   possibly 'rlang' 1.0.6, affecting 'dplyr'.
-- Fix other bugs, including handling of spectral with no non-missing data.
+- Fix other bugs, including handling of spectra with no non-missing data.
 - Add function `illuminance()`.
 
 # photobiology 0.10.13

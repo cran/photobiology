@@ -180,7 +180,7 @@ check_spct.generic_spct <-
       #  wl.max <- max(x[["w.length"]], na.rm = TRUE)
       if (wl.min == Inf) {
         warning("No valid 'w.length' values found") # could be stop()
-      } else if (wl.min < 1) {
+      } else if (wl.min < 1e-20) { # take care of rounding errors but do not restrict use cases
         stop("Negative or zero 'w.length' values found: aborting!")
       } else if ((wl.min < 99.999 || wl.min > 2.8e3) &&
                  getOption("photobiology.verbose")) { # catch use of Angstrom
@@ -263,7 +263,7 @@ check_spct.raw_spct <-
     return(x)
   } else {
     warning("No raw 'counts' data found in raw_spct")
-    x[["counts"]] = NA_real_
+    x[["counts"]] <- NA_real_
     return(x)
   }
 }
@@ -320,7 +320,7 @@ check_spct.cps_spct <-
     return(x)
   } else {
     warning("No counts per second data found in cps_spct")
-    x[["cps_1"]] <- NA_real_
+    x[["cps"]] <- NA_real_
     return(x)
   }
 }

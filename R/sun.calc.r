@@ -62,7 +62,7 @@
 #' VA, USA. ISBN 978-0943396613.
 #'
 #' A different implementation is available at
-#' \url{https://apps-nefsc.fisheries.noaa.gov/AstroCalc4R/}.
+#' \url{https://github.com/NEFSC/READ-PDB-AstroCalc4R/}.
 #'
 #' An interactive web page using the same algorithms is available at
 #' \url{https://gml.noaa.gov/grad/solcalc/}. There are small
@@ -317,7 +317,7 @@ tz_time_diff <- function(when = lubridate::now(),
 #'   TZ is allowed, default is current date at Greenwich matching the default
 #'   for \code{geocode}.
 #' @param tz character vector indicating time zone to be used in output and to
-#'   interpret \code{Date} values pased as argument to \code{date}.
+#'   interpret \code{Date} values passed as argument to \code{date}.
 #' @param geocode data frame with one or more rows and variables lon and lat as
 #'   numeric values (degrees). If present, address will be copied to the output.
 #' @param twilight character string, one of "none", "rim", "refraction",
@@ -348,34 +348,40 @@ tz_time_diff <- function(when = lubridate::now(),
 #'   twilight is a numeric vector of length two, the element with index 1 is
 #'   used for sunrise and that with index 2 for sunset.
 #'
+#'   \code{is_daytime()} supports twilight specifications by name, a test
+#'   like \code{sun_elevation() > 0} may be used directly for a numeric angle.
+#'
 #' @seealso \code{\link{sun_angles}}.
 #'
-#' @note This function is an implementation of Meeus equations as used in NOAAs
-#'   on-line web calculator, which are very precise and valid for a very broad
-#'   range of dates. For sunrise and sunset the times are affected by refraction
-#'   in the atmosphere, which does in turn depend on weather conditions. The
-#'   effect of refraction on the apparent position of the sun is only an
-#'   estimate based on "typical" conditions. The more tangential to the horizon
-#'   is the path of the sun, the larger the effect of refraction is on the times
-#'   of visual occlusion of the sun behind the horizon---i.e. the largest timing
-#'   errors occur at high latitudes. The computation is not defined for
-#'   latitudes 90 and -90 degrees, i.e. at the poles.
+#' @note Function \code{day_night()} is an implementation of Meeus equations as
+#'   used in NOAAs on-line web calculator, which are very precise and valid for
+#'   a very broad range of dates. For sunrise and sunset the times are affected
+#'   by refraction in the atmosphere, which does in turn depend on weather
+#'   conditions. The effect of refraction on the apparent position of the sun is
+#'   only an estimate based on "typical" conditions. The more tangential to the
+#'   horizon is the path of the sun, the larger the effect of refraction is on
+#'   the times of visual occlusion of the sun behind the horizon---i.e. the
+#'   largest timing errors occur at high latitudes. The computation is not
+#'   defined for latitudes 90 and -90 degrees, i.e. at the poles.
 #'
 #'   There exists a different R implementation of the same algorithms called
 #'   "AstroCalcPureR" available as function \code{astrocalc4r} in package
 #'   'fishmethods'. Although the equations used are almost all the same, the
 #'   function signatures and which values are returned differ. In particular,
-#'   the present implementation splits the calculation into two separate
-#'   functions, one returning angles at given instants in time, and a separate
-#'   one returning the timing of events for given dates. In 'fishmethods' (=
-#'   1.11-0) there is a bug in function astrocalc4r() that affects sunrise and
-#'   sunset times. The times returned by the functions in package 'photobiology'
-#'   have been validated against the NOAA base implementation.
+#'   the implementation in 'photobiology' splits the calculation into two
+#'   separate functions, one returning angles at given instants in time, and a
+#'   separate one returning the timing of events for given dates. In
+#'   'fishmethods' (= 1.11-0) there is a bug in function astrocalc4r() that
+#'   affects sunrise and sunset times. The times returned by the functions in
+#'   package 'photobiology' have been validated against the NOAA base
+#'   implementation.
 #'
 #'   In the current implementation functions \code{sunrise_time},
-#'   \code{noon_time}, \code{sunset_time} and \code{day_length} are wrappers
+#'   \code{noon_time}, \code{sunset_time}, \code{day_length},
+#'   \code{night_length} and \code{is_daytime} are all wrappers
 #'   on \code{day_night}, so if more than one quantity is needed it is
-#'   preferable to directly call \code{day_night} as it will be faster.
+#'   preferable to directly call \code{day_night} and extract the different
+#'   components from the returned list.
 #'
 #' @section Warning: Be aware that R's \code{Date} class does not save time zone
 #'   metadata. This can lead to ambiguities in the current implementation
@@ -383,13 +389,17 @@ tz_time_diff <- function(when = lubridate::now(),
 #'   of class \code{POSIXct}, in other words an instant in time, from which
 #'   the correct date will be computed based on the \code{tz} argument.
 #'
+#'   The time zone in which times passed to \code{date} as argument are
+#'   expressed does not need to be the local one or match the geocode, however,
+#'   the returned values will be in the same time zone as the input.
+#'
 #' @references
 #' The primary source for the algorithm used is the book:
 #' Meeus, J. (1998) Astronomical Algorithms, 2 ed., Willmann-Bell, Richmond,
 #' VA, USA. ISBN 978-0943396613.
 #'
 #' A different implementation is available at
-#' \url{https://apps-nefsc.fisheries.noaa.gov/AstroCalc4R/} and in R paclage
+#' \url{https://github.com/NEFSC/READ-PDB-AstroCalc4R/} and in R paclage
 #' 'fishmethods'. In 'fishmethods' (= 1.11-0) there is a bug in function
 #' astrocalc4r() that affects sunrise and sunset times.
 #'
@@ -401,14 +411,39 @@ tz_time_diff <- function(when = lubridate::now(),
 #' @export
 #' @examples
 #' library(lubridate)
-#' my.geocode <- data.frame(lat = 60, lon = 25)
-#' day_night(ymd("2015-05-30"), geocode = my.geocode)
-#' day_night(ymd("2015-05-30") + days(1:10), geocode = my.geocode, twilight = "civil")
-#' sunrise_time(ymd("2015-05-30"), geocode = my.geocode)
-#' noon_time(ymd("2015-05-30"), geocode = my.geocode)
-#' sunset_time(ymd("2015-05-30"), geocode = my.geocode)
-#' day_length(ymd("2015-05-30"), geocode = my.geocode)
-#' day_length(ymd("2015-05-30"), geocode = my.geocode, unit.out = "day")
+#'
+#' my.geocode <- data.frame(lon = 24.93838,
+#'                          lat = 60.16986,
+#'                          address = "Helsinki, Finland")
+#'
+#' day_night(ymd("2015-05-30", tz = "EET"),
+#'           geocode = my.geocode)
+#' day_night(ymd("2015-05-30", tz = "EET") + days(1:10),
+#'           geocode = my.geocode,
+#'           twilight = "civil")
+#' sunrise_time(ymd("2015-05-30", tz = "EET"),
+#'              geocode = my.geocode)
+#' noon_time(ymd("2015-05-30", tz = "EET"),
+#'           geocode = my.geocode)
+#' sunset_time(ymd("2015-05-30", tz = "EET"),
+#'             geocode = my.geocode)
+#' day_length(ymd("2015-05-30", tz = "EET"),
+#'            geocode = my.geocode)
+#' day_length(ymd("2015-05-30", tz = "EET"),
+#'            geocode = my.geocode,
+#'            unit.out = "day")
+#' is_daytime(ymd("2015-05-30", tz = "EET") + hours(c(0, 6, 12, 18, 24)),
+#'            geocode = my.geocode)
+#' is_daytime(ymd_hms("2015-05-30 03:00:00", tz = "EET"),
+#'            geocode = my.geocode)
+#' is_daytime(ymd_hms("2015-05-30 00:00:00", tz = "UTC"),
+#'            geocode = my.geocode)
+#' is_daytime(ymd_hms("2015-05-30 03:00:00", tz = "EET"),
+#'            geocode = my.geocode,
+#'            twilight = "civil")
+#' is_daytime(ymd_hms("2015-05-30 00:00:00", tz = "UTC"),
+#'            geocode = my.geocode,
+#'            twilight = "civil")
 #'
 day_night <- function(date = lubridate::now(tzone = "UTC"),
                       tz = ifelse(lubridate::is.Date(date),
@@ -419,7 +454,7 @@ day_night <- function(date = lubridate::now(tzone = "UTC"),
                                                address = "Greenwich"),
                       twilight = "none",
                       unit.out = "hours") {
-  stopifnot(! anyNA(date))
+  stopifnot(!anyNA(date)) # NAs could be propagated instead
   tz <- unique(tz)
   if (length(tz) > 1L) {
     tz <- tz[1]
@@ -429,12 +464,10 @@ day_night <- function(date = lubridate::now(tzone = "UTC"),
   if (any(lubridate::is.Date(date))) {
     date <- as.POSIXct(date, tz = tz)
   }
-  # floor_date() converts into date and drops the time zone!!
-  # date <- lubridate::floor_date(date, unit = "days")
+  # as 'date' is not a Date but a time, we find the corresponding date in UTC
+  # as calculations are done in UTC time
   date <- lubridate::with_tz(date, tzone = "UTC")
-  lubridate::second(date) <- 0
-  lubridate::minute(date) <- 0
-  lubridate::hour(date) <- 0
+  date <- lubridate::floor_date(date, unit = "days")
 
   if (unit.out == "date") {
     unit.out <- "datetime"
@@ -451,7 +484,7 @@ day_night <- function(date = lubridate::now(tzone = "UTC"),
   z <- list()
   for (i in seq_len(nrow(geocode))) {
     temp <- day_night_fast(date = date,
-                           tz = tz,
+                           tz = tz, # used for returned times
                            geocode = dplyr::slice(geocode, i),
                            twilight = twilight,
                            unit.out = unit.out)
@@ -629,6 +662,36 @@ day_night_fast <- function(date,
   }
 }
 
+#' @rdname day_night
+#'
+#' @return \code{is_daytime()} returns a logical vector, with \code{TRUE} for
+#'   day time and \code{FALSE} for night time.
+#'
+#' @export
+#'
+is_daytime <- function(date = lubridate::now(tzone = "UTC"),
+                       tz = ifelse(lubridate::is.Date(date),
+                                   "UTC",
+                                   lubridate::tz(date)),
+                       geocode = tibble::tibble(lon = 0,
+                                                lat = 51.5,
+                                                address = "Greenwich"),
+                       twilight = "none",
+                       unit.out = "hours") {
+  if (!lubridate::is.POSIXct(date)) {
+    warning("'date' must be a 'POSIXct' vector")
+    return(rep(NA, length(date)))
+  }
+  z <- day_night(date = date,
+                 tz = tz,
+                 geocode = geocode,
+                 twilight = twilight,
+                 unit.out = "datetime")
+
+  date > z[["sunrise"]] & date < z[["sunset"]]
+}
+
+
 #' twilight argument check and conversion
 #'
 #' @return numeric Solar elevation angle at sunrise or sunset
@@ -685,6 +748,7 @@ twilight2angle <- function(twilight) {
 #' @export
 #' @return \code{noon_time}, \code{sunrise_time} and \code{sunset_time} return a
 #'   vector of POSIXct times
+#'
 noon_time <- function(date = lubridate::now(tzone = "UTC"),
                       tz = lubridate::tz(date),
                       geocode = tibble::tibble(lon = 0,
@@ -703,6 +767,7 @@ noon_time <- function(date = lubridate::now(tzone = "UTC"),
 #' @rdname day_night
 #'
 #' @export
+#'
 sunrise_time <- function(date = lubridate::now(tzone = "UTC"),
                          tz = lubridate::tz(date),
                          geocode = tibble::tibble(lon = 0,
@@ -719,6 +784,7 @@ sunrise_time <- function(date = lubridate::now(tzone = "UTC"),
 }
 
 #' @rdname day_night
+#'
 #' @export
 #'
 sunset_time <- function(date = lubridate::now(tzone = "UTC"),

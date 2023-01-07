@@ -7,21 +7,21 @@
 #'    spectral objects.
 #' @param .fun An R function or a list of functions.
 #' @param col.name.tag character Vector of extensions to paste to default column
-#'    name for the output from each of the functions. If col.name.tag[1] != "",
+#'    name for the output from each of the functions. If \code{col.name.tag[1] != ""},
 #'    this forces the return of an object of class \code{"generic_spct"}.
 #' @param .fun.name character string used to set what.measured attribute.
+#' @param w.length.out numeric vector of wavelengths (nanometres).
 #' @param ...	Arguments passed to .fun.
 #'
 #' @note Omission of NAs is done separately at each wavelength. Interpolation is
-#'   not applied, so all spectra in \code{x} must share the same set of
-#'   wavelengths. When defining new public functions using these utility
-#'   functions make sure to return data that is valid for the class of spectral
-#'   object returned!!
+#'   applied, so spectra in \code{x} do not need to share the same set of
+#'   wavelengths. When defining
+#'   new public functions using these utility functions make sure to return data
+#'   that is valid for the class of spectral object returned!!
 #'
-#'   Objects of classes raw_spct and cps_spct can contain data from multiple
-#'   scans. This functions are implemented for these classes only for the case
-#'   when all member spectra contain data for a single scan, or spliced into a
-#'   single column in the case of cps_spct members.
+#'   Objects of classes \code{raw_spct} and \code{cps_spct} can contain data
+#'   from multiple scans acquired with the same instrument, thus at the same set
+#'   of wave lengths.
 #'
 #' @keywords internal
 #'
@@ -32,6 +32,7 @@ rowwise_filter <-
            .fun,
            col.name.tag = "",
            .fun.name = "Summary of",
+           w.length.out = NULL,
            ...) {
     # we accept both function objects and lists of functions as input, but we
     # convert function arguments to lists of length 1..
@@ -42,15 +43,8 @@ rowwise_filter <-
     # validate input
     stopifnot(length(.fun) == length(col.name.tag))
 
-    if (!(length(unique(msaply(x, nrow))) == 1L &&
-          length(unique(msaply(x, wl_max))) == 1L &&
-          length(unique(msaply(x, wl_min))) == 1L)) {
-      stop("Spectra differ in 'w.length' vector.")
-    }
-
-    if (getMultipleWl(x[[1]]) > 1L) {
-      stop("Multiple spectra in long form not supported.")
-    }
+    # ensure rowise computtaions are possible
+    x <- make_wl_consistent(x = x, w.length.out = w.length.out)
 
     # collect and check consistency of quantities
     is.Tfr <- all(msaply(x, is_transmittance_based))
@@ -122,6 +116,7 @@ rowwise_source <-
            .fun,
            col.name.tag = "",
            .fun.name = "Summary of",
+           w.length.out = NULL,
            ...) {
     # we accept both function objects and lists of functions as input, but we
     # convert function arguments to lists of length 1..
@@ -132,15 +127,8 @@ rowwise_source <-
     # validate input
     stopifnot(length(.fun) == length(col.name.tag))
 
-    if (!(length(unique(msaply(x, nrow))) == 1L &&
-          length(unique(msaply(x, wl_max))) == 1L &&
-          length(unique(msaply(x, wl_min))) == 1L)) {
-      stop("Spectra differ in 'w.length' vector.")
-    }
-
-    if (getMultipleWl(x[[1]]) > 1L) {
-      stop("Multiple spectra in long form not supported.")
-    }
+    # ensure rowise computtaions are possible
+    x <- make_wl_consistent(x = x, w.length.out = w.length.out)
 
     # collect and check consistency of attributes
     is.energy <- unique(msaply(x, is_energy_based))
@@ -221,6 +209,7 @@ rowwise_response <-
            .fun,
            col.name.tag = "",
            .fun.name = "Summary of",
+           w.length.out = NULL,
            ...) {
     # we accept both function objects and lists of functions as input, but we
     # convert function arguments to lists of length 1..
@@ -231,15 +220,8 @@ rowwise_response <-
     # validate input
     stopifnot(length(.fun) == length(col.name.tag))
 
-    if (!(length(unique(msaply(x, nrow))) == 1L &&
-          length(unique(msaply(x, wl_max))) == 1L &&
-          length(unique(msaply(x, wl_min))) == 1L)) {
-      stop("Spectra differ in 'w.length' vector.")
-    }
-
-    if (getMultipleWl(x[[1]]) > 1L) {
-      stop("Multiple spectra in long form not supported.")
-    }
+    # ensure rowise computtaions are possible
+    x <- make_wl_consistent(x = x, w.length.out = w.length.out)
 
     # collect and check consistency of attributes
     is.energy <- unique(msaply(x, is_energy_based))
@@ -308,6 +290,7 @@ rowwise_reflector <-
            .fun,
            col.name.tag = "",
            .fun.name = "Summary of",
+           w.length.out = NULL,
            ...) {
     # we accept both function objects and lists of functions as input, but we
     # convert function arguments to lists of length 1..
@@ -318,15 +301,8 @@ rowwise_reflector <-
     # validate input
     stopifnot(length(.fun) == length(col.name.tag))
 
-    if (!(length(unique(msaply(x, nrow))) == 1L &&
-          length(unique(msaply(x, wl_max))) == 1L &&
-          length(unique(msaply(x, wl_min))) == 1L)) {
-      stop("Spectra differ in 'w.length' vector.")
-    }
-
-    if (getMultipleWl(x[[1]]) > 1L) {
-      stop("Multiple spectra in long form not supported.")
-    }
+    # ensure rowise computtaions are possible
+    x <- make_wl_consistent(x = x, w.length.out = w.length.out)
 
     # collect and check consistency of attributes
     Rfr.type <- unique(msaply(x, getRfrType))
@@ -380,6 +356,7 @@ rowwise_calibration <-
            .fun,
            col.name.tag = "",
            .fun.name = "Summary of",
+           w.length.out = NULL,
            ...) {
     # we accept both function objects and lists of functions as input, but we
     # convert function arguments to lists of length 1..
@@ -390,15 +367,8 @@ rowwise_calibration <-
     # validate input
     stopifnot(length(.fun) == length(col.name.tag))
 
-    if (!(length(unique(msaply(x, nrow))) == 1L &&
-          length(unique(msaply(x, wl_max))) == 1L &&
-          length(unique(msaply(x, wl_min))) == 1L)) {
-      stop("Spectra differ in 'w.length' vector.")
-    }
-
-    if (getMultipleWl(x[[1]]) > 1L) {
-      stop("Multiple spectra in long form not supported.")
-    }
+    # ensure rowise computtaions are possible
+    x <- make_wl_consistent(x = x, w.length.out = w.length.out)
 
     # infer column name to use as input
     col.name <- "irrad.mult"
@@ -439,6 +409,7 @@ rowwise_cps <-
            .fun,
            col.name.tag = "",
            .fun.name = "Summary of",
+           w.length.out = NULL,
            ...) {
     # we accept both function objects and lists of functions as input, but we
     # convert function arguments to lists of length 1..
@@ -449,15 +420,8 @@ rowwise_cps <-
     # validate input
     stopifnot(length(.fun) == length(col.name.tag))
 
-    if (!(length(unique(msaply(x, nrow))) == 1L &&
-          length(unique(msaply(x, wl_max))) == 1L &&
-          length(unique(msaply(x, wl_min))) == 1L)) {
-      stop("Spectra differ in 'w.length' vector.")
-    }
-
-    if (getMultipleWl(x[[1]]) > 1L) {
-      stop("Multiple spectra in long form not supported.")
-    }
+    # ensure rowise computtaions are possible
+    x <- make_wl_consistent(x = x, w.length.out = w.length.out)
 
     # infer column name to use as input
     col.name = "cps"
@@ -507,6 +471,7 @@ rowwise_raw <-
            .fun,
            col.name.tag = "",
            .fun.name = "Summary of",
+           w.length.out = NULL,
            ...) {
     # we accept both function objects and lists of functions as input, but we
     # convert function arguments to lists of length 1..
@@ -517,15 +482,8 @@ rowwise_raw <-
     # validate input
     stopifnot(length(.fun) == length(col.name.tag))
 
-    if (!(length(unique(msaply(x, nrow))) == 1L &&
-          length(unique(msaply(x, wl_max))) == 1L &&
-          length(unique(msaply(x, wl_min))) == 1L)) {
-      stop("Spectra differ in 'w.length' vector.")
-    }
-
-    if (getMultipleWl(x[[1]]) > 1L) {
-      stop("Multiple spectra in long form not supported.")
-    }
+    # ensure rowise computtaions are possible
+    x <- make_wl_consistent(x = x, w.length.out = w.length.out)
 
     # infer column name to use as input
     col.name = "counts"
@@ -567,3 +525,59 @@ rowwise_raw <-
 
     zz
   }
+
+#' Make wavelengths consistent
+#'
+#' Ensure wavelengths in all spectra in a \code{mspct} object are consistent,
+#' filling head and tail of spectral quantities when needed with NAs, and using
+#' interpolation if needed. If individual \code{spct} objects contain multiple
+#' spectra in long form these are split into multiple \code{spct} objects, each
+#' containing data for one spectrum.
+#'
+#' @param x a generic_spct object
+#' @param w.length.out numeric vector of wavelengths (nanometres)
+#'
+#' @keywords internal
+#'
+make_wl_consistent <- function(x,
+                               w.length.out = NULL) {
+  # split multiple spectra in long form
+  if (any(msaply(x, .fun = getMultipleWl) > 1L)) {
+    x <- subset2mspct(x)
+    message("Multiple spectra in long form have been split.")
+  }
+
+  if (length(x) <= 1L) {
+    # nothing else to do
+    return(x)
+  }
+
+  # interpolate wavelengths to make them consistent
+  w.lengths.differ <-
+    !(length(unique(msaply(x, .fun = nrow))) == 1L &&
+        length(unique(msaply(x, .fun = wl_max))) == 1L &&
+        length(unique(msaply(x, .fun = wl_min))) == 1L)
+
+  if (w.lengths.differ || !is.null(w.length.out)) {
+    if (is.null(w.length.out)) {
+      if (length(x) == 2) {
+        # we use the union of wavelengths as binary operators do
+        w.length.out <-
+          sort(union(x[[1]][["w.length"]], x[[1]][["w.length"]]))
+      } else {
+        # we avoid bloating of the data while protection the wl resolution
+        wl.ranges <- range(x, na.rm = TRUE)
+        wl.range <- numeric(2)
+        wl.range[1] <- min(wl.ranges["min.wl"])
+        wl.range[2] <- max(wl.ranges["max.wl"])
+        max.length <- max(msaply(x, .fun = length))
+        stepsize <- min(msaply(x, .fun = function(x) { stats::median(diff(x[["w.length"]])) }))
+        length.out <- max(max.length, diff(wl.range) / stepsize)
+        w.length.out <-
+          seq.int(from = wl.range[1], to = wl.range[2], length.out = length.out)
+      }
+    }
+    x <- interpolate_mspct(x, w.length.out = w.length.out, fill = NA)
+  }
+  x
+}
