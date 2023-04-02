@@ -4,6 +4,13 @@ editor_options:
     wrap: 72
 ---
 
+# photobiology 0.10.16
+
+- Fix bug in `subset2mspct()` introduced in 0.10.15 affecting collections of 
+  spectra with a single spct object with multiple spectra in long form as only 
+  member.
+- Fix failure of automatic registration  of methods `log2()` and `log10()`.
+
 # photobiology 0.10.15
 
 - Add helper function `spct_wide2long()` a simple pure R replacement for
