@@ -11,7 +11,8 @@ setNormalized(
   norm.type = NA_character_,
   norm.factors = NA_real_,
   norm.cols = NA_character_,
-  norm.range = rep(NA_real_, 2)
+  norm.range = rep(NA_real_, 2),
+  verbose = getOption("verbose_as_default", default = FALSE)
 )
 
 setNormalised(
@@ -20,7 +21,8 @@ setNormalised(
   norm.type = NA_character_,
   norm.factors = NA_real_,
   norm.cols = NA_character_,
-  norm.range = rep(NA_real_, 2)
+  norm.range = rep(NA_real_, 2),
+  verbose = getOption("verbose_as_default", default = FALSE)
 )
 }
 \arguments{
@@ -36,15 +38,29 @@ values by this factor reverts the normalization.}
 \item{norm.cols}{character The name(s) of the data columns normalized.}
 
 \item{norm.range}{numeric The wavelength range used for normalization (nm).}
+
+\item{verbose}{logical Flag enabling or silencing informative warnings.}
 }
 \description{
 Function to write the "normalized" attribute of an existing generic_spct
 object.
 }
+\details{
+This function \strong{is used internally}, although occasionally
+  users may want to use it to "pretend" that spectral data have not been
+  normalized. Use \code{\link{normalize}()} methods to apply a normalization
+  and set the attributes accordingly. Function \code{setNormalized()} only
+  sets the attributes that store the metadata corresponding to an already
+  applied normalization. Thus a trace of the transformations applied to
+  spectral data is kept, which currently is used to renormalize the spectra
+  when the quantity used for expression is changed with a conversion
+  function. It is also used in other packages like 'ggspectra' when
+  generating automatically axis labels. If \code{x} is not a
+  \code{generic_spct} object, \code{x} is not modified.
+}
 \note{
-If \code{x} is not a \code{generic_spct} object, \code{x} is not
-  modified. Passing a \code{logical} as argument to \code{norm} is deprecated
-  but kept for backwards compatibility.
+Passing a \code{logical} as argument to \code{norm} is deprecated
+  but accepted silently for backwards compatibility.
 
 \code{setNormalised()} is a synonym for this \code{setNormalized()}
   method.

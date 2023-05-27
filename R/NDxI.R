@@ -1,4 +1,4 @@
-#' Calculate a normalized index.
+#' Calculate a normalized difference.
 #'
 #' This method returns a normalized difference index value for an arbitrary
 #' pair of wavebands. There are many such indexes in use, such as NDVI
@@ -7,10 +7,8 @@
 #' difference among then is in the wavebands used.
 #'
 #' @param spct an R object
-#' @param plus.w.band waveband objects The waveband determine the
-#'   region of the spectrum used in the calculations
-#' @param minus.w.band waveband objects The waveband determine the
-#'   region of the spectrum used in the calculations
+#' @param plus.w.band,minus.w.band waveband objects The wavebands determine the
+#'   regions of the spectrum used in the calculations.
 #' @param f function used for integration taking spct as first argument and a
 #'   list of wavebands as second argument.
 #' @param ... additional arguments passed to f
@@ -28,12 +26,17 @@
 #'   can be used if there is a good reason for it. In every case \code{spct}
 #'   should be of the class expected by \code{f}. When using two wavebands of
 #'   different widths do consider passing to \code{f} a suitable \code{quantity}
-#'   argument. Wavebands can describe weighting functions if desired.
+#'   argument, for example to compare averages rather than integrals. Wavebands
+#'   can describe weighting functions if desired.
+#'
+#'   \deqn{\mathrm{NDxI} = \frac{f(s, wb_\mathrm{plus}) - f(s, wb_\mathrm{minus})}{f(s, wb_\mathrm{plus}) + f(s, wb_\mathrm{minus})}}
 #'
 #' @note Some NDxI indexes are directly based on satellite instrument data, such
 #'   as those in the Landsat satellites. To simulate such indexes using spectral
-#'   reflectande as input, \code{waveband} definitions provided by package
-#'   'photobiologyWavebands' can be used.
+#'   reflectande as input, constructors of \code{waveband} definitions from package
+#'   'photobiologyWavebands' can be useful.
+#'
+#' @seealso \code{\link{Rfr_normdiff}}
 #'
 #' @export
 #'
@@ -67,7 +70,7 @@ normalized_diff_ind.default <-
     warning("'normalized_diff_ind' is not defined for objects of class ",
             class(spct)[1])
     return(spct)
-}
+  }
 
 #' @describeIn normalized_diff_ind
 #'
@@ -102,5 +105,3 @@ normalized_diff_ind.generic_mspct <- function(spct, plus.w.band, minus.w.band, f
          f = f,
          ...)
 }
-
-

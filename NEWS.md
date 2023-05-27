@@ -4,12 +4,27 @@ editor_options:
     wrap: 72
 ---
 
+# photobiology 0.10.17
+
+- Fix bug in `subset2mspct()` when applied to the case of a collection
+  containing a single spct object containing a single spectrum.
+- Add functions `sample_spct()` and `sample_mspct()`.
+- Add specialization of `smooth_spct()` method for class `"cps_spct"`.
+- Add `e_fraction()` and `q_fraction` methods.
+- Add `Rfr_ratio()`, `Rfr_fraction()` and `Rfr_normdiff()`.
+- Add `Tfr_ratio()`, `Tfr_fraction()` and `Tfr_normdiff()`.
+- Add formal parameter `quantity` to `q_ratio()` and `e_ratio()` methods.
+- Extend the "update" of normalizations to objects of class 
+  `"filter_spct"` and fix a bug affecting setting of metadata attribute during
+ updates to the normalization of `"source_spct"` and `"response_spct"`
+  objects.
+
 # photobiology 0.10.16
 
 - Fix bug in `subset2mspct()` introduced in 0.10.15 affecting collections of 
   spectra with a single spct object with multiple spectra in long form as only 
   member.
-- Fix failure of automatic registration  of methods `log2()` and `log10()`.
+- Fix failure of automatic registration of methods `log2()` and `log10()`.
 
 # photobiology 0.10.15
 
