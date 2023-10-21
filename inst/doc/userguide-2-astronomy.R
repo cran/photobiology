@@ -1,11 +1,11 @@
-## ---- include=FALSE, echo=FALSE-----------------------------------------------
+## ----include=FALSE, echo=FALSE------------------------------------------------
 knitr::opts_chunk$set(fig.width=8, fig.height=4)
 
-## ---- printing-spectra, eval=TRUE, include=FALSE------------------------------
+## ----printing-spectra, eval=TRUE, include=FALSE-------------------------------
 # library(tibble)
 options(tibble.print_max = 6, tibble.print_min = 4)
 
-## ---- pkg-load, eval=TRUE, message = FALSE------------------------------------
+## ----pkg-load, eval=TRUE, message = FALSE-------------------------------------
 library(photobiology)
 library(lubridate)
 # if installed, we use 'lutz' to lookup time zones from geocodes

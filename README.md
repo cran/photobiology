@@ -1,12 +1,15 @@
 
 # photobiology <img src="man/figures/logo.png" align="right" width="120"/>
 
+<!-- badges: start -->
+
 [![CRAN
 version](https://www.r-pkg.org/badges/version-last-release/photobiology)](https://cran.r-project.org/package=photobiology)
 [![cran
 checks](https://badges.cranchecks.info/worst/photobiology.svg)](https://cran.r-project.org/web/checks/check_results_photobiology.html)
 [![R build
 status](https://github.com/aphalo/photobiology/workflows/R-CMD-check/badge.svg)](https://github.com/aphalo/photobiology/actions)
+<!-- badges: end -->
 
 Package ‘**photobiology**’ defines a system of classes for storing
 spectral data and accompanying metadata. For each of these classes
@@ -38,8 +41,8 @@ transmission spectrum.
 ``` r
 library(photobiology)
 e_irrad(sun.spct * yellow_gel.spct)
-#> E_Total 
-#> 146.506 
+#>  E_Total 
+#> 146.5053 
 #> attr(,"time.unit")
 #> [1] "second"
 #> attr(,"radiation.unit")
@@ -53,9 +56,9 @@ sun.
 geocode <- data.frame(lon = 0, lat = 55)
 date <- lubridate::now(tzone = "UTC")
 sunrise_time(date, tz = "UTC", geocode = geocode)
-#> [1] "2023-04-02 05:29:24 UTC"
+#> [1] "2023-08-08 04:21:26 UTC"
 day_length(date, tz = "UTC", geocode = geocode)
-#> [1] 13.14049
+#> [1] 15.47508
 ```
 
 ## Installation
@@ -123,8 +126,7 @@ publications, please cite according to:
 
 ``` r
 citation("photobiology")
-#> 
-#> To cite package 'photobiology' in publications, please use:
+#> To cite package ‘photobiology’ in publications use:
 #> 
 #>   Aphalo, Pedro J. (2015) The r4photobiology suite. UV4Plants Bulletin,
 #>   2015:1, 21-29. DOI:10.19232/uv4pb.2015.1.14
