@@ -379,7 +379,7 @@ trim_wl.generic_spct <- function(x,
                  use.hinges = use.hinges,
                  fill = fill,
                  ...)
-    return(rbindspct(z))
+    return(rbindspct(z, idfactor = FALSE, attrs.simplify = TRUE))
   }
 
   if (is.null(range)) {
@@ -530,7 +530,7 @@ clip_wl.generic_spct <- function(x, range = NULL, ...) {
     z <- trim_wl(x = mspct,
                  range = range,
                  ...)
-    return(rbindspct(z))
+    return(rbindspct(z, idfactor = FALSE, attrs.simplify = TRUE))
   }
 
   if (is.null(range)) {
@@ -549,7 +549,8 @@ clip_wl.generic_spct <- function(x, range = NULL, ...) {
     }
   } else {
     range = range(range, na.rm = TRUE)
-    x[x[["w.length"]] >= range[1] & x[["w.length"]] < range[2] + guard, ]
+    row.selector <- x[["w.length"]] >= range[1] & x[["w.length"]] < range[2] + guard
+    x[row.selector, ]
   }
 }
 

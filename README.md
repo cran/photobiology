@@ -41,8 +41,8 @@ transmission spectrum.
 ``` r
 library(photobiology)
 e_irrad(sun.spct * yellow_gel.spct)
-#>  E_Total 
-#> 146.5053 
+#> E_Total 
+#> 146.506 
 #> attr(,"time.unit")
 #> [1] "second"
 #> attr(,"radiation.unit")
@@ -56,9 +56,9 @@ sun.
 geocode <- data.frame(lon = 0, lat = 55)
 date <- lubridate::now(tzone = "UTC")
 sunrise_time(date, tz = "UTC", geocode = geocode)
-#> [1] "2023-08-08 04:21:26 UTC"
+#> [1] "2024-02-21 07:09:47 UTC"
 day_length(date, tz = "UTC", geocode = geocode)
-#> [1] 15.47508
+#> [1] 10.12882
 ```
 
 ## Installation
@@ -69,8 +69,18 @@ Installation of the most recent stable version from CRAN:
 install.packages("photobiology")
 ```
 
+Installation of the current unstable version from R-Universe CRAN-like
+repository:
+
+``` r
+install.packages('photobiology', 
+                 repos = c('https://aphalo.r-universe.dev', 
+                           'https://cloud.r-project.org'))
+```
+
 Once package ‘photobiology’ is installed, installation of the remaining
-or missing packages in the suite from CRAN:
+or missing packages in the suite from CRAN (or by adding the repository
+information as above, from R-Universe):
 
 ``` r
 intalled_pkgs <- installed.packages()[ , 1]
@@ -147,6 +157,6 @@ citation("photobiology")
 
 ## License
 
-© 2012-2023 Pedro J. Aphalo (<pedro.aphalo@helsinki.fi>). Released under
+© 2012-2024 Pedro J. Aphalo (<pedro.aphalo@helsinki.fi>). Released under
 the GPL, version 2 or greater. This software carries no warranty of any
 kind.

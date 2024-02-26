@@ -4,6 +4,69 @@ editor_options:
     wrap: 72
 ---
 
+# photobiology 0.11.1
+
+The main enhancements in this update are **1)** the implementation of proper
+handling of metadata attributes in objects containing multiple spectra in long
+form and during their two way conversion to collections of spectra, and **2)**
+improved performance of the computation of irradiances for spectra stored in
+long or tidy form.
+
+- Implement subsetting of metadata in `subset()` method and the extraction 
+operator `[]` for objects of class `generic_spct` and derived classes. This 
+makes it possible to extract a subset of spectra from an object containing
+multiple spectra in long form, such as a time series of spectra, with no
+extraneous metadata attribute values carried along. In earlier 
+versions metadata were not subset.
+- In `rbindspct()` implement simplification of metadata by removing unnecessary
+duplication of invariant values.
+- Rewrite method `pull_sample()` specialization for `generic_spct` for faster 
+performance.
+- Revise `irrad()`, `e_irrad()` and `q_irrad()` adding parameter `return.tb`
+making it possible to force the return of a tibble even for summaries of
+individual spectra.
+- Revise `irrad()`, `e_irrad()` and `q_irrad()` for faster performance with
+multiple spectra in long-form. (Adding attributes to the returned tibble is not 
+yet supported except for `when.measured`.)
+- Revise `normalise()`, `fscale()` and `smooth_spct()` methods to accept
+multiple spectra in long form as their argument returning a similar object, with
+the spectra individually normalised or scaled.
+- Revise `peaks()`, `valleys()`, `wls_at_target()`, `spikes()` and `despike()`
+methods to consistently return an object as the same class as their `x` 
+argument. 
+- Revise `when_measured2tb()` to support `generic_spct` in addition to 
+`generic_mspct` objects. (Methods to add other attributes are not yet revised.)
+- Add parameter `span` to `thin_wl()` methods, with the previously hard-coded
+value of 21 as default.
+- Improve handling of `idFactor` and other non-numeric variables in `clip_wl()`
+and `trim_wl()` so that they are filled with good values instead of NA when 
+possible and fix a bug that converted non-numeric variables into numeric ones
+in the returned value.
+- Revise `getNormalized()`, `getNormalised()`, `getNormalization()`, 
+`getNormalisation()`, `is_normalized()`, and `is_normalised()` to support
+collections of spectra as their argument in addition to individual spectra. In
+this case they return a named list.
+- Add a short time series of sunlight spectra in objects `sun_evening.spct` and
+`sun_evening.mspct`.
+- When checking `raw_spct` and `cps_spct` do not emit a message about renaming 
+columns if option `photobiology.verbose` is set to `FALSE`.
+- Fix bug: some operations failed to copy all metadata attributes to the
+returned value. Some of the dropped attributes are used in package 'ooacquire' 
+(>= 0.4.1).
+- Fix bug affecting `irrad()`, `e_irrad()` and `q_irrad()` causing a crash with
+argument `use.hinges = FALSE`.
+- Fix bug affecting handling of existing normalizations in conversions between
+quantities used for describing spectral properties filters, visible only as a
+spurious warning when plotting with 'ggspectra'.
+- Fix handling of default `idFactor` in `subset2mspct()`.
+- Spectral data objects included in the package and used in examples and unit
+tests have been rebuilt making small changes in textual metadata, and/or adding
+new fields with additional information.
+- Values and length of objects `polyester.spct` and `yellow_gel.spct` have
+changed slightly as storage use was optimized. This is a code breaking change
+if positional indexes have been used, but otherwise differences in computed
+values are minor.
+
 # photobiology 0.11.0
 
 - Improve handling of objects containing multiple spectra in long form. Most 

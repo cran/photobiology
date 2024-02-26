@@ -22,25 +22,30 @@
 #'   cached between calls.
 #' @param use.hinges logical Flag indicating whether to insert "hinges" into the
 #'   spectral data before integration so as to reduce interpolation errors at
-#'   the boundaries of the wavebands.
+#'   the boundaries of the wavebands. If NULL, default is chosen based on data.
 #' @param allow.scaled logical indicating whether scaled or normalized spectra
 #'   as argument to spct are flagged as an error.
 #' @param naming character one of \code{"long"}, \code{"default"},
 #'   \code{"short"} or \code{"none"}. Used to select the type of names to assign
 #'   to returned value.
+#' @param return.tb logical Flag forcing a tibble to be always returned, even
+#'   for a single spectrum as argumnet to \code{spct}. The default is
+#'   \code{FALSE} for backwards compatibility.
 #' @param ... other arguments (possibly ignored)
 #'
 #' @note Formal parameter \code{allow.scaled} is used internally for calculation
 #'   of ratios, as rescaling and normalization do not invalidate the calculation
 #'   of ratios.
 #'
-#' @return A named \code{numeric} vector in the case of methods for individual
-#'   spectra, with one value for each \code{waveband} passed to parameter
-#'   \code{w.band}. A \code{data.frame} in the case of collections of spectra,
-#'   containing one column for each \code{waveband} object, an index column with
-#'   the names of the spectra, and optionally additional columns with metadata
-#'   values retrieved from the attributes of the member spectra. If
-#'   \code{naming = "long"} the names generated reflect both quantity and
+#' @return A named \code{numeric} vector in the case of a \code{_spct} object
+#'   containing a single spectrum and \code{return.tb = FALSE}. The vector has
+#'   one member one value for each \code{waveband} passed to parameter
+#'   \code{w.band}. In all other cases a \code{tibble}, containing one column
+#'   for each \code{waveband} object, an index column with the names of the
+#'   spectra, and optionally additional columns with metadata values retrieved
+#'   from the attributes of the member spectra.
+#'
+#'   If \code{naming = "long"} the names generated reflect both quantity and
 #'   waveband, if \code{naming = "short"}, names are based only on the wavebands,
 #'   and if \code{naming = "none"} the returned vector has no names.
 #'
@@ -104,35 +109,66 @@ irrad.source_spct <-
            scale.factor = 1,
            wb.trim = getOption("photobiology.waveband.trim", default = TRUE),
            use.cached.mult = getOption("photobiology.use.cached.mult", default = FALSE),
-           use.hinges = getOption("photobiology.use.hinges"),
+           use.hinges = NULL,
            allow.scaled = !quantity %in% c("average", "mean", "total"),
            naming = "default",
+           return.tb = FALSE,
            ...) {
 
     # we look for multiple spectra in long form
     if (getMultipleWl(spct) > 1) {
-      # convert to a collection of spectra
-      mspct <- subset2mspct(x = spct,
-                            idx.var = getIdFactor(spct),
-                            drop.idx = FALSE)
-      # call method on the collection
-      return(irrad(spct = mspct,
-                   w.band = w.band,
-                   unit.out = unit.out,
-                   quantity = quantity,
-                   time.unit = time.unit,
-                   scale.factor = scale.factor,
-                   wb.trim = wb.trim,
-                   use.cached.mult = use.cached.mult,
-                   use.hinges = use.hinges,
-                   allow.scaled = allow.scaled,
-                   naming = naming,
-                   ...))
+      # compute in place
+      idx.var.name <- getIdFactor(spct)
+      idx.var <- spct[[idx.var.name]] # not faster than inline
+      if (is.factor(idx.var)) {
+        idx.levels <- levels(idx.var)
+      } else {
+        idx.levels <- unique(idx.var)
+      }
+      # do conversion in one go and delete values not used
+      if (unit.out == "energy") {
+        spct <- q2e(spct, action = "replace")
+      } else {
+        spct <- e2q(spct, action = "replace")
+      }
+      z <- list()
+      for (idx in idx.levels) {
+        target.rows <- which(idx.var == idx) # a lot faster than logical
+        temp.spct <- spct[target.rows, ]
+        z[[idx]] <- irrad_spct(spct = temp.spct,
+                               w.band = w.band,
+                               unit.out = unit.out,
+                               quantity = quantity,
+                               time.unit = time.unit,
+                               scale.factor = scale.factor,
+                               wb.trim = wb.trim,
+                               use.cached.mult = use.cached.mult,
+                               use.hinges = use.hinges,
+                               allow.scaled = allow.scaled,
+                               naming = naming,
+                               return.tb = TRUE,
+                               ...)
+      }
+      z <- dplyr::bind_rows(z)
+      z[[idx.var.name]] <- idx.levels
+      z[["when.measured"]] <-
+        as.POSIXct(unlist(when_measured(spct), use.names = FALSE),
+                   tz = "UTC")
+      attr(z, "time.unit") <- getTimeUnit(spct)
+      if (is_effective(spct)) {
+        attr(z, "radiation.unit") <-
+          paste(unit.out, "irradiance", quantity, "effective:", getBSWFUsed(spct))
+      } else {
+        attr(z, "radiation.unit") <- paste(quantity, unit.out, "irradiance")
+      }
+
+      return(z)
     }
 
     if (unit.out == "quantum") {
       unit.out <- "photon"
     }
+
     if (quantity == "total") {
       summary.name <- switch(unit.out,
                              photon = "Q",
@@ -227,13 +263,13 @@ irrad.source_spct <-
       for (wb in w.band) {
         all.hinges <- c(all.hinges, wb[["hinges"]])
       }
+      if (anyNA(all.hinges)) {
+        warning("Missing hinges encountered and removed!")
+        all.hinges <- na.omit(all.hinges)
+      }
       lst <- l_insert_hinges(w.length, s.irrad, all.hinges)
       w.length <- lst[["x"]]
       s.irrad <- lst[["y"]]
-    }
-    if (anyNA(all.hinges)) {
-      warning("Missing hinges encountered and removed!")
-      all.hinges <- na.omit(all.hinges)
     }
 
     # We iterate through the list of wavebands collecting the irradiances,
@@ -346,12 +382,16 @@ irrad.source_spct <-
       stop("'scale.factor' must be of length = 1 or of same length as 'w.band'.")
     }
 
-    attr(irrad, "time.unit") <- getTimeUnit(spct)
-    if (is_effective(spct)) {
-      attr(irrad, "radiation.unit") <-
-              paste(unit.out, "irradiance", quantity, "effective:", getBSWFUsed(spct))
+    if (return.tb) {
+      irrad <- tibble::as_tibble_row(irrad, .name_repair = "minimal")
     } else {
-      attr(irrad, "radiation.unit") <- paste(quantity, unit.out, "irradiance")
+      attr(irrad, "time.unit") <- getTimeUnit(spct)
+      if (is_effective(spct)) {
+        attr(irrad, "radiation.unit") <-
+          paste(unit.out, "irradiance", quantity, "effective:", getBSWFUsed(spct))
+      } else {
+        attr(irrad, "radiation.unit") <- paste(quantity, unit.out, "irradiance")
+      }
     }
 
     irrad
@@ -385,6 +425,9 @@ irrad_spct <- irrad.source_spct
 #'   as argument to spct are flagged as an error.
 #' @param naming character one of "long", "default", "short" or "none". Used to
 #'   select the type of names to assign to returned value.
+#' @param return.tb logical Flag forcing a tibble to be always returned, even
+#'   for a single spectrum as argumnet to \code{spct}. The default is
+#'   \code{FALSE} for backwards compatibility.
 #' @param ... other arguments (possibly used by derived methods).
 #'
 #' @export
@@ -405,18 +448,19 @@ irrad_spct <- irrad.source_spct
 #' e_irrad(sun.spct, split_bands(c(400,700), length.out = 3),
 #'         quantity = "contribution.pc")
 #'
-#' @return A named \code{numeric} vector in the case of methods for individual
-#'   spectra, with one value for each \code{waveband} passed to parameter
-#'   \code{w.band}. A \code{data.frame} in the case of collections of spectra,
-#'   containing one column for each \code{waveband} object, an index column with
-#'   the names of the spectra, and optionally additional columns with metadata
-#'   values retrieved from the attributes of the member spectra.
+#' @return A named \code{numeric} vector in the case of a \code{_spct} object
+#'   containing a single spectrum and \code{return.tb = FALSE}. The vector has
+#'   one member one value for each \code{waveband} passed to parameter
+#'   \code{w.band}. In all other cases a \code{tibble}, containing one column
+#'   for each \code{waveband} object, an index column with the names of the
+#'   spectra, and optionally additional columns with metadata values retrieved
+#'   from the attributes of the member spectra.
 #'
 #'   By default values are only integrated, but depending on the argument passed
 #'   to parameter \code{quantity} they can be re-expressed as relative fractions
 #'   or percentages. In the case of vector output, \code{names} attribute is set
 #'   to the name of the corresponding waveband unless a named list is supplied
-#'   in which case the names of the list members are used. The  time.unit
+#'   in which case the names of the list members are used. The time.unit
 #'   attribute is copied from the spectrum object to the output. Units are as
 #'   follows: If units are absolute and time.unit is second, [W m-2 nm-1] -> [W
 #'   m-2] If time.unit is day, [J d-1 m-2 nm-1] -> [J m-2]; if units are
@@ -463,27 +507,8 @@ e_irrad.source_spct <-
            use.hinges = NULL,
            allow.scaled = !quantity  %in% c("average", "mean", "total"),
            naming = "default",
+           return.tb = FALSE,
            ...) {
-
-    # we look for multiple spectra in long form
-    if (getMultipleWl(spct) > 1) {
-      # convert to a collection of spectra
-      mspct <- subset2mspct(x = spct,
-                            idx.var = getIdFactor(spct),
-                            drop.idx = FALSE)
-      # call method on the collection
-      return(e_irrad(spct = mspct,
-                     w.band = w.band,
-                     quantity = quantity,
-                     time.unit = time.unit,
-                     scale.factor = scale.factor,
-                     wb.trim = wb.trim,
-                     use.cached.mult = use.cached.mult,
-                     use.hinges = use.hinges,
-                     allow.scaled = allow.scaled,
-                     naming = naming,
-                     ...))
-    }
 
     irrad_spct(spct, w.band = w.band, unit.out = "energy",
                scale.factor = scale.factor,
@@ -491,7 +516,8 @@ e_irrad.source_spct <-
                time.unit = time.unit, wb.trim = wb.trim,
                use.cached.mult = use.cached.mult, use.hinges = use.hinges,
                allow.scaled = allow.scaled,
-               naming = naming)
+               naming = naming,
+               return.tb = return.tb)
   }
 
 # photon irradiance -------------------------------------------------------
@@ -520,6 +546,9 @@ e_irrad.source_spct <-
 #'   as argument to spct are flagged as an error.
 #' @param naming character one of "long", "default", "short" or "none". Used to
 #'   select the type of names to assign to returned value.
+#' @param return.tb logical Flag forcing a tibble to be always returned, even
+#'   for a single spectrum as argumnet to \code{spct}. The default is
+#'   \code{FALSE} for backwards compatibility.
 #' @param ... other arguments (possibly ignored).
 #'
 #' @export
@@ -534,12 +563,13 @@ e_irrad.source_spct <-
 #' q_irrad(sun.spct, split_bands(c(400,700), length.out = 3), quantity = "contribution")
 #' q_irrad(sun.spct, split_bands(c(400,700), length.out = 3), quantity = "contribution.pc")
 #'
-#' @return A named \code{numeric} vector in the case of methods for individual
-#'   spectra, with one value for each \code{waveband} passed to parameter
-#'   \code{w.band}. A \code{data.frame} in the case of collections of spectra,
-#'   containing one column for each \code{waveband} object, an index column with
-#'   the names of the spectra, and optionally additional columns with metadata
-#'   values retrieved from the attributes of the member spectra.
+#' @return A named \code{numeric} vector in the case of a \code{_spct} object
+#'   containing a single spectrum and \code{return.tb = FALSE}. The vector has
+#'   one member one value for each \code{waveband} passed to parameter
+#'   \code{w.band}. In all other cases a \code{tibble}, containing one column
+#'   for each \code{waveband} object, an index column with the names of the
+#'   spectra, and optionally additional columns with metadata values retrieved
+#'   from the attributes of the member spectra.
 #'
 #'   By default values are only integrated, but depending on the argument passed
 #'   to parameter \code{quantity} they can be re-expressed as relative fractions
@@ -590,27 +620,8 @@ q_irrad.source_spct <-
            use.hinges = NULL,
            allow.scaled = !quantity  %in% c("average", "mean", "total"),
            naming = "default",
+           return.tb = FALSE,
            ...) {
-
-    # we look for multiple spectra in long form
-    if (getMultipleWl(spct) > 1) {
-      # convert to a collection of spectra
-      mspct <- subset2mspct(x = spct,
-                            idx.var = getIdFactor(spct),
-                            drop.idx = FALSE)
-      # call method on the collection
-      return(q_irrad(spct = mspct,
-                     w.band = w.band,
-                     quantity = quantity,
-                     time.unit = time.unit,
-                     scale.factor = scale.factor,
-                     wb.trim = wb.trim,
-                     use.cached.mult = use.cached.mult,
-                     use.hinges = use.hinges,
-                     allow.scaled = allow.scaled,
-                     naming = naming,
-                     ...))
-    }
 
     irrad_spct(spct, w.band = w.band, unit.out = "photon", quantity = quantity,
                time.unit = time.unit,
@@ -618,7 +629,8 @@ q_irrad.source_spct <-
                wb.trim = wb.trim,
                use.cached.mult = use.cached.mult, use.hinges = use.hinges,
                allow.scaled = allow.scaled,
-               naming = naming)
+               naming = naming,
+               return.tb = return.tb)
   }
 
 

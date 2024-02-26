@@ -50,6 +50,7 @@ Other measurement metadata functions:
 \code{\link{setWhereMeasured}()},
 \code{\link{spct_attr2tb}()},
 \code{\link{spct_metadata}()},
+\code{\link{subset_attributes}()},
 \code{\link{trimInstrDesc}()},
 \code{\link{trimInstrSettings}()}
 }

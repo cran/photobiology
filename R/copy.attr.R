@@ -18,6 +18,10 @@ all_spct_attr.ls <-
                      "normalization",
                      "scaled",
                      "multiple.wl",
+                     "straylight.corrected",
+                     "slit.corrected",
+                     "QC_dark_pass",
+                     "idfactor",
                      "spct.idx"),
     raw_spct = c("time.unit", "linearized"),
     cps_spct = c("time.unit", "linearized"),
@@ -40,7 +44,7 @@ all.attributes <- unique(unlist(all_spct_attr.ls, use.names = FALSE))
 
 #' Merge user supplied attribute names with default ones
 #'
-#' Allow users to add and subract from default attributes in addition to
+#' Allow users to add and subtract from default attributes in addition to
 #' providing a given set of attributes.
 #'
 #' @param attributes,attributes.default character vector or a list of character
@@ -310,6 +314,78 @@ merge_attributes.generic_spct <- function(x, y, z,
   z
 }
 
+# subset_attributes -----------------------------------------------------------
+
+#' Subset the metadata attributes
+#'
+#' Method returning attributes of an object of class generic_spct or derived,
+#' or of class waveband. Only attributes defined and/or set by package
+#' 'photobiology' for objects of the corresponding class are returned. Parameter
+#' \code{which} can be used to subset each attribute when a generic_spct object
+#' with multiple spectra in long form is subset.
+#'
+#' @param x a generic_spct object.
+#' @param to.keep character vector Indices to the spectra for
+#'   which attributes are to be extracted and retained.
+#' @param target.attributes character vector Names of attributes to be subset using
+#'   \code{which}.
+#' @param ... currently ignored
+#'
+#' @return Named \code{list} of attribute values.
+#'
+#' @details The values in \code{which} are passed as argument to the extract
+#'   operator only if the value of the attribute is a list of the same length
+#'   as the logical vector passed as argument to \code{which}.
+#'
+#' @seealso \code{\link{select_spct_attributes}}
+#'
+#' @keywords internal
+#'
+#' @family measurement metadata functions
+#'
+subset_attributes <-
+  function(x, to.keep, ...) UseMethod("subset_attributes")
+
+#' @describeIn subset_attributes default
+#'
+subset_attributes.default <-
+  function(x, to.keep, ...) {
+    warning("'subset_attributes' is not defined for objects of class ", class(x)[1])
+    x
+  }
+
+#' @describeIn subset_attributes generic_spct
+#'
+subset_attributes.generic_spct <-
+  function(x,
+           to.keep = character(),
+           target.attributes = spct_attributes(class(x)[1]),
+           ...) {
+    stopifnot("Argument for 'to.keep' should be a character vector" =
+                is.character(to.keep))
+    if (any(duplicated(to.keep))) {
+      warning("Duplicate values in 'to.keep' discarded.")
+      which <- unique(to.keep)
+    }
+    if (length(target.attributes) == 0L ||
+        length(to.keep) == getMultipleWl(x)) {
+      return(x)
+    }
+    all.attr <- attributes(x)
+    target.attr.names <- intersect(names(all.attr), target.attributes)
+    id.factor <- getIdFactor(x)
+    for (attr.name in target.attr.names) {
+      temp <- all.attr[[attr.name]]
+      if (is.data.frame(temp) && id.factor %in% colnames(temp)) {
+        all.attr[[attr.name]] <- temp[temp[[id.factor]] %in% to.keep, ]
+      } else if (is.list(temp) && all(to.keep %in% names(temp))) {
+        all.attr[[attr.name]] <- temp[to.keep]
+      }
+    }
+    all.attr["multiple.wl"] <- length(to.keep)
+    attributes(x) <- all.attr
+    x
+  }
 
 # get_attributes -----------------------------------------------------------
 

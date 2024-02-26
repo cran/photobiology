@@ -30,12 +30,7 @@ add_attr2tb(
   unnest = FALSE
 )
 
-when_measured2tb(
-  mspct,
-  tb = NULL,
-  col.names = "when.measured",
-  idx = "spct.idx"
-)
+when_measured2tb(mspct, tb = NULL, col.names = "when.measured", idx = NULL)
 
 geocode2tb(mspct, tb = NULL, col.names = "geocode", idx = "spct.idx")
 
@@ -172,6 +167,7 @@ Other measurement metadata functions:
 \code{\link{setWhereMeasured}()},
 \code{\link{spct_attr2tb}()},
 \code{\link{spct_metadata}()},
+\code{\link{subset_attributes}()},
 \code{\link{trimInstrDesc}()},
 \code{\link{trimInstrSettings}()}
 }
