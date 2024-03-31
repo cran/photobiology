@@ -4,6 +4,24 @@ editor_options:
     wrap: 72
 ---
 
+# photobiology 0.11.2
+
+Mostly a bug-fix release.
+
+- Implement missing methods `normalize.solute_mspct()` and 
+`normalize.generic_mspct()` 
+- Accept arbitrary function names in addition to function objects in 
+`fscale()` methods.
+- Fix major bug affecting `fscale()` methods when applied to `<xxx>_spct` objects
+containing multiple spectra in long form.
+- Fix bug in `rbindspct()` non-default `idfactor` values could be ignored in
+some cases.
+- Fix bug in `normalise()`, `fscale()`, and `smooth_spct()` methods: dropped 
+`idfactor` attribute when operating on `<xxx>_spct` objects containing multiple 
+spectra in long form.
+- Fix bug triggered in R < 4.3.0: missing argument for `origin` in two calls to
+`as.POSIXct()`.
+
 # photobiology 0.11.1
 
 The main enhancements in this update are **1)** the implementation of proper
@@ -1882,8 +1900,9 @@ Added functions sun_angles and day_night.
 
 # photobiology 0.3.0
 
-\*\*\*\*\*\*\*\*\*\*\*\* MAJOR UPDATE \*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*
-There are some backward incompatibilities
+**MAJOR UPDATE** 
+
+There are some _backward incompatibilities_
 
 Saved wavebands will give an error, but any code used to create them
 should still work unchanged.
@@ -1896,7 +1915,8 @@ internal changes.
 
 At the moment the code is a bit slower than before. I will most likely
 be able to cure this at a later stage.
-\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*
+
+***
 
 The package now depends on data.table which is now imported. As MayaCalc
 already returns data.table objects, hopefully this will help optimize
