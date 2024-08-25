@@ -2,9 +2,12 @@
 % Please edit documentation in R/spct.classes.r
 \name{getIdFactor}
 \alias{getIdFactor}
+\alias{id_factor}
 \title{Get the "idfactor" attribute}
 \usage{
 getIdFactor(x)
+
+id_factor(x)
 }
 \arguments{
 \item{x}{a generic_spct object}
@@ -13,14 +16,15 @@ getIdFactor(x)
 character
 }
 \description{
-Function to read the "idfactor" attribute of an existing generic_spct.
+Function to read the \code{idfactor} attribute of an existing
+\code{generic_spct}.
 }
 \note{
 If x is not a \code{generic_spct} or an object of a derived class
   \code{NA} is returned.
 }
 \examples{
-getIdFactor(white_led.cps_spct)
+id_factor(sun_evening.spct)
 
 }
 \seealso{

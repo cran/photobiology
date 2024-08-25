@@ -2487,20 +2487,38 @@ findMultipleWl <- function(x, same.wls = TRUE) {
 
 #' Set the "multiple.wl" attribute
 #'
-#' Function to set by reference the "multiple.wl" attribute  of an existing
-#' generic_spct or an object of a class derived from generic_spct.
+#' Function to set by reference the \code{multiple.wl} attribute  of an existing
+#' \code{generic_spct} object or an object of a class derived from
+#' \code{generic_spct}.
 #'
 #' @param x a generic_spct object
-#' @param multiple.wl numeric >= 1 If \code{multiple.wl} is \code{NULL}, the
-#'   default, the attribute is not modified if it is already present and valid,
-#'   and set to 1 otherwise.
+#' @param multiple.wl,value numeric >= 1 If \code{multiple.wl = NULL}, the
+#'   default, the value is guessed.
 #'
-#' @return x
-#' @note This function alters x itself by reference and in addition
-#'   returns x invisibly. If x is not a generic_spct or an object of a class derived from
-#'   generic_spct, x is not modified. If \code{multiple.wl}
+#' @details These methods set the attribute \code{multiple.wl} and if the
+#' argument of \code{multiple.wl} or \code{value} is \code{NULL}, they call
+#' \code{\link{findMultipleWl}} to obtain a guess. Pathological cases where
+#' multiple spectra in long form do not share any wavelength value underestimate
+#' the number of spectra, and require an explicit numeric argument. Calling
+#' these methods is very rarely needed in user code.
+#'
+#' @return \code{x}, modified in place by reference. If x is not a
+#'   \code{generic_spct} or an object of a class derived from
+#'   \code{generic_spct}, \code{x} is not modified.
 #'
 #' @export
+#'
+#' @examples
+#' my.spct <- sun.spct
+#' setMultipleWl(my.spct) # default is to search x, here my.spct
+#' getMultipleWl(my.spct)
+#'
+#' multiple_wl(my.spct) <- 1L # must be a valid value or NULL!
+#' multiple_wl(my.spct)
+#'
+#' multiple_wl(my.spct) <- NULL # must be a valid value or NULL!
+#' multiple_wl(my.spct)
+#'
 #' @family multiple.wl attribute functions
 #'
 setMultipleWl <- function(x, multiple.wl = NULL) {
@@ -2520,21 +2538,32 @@ setMultipleWl <- function(x, multiple.wl = NULL) {
   invisible(x)
 }
 
+#' @rdname setMultipleWl
+#'
+#' @export
+#'
+`multiple_wl<-` <- function(x, value) {
+  setMultipleWl(x = x, multiple.wl = value)
+}
+
 #' Get the "multiple.wl" attribute
 #'
-#' Function to read the "multiple.wl" attribute of an existing generic_spct.
+#' Function to query the value of the \code{multiple.wl} attribute of an
+#' existing \code{generic_spct}.
 #'
 #' @param x a generic_spct object
 #'
-#' @return integer
-#'
-#' @note If x is not a \code{generic_spct} or an object of a derived class
-#'   \code{NA} is returned.
+#' @return \code{integer} value, the value of attribute \code{multiple.wl}, or
+#'   \code{NA} if the attribute is not set, or if \code{x} is not a
+#'   \code{generic_spct} object or an object of a derived class.
 #'
 #' @export
+#'
 #' @family multiple.wl attribute functions
+#'
 #' @examples
-#' getMultipleWl(sun.spct)
+#' multiple_wl(sun.spct)
+#' multiple_wl(sun_evening.spct)
 #'
 getMultipleWl <- function(x) {
   if (is.generic_spct(x) || is.summary_generic_spct(x)) {
@@ -2549,23 +2578,58 @@ getMultipleWl <- function(x) {
   }
 }
 
+#' @rdname getMultipleWl
+#'
+#' @export
+#'
+multiple_wl <- getMultipleWl
 
 # idfactor -------------------------------------------------------------
 
 #' Set the "idfactor" attribute
 #'
-#' Function to set by reference the "idfactor" attribute  of an existing
-#' generic_spct or an object of a class derived from generic_spct.
+#' Function to set, rename or unset by reference the "idfactor" attribute of an
+#' existing object of class \code{generic_spct} or an object of a class derived
+#' from \code{generic_spct}.
 #'
-#' @param x a generic_spct object
-#' @param idfactor character The name of a factor identifying multiple
+#' @param x a generic_spct object.
+#' @param idfactor,value character The name of a factor identifying multiple
 #'    spectra stored longitudinally.
+#'
+#' @details If the attribute \code{idfactor} is already set, and a variable with
+#'   name equal to the value passed as argument to \code{idfactor} does not
+#'   exist in \code{x}, the currently set variable is renamed and the attribute
+#'   value updated. If a variable named as the argument passed to
+#'   \code{idfactor} exists in \code{x}, it will be set as id by storing this
+#'   name in the attribute. If the value passed as argument to \code{idfactor}
+#'   is \code{NULL} the attribute will be unset. If the attribute is not already
+#'   set and there is no member variable in \code{x} with a name matching the
+#'   argument passed to \code{idfactor}, an error is triggered.
 #'
 #' @return x
 #'
 #' @note This function alters x itself by reference and in addition
 #'   returns x invisibly. If x is not a generic_spct or an object of a class derived from
 #'   generic_spct, x is not modified.
+#'
+#' @examples
+#' my.spct <- sun_evening.spct
+#'
+#' # inspecting
+#' id_factor(sun.spct) # no idfactor set
+#'
+#' id_factor(my.spct)
+#' colnames(my.spct)
+#'
+#' # renaming
+#' id_factor(my.spct) <- "time"
+#' getIdFactor(my.spct)
+#' colnames(my.spct)
+#'
+#' # removing
+#' setIdFactor(my.spct, NULL)
+#' getIdFactor(my.spct)
+#' colnames(my.spct)
 #'
 #' @export
 #' @family idfactor attribute functions
@@ -2574,7 +2638,14 @@ setIdFactor <- function(x, idfactor) {
   stopifnot(is.generic_spct(x) || is.summary_generic_spct(x))
   stopifnot(is.null(idfactor) || is.character(idfactor))
   name <- substitute(x)
-  if (is.null(idfactor) || exists(idfactor, x, inherits = FALSE)) {
+  old.idfactor <- getIdFactor(x)
+  if (is.null(idfactor)) {
+    attr(x, "idfactor") <- idfactor
+  } else if (!exists(idfactor, x, inherits = FALSE) &
+        !is.na(old.idfactor)) {
+    colnames(x)[colnames(x) == old.idfactor] <- idfactor
+    attr(x, "idfactor") <- idfactor
+  } else if (exists(idfactor, x, inherits = FALSE)) {
     attr(x, "idfactor") <- idfactor
   } else {
     stop("'idfactor' points to a non-existant variable")
@@ -2586,9 +2657,18 @@ setIdFactor <- function(x, idfactor) {
   invisible(x)
 }
 
+#' @rdname setIdFactor
+#'
+#' @export
+#'
+`id_factor<-` <- function(x, value) {
+  setIdFactor(x = x, idfactor = value)
+}
+
 #' Get the "idfactor" attribute
 #'
-#' Function to read the "idfactor" attribute of an existing generic_spct.
+#' Function to read the \code{idfactor} attribute of an existing
+#' \code{generic_spct}.
 #'
 #' @param x a generic_spct object
 #'
@@ -2598,9 +2678,11 @@ setIdFactor <- function(x, idfactor) {
 #'   \code{NA} is returned.
 #'
 #' @export
+#'
 #' @family idfactor attribute functions
+#'
 #' @examples
-#' getIdFactor(white_led.cps_spct)
+#' id_factor(sun_evening.spct)
 #'
 getIdFactor <- function(x) {
   if (is.generic_spct(x) || is.summary_generic_spct(x)) {
@@ -2618,6 +2700,12 @@ getIdFactor <- function(x) {
   }
   idfactor
 }
+
+#' @rdname getIdFactor
+#'
+#' @export
+#'
+id_factor <- getIdFactor
 
 # "filter.properties" attribute ----------------------------------------------
 

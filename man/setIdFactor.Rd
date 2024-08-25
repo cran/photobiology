@@ -2,27 +2,62 @@
 % Please edit documentation in R/spct.classes.r
 \name{setIdFactor}
 \alias{setIdFactor}
+\alias{id_factor<-}
 \title{Set the "idfactor" attribute}
 \usage{
 setIdFactor(x, idfactor)
+
+id_factor(x) <- value
 }
 \arguments{
-\item{x}{a generic_spct object}
+\item{x}{a generic_spct object.}
 
-\item{idfactor}{character The name of a factor identifying multiple
+\item{idfactor, value}{character The name of a factor identifying multiple
 spectra stored longitudinally.}
 }
 \value{
 x
 }
 \description{
-Function to set by reference the "idfactor" attribute  of an existing
-generic_spct or an object of a class derived from generic_spct.
+Function to set, rename or unset by reference the "idfactor" attribute of an
+existing object of class \code{generic_spct} or an object of a class derived
+from \code{generic_spct}.
+}
+\details{
+If the attribute \code{idfactor} is already set, and a variable with
+  name equal to the value passed as argument to \code{idfactor} does not
+  exist in \code{x}, the currently set variable is renamed and the attribute
+  value updated. If a variable named as the argument passed to
+  \code{idfactor} exists in \code{x}, it will be set as id by storing this
+  name in the attribute. If the value passed as argument to \code{idfactor}
+  is \code{NULL} the attribute will be unset. If the attribute is not already
+  set and there is no member variable in \code{x} with a name matching the
+  argument passed to \code{idfactor}, an error is triggered.
 }
 \note{
 This function alters x itself by reference and in addition
   returns x invisibly. If x is not a generic_spct or an object of a class derived from
   generic_spct, x is not modified.
+}
+\examples{
+my.spct <- sun_evening.spct
+
+# inspecting
+id_factor(sun.spct) # no idfactor set
+
+id_factor(my.spct)
+colnames(my.spct)
+
+# renaming
+id_factor(my.spct) <- "time"
+getIdFactor(my.spct)
+colnames(my.spct)
+
+# removing
+setIdFactor(my.spct, NULL)
+getIdFactor(my.spct)
+colnames(my.spct)
+
 }
 \seealso{
 Other idfactor attribute functions: 

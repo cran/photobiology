@@ -170,18 +170,31 @@ getWhenMeasured.default <- function(x, ...) {
 }
 
 #' @describeIn getWhenMeasured generic_spct
+#'
+#' @param as.df logical If TRUE return a data frame instead of a list, when
+#'   the value stored in the attribute is a list.
+#'
 #' @export
-getWhenMeasured.generic_spct <- function(x, ...) {
+#'
+getWhenMeasured.generic_spct <- function(x, as.df = FALSE, ...) {
   when.measured <- attr(x, "when.measured", exact = TRUE)
-  if (is.null(when.measured) ||
-      !all(sapply(when.measured, lubridate::is.instant))) {
-    # need to handle invalid attribute values
-    # we return an NA of class POSIXct
-    when.measured <-
-      suppressWarnings(lubridate::ymd_hms(NA_character_, tz = "UTC"))
-  } else if (lubridate::is.POSIXlt(when.measured)) {
+  if (is.null(when.measured)) {
+    when.measured <- lubridate::NA_POSIXct_
+  } else if (lubridate::is.POSIXct(when.measured)) {
     when.measured <-
       as.POSIXct(when.measured, tz = "UTC", origin = lubridate::origin)
+  } else if (as.df && is.list(when.measured)) {
+    if (all(sapply(when.measured, lubridate::is.instant))) {
+     when.measured <-
+        tibble::tibble(spct.idx = names(when.measured),
+                       when.measured = as.POSIXct(unlist(when.measured, use.names = FALSE),
+                                                  tz = lubridate::tz(when.measured[[1]])))
+    } else {
+      when.measured <-
+        tibble::tibble(spct.idx = names(when.measured),
+                       when.measured = rep(lubridate::NA_POSIXct_,
+                                           length(when.measured)))
+    }
   }
   when.measured
 }
@@ -580,7 +593,7 @@ getHowMeasured.generic_mspct <- function(x,
 #' generic_spct or derived-class object.
 #'
 #' @param x a generic_spct object
-#' @param instr.desc a list
+#' @param instr.desc,value a list
 #'
 #' @return x
 #' @note This function alters x itself by reference and in addition
@@ -605,6 +618,14 @@ setInstrDesc <- function(x, instr.desc) {
     }
   }
   invisible(x)
+}
+
+#' @rdname setInstrDesc
+#'
+#' @export
+#'
+`instr_descriptor<-` <- function(x, value) {
+  setInstrDesc(x, instr.desc = value)
 }
 
 #' Get the "instr.desc" attribute
@@ -639,6 +660,12 @@ getInstrDesc <- function(x) {
     list()
   }
 }
+
+#' @rdname getInstrDesc
+#'
+#' @export
+#'
+instr_descriptor <- getInstrDesc
 
 #' Trim the "instr.desc" attribute
 #'
@@ -753,7 +780,7 @@ isValidInstrDesc <- function(x) {
 #' generic_spct or derived-class object.
 #'
 #' @param x a generic_spct object
-#' @param instr.settings a list
+#' @param instr.settings,value a list
 #'
 #' @return x
 #' @note This function alters x itself by reference and in addition
@@ -773,6 +800,14 @@ setInstrSettings <- function(x, instr.settings) {
     }
   }
   invisible(x)
+}
+
+#' @rdname setInstrSettings
+#'
+#' @export
+#'
+`instr_settings<-` <- function(x, value) {
+  setInstrSettings(x, instr.settings = value)
 }
 
 #' Get the "instr.settings" attribute
@@ -808,6 +843,12 @@ getInstrSettings <- function(x) {
     list()
   }
 }
+
+#' @rdname getInstrSettings
+#'
+#' @export
+#'
+instr_settings <- getInstrSettings
 
 #' Trim the "instr.settings" attribute
 #'
@@ -1061,7 +1102,8 @@ getWhatMeasured.generic_mspct <- function(x,
 #'   \code{"where.measured"}, \code{"when.measured"}, \code{"what.measured"},
 #'   \code{"how.measured"}, \code{"comment"}, \code{"normalised"},
 #'   \code{"normalized"}, \code{"scaled"}, \code{"bswf.used"},
-#'   \code{"instr.desc"}, \code{"instr.settings"}, \code{"filter.properties"},
+#'   \code{"instr.desc"}, \code{"instr.settings"},
+#'   \code{solute.properties}, \code{"filter.properties"},
 #'   \code{"Tfr.type"}, \code{"Rfr.type"}, \code{"time.unit"}.
 #'
 #' @note The order of the first two arguments
@@ -1178,6 +1220,10 @@ add_attr2tb <- function(tb = NULL,
              filter.properties = filter_properties2tb(mspct = mspct,
                                                       tb = tb,
                                                       col.names = col.names["filter.properties"],
+                                                      idx = idx),
+             solute.properties = solute_properties2tb(mspct = mspct,
+                                                      tb = tb,
+                                                      col.names = col.names["solute.properties"],
                                                       idx = idx),
              Tfr.type = Tfr_type2tb(mspct = mspct,
                                     tb = tb,
@@ -1498,6 +1544,24 @@ filter_properties2tb <- function(mspct,
                                  idx = "spct.idx") {
   stopifnot(length(col.names) == 1L)
   properties.tb <- getFilterProperties(mspct, idx = idx)
+  names(properties.tb)[2L] <- col.names
+  if (is.null(tb)) {
+    properties.tb
+  } else {
+    dplyr::full_join(tb, properties.tb, by = idx)
+  }
+}
+
+#' @rdname add_attr2tb
+#'
+#' @export
+#'
+solute_properties2tb <- function(mspct,
+                                 tb = NULL,
+                                 col.names = "solute.properties",
+                                 idx = "spct.idx") {
+  stopifnot(length(col.names) == 1L)
+  properties.tb <- getSoluteProperties(mspct, idx = idx)
   names(properties.tb)[2L] <- col.names
   if (is.null(tb)) {
     properties.tb

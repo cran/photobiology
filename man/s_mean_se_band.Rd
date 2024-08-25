@@ -3,6 +3,7 @@
 \name{s_mean_se_band}
 \alias{s_mean_se_band}
 \alias{s_mean_se_band.default}
+\alias{s_mean_se_band.generic_spct}
 \alias{s_mean_se_band.filter_mspct}
 \alias{s_mean_se_band.source_mspct}
 \alias{s_mean_se_band.response_mspct}
@@ -15,6 +16,8 @@
 s_mean_se_band(x, na.rm, mult, ...)
 
 \method{s_mean_se_band}{default}(x, na.rm = FALSE, mult = 1, ...)
+
+\method{s_mean_se_band}{generic_spct}(x, na.rm = FALSE, mult = 1, ...)
 
 \method{s_mean_se_band}{filter_mspct}(x, na.rm = FALSE, mult = 1, ...)
 
@@ -31,8 +34,7 @@ s_mean_se_band(x, na.rm, mult, ...)
 \method{s_mean_se_band}{raw_mspct}(x, na.rm = FALSE, mult = 1, ...)
 }
 \arguments{
-\item{x}{An R object Currently this package defines methods for collections of
-spectral objects.}
+\item{x}{An R object.}
 
 \item{na.rm}{logical A value indicating whether NA values should be stripped
 before the computation proceeds.}
@@ -43,18 +45,30 @@ before the computation proceeds.}
 }
 \value{
 If \code{x} is a collection spectral of objects, such as a
-  "filter_mspct" object, the returned object is of same class as the
-  members of the collection, such as "filter_spct", containing the mean
-  spectrum.
+  \code{"filter_mspct"} object, the returned object is of same class as the
+  members of the collection, such as \code{"filter_spct"}, containing the
+  summary spectrum, with variables with names tagged for summaries other
+  than mean or median.
 }
 \description{
-A method to compute the mean of values and se across members of a collections
-of spectra. Computes the mean at each wavelength across all the spectra in
-the collection returning a spectral object.
+Method to compute the "parallel" mean and limits based on SEM. The spectral
+values are summarised across members of a collection of spectra or of a
+spectral object containing multiple spectra in long form.
+}
+\details{
+Method specializations compute the  mean and limits based on SEM at
+  each wavelength across a group of spectra stored in an object of one of the
+  classes defined in package 'photobiology'. Omission of NAs is done
+  separately at each wavelength. Interpolation is not applied, so all spectra
+  in \code{x} must share the same set of wavelengths. An error is triggered
+  if this condition is nor fulfilled. The value passed as argument to `mult`
+  can be used to estimate a confidence interval for each mean value.
 }
 \section{Methods (by class)}{
 \itemize{
 \item \code{s_mean_se_band(default)}: 
+
+\item \code{s_mean_se_band(generic_spct)}: 
 
 \item \code{s_mean_se_band(filter_mspct)}: 
 
@@ -72,14 +86,16 @@ the collection returning a spectral object.
 
 }}
 \note{
-Trimming of extreme values and omission of NAs is done separately at
-  each wavelength. Interpolation is not applied, so all spectra in \code{x}
-  must share the same set of wavelengths.
+Objects of classes \code{raw_spct} and \code{cps_spct} can contain data
+  from multiple scans in multiple variables or "columns". The methods accept
+  as arguments objects of these classes only if spectra contain data for a
+  single spectrometer scan. In the case of \code{cps_spct} objects, a single
+  column can also contain data from multiple scans spliced into a single
+  variable.
+}
+\examples{
+s_mean_se_band(sun_evening.mspct)
 
-  Objects of classes raw_spct and cps_spct can contain data from multiple
-  scans. This functions are implemented for these classes only for the case
-  when all member spectra contain data for a single scan, or spliced into a
-  single column in the case of cps_spct members.
 }
 \seealso{
 See \code{\link[base]{mean}} for the \code{mean()} method used for

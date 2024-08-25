@@ -3,6 +3,7 @@
 \name{s_median}
 \alias{s_median}
 \alias{s_median.default}
+\alias{s_median.generic_spct}
 \alias{s_median.source_mspct}
 \alias{s_median.response_mspct}
 \alias{s_median.filter_mspct}
@@ -15,6 +16,8 @@
 s_median(x, na.rm, ...)
 
 \method{s_median}{default}(x, na.rm = FALSE, ...)
+
+\method{s_median}{generic_spct}(x, na.rm = FALSE, ...)
 
 \method{s_median}{source_mspct}(x, na.rm = FALSE, ...)
 
@@ -41,17 +44,29 @@ before the computation proceeds.}
 }
 \value{
 If \code{x} is a collection spectral of objects, such as a
-  "filter_mspct" object, the returned object is of same class as the members
-  of the collection, such as "filter_spct", containing the median spectrum.
+  \code{"filter_mspct"} object, the returned object is of same class as the
+  members of the collection, such as \code{"filter_spct"}, containing the
+  summary spectrum, with variables with names tagged for summaries other
+  than mean or median.
 }
 \description{
-A method to compute the median of values across members of a collections of
-spectra. Computes the median at each wavelength across all the spectra in the
-collection returning a spectral object.
+Method to compute the "parallel" median of values across members of a
+collection of spectra or of a spectral object containing multiple spectra in
+long form.
+}
+\details{
+Method specializations compute the median at each wavelength across a
+  group of spectra stored in an object of one of the classes defined in
+  package 'photobiology'. Omission of NAs is done
+  separately at each wavelength. Interpolation is not applied, so all spectra
+  in \code{x} must share the same set of wavelengths. An error is triggered
+  if this condition is nor fulfilled.
 }
 \section{Methods (by class)}{
 \itemize{
 \item \code{s_median(default)}: 
+
+\item \code{s_median(generic_spct)}: 
 
 \item \code{s_median(source_mspct)}: 
 
@@ -69,14 +84,16 @@ collection returning a spectral object.
 
 }}
 \note{
-Omission of NAs is done separately at each wavelength. Interpolation is
-  not applied, so all spectra in \code{x} must share the same set of
-  wavelengths.
+Objects of classes \code{raw_spct} and \code{cps_spct} can contain data
+  from multiple scans in multiple variables or "columns". The methods accept
+  as arguments objects of these classes only if spectra contain data for a
+  single spectrometer scan. In the case of \code{cps_spct} objects, a single
+  column can also contain data from multiple scans spliced into a single
+  variable.
+}
+\examples{
+s_median(sun_evening.mspct)
 
-  Objects of classes raw_spct and cps_spct can contain data from multiple
-  scans. This functions are implemented for these classes only for the case
-  when all member spectra contain data for a single scan, or spliced into a
-  single column in the case of cps_spct members.
 }
 \seealso{
 See \code{\link[stats]{median}} for the \code{median()} method used
