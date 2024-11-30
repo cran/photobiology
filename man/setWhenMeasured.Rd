@@ -6,6 +6,7 @@
 \alias{setWhenMeasured.default}
 \alias{setWhenMeasured.generic_spct}
 \alias{setWhenMeasured.summary_generic_spct}
+\alias{setWhenMeasured.data.frame}
 \alias{setWhenMeasured.generic_mspct}
 \title{Set the "when.measured" attribute}
 \usage{
@@ -18,6 +19,8 @@ when_measured(x) <- value
 \method{setWhenMeasured}{generic_spct}(x, when.measured = lubridate::now(tzone = "UTC"), ...)
 
 \method{setWhenMeasured}{summary_generic_spct}(x, when.measured = lubridate::now(tzone = "UTC"), ...)
+
+\method{setWhenMeasured}{data.frame}(x, when.measured = lubridate::now(tzone = "UTC"), ...)
 
 \method{setWhenMeasured}{generic_mspct}(x, when.measured = lubridate::now(tzone = "UTC"), ...)
 }
@@ -33,7 +36,8 @@ x
 }
 \description{
 Function to set by reference the "when" attribute  of an existing
-generic_spct or an object of a class derived from generic_spct.
+generic_spct, generic_mspct, summary_generic_spct, data.frame or a
+derived-class object.
 }
 \section{Methods (by class)}{
 \itemize{
@@ -42,6 +46,8 @@ generic_spct or an object of a class derived from generic_spct.
 \item \code{setWhenMeasured(generic_spct)}: generic_spct
 
 \item \code{setWhenMeasured(summary_generic_spct)}: summary_generic_spct
+
+\item \code{setWhenMeasured(data.frame)}: data.frame
 
 \item \code{setWhenMeasured(generic_mspct)}: generic_mspct
 
@@ -52,6 +58,11 @@ This method alters x itself by reference and in addition
   generic_spct, x is not modified. If \code{when} is not a POSIXct object
   or \code{NULL} an error is triggered. A \code{POSIXct} describes an
   instant in time (date plus time-of-day plus time zone).
+
+  Be aware that \code{lubridate::ymd()} returns an incompatible \code{Date}
+  object while \code{lubridate::ymd_h()}, \code{lubridate::ymd_hm()} and
+  \code{lubridate::ymd_hms()} and similar functions return objects of class
+  \code{POSIXct} acceptable as arguments for parameter \code{when.measured}.
 }
 \examples{
 my.spct <- sun.spct

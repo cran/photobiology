@@ -232,9 +232,9 @@ as they remain valid.
 |                     | `w.length`, `s.q.irrad`    | `time.unit`, `bswf`                                 |
 | `filter_spct`       | `w.length`, `Tfr`          | `Tfr.type`, `filter.properties`                     |
 |                     | `w.length`, `A`            | `Tfr.type`, `filter.roperties`                      |
-| `ref lector_spct`   | `w.length`, `Rfr`          | `Rfr.type`                                          |
+| `reflector_spct`    | `w.length`, `Rfr`          | `Rfr.type`                                          |
 | `object_spct`       | `w.length`, `Tfr`, `Rfr`   | `Tfr.type`, `Rfr.type`                              |
-| `re sponse_spct`    | `w.length`, `s.e.response` | `time.unit`                                         |
+| `response_spct`     | `w.length`, `s.e.response` | `time.unit`                                         |
 |                     | `w.length`, `s.q.response` | `time.unit`                                         |
 | `chroma_spct`       | `w.length`, `x`, `y`, `z`  |                                                     |
 | `solute_spct`       | `w.length`, `K.mole`       | `K.type`, `solute.properties`                       |
@@ -587,7 +587,7 @@ information. Package `lubridate` makes entering and operating on
 my.spct <- sun.spct
 when_measured(my.spct) <-  NULL
 when_measured(my.spct)
-when_measured(my.spct) <- lubridate::ymd_hms("2015-10-31 22:55:00", tz = "EET")
+when_measured(my.spct) <- lubridate::ymd_hms("2015-10-31 22:55:00", tz = "Europe/Helsinki")
 when_measured(my.spct)
 ```
 
@@ -1409,10 +1409,10 @@ definitions for collections of spectra. Some examples follow.
 
 ```{r, col-attr-1}
 when_measured(two.mspct)
-when_measured(two.mspct) <- ymd("2015-10-31", tz = "EET")
+when_measured(two.mspct) <- ymd("2015-10-31", tz = "Europe/Helsinki")
 when_measured(two.mspct)
-when_measured(two.mspct) <- list(ymd_hm("2015-10-31 10:00", tz = "EET"),
-                                 ymd_hm("2015-10-31 11:00", tz = "EET"))
+when_measured(two.mspct) <- list(ymd_hm("2015-10-31 10:00", tz = "Europe/Helsinki"),
+                                 ymd_hm("2015-10-31 11:00", tz = "Europe/Helsinki"))
 when_measured(two.mspct) # UTC shown!
 two.mspct
 ```

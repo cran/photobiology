@@ -7,6 +7,7 @@
 \alias{getWhereMeasured.generic_spct}
 \alias{getWhereMeasured.summary_generic_spct}
 \alias{getWhereMeasured.generic_mspct}
+\alias{getWhereMeasured.data.frame}
 \title{Get the "where.measured" attribute}
 \usage{
 getWhereMeasured(x, ...)
@@ -20,6 +21,8 @@ where_measured(x, ...)
 \method{getWhereMeasured}{summary_generic_spct}(x, ...)
 
 \method{getWhereMeasured}{generic_mspct}(x, ..., idx = "spct.idx", .bind.geocodes = TRUE)
+
+\method{getWhereMeasured}{data.frame}(x, ...)
 }
 \arguments{
 \item{x}{a generic_spct object}
@@ -39,7 +42,9 @@ a data.frame with a single row and at least columns "lon" and "lat",
    unless expand is set to \code{FALSE}.
 }
 \description{
-Function to read the "where.measured" attribute of an existing generic_spct.
+Function to read the "where.measured" attribute of
+generic_spct, generic_mspct, summary_generic_spct, data.frame or a
+derived-class object.
 }
 \section{Methods (by class)}{
 \itemize{
@@ -50,6 +55,8 @@ Function to read the "where.measured" attribute of an existing generic_spct.
 \item \code{getWhereMeasured(summary_generic_spct)}: summary_generic_spct
 
 \item \code{getWhereMeasured(generic_mspct)}: generic_mspct
+
+\item \code{getWhereMeasured(data.frame)}: data.frame
 
 }}
 \note{

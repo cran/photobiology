@@ -6,6 +6,7 @@
 \alias{getWhatMeasured.default}
 \alias{getWhatMeasured.generic_spct}
 \alias{getWhatMeasured.summary_generic_spct}
+\alias{getWhatMeasured.data.frame}
 \alias{getWhatMeasured.generic_mspct}
 \title{Get the "what.measured" attribute}
 \usage{
@@ -18,6 +19,8 @@ what_measured(x, ...)
 \method{getWhatMeasured}{generic_spct}(x, ...)
 
 \method{getWhatMeasured}{summary_generic_spct}(x, ...)
+
+\method{getWhatMeasured}{data.frame}(x, ...)
 
 \method{getWhatMeasured}{generic_mspct}(x, ..., idx = "spct.idx")
 }
@@ -33,8 +36,9 @@ collection of spectra.}
 character vector An object containing a description of the data.
 }
 \description{
-Function to read the "what.measured" attribute of an existing generic_spct
-or a generic_mspct.
+Function to read the "what.measured" attribute of an existing
+generic_spct, generic_mspct, summary_generic_spct, data.frame or a
+derived-class object.
 }
 \section{Methods (by class)}{
 \itemize{
@@ -43,6 +47,8 @@ or a generic_mspct.
 \item \code{getWhatMeasured(generic_spct)}: generic_spct
 
 \item \code{getWhatMeasured(summary_generic_spct)}: summary_generic_spct
+
+\item \code{getWhatMeasured(data.frame)}: data.frame
 
 \item \code{getWhatMeasured(generic_mspct)}: generic_mspct
 

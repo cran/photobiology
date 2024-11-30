@@ -4,6 +4,25 @@ editor_options:
     wrap: 72
 ---
 
+# photobiology 0.11.4
+
+- Fix bug in function `subset2mspct()`: failure with same value of attribute
+`when.measured` in all spectra.
+- Fix bug in function `rbindspct()`: unnecessary setting of missing metadata
+to `NA`s.
+- Fix bug in `normalize()` methods: failure of repeated updates.
+- Implement methods `where_measured()`, `what_measured()`, `how_measured()` and
+`when_measured()` for data frames (and tibbles).
+- Implement previously missing `setHowMeasured()` and `setWhatMeasured()` 
+methods for collections of spectra.
+- Support negative wavelengths as input in `color_of.numeric()` by changing 
+sign. This is temporary patch to allow reverse transform in scale in 'ggspectra'.
+- Replace use of unsupported time zone name "EET" by "Europe/Helsinki" for
+compatibility with future R (==4.5.0).
+- Update CIE data to the most recent version at 1 nm for A and D65 illuminants
+and add the D50 illuminant.
+- Rebuild all data objects.
+
 # photobiology 0.11.3
 
 Bug fixes and improved printing of spectra and their summaries. This changes

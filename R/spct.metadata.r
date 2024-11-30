@@ -1,13 +1,14 @@
 # This file contains definitions for all methods related to setting and
 # accessing metadata that are not tightly tied to how computations are
-# performed or data are plotted. In other words, ancillary matadata.
+# performed or data are plotted. In other words, ancillary metadata.
 
 # when.measured ---------------------------------------------------------------
 
 #' Set the "when.measured" attribute
 #'
 #' Function to set by reference the "when" attribute  of an existing
-#' generic_spct or an object of a class derived from generic_spct.
+#' generic_spct, generic_mspct, summary_generic_spct, data.frame or a
+#' derived-class object.
 #'
 #' @param x a generic_spct object
 #' @param when.measured,value POSIXct to add as attribute, or a list of POSIXct.
@@ -19,6 +20,11 @@
 #'   generic_spct, x is not modified. If \code{when} is not a POSIXct object
 #'   or \code{NULL} an error is triggered. A \code{POSIXct} describes an
 #'   instant in time (date plus time-of-day plus time zone).
+#'
+#'   Be aware that \code{lubridate::ymd()} returns an incompatible \code{Date}
+#'   object while \code{lubridate::ymd_h()}, \code{lubridate::ymd_hm()} and
+#'   \code{lubridate::ymd_hms()} and similar functions return objects of class
+#'   \code{POSIXct} acceptable as arguments for parameter \code{when.measured}.
 #'
 #' @export
 #' @family measurement metadata functions
@@ -77,32 +83,12 @@ setWhenMeasured.generic_spct <-
 #' @describeIn setWhenMeasured summary_generic_spct
 #' @export
 #'
-setWhenMeasured.summary_generic_spct <-
-  function(x,
-           when.measured = lubridate::now(tzone = "UTC"),
-           ...) {
-    name <- substitute(x)
-    if (!is.null(when.measured)) {
-      if (!is.list(when.measured)) {
-        when.measured <- list(when.measured)
-      } else if (!length(when.measured) %in% c(1L, getMultipleWl(x))) {
-        warning("Length of 'when.measured' does not match spectrum object")
-      }
-      if (all(sapply(when.measured, lubridate::is.instant))) {
-        when.measured <-
-          lapply(when.measured, lubridate::with_tz, tzone = "UTC")
-      }
-      if (is.list(when.measured) && length(when.measured) == 1) {
-        when.measured <- when.measured[[1]]
-      }
-    }
-    attr(x, "when.measured") <- when.measured
-    if (is.name(name)) {
-      name <- as.character(name)
-      assign(name, x, parent.frame(), inherits = TRUE)
-    }
-    invisible(x)
-  }
+setWhenMeasured.summary_generic_spct <- setWhenMeasured.generic_spct
+
+#' @describeIn setWhenMeasured data.frame
+#' @export
+#'
+setWhenMeasured.data.frame <- setWhenMeasured.generic_spct
 
 #' @describeIn setWhenMeasured generic_mspct
 #' @export
@@ -137,8 +123,9 @@ setWhenMeasured.generic_mspct <-
 
 #' Get the "when.measured" attribute
 #'
-#' Function to read the "when.measured" attribute of an existing generic_spct
-#' or a generic_mspct.
+#' Function to read the "when.measured" attribute of an existing
+#' generic_spct, generic_mspct, summary_generic_spct, data.frame or a
+#' derived-class object.
 #'
 #' @param x a generic_spct object
 #' @param ... Allows use of additional arguments in methods for other classes.
@@ -201,20 +188,11 @@ getWhenMeasured.generic_spct <- function(x, as.df = FALSE, ...) {
 
 #' @describeIn getWhenMeasured summary_generic_spct
 #' @export
-getWhenMeasured.summary_generic_spct <- function(x, ...) {
-  when.measured <- attr(x, "when.measured", exact = TRUE)
-  if (is.null(when.measured) ||
-      !all(sapply(when.measured, lubridate::is.instant))) {
-    # need to handle invalid attribute values
-    # we return an NA of class POSIXct
-    when.measured <- suppressWarnings(lubridate::ymd_hms(NA_character_,
-                                                         tz = "UTC"))
-  } else if (lubridate::is.POSIXlt(when.measured)) {
-    when.measured <-
-      as.POSIXct(when.measured, tz = "UTC", origin = lubridate::origin)
-  }
-  when.measured
-}
+getWhenMeasured.summary_generic_spct <- getWhenMeasured.generic_spct
+
+#' @describeIn getWhenMeasured data.frame
+#' @export
+getWhenMeasured.data.frame <- getWhenMeasured.generic_spct
 
 #' @describeIn getWhenMeasured generic_mspct
 #' @param idx character Name of the column with the names of the members of the
@@ -235,7 +213,8 @@ getWhenMeasured.generic_mspct <- function(x,
 #' Set the "where.measured" attribute
 #'
 #' Function to set by reference the "where.measured" attribute  of an existing
-#' generic_spct or an object of a class derived from generic_spct.
+#' generic_spct, generic_mspct, summary_generic_spct, data.frame or a
+#' derived-class object.
 #'
 #' @param x a generic_spct object
 #' @param where.measured,value A one row data.frame such as returned by
@@ -327,6 +306,11 @@ setWhereMeasured.generic_spct <- function(x,
 #' @export
 setWhereMeasured.summary_generic_spct <- setWhereMeasured.generic_spct
 
+#' @describeIn setWhereMeasured data.frame
+#'
+#' @export
+setWhereMeasured.data.frame <- setWhereMeasured.generic_spct
+
 #' @describeIn setWhereMeasured generic_mspct
 #' @note Method for collections of spectra recycles the location information
 #'   only if it is of length one.
@@ -392,7 +376,9 @@ setWhereMeasured.generic_mspct <- function(x,
 
 #' Get the "where.measured" attribute
 #'
-#' Function to read the "where.measured" attribute of an existing generic_spct.
+#' Function to read the "where.measured" attribute of
+#' generic_spct, generic_mspct, summary_generic_spct, data.frame or a
+#' derived-class object.
 #'
 #' @param x a generic_spct object
 #' @param ... Allows use of additional arguments in methods for other classes.
@@ -472,20 +458,39 @@ getWhereMeasured.generic_mspct <- function(x,
   }
 }
 
+#' @describeIn getWhereMeasured data.frame
+#' @export
+#'
+getWhereMeasured.data.frame <- function(x, ...) {
+  where.measured <- attr(x, "where.measured", exact = TRUE)
+  if (is.null(where.measured)) return(na_geocode())
+  stopifnot("The value of 'geocode' attribute is invalid" =
+              is_valid_geocode(where.measured))
+
+  if (is.list(where.measured) && !is.data.frame(where.measured)) {
+    x <- dplyr::bind_rows(where.measured)
+  }
+  # needed to clean inconsistent values from previous versions
+  validate_geocode(where.measured)
+}
+
 # how.measured attributes -------------------------------------------------
 
 #' Set the "how.measured" attribute
 #'
-#' Function to set by reference the "how.measured" attribute  of an existing
-#' generic_spct or derived-class object.
+#' Function to set the "how.measured" attribute  of an existing
+#' generic_spct, generic_mspct, summary_generic_spct, data.frame or a
+#' derived-class object.
 #'
-#' @param x a generic_spct object
-#' @param how.measured,value a list
+#' @param x a R object
+#' @param how.measured,value a list or a character string.
+#' @param ... Allows use of additional arguments in methods for other classes.
 #'
-#' @return x
+#' @return x modified by reference.
+#'
 #' @note This function alters x itself by reference and in addition
-#'   returns x invisibly. If x is not a generic_spct object, x is not
-#'   modified.
+#'   returns x invisibly. If x is not an object of a supported class, \code{x}
+#'   is silently returned unchanged.
 #'
 #' @export
 #' @family measurement metadata functions
@@ -497,17 +502,8 @@ getWhereMeasured.generic_mspct <- function(x,
 #' how_measured(my.spct) <- "simulated with a radiation transfer model"
 #' how_measured(my.spct)
 #'
-setHowMeasured <- function(x, how.measured) {
-  name <- substitute(x)
-  if (is.generic_spct(x) || is.summary_generic_spct(x)) {
-    attr(x, "how.measured") <- how.measured
-    if (is.name(name)) {
-      name <- as.character(name)
-      assign(name, x, parent.frame(), inherits = TRUE)
-    }
-  }
-  invisible(x)
-}
+setHowMeasured <- function(x, ...) {UseMethod("setHowMeasured")}
+
 
 #' @rdname setHowMeasured
 #'
@@ -517,10 +513,47 @@ setHowMeasured <- function(x, how.measured) {
   setHowMeasured(x, how.measured = value)
 }
 
+#' @describeIn setHowMeasured default
+#' @export
+setHowMeasured.default <- function(x,
+                                   how.measured,
+                                   ...) {
+  x
+}
+
+#' @describeIn setHowMeasured generic_spct
+#' @export
+setHowMeasured.generic_spct <- function(x, how.measured, ...) {
+  name <- substitute(x)
+  attr(x, "how.measured") <- how.measured
+  if (is.name(name)) {
+    name <- as.character(name)
+    assign(name, x, parent.frame(), inherits = TRUE)
+  }
+  invisible(x)
+}
+
+#' @describeIn setHowMeasured summary_generic_spct
+#' @export
+setHowMeasured.summary_generic_spct <- setHowMeasured.generic_spct
+
+#' @describeIn setHowMeasured data.frame
+#' @export
+setHowMeasured.data.frame <- setHowMeasured.generic_spct
+
+#' @describeIn setHowMeasured generic_mspct
+#'
+#' @export
+setHowMeasured.generic_mspct <- function(x,
+                                         how.measured,
+                                         ...) {
+  msmsply(mspct = x, .fun = setHowMeasured, ..., how.measured = how.measured)
+}
+
 #' Get the "how.measured" attribute
 #'
-#' Function to read the "how.measured" attribute of an existing generic_spct
-#' or a generic_mspct.
+#' Function to read the "how.measured" attribute of an existing generic_spct,
+#' generic_mspct, summary_generic_spct, data.frame or a derived-class object.
 #'
 #' @param x a generic_spct object
 #' @param ... Allows use of additional arguments in methods for other classes.
@@ -542,6 +575,7 @@ getHowMeasured <- function(x, ...) UseMethod("getHowMeasured")
 how_measured <- getHowMeasured
 
 #' @describeIn getHowMeasured default
+#'
 #' @export
 getHowMeasured.default <- function(x, ...) {
   # we return an NA of class character
@@ -549,6 +583,7 @@ getHowMeasured.default <- function(x, ...) {
 }
 
 #' @describeIn getHowMeasured generic_spct
+#'
 #' @export
 getHowMeasured.generic_spct <- function(x, ...) {
   how.measured <- attr(x, "how.measured", exact = TRUE)
@@ -561,18 +596,17 @@ getHowMeasured.generic_spct <- function(x, ...) {
 }
 
 #' @describeIn getHowMeasured summary_generic_spct
+#'
 #' @export
-getHowMeasured.summary_generic_spct <- function(x, ...) {
-  how.measured <- attr(x, "how.measured", exact = TRUE)
-  if (is.null(how.measured) || (is.atomic(how.measured) && all(is.na(how.measured)))) {
-    # need to handle objects created with old versions
-    NA_character_
-  } else {
-    how.measured
-  }
-}
+getHowMeasured.summary_generic_spct <- getHowMeasured.generic_spct
+
+#' @describeIn getHowMeasured data.frame
+#'
+#' @export
+getHowMeasured.data.frame <- getHowMeasured.generic_spct
 
 #' @describeIn getHowMeasured generic_mspct
+#'
 #' @param idx character Name of the column with the names of the members of the
 #'   collection of spectra.
 #' @note The method for collections of spectra returns the
@@ -956,10 +990,12 @@ isValidInstrSettings <- function(x) {
 #' Set the "what.measured" attribute
 #'
 #' Function to set by reference the "what.measured" attribute  of an existing
-#' generic_spct or derived-class object.
+#' generic_spct, generic_mspct, summary_generic_spct, data.frame or a
+#' derived-class object.
 #'
 #' @param x a generic_spct object
 #' @param what.measured,value a list
+#' @param ... Allows use of additional arguments in methods for other classes.
 #'
 #' @return x
 #' @note This function alters x itself by reference and in addition
@@ -976,17 +1012,7 @@ isValidInstrSettings <- function(x) {
 #'
 #' @family measurement metadata functions
 #'
-setWhatMeasured <- function(x, what.measured) {
-  name <- substitute(x)
-  if (is.generic_spct(x) || is.summary_generic_spct(x)) {
-    attr(x, "what.measured") <- what.measured
-    if (is.name(name)) {
-      name <- as.character(name)
-      assign(name, x, parent.frame(), inherits = TRUE)
-    }
-  }
-  invisible(x)
-}
+setWhatMeasured <- function(x, ...) {UseMethod("setWhatMeasured")}
 
 #' @rdname setWhatMeasured
 #'
@@ -996,10 +1022,46 @@ setWhatMeasured <- function(x, what.measured) {
   setWhatMeasured(x, what.measured = value)
 }
 
+#' @describeIn setWhatMeasured default
+#' @export
+setWhatMeasured.default <- function(x, what.measured, ...) {
+  x
+}
+
+#' @describeIn setWhatMeasured generic_spct
+#' @export
+setWhatMeasured.generic_spct <- function(x, what.measured, ...) {
+  name <- substitute(x)
+  attr(x, "what.measured") <- what.measured
+  if (is.name(name)) {
+    name <- as.character(name)
+    assign(name, x, parent.frame(), inherits = TRUE)
+  }
+  invisible(x)
+}
+
+#' @describeIn setWhatMeasured summary_generic_spct
+#' @export
+setWhatMeasured.summary_generic_spct <- setWhatMeasured.generic_spct
+
+#' @describeIn setWhatMeasured data.frame
+#' @export
+setWhatMeasured.data.frame <- setWhatMeasured.generic_spct
+
+#' @describeIn setWhatMeasured generic_mspct
+#'
+#' @export
+setWhatMeasured.generic_mspct <- function(x,
+                                          what.measured,
+                                         ...) {
+  msmsply(mspct = x, .fun = setWhatMeasured, ..., what.measured = what.measured)
+}
+
 #' Get the "what.measured" attribute
 #'
-#' Function to read the "what.measured" attribute of an existing generic_spct
-#' or a generic_mspct.
+#' Function to read the "what.measured" attribute of an existing
+#' generic_spct, generic_mspct, summary_generic_spct, data.frame or a
+#' derived-class object.
 #'
 #' @param x a generic_spct object
 #' @param ... Allows use of additional arguments in methods for other classes.
@@ -1033,7 +1095,8 @@ getWhatMeasured.default <- function(x, ...) {
 #' @export
 getWhatMeasured.generic_spct <- function(x, ...) {
   what.measured <- attr(x, "what.measured", exact = TRUE)
-  if (is.null(what.measured) || (is.atomic(what.measured) && all(is.na(what.measured)))) {
+  if (is.null(what.measured) ||
+      (is.atomic(what.measured) && all(is.na(what.measured)))) {
     # need to handle objects created with old versions
     NA_character_
   } else {
@@ -1043,15 +1106,11 @@ getWhatMeasured.generic_spct <- function(x, ...) {
 
 #' @describeIn getWhatMeasured summary_generic_spct
 #' @export
-getWhatMeasured.summary_generic_spct <- function(x, ...) {
-  what.measured <- attr(x, "what.measured", exact = TRUE)
-  if (is.null(what.measured) || (is.atomic(what.measured) && all(is.na(what.measured)))) {
-    # need to handle objects created with old versions
-    NA_character_
-  } else {
-    what.measured
-  }
-}
+getWhatMeasured.summary_generic_spct <- getWhatMeasured.generic_spct
+
+#' @describeIn getWhatMeasured data.frame
+#' @export
+getWhatMeasured.data.frame <- getWhatMeasured.generic_spct
 
 #' @describeIn getWhatMeasured generic_mspct
 #' @param idx character Name of the column with the names of the members of the
@@ -1063,7 +1122,11 @@ getWhatMeasured.summary_generic_spct <- function(x, ...) {
 getWhatMeasured.generic_mspct <- function(x,
                                           ...,
                                           idx = "spct.idx") {
-  msdply(mspct = x, .fun = getWhatMeasured, ..., idx = idx, col.names = "what.measured")
+  msdply(mspct = x,
+         .fun = getWhatMeasured,
+         ...,
+         idx = idx,
+         col.names = "what.measured")
 }
 
 # utility functions for attributes ----------------------------------------
@@ -1090,8 +1153,8 @@ getWhatMeasured.generic_mspct <- function(x,
 #'   \code{tibble} is passed as argument, new columns are added to it. However,
 #'   the number of rows in the argument passed to \code{tb} must match the
 #'   number of spectra in the argument passed to \code{mspct}. Only in the case
-#'   of method \code{add_attr2tb()} if the argument
-#'   to \code{col.names} is a named vector, the names of members are used as names for the columns
+#'   of method \code{add_attr2tb()} if the argument to \code{col.names} is a
+#'   named vector, the names of members are used as names for the columns
 #'   created. This permits setting any valid name for the new columns. If the
 #'   vector passed to \code{col.names} has no names the names of the attributes
 #'   are used for the new columns. If the fields of the attributes are unnested
