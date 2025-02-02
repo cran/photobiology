@@ -22,7 +22,20 @@ for individual spectra are defined as well as ‘apply’ functions.
 Extraction and replacement operators are implemented.
 
 Functions for calculation of the position of the sun, times of sunrise
-and sunset, day length and night length are also implemented.
+and sunset, day length and night length are also available. Starting
+from ‘photobiology’ 0.12.0 they are imported from package
+‘SunCalcMeeus’, which is a spin-off of ’photobiology. *If you only use
+these functions, you can attach or load ‘SunCalcMeeus’ instead of
+‘photobiology’, otherwise, the only visible change is that the on-line
+help is at [a separate
+site](https://docs.r4photobiology.info/SunCalcMeeus/).*
+
+Functions for the estimation of evapotranspiration and the energy
+balance of vegetation have been migrated to package
+[‘photobiologyPlants’](https://docs.r4photobiology.info/photobiologyPlants/)
+as they are related to vegetation. To use them with this version of
+package ‘photobiology’, please, add `library(photobiologyPlants)` to
+your code.
 
 The package supports storage and manipulation of data for radiation
 quantities and for optical properties of objects and solutes, as well as
@@ -59,9 +72,9 @@ sun.
 geocode <- data.frame(lon = 0, lat = 55)
 date <- lubridate::now(tzone = "UTC")
 sunrise_time(date, tz = "UTC", geocode = geocode)
-#> [1] "2024-08-23 04:50:47 UTC"
+#> [1] "2025-01-12 08:18:17 UTC"
 day_length(date, tz = "UTC", geocode = geocode)
-#> [1] 14.39096
+#> [1] 7.670362
 ```
 
 ## Installation
@@ -160,6 +173,6 @@ citation("photobiology")
 
 ## License
 
-© 2012-2024 Pedro J. Aphalo (<pedro.aphalo@helsinki.fi>). Released under
+© 2012-2025 Pedro J. Aphalo (<pedro.aphalo@helsinki.fi>). Released under
 the GPL, version 2 or greater. This software carries no warranty of any
 kind.

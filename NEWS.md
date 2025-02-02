@@ -1,8 +1,47 @@
 ---
+title: NEWS
 editor_options:
   markdown:
     wrap: 72
 ---
+
+# photobiology 0.12.0
+
+**This is a major update with new features and includes significant changes to
+internal code and the migration of some functions to other packages. As of
+2024-12-26 the development version of 'photobiology' (>= 0.11.4.9004) is
+compatible with the current CRAN versions of 'ggspectra' (>= 0.3.14) and of
+other packages in the suite. Some functions have been migrated to package
+'photobiologySun' and others to 'SunCalcMeeus'.**
+
+- Redesign the user interface for normalization and conversions of units or 
+quantities. These changes keep the logic of both package code and user code 
+simpler. These changes can break some user code.
+  * `normalize()` methods no longer supports on-the-fly change of units or 
+  quantities.
+  * Methods for conversion between quantities and between units update the
+  existing normalization.
+  * Support in `normalize()` the undoing of an existing normalization with 
+`norm = "undo"`. Available when normalization has been done with 'photobiology'
+(>= 0.10.9), as earlier versions did not store the normalization multipliers as 
+metadata.
+  * Support normalization of multiple columns in spectra, such as photon- and
+energy irradiances.
+  * Query method `normalization()` implemented for spectra, summaries of spectra
+and collections of spectra as equivalent to `getNormalization()`.
+- Update range-checks of spectra to tolerate 1 in 250 pixels "mildly" off-range,
+except `cps_spct` where 1 in 100 is tolerated and `raw_spct` with no range check
+for counts. Update the messages to report the number of off-range values in
+addition to the extreme values.
+- Add support for `attenuation.mode = "scattering"` in filter properties 
+attribute.
+- Move to package ['SunCalcMeeus'](https://docs.r4photobiology.info/SunCalcMeeus/) 
+the functions and methods for sun position and day length calculations.
+- Move functions related to energy, water and carbon exchange between
+vegetation and the atmosphere, including those for evapotranspiration rates,
+water content in the atmosphere and radiation balance functions to package
+'photobiologySun'. This is a code breaking change that will require adding
+`library(photobiologySun)` to scripts that call these functions.
 
 # photobiology 0.11.4
 
