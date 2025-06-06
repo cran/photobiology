@@ -100,9 +100,10 @@ rbindspct <- function(l,
     return(generic_spct())
   }
 
-  if ((is.null(idfactor) && (!is.null(names(l)))) ||
-       (is.logical(idfactor) && idfactor )) {
+  if ((is.null(idfactor) && (!is.null(names(l)))) || is.logical(idfactor) && idfactor) {
     idfactor <- "spct.idx"
+  } else if (is.logical(idfactor) && !idfactor) {
+    idfactor <- NULL
   }
 
   # inefficient but simpler to implement, and ensures proper naming
@@ -262,12 +263,12 @@ rbindspct <- function(l,
     when.measured <- lapply(l[idxs], getWhenMeasured)
     names(when.measured) <- names.spct[idxs]
 
-    where.measured <- dplyr::bind_rows(lapply(l[idxs], getWhereMeasured), .id = "spct.idx")
+    where.measured <- dplyr::bind_rows(lapply(l[idxs], getWhereMeasured), .id = idfactor)
     if (attrs.simplify &&
         (all(is.na(where.measured$lon)) || length(unique(where.measured$lon)) == 1) &&
         (all(is.na(where.measured$lat)) || length(unique(where.measured$lat)) == 1) &&
         (all(is.na(where.measured$address)) || length(unique(where.measured$address)) == 1) ) {
-      where.measured <- where.measured[1, -1]
+      where.measured <- where.measured[1, ] # do not remove columns by numeric index!!
     }
 
     what.measured <- lapply(l[idxs], getWhatMeasured)
@@ -547,14 +548,24 @@ subset.generic_spct <- function(x, subset, select, drop = FALSE, ...) {
           # subsetting of rows can decrease the number of spectra
           id.factor <- getIdFactor(x)
           if (!is.na(id.factor)) {
-            # drop unused levels
-            xx[[id.factor]] <- factor(xx[[id.factor]])
-            # keep attributes matching remaining spectra
-            xx <- subset_attributes(xx, to.keep = levels(xx[[id.factor]]))
+            # drop unused levels only if needed for performance
+            if (length(unique(xx[[id.factor]])) != length(levels(x[[id.factor]]))) {
+              xx[[id.factor]] <- factor(xx[[id.factor]])
+              multiple_wl(xx) <- length(levels(xx[[id.factor]]))
+              # keep attributes matching remaining spectra
+              xx <- subset_attributes(xx, to.keep = levels(xx[[id.factor]]))
+            }
+            # disable check of wavelengths as known good
+            xx <- check_spct(xx, strict.range = NULL, multiple.wl = NULL)
+          } else {
+            xx <- check_spct(xx, strict.range = NULL)
           }
+        } else {
+          # disable check of wavelengths as known good
+          xx <- check_spct(xx, strict.range = NULL, multiple.wl = NULL)
         }
-        xx <- check_spct(xx)
       } else {
+        # no longer a valid spectrum or spectra object
         rmDerivedSpct(xx)
       }
     }

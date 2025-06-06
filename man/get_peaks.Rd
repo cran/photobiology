@@ -3,12 +3,15 @@
 \name{get_peaks}
 \alias{get_peaks}
 \alias{get_valleys}
-\title{Get peaks and valleys in a spectrum}
+\title{Get peaks and valleys from a spectrum}
 \usage{
 get_peaks(
   x,
   y,
-  ignore_threshold = 0,
+  global.threshold = 0,
+  local.threshold = 0,
+  local.reference = "minimum",
+  threshold.range = NULL,
   span = 5,
   strict = TRUE,
   x_unit = "",
@@ -19,7 +22,10 @@ get_peaks(
 get_valleys(
   x,
   y,
-  ignore_threshold = 0,
+  global.threshold = 0,
+  local.threshold = 0,
+  local.reference = "minimum",
+  threshold.range = NULL,
   span = 5,
   strict = TRUE,
   x_unit = "",
@@ -28,21 +34,41 @@ get_valleys(
 )
 }
 \arguments{
-\item{x}{numeric}
+\item{x, y}{numeric}
 
-\item{y}{numeric}
+\item{global.threshold}{numeric A value between 0.0 and 1.0,
+relative to \code{threshold.range} indicating the \emph{global} height
+(depth) threshold below which peaks (valleys) will be ignored, or a
+negative value, between 0.0 and -1.0 indicating the \emph{global} height
+(depth) threshold above which peaks (valleys) will be ignored. If
+\code{threshold.range = 0} or the value passed as argument belongs to class
+\code{"AsIs"} the value is interpreted as an absolute value expressed in
+data units.}
 
-\item{ignore_threshold}{numeric Value between 0.0 and 1.0 indicating the
-relative size compared to tallest peak threshold below which peaks will be
-ignored. Negative values set a threshold so that the tallest peaks are
-ignored, instead of the shortest.}
+\item{local.threshold}{numeric A value between 0.0 and 1.0, relative to
+\code{threshold.range}, indicating the
+\emph{within-window} height (depth) threshold below which peaks (valleys)
+will be ignored.  If \code{threshold.range = 0} or the value passed
+as argument belongs to class \code{"AsIs"} the value is interpreted as an
+absolute value expressed in data units.}
 
-\item{span}{integer A peak is defined as an element in a sequence which is
-greater than all other elements within a window of width \code{span}
-centered at that element. Use \code{NULL} for the global peak.}
+\item{local.reference}{character One of \code{"minimum"} (eqv.
+\code{"maximum"}) or \code{"median"}. The reference used to assess the
+height of the peak, either the minimum (maximum) value within the window or
+the median of all values in the window.}
 
-\item{strict}{logical If \code{TRUE}, an element must be strictly greater
-than all other values in its window to be considered a peak.}
+\item{threshold.range}{numeric vector of length 2 or a longer vector or list
+on which a call to \code{range()} returns a numeric vector of length 2. If
+\code{NULL}, the default, \code{range(x)} is used.}
+
+\item{span}{odd integer A peak is defined as an element in a sequence which
+is greater than all other elements within a moving window of width
+\code{span} centred at that element. The default value is 5, meaning that a
+peak is taller than its four nearest neighbours. \code{span = NULL} extends
+the span to the whole length of \code{x}.}
+
+\item{strict}{logical flag: if TRUE, an element must be strictly greater than
+all other values in its window to be considered a peak. Default: TRUE.}
 
 \item{x_unit}{character Vector of texts to be pasted at end of labels built
 from x value at peaks.}
@@ -57,15 +83,40 @@ A data frame with variables w.length and s.irrad with their values at
   the peaks or valleys plus a character variable of labels.
 }
 \description{
-These functions find peaks (local maxima) or valleys (local minima) in a
-spectrum, using a user selectable size threshold relative to the tallest peak
-(global maximum). This a wrapper built on top of function peaks from package
-splus2R.
+These functions "get" (or extract) peaks (maxima) and valleys (minima) in two
+vectors, usually a spectral quantity and wavelength, using a user selectable
+span for window width and global and local (within moving window) size
+thresholds. They also generate \code{character} values for \code{x}.
 }
-\examples{
-with(sun.spct, get_peaks(w.length, s.e.irrad))
-with(sun.spct, get_valleys(w.length, s.e.irrad))
+\details{
+Function \code{find_peaks} is a wrapper built onto function
+  \code{\link[splus2R]{peaks}} from \pkg{splus2R}, adds support for peak
+  height thresholds and handles \code{span = NULL} and non-finite (including
+  NA) values differently than \code{splus2R::peaks}. Instead of giving an
+  error when \code{na.rm = FALSE} and \code{x} contains \code{NA} values,
+  \code{NA} values are replaced with the smallest finite value in \code{x}.
+  \code{span = NULL} is treated as a special case and selects \code{max(x)}.
+  Two tests are optional, one based on the absolute height of the peaks
+  (\code{global.threshold}) and another based on the height of the peaks
+  compared to other values within the window of width equal to \code{span}
+  (\code{local.threshold}). The reference value used within each window
+  containing a peak is given by \code{local.reference}. Parameter
+  \code{threshold.range} determines how the values passed as argument to
+  \code{global.threshold} and \code{local.threshold} are scaled. The default,
+  \code{NULL} uses the range of \code{x}. Thresholds for ignoring too small
+  peaks are applied after peaks are searched for, and negative threshold
+  values can in some cases result in no peaks being returned.
 
+  While function \code{find_peaks} accepts as input a \code{numeric} vector
+  and returns a \code{logical} vector, methods \code{peaks} and
+  \code{valleys} accept as input different R objects, including spectra and
+  collections of spectra and return a subset of the object. These methods
+  are implemented using calls to functions \code{find_peaks} and
+  \code{\link{fit_peaks}}.
+}
+\note{
+The use of these two functions is deprecated. They are retained for
+  backwards compatibility and will be removed in the near future.
 }
 \seealso{
 Other peaks and valleys functions: 

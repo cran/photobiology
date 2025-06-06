@@ -5,6 +5,43 @@ editor_options:
     wrap: 72
 ---
 
+# photobiology 0.13.0
+
+This update focus is on 1) more efficient storage of metadata in attributes, 2)
+an improved match between operations on spectra stored as collections and
+multiple spectra stored in long form, and 3) finer control of the detection and
+extraction of peaks and valleys. It also includes a bug fix resolving a
+problem in package 'ooacquire'. R (>= 4.1.0) is now required.
+
+* Support simplification of attributes in `what_measured()`, `when_measured()`, 
+`where_measured()`, and `how_measured()` attribute accessors.
+* Improve copying of attributes in row-wise summary methods: `"when.measured"`,
+ `"where.measured"`, `"what.measured"`, and `"how.measured"` attributes are
+copied, and when unique across the summarised spectra, they are simplified. This
+change affects specializations for collections of spectra of methods `s_mean()`,
+`s_median()`, `s_prod()`, `s_range()`, `s_sd()`, `s_se()`, `s_sum()`. `s_var()`,
+`s_mean_se()`.
+* Simplify repeated identical attributes when printing multiple spectra in long 
+form or as a collection, and when printing their summaries. Simplification
+controlled by formal parameter `attr.simplify` with default to `TRUE`.
+* Handle correctly simplified attributes in query and print methods.
+* Accept spectra in long form in addition to collections of spectra as input to
+`add_attr2tb()` and `spct_metadata()`. 
+* Methods `peaks()`, `valleys()`, `wls_at_target()`, `spikes()`, and `despike()`
+warn when called with spectral data expressed on irregular wavelength steps,
+such as after applying `thin_wl()`.
+* Implement a local (within-window span) threshold for peak height and valley 
+depth in `stat_peaks()`  and `stat_valleys()`, using parameters 
+`local.threshold` and `local.reference`.
+* **Code breaking:** Rename parameter `ignore_threshold` into `global.threshold`
+in `find_peaks()`, `get_peaks()`, `peaks()`  and `valleys()` for naming
+consistency and clarity.
+* The scaling applied to user-supplied values for `global.threshold` and 
+`local.threshold` can be controlled by passing a `character` argument to 
+`threshold.scaling`. Non-scaled thresholds are also supported.
+* Bug fix: in `trimInstrDesc()` and `trimInstrSettings()` handle correctly
+missing record fields.
+
 # photobiology 0.12.0
 
 **This is a major update with new features and includes significant changes to

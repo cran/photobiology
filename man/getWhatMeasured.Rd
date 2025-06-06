@@ -8,7 +8,7 @@
 \alias{getWhatMeasured.summary_generic_spct}
 \alias{getWhatMeasured.data.frame}
 \alias{getWhatMeasured.generic_mspct}
-\title{Get the "what.measured" attribute}
+\title{Get the \code{"what.measured"} attribute}
 \usage{
 getWhatMeasured(x, ...)
 
@@ -16,29 +16,32 @@ what_measured(x, ...)
 
 \method{getWhatMeasured}{default}(x, ...)
 
-\method{getWhatMeasured}{generic_spct}(x, ...)
+\method{getWhatMeasured}{generic_spct}(x, ..., simplify = FALSE)
 
-\method{getWhatMeasured}{summary_generic_spct}(x, ...)
+\method{getWhatMeasured}{summary_generic_spct}(x, ..., simplify = FALSE)
 
-\method{getWhatMeasured}{data.frame}(x, ...)
+\method{getWhatMeasured}{data.frame}(x, ..., simplify = FALSE)
 
-\method{getWhatMeasured}{generic_mspct}(x, ..., idx = "spct.idx")
+\method{getWhatMeasured}{generic_mspct}(x, ..., idx = "spct.idx", simplify = FALSE)
 }
 \arguments{
-\item{x}{a generic_spct object}
+\item{x}{an R object.}
 
 \item{...}{Allows use of additional arguments in methods for other classes.}
+
+\item{simplify}{logical If all members share the same attribute value return
+one copy instead of a \code{data.frame}.}
 
 \item{idx}{character Name of the column with the names of the members of the
 collection of spectra.}
 }
 \value{
-character vector An object containing a description of the data.
+\code{character} vector An object containing a description of the
+  data. If \code{x} does not belong to a supported class \code{NA} is
+  returned.
 }
 \description{
-Function to read the "what.measured" attribute of an existing
-generic_spct, generic_mspct, summary_generic_spct, data.frame or a
-derived-class object.
+Method to read the \code{"what.measured"} attribute of an R object.
 }
 \section{Methods (by class)}{
 \itemize{
@@ -55,11 +58,15 @@ derived-class object.
 }}
 \note{
 The method for collections of spectra returns the
-  a tibble with a column of character strings.
+  a \code{data.frame} with a column of character strings.
 }
 \examples{
-
-what_measured(sun.spct)
+my.spct <- sun.spct
+what_measured(my.spct)
+what_measured(my.spct) <- "Sun"
+what_measured(my.spct)
+what_measured(my.spct) <- NULL
+what_measured(my.spct)
 
 }
 \seealso{

@@ -2,10 +2,10 @@
 #'
 #' This function finds spikes in a numeric vector using the algorithm of
 #' Whitaker and Hayes (2018). Spikes are values in spectra that are unusually
-#' high or low compared to neighbors. They are usually individual values or very
+#' high or low compared to neighbours. They are usually individual values or very
 #' short runs of similar "unusual" values. Spikes caused by cosmic radiation are
 #' a frequent problem in Raman spectra. Another source of spikes are "hot
-#' pixels" in CCD and diode arrays. Other kinds of accidental "outlayers" will
+#' pixels" in CCD and diode arrays. Other kinds of accidental "outliers" will
 #' be also detected.
 #'
 #' @details Spikes are detected based on a modified Z score calculated from the
@@ -377,8 +377,10 @@ despike.generic_spct <-
                        y.var.name = y.var.name,
                        var.name = var.name,
                        ...)
-      return(rbindspct(mspct, idfactor = FALSE, attrs.simplify = TRUE))
+      return(rbindspct(mspct, idfactor = getIdFactor(x), attrs.simplify = TRUE))
     }
+
+    check_wl_stepsize(x)
 
     if (is.null(var.name)) {
       # find target variable
@@ -389,6 +391,7 @@ despike.generic_spct <-
     if (length(var.name) == 0L) {
       warning("No data columns found, skipping.")
     }
+
     for (col.name in var.name) {
       if (!is.numeric(x[[col.name]])) {
         next()
@@ -437,8 +440,10 @@ despike.source_spct <-
                        na.rm = na.rm,
                        unit.out = unit.out,
                        ...)
-      return(rbindspct(mspct, idfactor = FALSE, attrs.simplify = TRUE))
+      return(rbindspct(mspct, idfactor = getIdFactor(x), attrs.simplify = TRUE))
     }
+
+    check_wl_stepsize(x)
 
     if (unit.out == "energy") {
       z <- q2e(x, action = "replace", byref = FALSE)
@@ -489,8 +494,10 @@ despike.response_spct <-
                        na.rm = na.rm,
                        unit.out = unit.out,
                        ...)
-      return(rbindspct(mspct, idfactor = FALSE, attrs.simplify = TRUE))
+      return(rbindspct(mspct, idfactor = getIdFactor(x), attrs.simplify = TRUE))
     }
+
+    check_wl_stepsize(x)
 
     if (unit.out == "energy") {
       z <- q2e(x, action = "replace", byref = FALSE)
@@ -502,12 +509,12 @@ despike.response_spct <-
       stop("Unrecognized 'unit.out': ", unit.out)
     }
     z[[col.name]] <- despike(z[[col.name]],
-                            z.threshold = z.threshold,
-                            max.spike.width = max.spike.width,
-                            window.width = window.width,
-                            method = method,
-                            na.rm = na.rm,
-                            ...)
+                             z.threshold = z.threshold,
+                             max.spike.width = max.spike.width,
+                             window.width = window.width,
+                             method = method,
+                             na.rm = na.rm,
+                             ...)
     z
   }
 
@@ -543,8 +550,10 @@ despike.filter_spct <-
                        na.rm = na.rm,
                        filter.qty = filter.qty,
                        ...)
-      return(rbindspct(mspct, idfactor = FALSE, attrs.simplify = TRUE))
+      return(rbindspct(mspct, idfactor = getIdFactor(x), attrs.simplify = TRUE))
     }
+
+    check_wl_stepsize(x)
 
     if (filter.qty == "transmittance") {
       z <- A2T(x, action = "replace", byref = FALSE)
@@ -559,12 +568,12 @@ despike.filter_spct <-
       stop("Unrecognized 'filter.qty': ", filter.qty)
     }
     z[[col.name]] <- despike(z[[col.name]],
-                            z.threshold = z.threshold,
-                            max.spike.width = max.spike.width,
-                            window.width = window.width,
-                            method = method,
-                            na.rm = na.rm,
-                            ...)
+                             z.threshold = z.threshold,
+                             max.spike.width = max.spike.width,
+                             window.width = window.width,
+                             method = method,
+                             na.rm = na.rm,
+                             ...)
     z
   }
 
@@ -594,17 +603,19 @@ despike.reflector_spct <- function(x,
                      method = method,
                      na.rm = na.rm,
                      ...)
-    return(rbindspct(mspct, idfactor = FALSE, attrs.simplify = TRUE))
+    return(rbindspct(mspct, idfactor = getIdFactor(x), attrs.simplify = TRUE))
   }
+
+  check_wl_stepsize(x)
 
   col.name <- "Rfr"
   x[[col.name]] <- despike(x[[col.name]],
-                          z.threshold = z.threshold,
-                          max.spike.width = max.spike.width,
-                          window.width = window.width,
-                          method = method,
-                          na.rm = na.rm,
-                          ...
+                           z.threshold = z.threshold,
+                           max.spike.width = max.spike.width,
+                           window.width = window.width,
+                           method = method,
+                           na.rm = na.rm,
+                           ...
   )
   x
 }
@@ -636,8 +647,10 @@ despike.solute_spct <-
                        method = method,
                        na.rm = na.rm,
                        ...)
-      return(rbindspct(mspct, idfactor = FALSE, attrs.simplify = TRUE))
+      return(rbindspct(mspct, idfactor = getIdFactor(x), attrs.simplify = TRUE))
     }
+
+    check_wl_stepsize(x)
 
     cols <- intersect(c("K.mole", "K.mass"), names(x))
     if (length(cols) == 1) {
@@ -647,12 +660,12 @@ despike.solute_spct <-
       stop("Invalid number of columns found:", length(cols))
     }
     z[[col.name]] <- despike(z[[col.name]],
-                            z.threshold = z.threshold,
-                            max.spike.width = max.spike.width,
-                            window.width = window.width,
-                            method = method,
-                            na.rm = na.rm,
-                            ...)
+                             z.threshold = z.threshold,
+                             max.spike.width = max.spike.width,
+                             window.width = window.width,
+                             method = method,
+                             na.rm = na.rm,
+                             ...)
     z
   }
 
@@ -682,18 +695,20 @@ despike.cps_spct <- function(x,
                      method = method,
                      na.rm = na.rm,
                      ...)
-    return(rbindspct(mspct, idfactor = FALSE, attrs.simplify = TRUE))
+    return(rbindspct(mspct, idfactor = getIdFactor(x), attrs.simplify = TRUE))
   }
+
+  check_wl_stepsize(x)
 
   var.name <- grep("cps", colnames(x), value = TRUE)
   for (col.name in var.name) {
     x[[col.name]] <- despike(x[[col.name]],
-                            z.threshold = z.threshold,
-                            max.spike.width = max.spike.width,
-                            window.width = window.width,
-                            method = method,
-                            na.rm = na.rm,
-                            ...
+                             z.threshold = z.threshold,
+                             max.spike.width = max.spike.width,
+                             window.width = window.width,
+                             method = method,
+                             na.rm = na.rm,
+                             ...
     )
   }
   x
@@ -725,18 +740,20 @@ despike.raw_spct <- function(x,
                      method = method,
                      na.rm = na.rm,
                      ...)
-    return(rbindspct(mspct, idfactor = FALSE, attrs.simplify = TRUE))
+    return(rbindspct(mspct, idfactor = getIdFactor(x), attrs.simplify = TRUE))
   }
+
+  check_wl_stepsize(x)
 
   var.name <- grep("counts", colnames(x), value = TRUE)
   for (col.name in var.name) {
     x[[col.name]] <- despike(x[[col.name]],
-                            z.threshold = z.threshold,
-                            max.spike.width = max.spike.width,
-                            window.width = window.width,
-                            method = method,
-                            na.rm = na.rm,
-                            ...
+                             z.threshold = z.threshold,
+                             max.spike.width = max.spike.width,
+                             window.width = window.width,
+                             method = method,
+                             na.rm = na.rm,
+                             ...
     )
   }
   x
@@ -1097,8 +1114,10 @@ spikes.generic_spct <-
                       na.rm = na.rm,
                       var.name = var.name,
                       ...)
-      return(rbindspct(mspct, idfactor = FALSE, attrs.simplify = TRUE))
+      return(rbindspct(mspct, idfactor = getIdFactor(x), attrs.simplify = TRUE))
     }
+
+    check_wl_stepsize(x)
 
     if (is.null(var.name)) {
       # find target variable
@@ -1147,8 +1166,10 @@ spikes.source_spct <-
                       na.rm = na.rm,
                       unit.out = unit.out,
                       ...)
-      return(rbindspct(mspct, idfactor = FALSE, attrs.simplify = TRUE))
+      return(rbindspct(mspct, idfactor = getIdFactor(x), attrs.simplify = TRUE))
     }
+
+    check_wl_stepsize(x)
 
     if (unit.out == "energy") {
       z <- q2e(x, "replace", FALSE)
@@ -1193,8 +1214,10 @@ spikes.response_spct <-
                       na.rm = na.rm,
                       unit.out = unit.out,
                       ...)
-      return(rbindspct(mspct, idfactor = FALSE, attrs.simplify = TRUE))
+      return(rbindspct(mspct, idfactor = getIdFactor(x), attrs.simplify = TRUE))
     }
+
+    check_wl_stepsize(x)
 
     if (unit.out == "energy") {
       z <- q2e(x, "replace", FALSE)
@@ -1241,8 +1264,10 @@ spikes.filter_spct <-
                       na.rm = na.rm,
                       filter.qty = filter.qty,
                       ...)
-      return(rbindspct(mspct, idfactor = FALSE, attrs.simplify = TRUE))
+      return(rbindspct(mspct, idfactor = getIdFactor(x), attrs.simplify = TRUE))
     }
+
+    check_wl_stepsize(x)
 
     if (filter.qty == "transmittance") {
       z <- A2T(x, "replace", FALSE)
@@ -1283,8 +1308,10 @@ spikes.reflector_spct <- function(x,
                     max.spike.width = max.spike.width,
                     na.rm = na.rm,
                     ...)
-    return(rbindspct(mspct, idfactor = FALSE, attrs.simplify = TRUE))
+    return(rbindspct(mspct, idfactor = getIdFactor(x), attrs.simplify = TRUE))
   }
+
+  check_wl_stepsize(x)
 
   col.name <- "Rfr"
   spikes.idx <-
@@ -1318,8 +1345,10 @@ spikes.solute_spct <-
                       max.spike.width = max.spike.width,
                       na.rm = na.rm,
                       ...)
-      return(rbindspct(mspct, idfactor = FALSE, attrs.simplify = TRUE))
+      return(rbindspct(mspct, idfactor = getIdFactor(x), attrs.simplify = TRUE))
     }
+
+    check_wl_stepsize(x)
 
     cols <- intersect(c("K.mole", "K.mass"), names(x))
     if (length(cols) == 1) {
@@ -1360,8 +1389,10 @@ spikes.cps_spct <- function(x,
                     na.rm = na.rm,
                     var.name = var.name,
                     ...)
-    return(rbindspct(mspct, idfactor = FALSE, attrs.simplify = TRUE))
+    return(rbindspct(mspct, idfactor = getIdFactor(x), attrs.simplify = TRUE))
   }
+
+  check_wl_stepsize(x)
 
   spikes.idx <-
     which(find_spikes(x[[var.name]],
@@ -1395,8 +1426,10 @@ spikes.raw_spct <- function(x,
                     na.rm = na.rm,
                     var.name = var.name,
                     ...)
-    return(rbindspct(mspct, idfactor = FALSE, attrs.simplify = TRUE))
+    return(rbindspct(mspct, idfactor = getIdFactor(x), attrs.simplify = TRUE))
   }
+
+  check_wl_stepsize(x)
 
   spikes.idx <-
     which(find_spikes(x[[var.name]],

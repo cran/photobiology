@@ -170,7 +170,7 @@ copy_attributes.generic_spct <- function(x, y,
                                          which.not = NULL,
                                          copy.class = FALSE,
                                          ...) {
-  if (copy.class) {
+  if (copy.class && !identical(class(y), class(x))) {
     class(y) <- class(x)
     check_spct(y)
   }
@@ -183,9 +183,9 @@ copy_attributes.generic_spct <- function(x, y,
   which <- setdiff(which, which.not)
   attr.x <- attributes(x)
   which.x <- intersect(names(attr.x), which)
-  # # this is likely to be slow
+  ## this is likely to be slow
   for (w in which.x) {
-        attr(y, w) <- attr.x[[w]]
+    attr(y, w) <- attr.x[[w]]
   }
 
   y
@@ -254,9 +254,9 @@ merge_attributes <- function(x, y, z, which, which.not, ...) UseMethod("merge_at
 #' @export
 #'
 merge_attributes.default <- function(x, y, z,
-                                    which = NULL,
-                                    which.not = NULL,
-                                    ...) {
+                                     which = NULL,
+                                     which.not = NULL,
+                                     ...) {
   warning("'merge_attributes' is not defined for objects of class ", class(x)[1])
   z
 }
@@ -538,4 +538,3 @@ spct_attr2tb <-
     spct.attr <- get_attributes(x = x, which = which, ...)
     as_tibble(spct.attr)
   }
-

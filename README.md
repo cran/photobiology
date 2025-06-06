@@ -12,6 +12,7 @@ badge](https://aphalo.r-universe.dev/badges/photobiology)](https://aphalo.r-univ
 [![R-CMD-check](https://github.com/aphalo/photobiology/workflows/R-CMD-check/badge.svg)](https://github.com/aphalo/photobiology/actions)
 [![Documentation](https://img.shields.io/badge/documentation-photobiology-informational.svg)](https://docs.r4photobiology.info/photobiology/)
 [![doi](https://img.shields.io/badge/doi-10.32614/CRAN.package.photobiology-blue.svg)](https://doi.org/10.32614/CRAN.package.photobiology)
+[![R-CMD-check](https://github.com/aphalo/photobiology/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/aphalo/photobiology/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 Package ‘**photobiology**’ defines a system of classes for storing
@@ -57,8 +58,8 @@ transmission spectrum.
 ``` r
 library(photobiology)
 e_irrad(sun.spct * yellow_gel.spct)
-#>  E_Total 
-#> 146.5053 
+#> E_Total 
+#> 146.506 
 #> attr(,"time.unit")
 #> [1] "second"
 #> attr(,"radiation.unit")
@@ -72,9 +73,9 @@ sun.
 geocode <- data.frame(lon = 0, lat = 55)
 date <- lubridate::now(tzone = "UTC")
 sunrise_time(date, tz = "UTC", geocode = geocode)
-#> [1] "2025-01-12 08:18:17 UTC"
+#> [1] "2025-06-06 03:24:00 UTC"
 day_length(date, tz = "UTC", geocode = geocode)
-#> [1] 7.670362
+#> [1] 17.15852
 ```
 
 ## Installation

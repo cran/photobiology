@@ -16,28 +16,31 @@ how_measured(x, ...)
 
 \method{getHowMeasured}{default}(x, ...)
 
-\method{getHowMeasured}{generic_spct}(x, ...)
+\method{getHowMeasured}{generic_spct}(x, ..., simplify = FALSE)
 
-\method{getHowMeasured}{summary_generic_spct}(x, ...)
+\method{getHowMeasured}{summary_generic_spct}(x, ..., simplify = FALSE)
 
-\method{getHowMeasured}{data.frame}(x, ...)
+\method{getHowMeasured}{data.frame}(x, ..., simplify = FALSE)
 
-\method{getHowMeasured}{generic_mspct}(x, ..., idx = "spct.idx")
+\method{getHowMeasured}{generic_mspct}(x, ..., idx = "spct.idx", simplify = FALSE)
 }
 \arguments{
-\item{x}{a generic_spct object}
+\item{x}{an R object.}
 
 \item{...}{Allows use of additional arguments in methods for other classes.}
+
+\item{simplify}{logical If all members share the same attribute value return
+one copy instead of a data.frame.}
 
 \item{idx}{character Name of the column with the names of the members of the
 collection of spectra.}
 }
 \value{
-character vector An object containing a description of the data.
+character vector An object containing a verbal description of the
+  data.
 }
 \description{
-Function to read the "how.measured" attribute of an existing generic_spct,
-generic_mspct, summary_generic_spct, data.frame or a derived-class object.
+Method to read the \code{"how.measured"} attribute of an R object.
 }
 \section{Methods (by class)}{
 \itemize{
@@ -54,10 +57,15 @@ generic_mspct, summary_generic_spct, data.frame or a derived-class object.
 }}
 \note{
 The method for collections of spectra returns the
-  a tibble with a column of character strings.
+  a data frame with a column of character strings.
 }
 \examples{
-how_measured(sun.spct)
+my.spct <- sun.spct
+how_measured(my.spct)
+how_measured(my.spct) <- "Simulated with a radiation transfer model"
+how_measured(my.spct)
+how_measured(my.spct) <- NULL
+how_measured(my.spct)
 
 }
 \seealso{

@@ -120,10 +120,11 @@ check_and_rename_vars <- function(x,
 #' @param x Spectral object to check.
 #' @param strict.range logical indicating the stringency of the test.
 #'
-#' @details If \code{strict.range} is \code{NULL} or \code{NA} the failed
-#'   test is output using \code{message()}, if \code{FALSE}, using
-#'   \code{warning()} and if \code{TRUE}, using \code{stop()}. Currently
-#'   the test condition and the message text is the same in all cases.
+#' @details If \code{strict.range} is \code{NULL} the test is skipped, if
+#'   \code{NA} the failed test is reported using \code{message()}, if
+#'   \code{FALSE}, using \code{warning()} and if \code{TRUE}, using
+#'   \code{stop()}. Currently the test condition and the message text is the
+#'   same in all cases.
 #'
 #'   The test is failed only if more than 1/250 spectral values are off-range,
 #'   except for \code{cps_spct} objects where 1/100 negative spectral values
@@ -134,9 +135,16 @@ check_and_rename_vars <- function(x,
 #'   future versions. The difficulty is that measured spectral data can be
 #'   noisy even when valid and error-free.
 #'
+#' @note \code{NULL} is passed as argument to \code{strict.range} internally
+#'   by methods that do not modify the data, but instead subset them. This
+#'   improves performance.
+#'
 #' @keywords internal
 #'
 range_check_Tfr <- function(x, strict.range) {
+  if (is.null(strict.range)) {
+    return()
+  }
   if (!all(is.na(x[["Tfr"]]))) {
     tfr <- na.omit(x[["Tfr"]])
     n.off.range <- sum(tfr < -1e-4 | tfr > 1 + 1e-6)
@@ -150,7 +158,7 @@ range_check_Tfr <- function(x, strict.range) {
           "] instead of  [0..1]",
           sep = ""
         )
-      if (is.null(strict.range) || is.na(strict.range)) {
+      if (is.na(strict.range)) {
         message(message.text)
       } else if (strict.range) {
         stop(message.text)
@@ -168,6 +176,9 @@ range_check_Tfr <- function(x, strict.range) {
 #' @keywords internal
 #'
 range_check_Afr <- function(x, strict.range) {
+  if (is.null(strict.range)) {
+    return()
+  }
   if (!all(is.na(x[["Afr"]]))) {
     afr <- na.omit(x[["Afr"]])
     n.off.range <- sum(afr < -1e-4 | afr > 1 + 1e-6)
@@ -181,7 +192,7 @@ range_check_Afr <- function(x, strict.range) {
           "] instead of [0..1]",
           sep = ""
         )
-      if (is.null(strict.range) || is.na(strict.range)) {
+      if (is.na(strict.range)) {
         message(message.text)
       } else if (strict.range) {
         stop(message.text)
@@ -199,6 +210,9 @@ range_check_Afr <- function(x, strict.range) {
 #' @keywords internal
 #'
 range_check_Rfr <- function(x, strict.range) {
+  if (is.null(strict.range)) {
+    return()
+  }
   if (!all(is.na(x[["Rfr"]]))) {
     rfr <- na.omit(x[["Rfr"]])
     n.off.range <- sum(rfr < -1e-4 | rfr > 1 + 1e-6)
@@ -212,7 +226,7 @@ range_check_Rfr <- function(x, strict.range) {
           "] instead of  [0..1]",
           sep = ""
         )
-      if (is.null(strict.range) || is.na(strict.range)) {
+      if (is.na(strict.range)) {
         message(message.text)
       } else if (strict.range) {
         stop(message.text)
@@ -230,6 +244,9 @@ range_check_Rfr <- function(x, strict.range) {
 #' @keywords internal
 #'
 range_check_A <- function(x, strict.range) {
+  if (is.null(strict.range)) {
+    return()
+  }
   if (!all(is.na(x[["A"]]))) {
     xa <- na.omit(x[["A"]])
     n.off.range <- sum(xa < -1e-7 | xa > 20)
@@ -239,7 +256,7 @@ range_check_A <- function(x, strict.range) {
                             " off-range 'A' values [",
                             formatted_range(A.range),
                             "] instead of [0..20]", sep = "")
-      if (is.null(strict.range) || is.na(strict.range)) {
+      if (is.na(strict.range)) {
         message(message.text)
       } else if (strict.range) {
         stop(message.text)
@@ -257,6 +274,9 @@ range_check_A <- function(x, strict.range) {
 #' @keywords internal
 #'
 range_check_cps <- function(x, cps.cols, strict.range) {
+  if (is.null(strict.range)) {
+    return()
+  }
   for (col in cps.cols) {
     stopifnot(is.numeric(x[[col]]))
     if (all(is.na(x[[col]]))) {
@@ -274,7 +294,7 @@ range_check_cps <- function(x, cps.cols, strict.range) {
                             " off-range '", col, "' values [",
                             formatted_range(range(xcol)),
                             "] instead of [0..Inf]", sep = "")
-      if (is.null(strict.range) || is.na(strict.range)) {
+      if (is.na(strict.range)) {
         message(message.text)
       } else if (strict.range) {
         stop(message.text)
@@ -292,6 +312,9 @@ range_check_cps <- function(x, cps.cols, strict.range) {
 #' @keywords internal
 #'
 range_check_s.irrad <- function(x, strict.range) {
+  if (is.null(strict.range)) {
+    return()
+  }
   # negative values are valid for IR emission, but not for irradiance
   min.limit <- ifelse(strict.range,
                       -0.10,
@@ -313,7 +336,7 @@ range_check_s.irrad <- function(x, strict.range) {
           formatted_range(s.e.range), "] instead of >= 0 W/m2",
           sep = ""
         )
-      if (is.null(strict.range) || is.na(strict.range)) {
+      if (is.na(strict.range)) {
         message(message.text)
       } else if (strict.range) {
         stop(message.text)
@@ -359,6 +382,9 @@ range_check_s.irrad <- function(x, strict.range) {
 #' @keywords internal
 #'
 range_check_irrad.mult <- function(x, strict.range) {
+  if (is.null(strict.range)) {
+    return()
+  }
   xmult <- na.omit(x[["irrad.mult"]])
   n.off.range <- sum(xmult < 0)
   if (n.off.range > 0) {
@@ -366,7 +392,7 @@ range_check_irrad.mult <- function(x, strict.range) {
                           " off-range 'irrad.mult' values [",
                           formatted_range(range(xmult)),
                           "] instead of >= 0 W m-2 counts-1", sep = "")
-    if (is.null(strict.range) || is.na(strict.range)) {
+    if (is.na(strict.range)) {
       message(message.text)
     } else if (strict.range) {
       stop(message.text)
@@ -388,7 +414,8 @@ range_check_irrad.mult <- function(x, strict.range) {
 #' @param byref logical indicating if new object will be created by reference or
 #'   by copy of \code{x}
 #' @param strict.range logical indicating whether off-range values result in an
-#'   error instead of a warning, with \code{NA} a message is issued on failure.
+#'   error instead of a warning, with \code{NA} a message is issued on failure,
+#'   and with \code{NULL} the range test is skipped.
 #' @param force logical If \code{TRUE} check is done even if checks are
 #'   disabled.
 #' @param ... additional parameters possible in derived methods
@@ -426,7 +453,7 @@ check_spct.default <-
 #' @describeIn check_spct Specialization for generic_spct.
 #'
 #' @param multiple.wl numeric Maximum number of repeated w.length entries with
-#'   same value.
+#'   same value. If \code{NULL} skip check of ordering and multiple wavelengths.
 #'
 #' @export
 check_spct.generic_spct <-
@@ -460,37 +487,41 @@ check_spct.generic_spct <-
                             required = TRUE)
 
     if (nrow(x) && !all(is.na(x[["w.length"]]))) {
-      wl.min <- min(x[["w.length"]], na.rm = TRUE)
-      #  wl.max <- max(x[["w.length"]], na.rm = TRUE)
-      if (wl.min == Inf) {
-        warning("No valid 'w.length' values found") # could be stop()
-      } else if (wl.min < 1e-20) { # take care of rounding errors
-        stop("Negative or zero 'w.length' values found: aborting!")
-      } else if ((wl.min < 99.999 || wl.min > 2.8e3) &&
-                 getOption("photobiology.verbose")) { # catch use of Angstrom
-        warning("Possibly off-range 'w.length' values, minimum = ",
-                signif(wl.min, 4), " nm. (Nanometers expected.)")
+      if (!is.null(strict.range)) {
+        wl.min <- min(x[["w.length"]], na.rm = TRUE)
+        #  wl.max <- max(x[["w.length"]], na.rm = TRUE)
+        if (wl.min == Inf) {
+          warning("No valid 'w.length' values found") # could be stop()
+        } else if (wl.min < 1e-20) { # take care of rounding errors
+          stop("Negative or zero 'w.length' values found: aborting!")
+        } else if ((wl.min < 99.999 || wl.min > 2.8e3) &&
+                   getOption("photobiology.verbose")) { # catch use of Angstrom
+          warning("Possibly off-range 'w.length' values, minimum = ",
+                  signif(wl.min, 4), " nm. (Nanometers expected.)")
+        }
       }
-      # we use run length encoding to find the maximum number of copies of
-      # any w.length. (This redundancy needs to be fixed.)
-      if (multiple.wl == 1) {
-        if (is.unsorted(x[["w.length"]], na.rm = TRUE, strictly = TRUE)) {
-          if (is.unsorted(-x[["w.length"]], na.rm = TRUE, strictly = TRUE)) {
-            stop("'w.length' must be sorted and have unique values")
-          } else {
-            # if unsorted is TRUE, then nrow >= 1 is TRUE
-            # w.length in decreasing order, which we reverse
-            x <- x[nrow(x):1, ]
+      if (!is.null(multiple.wl)) {
+        # we use run length encoding to find the maximum number of copies of
+        # any w.length. (This redundancy needs to be fixed.)
+        if (multiple.wl == 1) {
+          if (is.unsorted(x[["w.length"]], na.rm = TRUE, strictly = TRUE)) {
+            if (is.unsorted(-x[["w.length"]], na.rm = TRUE, strictly = TRUE)) {
+              stop("'w.length' must be sorted and have unique values")
+            } else {
+              # if unsorted is TRUE, then nrow >= 1 is TRUE
+              # w.length in decreasing order, which we reverse
+              x <- x[nrow(x):1, ]
+            }
           }
+        } else if (multiple.wl > 1) {
+          runs <- rle(sort(x[["w.length"]]))
+          num.copies <- max(runs[["lengths"]])
+          if (num.copies > multiple.wl) {
+            stop("Too many copies of w.length values: ", num.copies)
+          }
+        } else {
+          stop("ASSERTION FAILED: invalid 'multiple.wl' value: ", multiple.wl)
         }
-      } else if (multiple.wl > 1) {
-        runs <- rle(sort(x[["w.length"]]))
-        num.copies <- max(runs[["lengths"]])
-        if (num.copies > multiple.wl) {
-          stop("Too many copies of w.length values: ", num.copies)
-        }
-      } else {
-        stop("ASSERTION FAILED: invalid 'multiple.wl' value: ", multiple.wl)
       }
     }
     x
@@ -957,6 +988,50 @@ check_spct.chroma_spct <-
     return(x)
   }
 
+# Checks called by other methods ---------------------------------------------
+# Check for assumptions of algorithms used in peaks() and other methods
+
+#' Check consistency of wavelength step size
+#'
+#' @inheritParams peaks
+#'
+#' @details As the search for peaks uses a window based on a fixed number of
+#'   observations at neighbouring wavelengths, if the wavelength step between
+#'   observations varies drastically, the window expressed in nanometres of
+#'   wavelength becomes very irregular. With the default \code{span = 5} in
+#'   \code{peaks()}, \code{valleys()}, and \code{wls_at_target()} the
+#'   search in most cases still works for "thinned" spectra, and the check is
+#'   skipped. With \code{spikes()} and \code{despike()} methods the check is
+#'   always done as these methods do not override \code{span = Inf}.
+#'
+#'   The typical case when the step can vary strongly are spectra returned by
+#'   \code{thin_wl()}. As when using default arguments \code{thin_wl()} retains
+#'   the original local maxima, and a reasonably narrow wavelength maximum step
+#'   a call to \code{peaks} with \code{span = NULL} or \code{span = 5}
+#'   \emph{tends} to discover the original peaks missing at most a few.
+#'
+#' @return logical \code{TRUE} if check is passed and otherwise \code{FALSE}
+#' with a warning.
+#'
+#' @keywords internal
+#'
+check_wl_stepsize <-
+  function(x, span = Inf) {
+    if (!is.null(span) && span > 5) {
+      step.size.range <- wl_stepsize(x)
+      step.size.range[1] <- max(1, step.size.range[1]) # ignore wl steps < 1 nm
+      if ((step.size.range[2] / step.size.range[1]) > 2.5) {
+        caller.name <- gsub("\\(.*$|\\..*$", "",
+                            deparse(sys.calls()[[sys.nframe()-1]]))
+        warning("'", caller.name,
+                "()' assumes consistent w.length steps! ",
+                "max step / min step = ",
+                round(step.size.range[2] / step.size.range[1], 1))
+        return(invisible(FALSE))
+      }
+    }
+    invisible(TRUE)
+  }
 
 # set class ---------------------------------------------------------------
 
@@ -2803,6 +2878,8 @@ id_factor <- getIdFactor
 #' @param attenuation.mode character One of \code{"reflection"},
 #'   \code{"absorption"}, \code{"absorption.layer"}, \code{"scattering"},
 #'   \code{"mixed"} or \code{"stack"}.
+#' @param verbose logical Flag to enable warning when applied to object of
+#'   unsuported class.
 #'
 #' @details Storing filter properties allows inter-conversion between internal
 #'   and total transmittance, as well as computation of transmittance for
@@ -2848,7 +2925,8 @@ setFilterProperties <- function(x,
                                 pass.null = FALSE,
                                 Rfr.constant = NA_real_,
                                 thickness = NA_real_,
-                                attenuation.mode = NA_character_) {
+                                attenuation.mode = NA_character_,
+                                verbose = TRUE) {
   name <- substitute(x)
   valid.attenuation.modes <-
     c("reflection", "absorption", "absorption.layer", "scattering",
@@ -2924,7 +3002,7 @@ setFilterProperties <- function(x,
       name <- as.character(name)
       assign(name, x, parent.frame(), inherits = TRUE)
     }
-  } else {
+  } else if (verbose) {
     warning("'setFilterProperties()' not applicable to objects of class ",
             class(x)[1], ", skipping.")
   }
@@ -3285,6 +3363,8 @@ convertTfrType <- function(x, Tfr.type = NULL) {
 #' @param ID,solvent.ID character The names of the substance and of the solvent. A named character
 #'     vector, with member names such as "ChemSpider" or "PubChen" for the
 #'     authority.
+#' @param verbose logical Flag to enable warning when applied to object of
+#'   unsuported class.
 #'
 #' @details Storing solute properties allows inter-conversion between bases of
 #'   expression, and ensures the unambiguous identification of the substances to
@@ -3331,7 +3411,8 @@ setSoluteProperties <- function(x,
                                 name = NA_character_,
                                 ID = NA_character_,
                                 solvent.name = NA_character_,
-                                solvent.ID = NA_character_) {
+                                solvent.ID = NA_character_,
+                                verbose = TRUE) {
   obj.name <- substitute(x)
   if (is.solute_spct(x)) {
     if (!(pass.null && is.null(solute.properties))) {
@@ -3384,7 +3465,7 @@ setSoluteProperties <- function(x,
       obj.name <- as.character(obj.name)
       assign(obj.name, x, parent.frame(), inherits = TRUE)
     }
-  } else {
+  } else if (verbose) {
     warning("'setSoluteProperties()' not applicable to objects of class ",
             class(x)[1], ", skipping.")
   }

@@ -23,18 +23,47 @@
 \alias{valleys.raw_mspct}
 \title{Valleys or local minima}
 \usage{
-valleys(x, span, ignore_threshold, strict, ...)
+valleys(
+  x,
+  span,
+  global.threshold,
+  local.threshold,
+  local.reference,
+  threshold.range,
+  strict,
+  ...
+)
 
-\method{valleys}{default}(x, span = NA, ignore_threshold = NA, strict = NA, na.rm = FALSE, ...)
+\method{valleys}{default}(
+  x,
+  span,
+  global.threshold = NA,
+  local.threshold = NA,
+  local.reference = NA,
+  threshold.range = NA,
+  strict,
+  ...
+)
 
-\method{valleys}{default}(x, span = NA, ignore_threshold = NA, strict = NA, na.rm = FALSE, ...)
-
-\method{valleys}{numeric}(x, span = 5, ignore_threshold, strict = TRUE, na.rm = FALSE, ...)
+\method{valleys}{numeric}(
+  x,
+  span = 5,
+  global.threshold = 0,
+  local.threshold = 0,
+  local.reference = "minimum",
+  threshold.range = NULL,
+  strict = TRUE,
+  na.rm = FALSE,
+  ...
+)
 
 \method{valleys}{data.frame}(
   x,
   span = 5,
-  ignore_threshold = 0,
+  global.threshold = 0,
+  local.threshold = 0,
+  local.reference = "minimum",
+  threshold.range = NULL,
   strict = TRUE,
   na.rm = FALSE,
   x.var.name = NULL,
@@ -48,7 +77,10 @@ valleys(x, span, ignore_threshold, strict, ...)
 \method{valleys}{generic_spct}(
   x,
   span = 5,
-  ignore_threshold = 0,
+  global.threshold = 0,
+  local.threshold = 0,
+  local.reference = "minimum",
+  threshold.range = NULL,
   strict = TRUE,
   na.rm = FALSE,
   var.name = NULL,
@@ -60,7 +92,10 @@ valleys(x, span, ignore_threshold, strict, ...)
 \method{valleys}{source_spct}(
   x,
   span = 5,
-  ignore_threshold = 0,
+  global.threshold = 0,
+  local.threshold = 0,
+  local.reference = "minimum",
+  threshold.range = NULL,
   strict = TRUE,
   na.rm = FALSE,
   unit.out = getOption("photobiology.radiation.unit", default = "energy"),
@@ -72,7 +107,10 @@ valleys(x, span, ignore_threshold, strict, ...)
 \method{valleys}{response_spct}(
   x,
   span = 5,
-  ignore_threshold = 0,
+  global.threshold = 0,
+  local.threshold = 0,
+  local.reference = "minimum",
+  threshold.range = NULL,
   strict = TRUE,
   na.rm = FALSE,
   unit.out = getOption("photobiology.radiation.unit", default = "energy"),
@@ -84,7 +122,10 @@ valleys(x, span, ignore_threshold, strict, ...)
 \method{valleys}{filter_spct}(
   x,
   span = 5,
-  ignore_threshold = 0,
+  global.threshold = 0,
+  local.threshold = 0,
+  local.reference = "minimum",
+  threshold.range = NULL,
   strict = TRUE,
   na.rm = FALSE,
   filter.qty = getOption("photobiology.filter.qty", default = "transmittance"),
@@ -96,7 +137,10 @@ valleys(x, span, ignore_threshold, strict, ...)
 \method{valleys}{reflector_spct}(
   x,
   span = 5,
-  ignore_threshold = 0,
+  global.threshold = 0,
+  local.threshold = 0,
+  local.reference = "minimum",
+  threshold.range = NULL,
   strict = TRUE,
   na.rm = FALSE,
   refine.wl = FALSE,
@@ -107,7 +151,10 @@ valleys(x, span, ignore_threshold, strict, ...)
 \method{valleys}{solute_spct}(
   x,
   span = 5,
-  ignore_threshold = 0,
+  global.threshold = 0,
+  local.threshold = 0,
+  local.reference = "minimum",
+  threshold.range = NULL,
   strict = TRUE,
   na.rm = FALSE,
   refine.wl = FALSE,
@@ -118,7 +165,10 @@ valleys(x, span, ignore_threshold, strict, ...)
 \method{valleys}{cps_spct}(
   x,
   span = 5,
-  ignore_threshold = 0,
+  global.threshold = 0,
+  local.threshold = 0,
+  local.reference = "minimum",
+  threshold.range = NULL,
   strict = TRUE,
   na.rm = FALSE,
   var.name = "cps",
@@ -130,7 +180,10 @@ valleys(x, span, ignore_threshold, strict, ...)
 \method{valleys}{raw_spct}(
   x,
   span = 5,
-  ignore_threshold = 0,
+  global.threshold = 0,
+  local.threshold = 0,
+  local.reference = "minimum",
+  threshold.range = NULL,
   strict = TRUE,
   na.rm = FALSE,
   var.name = "counts",
@@ -142,7 +195,10 @@ valleys(x, span, ignore_threshold, strict, ...)
 \method{valleys}{generic_mspct}(
   x,
   span = 5,
-  ignore_threshold = 0,
+  global.threshold = 0,
+  local.threshold = 0,
+  local.reference = "minimum",
+  threshold.range = NULL,
   strict = TRUE,
   na.rm = FALSE,
   var.name = NULL,
@@ -156,7 +212,10 @@ valleys(x, span, ignore_threshold, strict, ...)
 \method{valleys}{source_mspct}(
   x,
   span = 5,
-  ignore_threshold = 0,
+  global.threshold = 0,
+  local.threshold = 0,
+  local.reference = "minimum",
+  threshold.range = NULL,
   strict = TRUE,
   na.rm = FALSE,
   unit.out = getOption("photobiology.radiation.unit", default = "energy"),
@@ -170,7 +229,10 @@ valleys(x, span, ignore_threshold, strict, ...)
 \method{valleys}{response_mspct}(
   x,
   span = 5,
-  ignore_threshold = 0,
+  global.threshold = 0,
+  local.threshold = 0,
+  local.reference = "minimum",
+  threshold.range = NULL,
   strict = TRUE,
   na.rm = FALSE,
   unit.out = getOption("photobiology.radiation.unit", default = "energy"),
@@ -184,7 +246,10 @@ valleys(x, span, ignore_threshold, strict, ...)
 \method{valleys}{filter_mspct}(
   x,
   span = 5,
-  ignore_threshold = 0,
+  global.threshold = 0,
+  local.threshold = 0,
+  local.reference = "minimum",
+  threshold.range = NULL,
   strict = TRUE,
   na.rm = FALSE,
   filter.qty = getOption("photobiology.filter.qty", default = "transmittance"),
@@ -198,7 +263,10 @@ valleys(x, span, ignore_threshold, strict, ...)
 \method{valleys}{reflector_mspct}(
   x,
   span = 5,
-  ignore_threshold = 0,
+  global.threshold = 0,
+  local.threshold = 0,
+  local.reference = "minimum",
+  threshold.range = NULL,
   strict = TRUE,
   na.rm = FALSE,
   refine.wl = FALSE,
@@ -211,7 +279,10 @@ valleys(x, span, ignore_threshold, strict, ...)
 \method{valleys}{solute_mspct}(
   x,
   span = 5,
-  ignore_threshold = 0,
+  global.threshold = 0,
+  local.threshold = 0,
+  local.reference = "minimum",
+  threshold.range = NULL,
   strict = TRUE,
   na.rm = FALSE,
   refine.wl = FALSE,
@@ -224,7 +295,10 @@ valleys(x, span, ignore_threshold, strict, ...)
 \method{valleys}{cps_mspct}(
   x,
   span = 5,
-  ignore_threshold = 0,
+  global.threshold = 0,
+  local.threshold = 0,
+  local.reference = "minimum",
+  threshold.range = NULL,
   strict = TRUE,
   na.rm = FALSE,
   var.name = "cps",
@@ -238,7 +312,10 @@ valleys(x, span, ignore_threshold, strict, ...)
 \method{valleys}{raw_mspct}(
   x,
   span = 5,
-  ignore_threshold = 0,
+  global.threshold = 0,
+  local.threshold = 0,
+  local.reference = "minimum",
+  threshold.range = NULL,
   strict = TRUE,
   na.rm = FALSE,
   var.name = "counts",
@@ -250,19 +327,42 @@ valleys(x, span, ignore_threshold, strict, ...)
 )
 }
 \arguments{
-\item{x}{an R object}
+\item{x}{numeric vector. Hint: to find valleys, change the sign of the
+argument with the unary operator \code{-}.}
 
-\item{span}{integer A valley is defined as an element in a sequence which is smaller
-than all other elements within a window of width \code{span} centered at that
-element. Use \code{NULL} for the global peak.}
+\item{span}{odd integer A peak is defined as an element in a sequence which
+is greater than all other elements within a moving window of width
+\code{span} centred at that element. The default value is 5, meaning that a
+peak is taller than its four nearest neighbours. \code{span = NULL} extends
+the span to the whole length of \code{x}.}
 
-\item{ignore_threshold}{numeric Value between 0.0 and 1.0 indicating the
-relative size compared to tallest peak threshold below which peaks will be
-ignored. Negative values set a threshold so that the tallest peaks are
-ignored, instead of the shortest.}
+\item{global.threshold}{numeric A value between 0.0 and 1.0,
+relative to \code{threshold.range} indicating the \emph{global} height
+(depth) threshold below which peaks (valleys) will be ignored, or a
+negative value, between 0.0 and -1.0 indicating the \emph{global} height
+(depth) threshold above which peaks (valleys) will be ignored. If
+\code{threshold.range = 0} or the value passed as argument belongs to class
+\code{"AsIs"} the value is interpreted as an absolute value expressed in
+data units.}
 
-\item{strict}{logical If \code{TRUE}, an element must be strictly greater
-than all other values in its window to be considered a peak.}
+\item{local.threshold}{numeric A value between 0.0 and 1.0, relative to
+\code{threshold.range}, indicating the
+\emph{within-window} height (depth) threshold below which peaks (valleys)
+will be ignored.  If \code{threshold.range = 0} or the value passed
+as argument belongs to class \code{"AsIs"} the value is interpreted as an
+absolute value expressed in data units.}
+
+\item{local.reference}{character One of \code{"minimum"} (eqv.
+\code{"maximum"}) or \code{"median"}. The reference used to assess the
+height of the peak, either the minimum (maximum) value within the window or
+the median of all values in the window.}
+
+\item{threshold.range}{numeric vector of length 2 or a longer vector or list
+on which a call to \code{range()} returns a numeric vector of length 2. If
+\code{NULL}, the default, \code{range(x)} is used.}
+
+\item{strict}{logical flag: if TRUE, an element must be strictly greater than
+all other values in its window to be considered a peak. Default: TRUE.}
 
 \item{...}{ignored}
 
@@ -292,16 +392,41 @@ your code relies on external data or packages: use the .export and
 correct environment set up for computing.}
 }
 \value{
-A subset of \code{x} with rows corresponding to local minima.
+A subset of \code{x} with rows corresponding to local minima or
+  global minimum.
 }
 \description{
 Function that returns a subset of an R object with observations corresponding
 to local maxima.
 }
+\details{
+Function \code{find_peaks} is a wrapper built onto function
+  \code{\link[splus2R]{peaks}} from \pkg{splus2R}, adds support for peak
+  height thresholds and handles \code{span = NULL} and non-finite (including
+  NA) values differently than \code{splus2R::peaks}. Instead of giving an
+  error when \code{na.rm = FALSE} and \code{x} contains \code{NA} values,
+  \code{NA} values are replaced with the smallest finite value in \code{x}.
+  \code{span = NULL} is treated as a special case and selects \code{max(x)}.
+  Two tests are optional, one based on the absolute height of the peaks
+  (\code{global.threshold}) and another based on the height of the peaks
+  compared to other values within the window of width equal to \code{span}
+  (\code{local.threshold}). The reference value used within each window
+  containing a peak is given by \code{local.reference}. Parameter
+  \code{threshold.range} determines how the values passed as argument to
+  \code{global.threshold} and \code{local.threshold} are scaled. The default,
+  \code{NULL} uses the range of \code{x}. Thresholds for ignoring too small
+  peaks are applied after peaks are searched for, and negative threshold
+  values can in some cases result in no peaks being returned.
+
+  While function \code{find_peaks} accepts as input a \code{numeric} vector
+  and returns a \code{logical} vector, methods \code{peaks} and
+  \code{valleys} accept as input different R objects, including spectra and
+  collections of spectra and return a subset of the object. These methods
+  are implemented using calls to functions \code{find_peaks} and
+  \code{\link{fit_peaks}}.
+}
 \section{Methods (by class)}{
 \itemize{
-\item \code{valleys(default)}: Default function usable on numeric vectors.
-
 \item \code{valleys(default)}: Default returning always NA.
 
 \item \code{valleys(numeric)}: Default function usable on numeric vectors.
@@ -341,8 +466,33 @@ to local maxima.
 \item \code{valleys(raw_mspct)}: Method for "raw_mspct" objects.
 
 }}
+\note{
+The default for parameter \code{strict} is \code{FALSE} in functions
+  \code{peaks()} and \code{find_peaks()}, as in \code{stat_peaks()} and in
+  \code{stat_valleys()}, while the default in \code{\link[splus2R]{peaks}}
+  is \code{strict = TRUE}.
+}
 \examples{
-valleys(sun.spct, span = 50)
+# default span = 5
+valleys(sun.spct)
+# global minimum
+valleys(sun.spct, span = NULL)
+valleys(sun.spct, span = NULL, strict = FALSE)
+# a wider window
+valleys(sun.spct, span = 51)
+# global threshold relative to the range of s.e.irrad values
+valleys(sun.spct, global.threshold = -0.2)
+# global threshold in actual s.e.irrad values
+valleys(sun.spct, global.threshold = -0.2, threshold.range = c(0, 1))
+# local threshold  relative to the range of s.e.irrad values
+valleys(sun.spct, local.threshold = 0.1)
+# local threshold in actual s.e.irrad values
+valleys(sun.spct, local.threshold = 0.1, threshold.range = c(0, 1))
+# local threshold  relative to the range of s.e.irrad values, using window
+# median instead of window minimum
+valleys(sun.spct, local.threshold = 0.1, local.reference = "median")
+# minimum, the default.
+valleys(sun.spct, local.threshold = 0.1, local.reference = "minimum")
 
 valleys(sun.spct)
 

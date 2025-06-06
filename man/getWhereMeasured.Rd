@@ -16,11 +16,17 @@ where_measured(x, ...)
 
 \method{getWhereMeasured}{default}(x, ...)
 
-\method{getWhereMeasured}{generic_spct}(x, ...)
+\method{getWhereMeasured}{generic_spct}(x, ..., simplify = FALSE)
 
-\method{getWhereMeasured}{summary_generic_spct}(x, ...)
+\method{getWhereMeasured}{summary_generic_spct}(x, ..., simplify = FALSE)
 
-\method{getWhereMeasured}{generic_mspct}(x, ..., idx = "spct.idx", .bind.geocodes = TRUE)
+\method{getWhereMeasured}{generic_mspct}(
+  x,
+  ...,
+  idx = "spct.idx",
+  .bind.geocodes = TRUE,
+  simplify = FALSE
+)
 
 \method{getWhereMeasured}{data.frame}(x, ...)
 }
@@ -28,6 +34,9 @@ where_measured(x, ...)
 \item{x}{a generic_spct object}
 
 \item{...}{Allows use of additional arguments in methods for other classes.}
+
+\item{simplify}{logical If all members share the same attribute value return
+one copy instead of a data.frame.}
 
 \item{idx}{character Name of the column with the names of the members of the
 collection of spectra.}
@@ -42,7 +51,7 @@ a data.frame with a single row and at least columns "lon" and "lat",
    unless expand is set to \code{FALSE}.
 }
 \description{
-Function to read the "where.measured" attribute of
+Method to read the "where.measured" attribute of
 generic_spct, generic_mspct, summary_generic_spct, data.frame or a
 derived-class object.
 }
@@ -64,7 +73,12 @@ If x is not a \code{generic_spct} or an object of a derived class
   \code{NA} is returned.
 }
 \examples{
-where_measured(sun.spct)
+my.spct <- sun.spct
+where_measured(my.spct)
+where_measured(my.spct) <- data.frame(lon = 0, lat = -60)
+where_measured(my.spct)
+where_measured(my.spct) <- NULL
+where_measured(my.spct)
 
 }
 \seealso{
