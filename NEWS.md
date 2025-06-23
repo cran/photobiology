@@ -5,6 +5,16 @@ editor_options:
     wrap: 72
 ---
 
+# photobiology 0.13.1
+
+* Rewrite function `find_peaks()` fixing a bug in the logic of threshold tests.
+This modifies the behaviour compared to version 0.13.0, when first introduced.
+* Add function `find_valleys()` and edit `valleys()` methods to use it.
+* Add utility function `check_wl_stepsize()`.
+* These changes, repair the behaviour of `peaks()` and `valleys()` methods. In
+particular, they remain backwards compatible with versions < 0.13.0.
+* Update the vignette.
+
 # photobiology 0.13.0
 
 This update focus is on 1) more efficient storage of metadata in attributes, 2)
@@ -34,8 +44,8 @@ such as after applying `thin_wl()`.
 depth in `stat_peaks()`  and `stat_valleys()`, using parameters 
 `local.threshold` and `local.reference`.
 * **Code breaking:** Rename parameter `ignore_threshold` into `global.threshold`
-in `find_peaks()`, `get_peaks()`, `peaks()`  and `valleys()` for naming
-consistency and clarity.
+in `find_peaks()`, `get_peaks()`, `peaks()`, `get_valleys()`  and `valleys()`
+for naming consistency and clarity.
 * The scaling applied to user-supplied values for `global.threshold` and 
 `local.threshold` can be controlled by passing a `character` argument to 
 `threshold.scaling`. Non-scaled thresholds are also supported.
