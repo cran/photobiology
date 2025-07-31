@@ -14,24 +14,32 @@
 #'
 #' @param x An R object.
 #' @param trim	numeric The fraction (0 to 0.5) of observations to be trimmed
-#'   from each end of x before the mean is computed. Values of trim outside 
+#'   from each end of x before the mean is computed. Values of trim outside
 #'   that range are taken as the nearest endpoint.
 #' @param na.rm	logical A value indicating whether NA values should be stripped
 #'   before the computation proceeds.
 #' @param ...	Further arguments passed to or from other methods.
 #'
 #' @return If \code{x} is a collection spectral of objects, such as a
-#'   \code{"filter_mspct"} object, the returned object is of same class as the
-#'   members of the collection, such as \code{"filter_spct"}, containing the
-#'   summary spectrum, with variables with names tagged for summaries other
+#'   \code{"filter_mspct"} object, the returned object belongs to the same class
+#'   as the members of the collection, such as \code{"filter_spct"}, containing
+#'   the summary spectrum, with variables with names tagged for summaries other
 #'   than mean or median.
 #'
 #' @note Objects of classes \code{raw_spct} and \code{cps_spct} can contain data
-#'   from multiple scans in multiple variables or "columns". The methods accept
-#'   as arguments objects of these classes only if spectra contain data for a
-#'   single spectrometer scan. In the case of \code{cps_spct} objects, a single
-#'   column can also contain data from multiple scans spliced into a single
-#'   variable.
+#'   from multiple scans in multiple variables or "columns". The parallel
+#'   summaries' methods accept as arguments objects of these classes only if
+#'   spectra contain data for a single spectrometer scan. In the case of
+#'   \code{cps_spct} objects, a single column can also contain data from
+#'   multiple scans spliced into a single variable.
+#'
+#' @section Deepest Curves: Parallel summaries differ fundamentally from the
+#'   "deepest curves" obtained through functional data analysis (FDA) in that in
+#'   functional data analysis one of the input curves is returned as the deepest
+#'   one based on a decision criterion. In contrast the parallel summaries from
+#'   package 'photobioloy' return one or more "fictional" curves different to
+#'   any of those passed as inputs. This curve is constructed from independent
+#'   summaries at each wavelength value.
 #'
 #' @seealso See \code{\link[base]{mean}} for the \code{mean()} method used for
 #'   the computations.
@@ -43,7 +51,7 @@
 #'
 s_mean <- function(x, trim, na.rm, ...) UseMethod("s_mean")
 
-#' @describeIn s_mean
+#' @rdname s_mean
 #'
 #' @export
 #'
@@ -53,7 +61,7 @@ s_mean.default <- function(x, trim = 0, na.rm = FALSE, ...) {
   ifelse(is.any_mspct(x), do.call(class(x[[1]])[1], args = list()), NA)
 }
 
-#' @describeIn s_mean
+#' @rdname s_mean
 #'
 #' @export
 #'
@@ -65,55 +73,55 @@ s_mean.generic_spct <- function(x, trim = 0, na.rm = FALSE, ...) {
   }
 }
 
-#' @describeIn s_mean
+#' @rdname s_mean
 #'
 #' @export
 #'
 s_mean.source_mspct <- function(x, trim = 0, na.rm = FALSE, ...) {
-  rowwise_source(x, 
+  rowwise_source(x,
                  .fun = base::mean,
                  trim = trim,
                  na.rm = na.rm,
                  .fun.name = "Mean of")
 }
 
-#' @describeIn s_mean
+#' @rdname s_mean
 #'
 #' @export
 #'
 s_mean.response_mspct <- function(x, trim = 0, na.rm = FALSE, ...) {
-  rowwise_response(x, 
+  rowwise_response(x,
                    .fun = base::mean,
                    trim = trim,
-                   na.rm = na.rm, 
+                   na.rm = na.rm,
                    .fun.name = "Mean of")
 }
 
-#' @describeIn s_mean
+#' @rdname s_mean
 #'
 #' @export
 #'
 s_mean.filter_mspct <- function(x, trim = 0, na.rm = FALSE, ...) {
-  rowwise_filter(x, 
+  rowwise_filter(x,
                  .fun = base::mean,
                  trim = trim,
                  na.rm = na.rm,
                  .fun.name = "Mean of")
 }
 
-#' @describeIn s_mean
+#' @rdname s_mean
 #'
 #' @export
 #'
 s_mean.reflector_mspct <- function(x, trim = 0, na.rm = FALSE, ...) {
-  rowwise_reflector(x, 
+  rowwise_reflector(x,
                     .fun = base::mean,
                     trim = trim,
                     na.rm = na.rm,
                     .fun.name = "Mean of")
 }
 
-#' @describeIn s_mean
+#' @rdname s_mean
 #'
 #' @export
 #'
@@ -125,7 +133,7 @@ s_mean.calibration_mspct <- function(x, trim = 0, na.rm = FALSE, ...) {
                       .fun.name = "Mean of")
 }
 
-#' @describeIn s_mean
+#' @rdname s_mean
 #'
 #' @export
 #'
@@ -137,7 +145,7 @@ s_mean.cps_mspct <- function(x, trim = 0, na.rm = FALSE, ...) {
               .fun.name = "Mean of")
 }
 
-#' @describeIn s_mean
+#' @rdname s_mean
 #'
 #' @export
 #'

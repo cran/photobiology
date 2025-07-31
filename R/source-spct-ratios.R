@@ -91,7 +91,7 @@ q_ratio <- function(spct,
                     use.hinges,
                     ...) UseMethod("q_ratio")
 
-#' @describeIn q_ratio Default for generic function
+#' @rdname q_ratio
 #'
 #' @export
 #'
@@ -107,7 +107,7 @@ q_ratio.default <- function(spct,
   NA_real_
 }
 
-#' @describeIn q_ratio Method for \code{source_spct} objects
+#' @rdname q_ratio
 #'
 #' @export
 #'
@@ -166,8 +166,10 @@ q_ratio.source_spct <-
     q.irrad.num <- irrads[["irrad.num"]]
     q.irrad.denom <- irrads[["irrad.denom"]]
     ratio <- q.irrad.num / q.irrad.denom * scale.factor
-    names(ratio) <-
-      paste(names(q.irrad.num), ":", names(q.irrad.denom), name.tag, sep = "")
+    if (naming != "none") {
+      names(ratio) <-
+        paste(names(q.irrad.num), ":", names(q.irrad.denom), name.tag, sep = "")
+    }
     attr(ratio, "time.unit") <- NULL
     if (quantity == "total") {
       attr(ratio, "radiation.unit") <- "q:q ratio"
@@ -177,8 +179,7 @@ q_ratio.source_spct <-
     return(ratio)
   }
 
-#' @describeIn q_ratio Calculates photon:photon from a \code{source_mspct}
-#'   object.
+#' @rdname q_ratio
 #'
 #' @param attr2tb character vector, see \code{\link{add_attr2tb}} for the syntax
 #'   for \code{attr2tb} passed as is to formal parameter \code{col.names}.
@@ -204,7 +205,7 @@ q_ratio.source_mspct <-
            use.hinges = NULL,
            quantity = "total",
            naming = "short",
-           name.tag = ifelse(naming != "none", "[q:q]", ""),
+           name.tag = "[q:q]",
            ...,
            attr2tb = NULL,
            idx = "spct.idx",
@@ -332,7 +333,7 @@ e_ratio <- function(spct,
                     use.cached.mult,
                     use.hinges, ...) UseMethod("e_ratio")
 
-#' @describeIn e_ratio Default for generic function
+#' @rdname e_ratio
 #'
 #' @export
 #'
@@ -348,7 +349,7 @@ e_ratio.default <- function(spct,
   return(NA)
 }
 
-#' @describeIn e_ratio Method for \code{source_spct} objects
+#' @rdname e_ratio
 #'
 #' @export
 #'
@@ -407,8 +408,10 @@ e_ratio.source_spct <-
     e.irrad.num <- irrads[["irrad.num"]]
     e.irrad.denom <- irrads[["irrad.denom"]]
     ratio <- e.irrad.num / e.irrad.denom * scale.factor
-    names(ratio) <-
-      paste(names(e.irrad.num), ":", names(e.irrad.denom), name.tag, sep = "")
+    if (naming != "none") {
+      names(ratio) <-
+        paste(names(e.irrad.num), ":", names(e.irrad.denom), name.tag, sep = "")
+    }
     attr(ratio, "time.unit") <- NULL
     if (quantity == "total") {
       attr(ratio, "radiation.unit") <- "e:e ratio"
@@ -418,8 +421,7 @@ e_ratio.source_spct <-
     return(ratio)
   }
 
-#' @describeIn e_ratio Calculates energy:energy ratio from a \code{source_mspct}
-#'   object.
+#' @rdname e_ratio
 #'
 #' @param attr2tb character vector, see \code{\link{add_attr2tb}} for the syntax
 #'   for \code{attr2tb} passed as is to formal parameter \code{col.names}.
@@ -444,7 +446,7 @@ e_ratio.source_mspct <-
            use.hinges = NULL,
            quantity = "total",
            naming = "short",
-           name.tag = ifelse(naming != "none", "[e:e]", ""),
+           name.tag = "[e:e]",
            ...,
            attr2tb = NULL,
            idx = "spct.idx",
@@ -556,7 +558,7 @@ qe_ratio <- function(spct,
                      use.hinges,
                      ...) UseMethod("qe_ratio")
 
-#' @describeIn qe_ratio Default for generic function
+#' @rdname qe_ratio
 #'
 #' @export
 #'
@@ -571,7 +573,7 @@ qe_ratio.default <- function(spct,
   return(NA)
 }
 
-#' @describeIn qe_ratio Method for \code{source_spct} objects
+#' @rdname qe_ratio
 #'
 #' @export
 #'
@@ -583,7 +585,7 @@ qe_ratio.source_spct <-
            use.cached.mult = FALSE,
            use.hinges = NULL,
            naming = "short",
-           name.tag = ifelse(naming != "none", "[q:e]", ""),
+           name.tag = "[q:e]",
            ...) {
 
     # we look for multiple spectra in long form
@@ -619,14 +621,15 @@ qe_ratio.source_spct <-
     e.irrad <- irrads[["irrad.denom"]]
 
     ratio <- q.irrad / e.irrad * scale.factor
-    names(ratio) <- paste(names(q.irrad), name.tag, sep = "")
+    if (naming != "none") {
+      names(ratio) <- paste(names(q.irrad), name.tag, sep = "")
+    }
     attr(ratio, "time.unit") <- NULL
     attr(ratio, "radiation.unit") <- "q:e ratio"
     return(ratio)
   }
 
-#' @describeIn qe_ratio Calculates photon:energy ratio from a
-#'   \code{source_mspct} object.
+#' @rdname qe_ratio
 #'
 #' @param attr2tb character vector, see \code{\link{add_attr2tb}} for the syntax
 #'   for \code{attr2tb} passed as is to formal parameter \code{col.names}.
@@ -649,7 +652,7 @@ qe_ratio.source_mspct <-
            use.cached.mult = FALSE,
            use.hinges = NULL,
            naming = "short",
-           name.tag = ifelse(naming != "none", "[q:e]", ""),
+           name.tag = "[q:e]",
            ...,
            attr2tb = NULL,
            idx = "spct.idx",
@@ -776,7 +779,7 @@ eq_ratio <- function(spct,
                      use.hinges,
                      ...) UseMethod("eq_ratio")
 
-#' @describeIn eq_ratio Default for generic function
+#' @rdname eq_ratio
 #'
 #' @export
 #'
@@ -791,7 +794,7 @@ eq_ratio.default <- function(spct,
   return(NA)
 }
 
-#' @describeIn eq_ratio Method for \code{source_spct} objects
+#' @rdname eq_ratio
 #'
 #' @export
 #'
@@ -803,11 +806,15 @@ eq_ratio.source_spct <-
            use.cached.mult = FALSE,
            use.hinges  = NULL,
            naming = "short",
-           name.tag = ifelse(naming != "none", "[e:q]", ""),
+           name.tag = "[e:q]",
            ...) {
 
     # we look for multiple spectra in long form
     if (getMultipleWl(spct) > 1) {
+      if (naming == "none") {
+        # needed for variable name
+        naming <- "short"
+      }
       # convert to a collection of spectra
       mspct <- subset2mspct(x = spct,
                             idx.var = getIdFactor(spct),
@@ -827,14 +834,15 @@ eq_ratio.source_spct <-
     ratio <- scale.factor /
       qe_ratio(spct = spct, w.band = w.band, wb.trim = wb.trim,
                use.cached.mult = use.cached.mult, use.hinges = use.hinges)
-    names(ratio) <- gsub("q:e", "e:q", names(ratio), fixed = TRUE )
+    if (naming != "none") {
+      names(ratio) <- gsub("q:e", "e:q", names(ratio), fixed = TRUE )
+    }
     attr(ratio, "time.unit") <- NULL
     attr(ratio, "radiation.unit") <- "e:q ratio"
     return(ratio)
   }
 
-#' @describeIn eq_ratio Calculates energy:photon from a \code{source_mspct}
-#'   object.
+#' @rdname eq_ratio
 #'
 #' @param attr2tb character vector, see \code{\link{add_attr2tb}} for the syntax
 #'   for \code{attr2tb} passed as is to formal parameter \code{col.names}.
@@ -857,7 +865,7 @@ eq_ratio.source_mspct <-
            use.cached.mult = FALSE,
            use.hinges = NULL,
            naming = "short",
-           name.tag = ifelse(naming != "none", "[e:q]", ""),
+           name.tag = "[e:q]",
            ...,
            attr2tb = NULL,
            idx = "spct.idx",

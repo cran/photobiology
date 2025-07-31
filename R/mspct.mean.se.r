@@ -11,28 +11,16 @@
 #'   in \code{x} must share the same set of wavelengths. An error is triggered
 #'   if this condition is nor fulfilled. The value passed as argument to `mult`
 #'
-#' @param x An R object Currently this package defines methods for collections
-#'    of spectral objects.
-#' @param na.rm	logical A value indicating whether NA values should be stripped
-#'   before the computation proceeds.
 #' @param mult	numeric number of multiples of standard error.
-#' @param ...	Further arguments passed to or from other methods.
+#' @inheritParams s_mean
+#' @param mult numeric number of multiples of standard error.
 #'
-#' @return If \code{x} is a collection spectral of objects, such as a
-#'   \code{"filter_mspct"} object, the returned object is of same class as the
-#'   members of the collection, such as \code{"filter_spct"}, containing the
-#'   summary spectrum, with variables with names tagged for summaries other
-#'   than mean or median.
+#' @inherit s_mean note return
 #'
-#' @note Objects of classes \code{raw_spct} and \code{cps_spct} can contain data
-#'   from multiple scans in multiple variables or "columns". The methods accept
-#'   as arguments objects of these classes only if spectra contain data for a
-#'   single spectrometer scan. In the case of \code{cps_spct} objects, a single
-#'   column can also contain data from multiple scans spliced into a single
-#'   variable.
+#' @inheritSection s_mean Deepest Curves
 #'
 #' @seealso See \code{\link[base]{mean}} for the \code{mean()} method to
-#'   compute the mean and \code{\link{se}} for the method used to compute the
+#'   compute the mean and \code{\link{sd}} for the method used to compute the
 #'   standard error of the mean.
 #'
 #' @export
@@ -43,7 +31,7 @@
 s_mean_se <- function(x, na.rm, mult, ...)
   UseMethod("s_mean_se")
 
-#' @describeIn s_mean_se
+#' @rdname s_mean_se
 #'
 #' @export
 #'
@@ -54,7 +42,7 @@ s_mean_se.default <- function(x, na.rm = FALSE, mult = 1, ...) {
   ifelse(is.any_mspct(x), do.call(class(x[[1]])[1], args = list()), NA)
 }
 
-#' @describeIn s_mean_se
+#' @rdname s_mean_se
 #'
 #' @export
 #'
@@ -62,7 +50,7 @@ s_mean_se.generic_spct <- function(x, na.rm = FALSE, mult = 1, ...) {
   s_mean_se(subset2mspct(x), na.rm = na.rm, mult = mult, ...)
 }
 
-#' @describeIn s_mean_se
+#' @rdname s_mean_se
 #'
 #' @export
 #'
@@ -78,7 +66,7 @@ s_mean_se.filter_mspct <-
     )
   }
 
-#' @describeIn s_mean_se
+#' @rdname s_mean_se
 #'
 #' @export
 #'
@@ -94,7 +82,7 @@ s_mean_se.source_mspct <-
     )
   }
 
-#' @describeIn s_mean_se
+#' @rdname s_mean_se
 #'
 #' @export
 #'
@@ -110,7 +98,7 @@ s_mean_se.response_mspct <-
     )
   }
 
-#' @describeIn s_mean_se
+#' @rdname s_mean_se
 #'
 #' @export
 #'
@@ -126,7 +114,7 @@ s_mean_se.reflector_mspct <-
     )
   }
 
-#' @describeIn s_mean_se
+#' @rdname s_mean_se
 #'
 #' @export
 #'
@@ -142,7 +130,7 @@ s_mean_se.calibration_mspct <-
     )
   }
 
-#' @describeIn s_mean_se
+#' @rdname s_mean_se
 #'
 #' @export
 #'
@@ -157,7 +145,7 @@ s_mean_se.cps_mspct <- function(x, na.rm = FALSE, mult = 1, ...) {
   )
 }
 
-#' @describeIn s_mean_se
+#' @rdname s_mean_se
 #'
 #' @export
 #'

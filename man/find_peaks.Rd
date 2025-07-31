@@ -28,8 +28,7 @@ find_valleys(
 )
 }
 \arguments{
-\item{x}{numeric vector. Hint: to find valleys, change the sign of the
-argument with the unnary operator \code{-}.}
+\item{x}{numeric vector.}
 
 \item{global.threshold}{numeric A value belonging to class \code{"AsIs"} is
 interpreted as an absolute minimum height or depth expressed in data units.
@@ -50,10 +49,11 @@ sets a \emph{local} height (depth) threshold below which peaks (valleys)
 are ignored. If \code{local.threshold = NULL} or if \code{span} spans the
 whole of \code{x}, no threshold is applied.}
 
-\item{local.reference}{character One of \code{"median"} or \code{"farthest"}.
-The reference used to assess the height of the peak, either the
-minimum/maximum value within the window or the median of all values in the
-window.}
+\item{local.reference}{character One of \code{"median"}, \code{"median.log"},
+\code{"median.sqrt"}, \code{"farthest"}, \code{"farthest.log"} or
+\code{"farthest.sqrt"}. The reference used to assess the height of the
+peak, either the minimum/maximum value within the window or the median of
+all values in the window.}
 
 \item{threshold.range}{numeric vector If of length 2 or a longer vector
 \code{range(threshold.range)} is used to scale both thresholds. With
@@ -68,8 +68,7 @@ that a peak is taller than its four nearest neighbours. \code{span = NULL}
 extends the span to the whole length of \code{x}.}
 
 \item{strict}{logical flag: if \code{TRUE}, an element must be strictly
-greater than all other values in its window to be considered a peak.
-Default: \code{FALSE} (since version 0.13.1).}
+greater than all other values in its window to be considered a peak.}
 
 \item{na.rm}{logical indicating whether \code{NA} values should be stripped
 before searching for peaks.}
@@ -81,18 +80,26 @@ A vector of logical values of the same length as \code{x}. Values
 }
 \description{
 These functions find peaks (local maxima) and valleys (local minima) in a
-numeric vector, using a user selectable span and global and local size
-thresholds, returning a \code{logical} vector.
+numeric vector, using a user selectable span or window. Global and local
+size thresholds based on different criteria make it possible restrict
+the returned peaks to those more prominent. A \code{logical} vector is
+returned.
 }
 \details{
-Function \code{find_peaks} is a wrapper built onto function
+As \code{\link[photobiology]{find_valleys}},
+  \code{\link[photobiology]{peaks}} and \code{\link[photobiology]{valleys}}
+  call \code{\link[photobiology]{find_peaks}} to search for peaks and
+  valleys, this explanation applies to the four functions. It also applies to
+  \code{\link[ggspectra]{stat_peaks}} and
+  \code{\link[ggspectra:stat_peaks]{stat_valleys}}. Function
+  \code{find_peaks} is a wrapper built onto function
   \code{\link[splus2R]{peaks}} from \pkg{splus2R}, adds support for peak
   height thresholds and handles \code{span = NULL} and non-finite (including
   NA) values differently than \code{splus2R::peaks}. Instead of giving an
   error when \code{na.rm = FALSE} and \code{x} contains \code{NA} values,
   \code{NA} values are replaced with the smallest finite value in \code{x}.
   \code{span = NULL} is treated as a special case and selects \code{max(x)}.
-  Passing `strict = TRUE` ensures that multiple global and within window
+  Passing \code{strict = TRUE} ensures that non-unique global and within window
   maxima are ignored, and can result in no peaks being returned.
 
   Two tests make it possible to ignore irrelevant peaks. One test
@@ -103,26 +110,38 @@ Function \code{find_peaks} is a wrapper built onto function
   not locally prominent. In this second approach the height of each peak is
   compared to a summary computed from other values within the window of width
   equal to \code{span} where it was found. In this second case, the reference
-  value used within each window containing a peak is given by
-  \code{local.reference}. Parameter \code{threshold.range} determines how the
-  values passed as argument to \code{global.threshold} and
+  value used within each window containing a peak is given by the argument
+  passed to \code{local.reference}. Parameter \code{threshold.range}
+  determines how the values passed as argument to \code{global.threshold} and
   \code{local.threshold} are scaled. The default, \code{NULL} uses the range
   of \code{x}. Thresholds for ignoring too small peaks are applied after
-  peaks are searched for, and threshold values can in some cases
-  result in no peaks being returned.
+  peaks are searched for, and threshold values can in some cases result in no
+  peaks being returned.
 
-  While functions \code{find_peaks} and \code{find_valleys()} accept as input
-  a \code{numeric} vector and return a \code{logical} vector, methods
-  \code{\link{peaks}} and \code{\link{valleys}} accept as input different R
-  objects, including spectra and collections of spectra and return a subset
-  of the object. These methods are implemented using calls to functions
-  \code{find_peaks} and \code{\link{fit_peaks}}.
+  The \code{local.threshold} argument is used \emph{as is} when
+  \code{local.reference} is \code{"median"} or \code{"farthest"}, i.e., the
+  same distance between peak and reference is used as cut-off irrespective of
+  the value of the reference. In cases when the prominence of peaks is
+  positively correlated with the baseline, a \code{local.threshold} that
+  increases together with increasing computed within window median or
+  farthest value applies apply a less stringent height requirement in regions
+  with overall low height. In this case, natural logarithm or square root
+  weighting can be requested with \code{local.reference} arguments
+  \code{"median.log"}, \code{"farthest.log"}, \code{"median.sqrt"}, and
+  \code{"farthest.sqrt"} as arguments for \code{local.reference}.
+
+  While functions \code{\link{find_peaks}} and \code{\link{find_valleys}}
+  accept as input a \code{numeric} vector and return a \code{logical} vector,
+  methods \code{\link{peaks}} and \code{\link{valleys}} accept as input
+  different R objects, including spectra and collections of spectra and
+  return a subset of the object. These methods are implemented using calls to
+  functions \code{find_peaks}, \code{find_valleys} and
+  \code{\link{fit_peaks}}.
 }
 \note{
 The default for parameter \code{strict} is \code{FALSE} in functions
-  \code{peaks()} and \code{find_peaks()}, as in \code{stat_peaks()} and in
-  \code{stat_valleys()}, while the default in \code{\link[splus2R]{peaks}}
-  is \code{strict = FALSE}.
+  \code{\link{find_peaks}} and \code{\link{find_valleys}}, while the default
+  in \code{\link[splus2R]{peaks}} is \code{strict = TRUE}.
 }
 \examples{
 with(sun.data, which(find_peaks(s.e.irrad, span = NULL)))

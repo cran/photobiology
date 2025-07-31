@@ -11,24 +11,11 @@
 #'   in \code{x} must share the same set of wavelengths. An error is triggered
 #'   if this condition is nor fulfilled.
 #'
-#' @param x An R object. Currently this package defines methods for collections
-#'   of spectral objects.
-#' @param na.rm	logical. A value indicating whether NA values should be stripped
-#'   before the computation proceeds.
-#' @param ...	Further arguments passed to or from other methods.
+#' @inheritParams s_mean
 #'
-#' @return If \code{x} is a collection spectral of objects, such as a
-#'   \code{"filter_mspct"} object, the returned object is of same class as the
-#'   members of the collection, such as \code{"filter_spct"}, containing the
-#'   summary spectrum, with variables with names tagged for summaries other
-#'   than mean or median.
+#' @inherit s_mean note return
 #'
-#' @note Objects of classes \code{raw_spct} and \code{cps_spct} can contain data
-#'   from multiple scans in multiple variables or "columns". The methods accept
-#'   as arguments objects of these classes only if spectra contain data for a
-#'   single spectrometer scan. In the case of \code{cps_spct} objects, a single
-#'   column can also contain data from multiple scans spliced into a single
-#'   variable.
+#' @inheritSection s_mean Deepest Curves
 #'
 #' @seealso See \code{\link[stats]{median}} for the \code{median()} method used
 #'   for the computations.
@@ -40,7 +27,7 @@
 #'
 s_median <- function(x, na.rm, ...) UseMethod("s_median")
 
-#' @describeIn s_median
+#' @rdname s_median
 #'
 #' @export
 #'
@@ -49,7 +36,7 @@ s_median.default <- function(x, na.rm = FALSE, ...) {
   ifelse(is.any_mspct(x), do.call(class(x[[1]])[1], args = list()), NA)
 }
 
-#' @describeIn s_median
+#' @rdname s_median
 #'
 #' @export
 #'
@@ -61,7 +48,7 @@ s_median.generic_spct <- function(x, na.rm = FALSE, ...) {
   }
 }
 
-#' @describeIn s_median
+#' @rdname s_median
 #'
 #' @export
 #'
@@ -69,7 +56,7 @@ s_median.source_mspct <- function(x, na.rm = FALSE, ...) {
   rowwise_source(x = x, .fun = stats::median, na.rm = na.rm, .fun.name = "Median of")
 }
 
-#' @describeIn s_median
+#' @rdname s_median
 #'
 #' @export
 #'
@@ -77,7 +64,7 @@ s_median.response_mspct <- function(x, na.rm = FALSE, ...) {
   rowwise_response(x = x, .fun = stats::median, na.rm = na.rm, .fun.name = "Median of")
 }
 
-#' @describeIn s_median
+#' @rdname s_median
 #'
 #' @export
 #'
@@ -85,7 +72,7 @@ s_median.filter_mspct <- function(x, na.rm = FALSE, ...) {
   rowwise_filter(x = x, .fun = stats::median, na.rm = na.rm, .fun.name = "Median of")
 }
 
-#' @describeIn s_median
+#' @rdname s_median
 #'
 #' @export
 #'
@@ -93,7 +80,7 @@ s_median.reflector_mspct <- function(x, na.rm = FALSE, ...) {
   rowwise_reflector(x = x, .fun = stats::median, na.rm = na.rm, .fun.name = "Median of")
 }
 
-#' @describeIn s_median
+#' @rdname s_median
 #'
 #' @export
 #'
@@ -101,7 +88,7 @@ s_median.calibration_mspct <- function(x, na.rm = FALSE, ...) {
   rowwise_calibration(x = x, .fun = stats::median, na.rm = na.rm, .fun.name = "Median of")
 }
 
-#' @describeIn s_median
+#' @rdname s_median
 #'
 #' @export
 #'
@@ -109,7 +96,7 @@ s_median.cps_mspct <- function(x, na.rm = FALSE, ...) {
   rowwise_cps(x = x, .fun = stats::median, na.rm = na.rm, .fun.name = "Median of")
 }
 
-#' @describeIn s_median
+#' @rdname s_median
 #'
 #' @export
 #'

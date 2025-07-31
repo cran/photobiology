@@ -53,7 +53,7 @@ e_ratio(
   use.hinges = NULL,
   quantity = "total",
   naming = "short",
-  name.tag = ifelse(naming != "none", "[e:e]", ""),
+  name.tag = "[e:e]",
   ...,
   attr2tb = NULL,
   idx = "spct.idx",
@@ -154,16 +154,6 @@ ratios are numerically identical.
   each call, as the only test done is for the length of the \code{w.length}
   vector.
 }
-\section{Methods (by class)}{
-\itemize{
-\item \code{e_ratio(default)}: Default for generic function
-
-\item \code{e_ratio(source_spct)}: Method for \code{source_spct} objects
-
-\item \code{e_ratio(source_mspct)}: Calculates energy:energy ratio from a \code{source_mspct}
-object.
-
-}}
 \section{Performance}{
  As this method accepts spectra as its input, it
   computes irradiances before computing the ratios. If you need to compute

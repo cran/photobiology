@@ -53,7 +53,7 @@ q_ratio(
   use.hinges = NULL,
   quantity = "total",
   naming = "short",
-  name.tag = ifelse(naming != "none", "[q:q]", ""),
+  name.tag = "[q:q]",
   ...,
   attr2tb = NULL,
   idx = "spct.idx",
@@ -154,16 +154,6 @@ If the argument is set to \code{quantity = "mean"} or
   each call, as the only test done is for the length of the \code{w.length}
   vector.
 }
-\section{Methods (by class)}{
-\itemize{
-\item \code{q_ratio(default)}: Default for generic function
-
-\item \code{q_ratio(source_spct)}: Method for \code{source_spct} objects
-
-\item \code{q_ratio(source_mspct)}: Calculates photon:photon from a \code{source_mspct}
-object.
-
-}}
 \section{Performance}{
  As this method accepts spectra as its input, it
   computes irradiances before computing the ratios. If you need to compute

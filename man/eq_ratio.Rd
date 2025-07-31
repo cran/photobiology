@@ -19,7 +19,7 @@ eq_ratio(spct, w.band, scale.factor, wb.trim, use.cached.mult, use.hinges, ...)
   use.cached.mult = FALSE,
   use.hinges = NULL,
   naming = "short",
-  name.tag = ifelse(naming != "none", "[e:q]", ""),
+  name.tag = "[e:q]",
   ...
 )
 
@@ -31,7 +31,7 @@ eq_ratio(spct, w.band, scale.factor, wb.trim, use.cached.mult, use.hinges, ...)
   use.cached.mult = FALSE,
   use.hinges = NULL,
   naming = "short",
-  name.tag = ifelse(naming != "none", "[e:q]", ""),
+  name.tag = "[e:q]",
   ...,
   attr2tb = NULL,
   idx = "spct.idx",
@@ -128,16 +128,6 @@ The ratio is based on one photon irradiance and one energy
   in which case the names of the list members are used, with "[e:q]"
   prepended. Units [J mol-1].
 }
-\section{Methods (by class)}{
-\itemize{
-\item \code{eq_ratio(default)}: Default for generic function
-
-\item \code{eq_ratio(source_spct)}: Method for \code{source_spct} objects
-
-\item \code{eq_ratio(source_mspct)}: Calculates energy:photon from a \code{source_mspct}
-object.
-
-}}
 \section{Performance}{
  As this method accepts spectra as its input, it
   computes irradiances before computing the ratios. If you need to compute

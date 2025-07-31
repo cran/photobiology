@@ -24,7 +24,7 @@
 #'   spectral data before integration so as to reduce interpolation errors at
 #'   the boundaries of the wavebands. If NULL, default is chosen based on data.
 #' @param allow.scaled logical indicating whether scaled or normalized spectra
-#'   as argument to spct are flagged as an error.
+#'   as argument to \code{spct} trigger an error.
 #' @param naming character one of \code{"long"}, \code{"default"},
 #'   \code{"short"} or \code{"none"}. Used to select the type of names to assign
 #'   to returned value.
@@ -85,7 +85,7 @@
 irrad <- function(spct, w.band, unit.out, quantity, time.unit, scale.factor, wb.trim,
                   use.cached.mult, use.hinges, allow.scaled, ...) UseMethod("irrad")
 
-#' @describeIn irrad Default for generic function
+#' @rdname irrad
 #'
 #' @export
 #'
@@ -95,8 +95,7 @@ irrad.default <- function(spct, w.band, unit.out, quantity, time.unit, scale.fac
   return(NA_real_)
 }
 
-#' @describeIn irrad  Calculates irradiance from a \code{source_spct}
-#'   object.
+#' @rdname irrad
 #'
 #' @method irrad source_spct
 #' @export
@@ -191,12 +190,16 @@ irrad.source_spct <-
     }
 
     if (!allow.scaled && is_normalized(spct)) {
-      warning("The spectral data has been normalized or scaled, ",
-              "making impossible to calculate irradiance")
+      warning("The spectral data have been normalized, ",
+              "preventing calculation of irradiance. ",
+              "See 'setNormalised()' and 'normalise()'.")
       return(NA_real_)
     }
     if (!allow.scaled && is_scaled(spct)) {
-      warning("Summarized spectral data have been rescaled")
+      warning("The spectral data have been scaled, ",
+              "preventing calculation of irradiance. ",
+              "See 'setScaled()' and 'fscale()'.")
+      return(NA_real_)
     }
 
     data.time.unit <-
@@ -403,7 +406,6 @@ irrad_spct <- irrad.source_spct
 
 # energy irradiance -------------------------------------------------------
 
-
 #' Energy irradiance
 #'
 #' Energy irradiance for one or more wavebands of a light source spectrum.
@@ -482,7 +484,7 @@ e_irrad <- function(spct, w.band,
                     use.cached.mult, use.hinges, allow.scaled,
                     ...) UseMethod("e_irrad")
 
-#' @describeIn e_irrad Default for generic function
+#' @rdname e_irrad
 #'
 #' @export
 #'
@@ -493,8 +495,7 @@ e_irrad.default <- function(spct, w.band,
   return(NA)
 }
 
-#' @describeIn e_irrad  Calculates energy irradiance from a \code{source_spct}
-#'   object.
+#' @rdname e_irrad
 #'
 #' @export
 #'
@@ -522,7 +523,6 @@ e_irrad.source_spct <-
   }
 
 # photon irradiance -------------------------------------------------------
-
 
 #' Photon irradiance
 #'
@@ -595,7 +595,7 @@ q_irrad <- function(spct, w.band,
                     quantity, time.unit, scale.factor, wb.trim,
                     use.cached.mult, use.hinges, allow.scaled, ...) UseMethod("q_irrad")
 
-#' @describeIn q_irrad Default for generic function
+#' @rdname q_irrad
 #'
 #' @export
 #'
@@ -606,8 +606,7 @@ q_irrad.default <- function(spct, w.band,
   return(NA)
 }
 
-#' @describeIn q_irrad  Calculates photon irradiance from a \code{source_spct}
-#'   object.
+#' @rdname q_irrad
 #'
 #' @export
 #'
@@ -690,7 +689,7 @@ q_irrad.source_spct <-
 fluence <- function(spct, w.band, unit.out, exposure.time, scale.factor, wb.trim,
                     use.cached.mult, use.hinges, allow.scaled, ...) UseMethod("fluence")
 
-#' @describeIn fluence Default for generic function
+#' @rdname fluence
 #'
 #' @export
 #'
@@ -700,8 +699,7 @@ fluence.default <- function(spct, w.band, unit.out, exposure.time, scale.factor,
   return(NA)
 }
 
-#' @describeIn fluence  Calculate photon fluence from a \code{source_spct}
-#'   object and the duration of the exposure
+#' @rdname fluence
 #'
 #' @export
 #'
@@ -815,7 +813,7 @@ fluence.source_spct <-
 q_fluence <- function(spct, w.band, exposure.time, scale.factor, wb.trim, use.cached.mult,
                       use.hinges, allow.scaled, ...) UseMethod("q_fluence")
 
-#' @describeIn q_fluence Default for generic function
+#' @rdname q_fluence
 #'
 #' @export
 #'
@@ -825,8 +823,7 @@ q_fluence.default <- function(spct, w.band, exposure.time, scale.factor, wb.trim
   return(NA)
 }
 
-#' @describeIn q_fluence  Calculate photon fluence from a \code{source_spct}
-#'   object and the duration of the exposure
+#' @rdname q_fluence
 #'
 #' @export
 #'
@@ -932,7 +929,7 @@ q_fluence.source_spct <-
 e_fluence <- function(spct, w.band, exposure.time, scale.factor, wb.trim, use.cached.mult,
                       use.hinges, allow.scaled, ...) UseMethod("e_fluence")
 
-#' @describeIn e_fluence Default for generic function
+#' @rdname e_fluence
 #'
 #' @export
 #'
@@ -942,8 +939,7 @@ e_fluence.default <- function(spct, w.band, exposure.time, scale.factor, wb.trim
   return(NA)
 }
 
-#' @describeIn e_fluence  Calculate energy fluence from a \code{source_spct}
-#'   object and the duration of the exposure.
+#' @rdname e_fluence
 #'
 #' @export
 #'
@@ -1001,7 +997,7 @@ e_fluence.source_spct <-
 
 # source_mspct methods -----------------------------------------------
 
-#' @describeIn irrad  Calculates irradiance from a \code{source_mspct} object.
+#' @rdname irrad
 #'
 #' @param attr2tb character vector, see \code{\link{add_attr2tb}} for the syntax
 #'   for \code{attr2tb} passed as is to formal parameter \code{col.names}.
@@ -1062,8 +1058,7 @@ irrad.source_mspct <-
                 idx = idx)
   }
 
-#' @describeIn q_irrad  Calculates photon (quantum) irradiance from a
-#'   \code{source_mspct} object.
+#' @rdname q_irrad
 #'
 #' @param attr2tb character vector, see \code{\link{add_attr2tb}} for the syntax for \code{attr2tb} passed as is to formal parameter \code{col.names}.
 #' @param idx character Name of the column with the names of the members of the
@@ -1121,8 +1116,7 @@ q_irrad.source_mspct <-
                 idx = idx)
   }
 
-#' @describeIn e_irrad  Calculates energy irradiance from a
-#'   \code{source_mspct} object.
+#' @rdname e_irrad
 #'
 #' @param attr2tb character vector, see \code{\link{add_attr2tb}} for the syntax for \code{attr2tb} passed as is to formal parameter \code{col.names}.
 #' @param idx character Name of the column with the names of the members of the
@@ -1180,8 +1174,7 @@ e_irrad.source_mspct <-
                 idx = idx)
   }
 
-#' @describeIn fluence Calculates fluence from a \code{source_mspct}
-#'   object.
+#' @rdname fluence
 #'
 #' @param attr2tb character vector, see \code{\link{add_attr2tb}} for the syntax for \code{attr2tb} passed as is to formal parameter \code{col.names}.
 #' @param idx character Name of the column with the names of the members of the
@@ -1239,8 +1232,7 @@ fluence.source_mspct <-
                 idx = idx)
   }
 
-#' @describeIn e_fluence Calculates energy fluence from a \code{source_mspct}
-#'   object.
+#' @rdname e_fluence
 #'
 #' @param attr2tb character vector, see \code{\link{add_attr2tb}} for the syntax for \code{attr2tb} passed as is to formal parameter \code{col.names}.
 #' @param idx character Name of the column with the names of the members of the
@@ -1294,8 +1286,7 @@ e_fluence.source_mspct <-
                 idx = idx)
   }
 
-#' @describeIn q_fluence Calculates photon (quantum) fluence from a
-#'   \code{source_mspct} object.
+#' @rdname q_fluence
 #'
 #' @param attr2tb character vector, see \code{\link{add_attr2tb}} for the syntax for \code{attr2tb} passed as is to formal parameter \code{col.names}.
 #' @param idx character Name of the column with the names of the members of the

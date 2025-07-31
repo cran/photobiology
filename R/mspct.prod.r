@@ -11,26 +11,11 @@
 #'   share the same set of wavelengths. An error is triggered if this condition
 #'   is nor fulfilled.
 #'
-#' @param x An R object. Currently this package defines methods for collections
-#'    of spectral objects.
-#' @param na.rm	logical. A value indicating whether NA values should be stripped
-#'   before the computation proceeds.
-#' @param ...	Further arguments passed to or from other methods.
+#' @inheritParams s_mean
 #'
-#' @return If \code{x} is a collection spectral of objects, such as a
-#'   \code{"filter_mspct"} object, the returned object is of same class as the
-#'   members of the collection, such as \code{"filter_spct"}, containing the
-#'   summary spectrum, with variables with names tagged for summaries other
-#'   than mean or median.
+#' @inherit s_mean note return
 #'
-#' @note Objects of classes \code{raw_spct} and \code{cps_spct} can contain data
-#'   from multiple scans in multiple variables or "columns". The methods accept
-#'   as arguments objects of these classes only if spectra contain data for a
-#'   single spectrometer scan. In the case of \code{cps_spct} objects, a single
-#'   column can also contain data from multiple scans spliced into a single
-#'   variable.
-#'
-#'   The product operation is meaningful only for certain physical
+#' @note The product operation is meaningful only for certain physical
 #'   quantities or bases of expression.
 #'
 #' @seealso See \code{\link[base]{prod}} for the \code{prod()} method used for
@@ -44,7 +29,7 @@
 s_prod <- function(x, na.rm, ...)
   UseMethod("s_prod")
 
-#' @describeIn s_prod
+#' @rdname s_prod
 #'
 #' @export
 #'
@@ -55,7 +40,7 @@ s_prod.default <- function(x, na.rm = FALSE, ...) {
   ifelse(is.any_mspct(x), do.call(class(x[[1]])[1], args = list()), NA)
 }
 
-#' @describeIn s_prod
+#' @rdname s_prod
 #'
 #' @export
 #'
@@ -67,7 +52,7 @@ s_prod.generic_spct <- function(x, na.rm = FALSE, ...) {
   }
 }
 
-#' @describeIn s_prod
+#' @rdname s_prod
 #'
 #' @export
 #'
@@ -82,7 +67,7 @@ s_prod.source_mspct <- function(x, na.rm = FALSE, ...) {
   )
 }
 
-#' @describeIn s_prod
+#' @rdname s_prod
 #'
 #' @export
 #'
@@ -97,7 +82,7 @@ s_prod.response_mspct <- function(x, na.rm = FALSE, ...) {
   )
 }
 
-#' @describeIn s_prod
+#' @rdname s_prod
 #'
 #' @export
 #'
@@ -108,7 +93,7 @@ s_prod.filter_mspct <- function(x, na.rm = FALSE, ...) {
                  .fun.name = "Product of")
 }
 
-#' @describeIn s_prod
+#' @rdname s_prod
 #'
 #' @export
 #'
@@ -119,7 +104,7 @@ s_prod.reflector_mspct <- function(x, na.rm = FALSE, ...) {
                     .fun.name = "Product of")
 }
 
-#' @describeIn s_prod
+#' @rdname s_prod
 #'
 #' @export
 #'
@@ -133,7 +118,7 @@ s_prod.calibration_mspct <- function(x, na.rm = FALSE, ...) {
   )
 }
 
-#' @describeIn s_prod
+#' @rdname s_prod
 #'
 #' @export
 #'
@@ -147,7 +132,7 @@ s_prod.cps_mspct <- function(x, na.rm = FALSE, ...) {
   )
 }
 
-#' @describeIn s_prod
+#' @rdname s_prod
 #'
 #' @export
 #'

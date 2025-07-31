@@ -19,7 +19,7 @@ qe_ratio(spct, w.band, scale.factor, wb.trim, use.cached.mult, use.hinges, ...)
   use.cached.mult = FALSE,
   use.hinges = NULL,
   naming = "short",
-  name.tag = ifelse(naming != "none", "[q:e]", ""),
+  name.tag = "[q:e]",
   ...
 )
 
@@ -31,7 +31,7 @@ qe_ratio(spct, w.band, scale.factor, wb.trim, use.cached.mult, use.hinges, ...)
   use.cached.mult = FALSE,
   use.hinges = NULL,
   naming = "short",
-  name.tag = ifelse(naming != "none", "[q:e]", ""),
+  name.tag = "[q:e]",
   ...,
   attr2tb = NULL,
   idx = "spct.idx",
@@ -114,16 +114,6 @@ The ratio is based on one photon irrandiance and one energy
   each call, as the only test done is for the length of the \code{w.length}
   vector.
 }
-\section{Methods (by class)}{
-\itemize{
-\item \code{qe_ratio(default)}: Default for generic function
-
-\item \code{qe_ratio(source_spct)}: Method for \code{source_spct} objects
-
-\item \code{qe_ratio(source_mspct)}: Calculates photon:energy ratio from a
-\code{source_mspct} object.
-
-}}
 \section{Performance}{
  As this method accepts spectra as its input, it
   computes irradiances before computing the ratios. If you need to compute

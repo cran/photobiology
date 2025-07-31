@@ -12,7 +12,7 @@
 
 <meta name="author" content="Pedro J. Aphalo" />
 
-<meta name="date" content="2025-06-23" />
+<meta name="date" content="2025-07-31" />
 
 <title>User Guide: 1 Radiation</title>
 
@@ -339,9 +339,9 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 
 <h1 class="title toc-ignore">User Guide: 1 Radiation</h1>
-<h3 class="subtitle">Package ‘photobiology’ 0.13.1</h3>
+<h3 class="subtitle">Package ‘photobiology’ 0.13.2</h3>
 <h4 class="author">Pedro J. Aphalo</h4>
-<h4 class="date">2025-06-23</h4>
+<h4 class="date">2025-07-31</h4>
 
 
 <div id="TOC">
@@ -3658,10 +3658,10 @@ supplied as arguments.</p>
 ## # A tibble: 1,630 × 2
 ##   w.length s.e.irrad
 ##      &lt;dbl&gt;     &lt;dbl&gt;
-## 1     290          0
-## 2     290.         0
-## 3     290.         0
-## 4     291.         0
+## 1     290  -1.08e- 8
+## 2     290. -6.11e-24
+## 3     290.  2.85e- 8
+## 4     291.  4.90e- 8
 ## # ℹ 1,626 more rows
 ## --- Member: time.02 ---
 ## Object: source_spct [1,630 x 2]
@@ -3676,10 +3676,10 @@ supplied as arguments.</p>
 ## # A tibble: 1,630 × 2
 ##   w.length s.e.irrad
 ##      &lt;dbl&gt;     &lt;dbl&gt;
-## 1     290          0
-## 2     290.         0
-## 3     290.         0
-## 4     291.         0
+## 1     290  -1.08e- 8
+## 2     290. -6.11e-24
+## 3     290.  2.85e- 8
+## 4     291.  4.90e- 8
 ## # ℹ 1,626 more rows
 ## 
 ## --- END ---</code></pre>
@@ -7249,10 +7249,10 @@ for plotting the boundaries of wavebands.</p>
 ## # A tibble: 8 × 12
 ##   w.length counts   cps s.e.irrad s.q.irrad   Tfr   Rfl s.e.response wl.color
 ##      &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;        &lt;dbl&gt; &lt;chr&gt;   
-## 1     100.      0     0         0         0     0     0            0 #000000 
-## 2     100       0     0         0         0     0     0            0 #000000 
-## 3     280.      0     0         0         0     0     0            0 #000000 
-## 4     280       0     0         0         0     0     0            0 #000000 
+## 1    100.0      0     0         0         0     0     0            0 #000000 
+## 2    100        0     0         0         0     0     0            0 #000000 
+## 3    280.       0     0         0         0     0     0            0 #000000 
+## 4    280        0     0         0         0     0     0            0 #000000 
 ## # ℹ 4 more rows
 ## # ℹ 3 more variables: wb.color &lt;chr&gt;, wb.f &lt;fct&gt;, y &lt;dbl&gt;</code></pre>
 <div class="sourceCode" id="cb437"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb437-1"><a href="#cb437-1" tabindex="-1"></a><span class="fu">wb2rect_spct</span>(UV_bands.lst)</span></code></pre></div>
@@ -9231,7 +9231,7 @@ definitions.</p>
 <pre><code>## # A tibble: 3 × 3
 ##   spct.idx `Tfr(wl)_UVA` `Tfr(wl)_PAR`
 ##   &lt;fct&gt;            &lt;dbl&gt;         &lt;dbl&gt;
-## 1 none           1.00            1.00 
+## 1 none           1.000           1.000
 ## 2 pet            0.782           0.920
 ## 3 yellow         0.00160         0.566</code></pre>
 <p>With <code>naming = &quot;short&quot;</code> column names are the labels of
@@ -9242,7 +9242,7 @@ waveband definitions.</p>
 <pre><code>## # A tibble: 3 × 3
 ##   spct.idx     UVA   PAR
 ##   &lt;fct&gt;      &lt;dbl&gt; &lt;dbl&gt;
-## 1 none     1.00    1.00 
+## 1 none     1.000   1.000
 ## 2 pet      0.782   0.920
 ## 3 yellow   0.00160 0.566</code></pre>
 <p>If list members are named, column names are formed from quantity
@@ -9253,7 +9253,7 @@ waveband definitions.</p>
 <pre><code>## # A tibble: 3 × 3
 ##   spct.idx `Tfr(wl)_UV-A` `Tfr(wl)_PAR`
 ##   &lt;fct&gt;             &lt;dbl&gt;         &lt;dbl&gt;
-## 1 none            1.00            1.00 
+## 1 none            1.000           1.000
 ## 2 pet             0.782           0.920
 ## 3 yellow          0.00160         0.566</code></pre>
 <p>If list members are named, with <code>naming = &quot;short&quot;</code> column
@@ -9264,7 +9264,7 @@ names are the names of list members.</p>
 <pre><code>## # A tibble: 3 × 3
 ##   spct.idx     UVA   PAR
 ##   &lt;fct&gt;      &lt;dbl&gt; &lt;dbl&gt;
-## 1 none     1.00    1.00 
+## 1 none     1.000   1.000
 ## 2 pet      0.782   0.920
 ## 3 yellow   0.00160 0.566</code></pre>
 <p>We can add metadata attributes as columns, changing the name if
@@ -9276,7 +9276,7 @@ desired.</p>
 <pre><code>## # A tibble: 3 × 3
 ##   spct.idx     UVA `Filter type`                                                
 ##   &lt;fct&gt;      &lt;dbl&gt; &lt;chr&gt;                                                        
-## 1 none     1.00    theoretical fully transparent object                         
+## 1 none     1.000   theoretical fully transparent object                         
 ## 2 pet      0.782   Polyester, clear film, 0.000125 m thick, Autostat CT5 from M…
 ## 3 yellow   0.00160 Theatrical &#39;gel&#39;, type &#39;Canary Supergel no312; new; from Ros…</code></pre>
 <p>We can add metadata attributes as a column, and select and rearrange
@@ -9287,7 +9287,7 @@ the columns.</p>
 <pre><code>## # A tibble: 3 × 2
 ##   what.measured                                                    `Tfr(wl)_UVA`
 ##   &lt;chr&gt;                                                                    &lt;dbl&gt;
-## 1 theoretical fully transparent object                                   1.00   
+## 1 theoretical fully transparent object                                   1.000  
 ## 2 Polyester, clear film, 0.000125 m thick, Autostat CT5 from McDe…       0.782  
 ## 3 Theatrical &#39;gel&#39;, type &#39;Canary Supergel no312; new; from Rosco,…       0.00160</code></pre>
 </div>
@@ -9470,10 +9470,10 @@ operator.</p>
 ## # A tibble: 11 × 6
 ##   w.length wl.min wl.max pet.transmittance yllw.transmittance comparison.result
 ##      &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;             &lt;dbl&gt;              &lt;dbl&gt; &lt;lgl&gt;            
-## 1      265    240    290           0.00386          0.0000100 TRUE             
-## 2      315    290    340           0.292            0.00220   TRUE             
-## 3      365    340    390           0.861            0.000825  TRUE             
-## 4      415    390    440           0.918            0.0000100 TRUE             
+## 1      265    240    290           0.00386         0.00001000 TRUE             
+## 2      315    290    340           0.292           0.00220    TRUE             
+## 3      365    340    390           0.861           0.000825   TRUE             
+## 4      415    390    440           0.918           0.00001000 TRUE             
 ## # ℹ 7 more rows</code></pre>
 </div>
 <div id="illumination-and-light-as-seen-by-humans" class="section level2">
