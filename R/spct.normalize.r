@@ -27,7 +27,7 @@
 #'   accumulated loss of precision due to floating-point arithmetic,
 #'   independently of the previous application of a different normalization.
 #'
-#' @note When the spectrum passed as argument to \code{x} had been previously
+#'   When the spectrum passed as argument to \code{x} had been previously
 #'   scaled, in 'photobiology' (<= 0.10.9) the scaling attribute was always
 #'   removed and no normalization factors returned. In 'photobiology'
 #'   (>= 0.10.10) scaling information can be preserved by passing
@@ -49,6 +49,9 @@
 #'   property of a substance, normalization is unlikely to useful. To represent
 #'   solutions of specific concentrations of solutes, \code{filter_spct} objects
 #'   should be used instead.
+#'
+#' @note The second formal argument is ellipsis, thus all parameters except
+#'   \code{x} have to be always passed by name.
 #'
 #' @param x An R object
 #' @param ... not used in current version
@@ -676,6 +679,8 @@ normalize_spct <- function(spct,
                            ...) {
   stopifnot(is.generic_spct(spct))
 
+  scale.is.dirty <- FALSE
+
   # if 'norm' is a character vector, we use the first element
   # thus, all columns always get the same type of normalization
   if (is.character(norm) && length(norm) > 1) {
@@ -683,7 +688,7 @@ normalize_spct <- function(spct,
       warning("Multiple 'norm' values supplied by name. Using the first one: ",
               norm[1], ".")
     }
-    morm <- norm[1]
+    norm <- norm[1]
   }
 
   # handle "skip" early so that long-form multiple spectra or missing columns
@@ -700,7 +705,7 @@ normalize_spct <- function(spct,
   stopifnot("Missing columns" = all(col.names %in% colnames(spct)),
             "Multiple spectra in long form" = getMultipleWl(spct) == 1L)
 
-  updating <- is_normalized(spct)
+  updating <- all(unlist(is_normalized(spct), use.names = FALSE))
 
   if (updating) {
     # we retrieve the existing normalization data
@@ -708,25 +713,34 @@ normalize_spct <- function(spct,
 
     required.fields <- c("norm.type", "norm.wl", "norm.cols", "norm.range")
     has.normalization.metadata <-
+      length(old.normalization.ls) >= length(required.fields) &&
+      all(required.fields %in% names(old.normalization.ls)) &&
       !any(is.na(unlist(old.normalization.ls[required.fields])))
 
-    if (!has.normalization.metadata) {
-      warning("Normalization not updated: action not supported for ",
-              "objects created with 'photobiology' (<= 0.10.9).")
+    if (!has.normalization.metadata && norm[1] %in% c("update", "undo")) {
+      warning("Normalization not updated/undone: action not supported for ",
+              "objects lacking normalization metadata.")
       return(spct)
-    } else {
+    } else if (has.normalization.metadata) {
       if (norm[1] != "undo") {
-        norm <- old.normalization.ls$norm.type
-        if (norm[1] == "wavelength") {
+        if (old.normalization.ls$norm.type[1] == "wavelength") {
           norm <- old.normalization.ls$norm.wl
+        } else {
+          norm <- old.normalization.ls$norm.type
         }
         range <- old.normalization.ls$norm.range
       }
       # remove the old normalization
-      spct <- denormalize_spct(spct, wipe.away = FALSE)
+
+      spct <- denormalize_spct(spct,
+                               wipe.away = FALSE)
       if (norm[1] == "undo") {
         return(spct)
       }
+    } else {
+      spct <- denormalize_spct(spct,
+                               wipe.away = TRUE)
+      scale.is.dirty <- TRUE
     }
   } else if (norm[1] == "update") {
     # not normalized, nothing to update
@@ -758,7 +772,7 @@ normalize_spct <- function(spct,
     setScaled(spct, scaled = FALSE)
   } else {
     # retain scaling metadata and save norm.factors
-    scale.is.dirty <- FALSE
+    scale.is.dirty <- scale.is.dirty || FALSE
   }
 
   # normalization of one or more columns
@@ -813,6 +827,9 @@ normalize_spct <- function(spct,
                        },
                      norm.cols = col.names,
                      norm.range = range)
+  if (scale.is.dirty) {
+    message("'norm.factors' not stored")
+  }
   z # setNormalized makes its returned value invisible
 }
 
@@ -829,17 +846,30 @@ normalize_spct <- function(spct,
 #' @keywords internal
 #'
 denormalize_spct <- function(spct, wipe.away = FALSE) {
-  if (!is_normalized(spct)) {
+  if (!all(unlist(is_normalized(spct), use.names = FALSE))) {
     return(spct)
   }
-
+  # collection of spectra
+  if (is.generic_mspct(spct)) {
+    return(
+      msmsply(mspct = spct, .fun = denormalize_spct, wipe.away = wipe.away)
+    )
+  }
+  # if wiping away single spectrum or long form spectra
   if (wipe.away) {
     message("Removing normalization metadata keeping normalization!")
     attr(spct, "normalized") <- FALSE
     attr(spct, "normalization") <- NULL
     return(spct)
   }
+  # if undoing normalization, done spectrum by spectrum
+  if (is.generic_spct(spct) && getMultipleWl(spct) > 1L) {
+    spct <- subset2mspct(spct)
+    spct <- msmsply(mspct = spct, .fun = denormalize_spct, wipe.away = wipe.away)
+    return(rbindspct(spct))
+  }
 
+  # undo normalization of a single spectrum
   old.normalization.ls <- getNormalization(spct)
   required.fields <-
     c("norm.factors", "norm.cols")
@@ -895,8 +925,10 @@ is_normalized <- function(x) {
     spct.attr <- attr(x, "normalized", exact = TRUE)
     # in some versions a logical was used, but later the normalization wavelength
     # in old versions the attribute was set only when normalization was applied
-    stopifnot(is.null(spct.attr) || is.numeric(spct.attr) || is.logical(spct.attr))
-    return(!is.null(spct.attr) && as.logical(spct.attr))
+    # for spectra in long form the attribute value is a named list.
+    stopifnot(is.null(spct.attr) || is.numeric(spct.attr) ||
+                is.logical(spct.attr) || is.list(spct.attr))
+    return(!is.null(spct.attr) && any(as.logical(spct.attr)))
   } else if (is.generic_mspct(x)) {
     return(mslply(x, is_normalized))
   } else if (is.waveband(x)) {
@@ -970,7 +1002,7 @@ getNormalized <- function(x,
                           .force.numeric = FALSE) {
   if (is.generic_spct(x) || is.summary_generic_spct(x)) {
     normalized <- attr(x, "normalized", exact = TRUE)
-    if (is.null(normalized) || is.na(normalized)) {
+    if (is.null(normalized) || all(is.na(normalized))) {
       # need to handle objects created with very old versions
       normalized <- FALSE
     }
@@ -982,7 +1014,12 @@ getNormalized <- function(x,
     normalized <- NA
   }
   if (.force.numeric) {
-    suppressWarnings(as.numeric(normalized))
+    normalized <- suppressWarnings(as.numeric(normalized))
+    if (!length(normalized)) {
+      NA_real_
+    } else {
+      normalized
+    }
   } else {
     normalized
   }
@@ -1013,9 +1050,33 @@ getNormalization <- function(x) {
       # attribute in use >= 0.10.8
       normalization.list <- attr(x, "normalization", exact = TRUE)
       if (is.list(normalization.list)) {
-        if (!exists("norm.range", normalization.list)) {
-          # norm.range is missing 0.10.8 and 0.10.9
-          normalization.list[["norm.range"]] <- rep(NA_real_, 2)
+        if (getMultipleWl(x) == 1L) {
+          # check validity
+          if (!exists("norm.range", normalization.list) &&
+              exists("norm.type", normalization.list)) {
+            # norm.range is missing 0.10.8 and 0.10.9
+            normalization.list[["norm.range"]] <- rep(NA_real_, 2)
+          }
+          if (!exists("norm.wl", normalization.list) ||
+              !is.numeric(normalization.list[["norm.wl"]])) {
+            # norm.wl missing or corrupted breaks 'ggspectra'
+            normalization.list[["norm.wl"]] <- NA_real_
+          }
+          # when removing columns the normalization data can remain behind
+          # we return normalization only for existing columns
+          selector <- normalization.list[["norm.cols"]] %in% colnames(x)
+          if (!is.null(normalization.list[["norm.cols"]]) &&
+              !any(is.na(normalization.list[["norm.cols"]])) &&
+              !all(selector)) {
+            normalization.list[["norm.type"]] <-
+              normalization.list[["norm.type"]][selector]
+            normalization.list[["norm.wl"]] <-
+              normalization.list[["norm.wl"]][selector]
+            normalization.list[["norm.factors"]] <-
+              normalization.list[["norm.factors"]][selector]
+            normalization.list[["norm.cols"]] <-
+              normalization.list[["norm.cols"]][selector]
+          }
         }
         return(normalization.list)
       } else if (is.numeric(getNormalized(x, .force.numeric = FALSE))) {
@@ -1086,6 +1147,9 @@ setNormalized <- function(x,
                           verbose = getOption("verbose_as_default", default = FALSE)) {
   name <- substitute(x)
 
+  if (is.generic_mspct(x)) {
+    warning("To apply 'setNormalized()' to members of a collection call it with 'msmsply'")
+  }
   stopifnot("'norm' must be numeric or logical, but it is not" =
               is.numeric(norm) || is.logical(norm))
 

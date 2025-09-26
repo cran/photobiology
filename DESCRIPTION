@@ -1,8 +1,8 @@
 Package: photobiology
 Type: Package
 Title: Photobiological Calculations
-Version: 0.13.2
-Date: 2025-07-31
+Version: 0.14.0
+Date: 2025-09-26
 Authors@R: 
    c(
     person("Pedro J.", "Aphalo", email = "pedro.aphalo@helsinki.fi", role = c("aut", "cre"), comment = c(ORCID = "0000-0003-3385-972X")),
@@ -20,9 +20,9 @@ Description: Definitions of classes, methods, operators and functions for use
     Wavelength interpolation. Colours and vision. This package is part of the 
     'r4photobiology' suite, Aphalo, P. J. (2015) <doi:10.19232/uv4pb.2015.1.14>.
 License: GPL (>= 2)
-Depends: R (>= 4.1.0), SunCalcMeeus (>= 0.1.2)
+Depends: R (>= 4.1.0), SunCalcMeeus (>= 0.1.3)
 Imports: stats, grDevices, polynom (>= 1.4-1), tibble (>= 3.2.0),
-        stringr (>= 1.4.0), lubridate (>= 1.9.3), caTools (>= 1.18.0),
+        stringr (>= 1.4.0), lubridate (>= 1.9.4), caTools (>= 1.18.0),
         plyr (>= 1.8.9), dplyr (>= 1.1.4), tidyr (>= 1.3.1), splus2R
         (>= 1.3-3), zoo (>= 1.8-12), rlang (>= 1.1.4)
 Suggests: knitr (>= 1.48), rmarkdown (>= 2.27), testthat (>= 3.2.1),
@@ -34,10 +34,10 @@ URL: https://docs.r4photobiology.info/photobiology/,
         https://github.com/aphalo/photobiology
 BugReports: https://github.com/aphalo/photobiology/issues
 Encoding: UTF-8
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
 VignetteBuilder: knitr
 NeedsCompilation: no
-Packaged: 2025-07-31 22:29:58 UTC; aphalo
+Packaged: 2025-09-25 21:38:24 UTC; Aphalo
 Author: Pedro J. Aphalo [aut, cre] (ORCID:
     <https://orcid.org/0000-0003-3385-972X>),
   Titta K. Kotilainen [ctb] (ORCID:
@@ -45,4 +45,4 @@ Author: Pedro J. Aphalo [aut, cre] (ORCID:
   Glenn Davis [ctb],
   Agnese Fazio [ctb]
 Repository: CRAN
-Date/Publication: 2025-07-31 23:50:02 UTC
+Date/Publication: 2025-09-26 22:50:18 UTC

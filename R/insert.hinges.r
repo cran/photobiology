@@ -42,14 +42,15 @@ insert_hinges <- function(x, y, h) {
   idxs.diff <- diff(c(0, idxs.in, k))
   idxs.map <- 1:k + rep(0:j, idxs.diff)
   # we use recycling to interpolate all values and insert them into the gaps
+  # allocate vectors for the output
+  x.out <- numeric(j + k)
+  y.out <- numeric(j + k)
+  # we copy everything that does not require interpolation
+  x.out[idxs.map] <- x
+  x.out[idxs.out] <- h
   if (is.numeric(y)) {
-    # allocate vectors for the output
-    x.out <- numeric(j + k)
-    y.out <- numeric(j + k)
     # we copy everything that does not require interpolation
-    x.out[idxs.map] <- x
     y.out[idxs.map] <- y
-    x.out[idxs.out] <- h
     # we fill the hinges by interpolation
     y.out[idxs.out] <- y[idxs.in + 1] -
       (x[idxs.in + 1] - x.out[idxs.out]) /
@@ -211,6 +212,47 @@ v_replace_hinges <- function(x, y, h) {
       (x[h.idxs + 1] - x[h.idxs - 1]) /
         (x[h.idxs + 1] - x[h.idxs]) *
         (y[h.idxs + 1] - y[h.idxs - 1])
+  } else if (length(unique(y)) == 1) {
+    y.out[h.idxs] <- y[1]
+  } else {
+    y.out[h.idxs] <- NA
+  }
+  y.out
+}
+
+#' Replace spectral data values at existing wavelength values.
+#'
+#' Overwriting spectral data with interpolated values at wavelengths values
+#' containing bad data is needed when cleaning spectral data. Linear
+#' interpolation between the two enclosing neighbours is used as replacement
+#' values.
+#' This function like \code{v_insert_hinges()} returns a vector
+#' of new \emph{y} values.
+#'
+#' @param x numeric vector (sorted in increasing order).
+#' @param y numeric vector.
+#' @param h a numeric vector giving the wavelengths at which the y values should
+#'   be replaced by interpolation, no interpolation is indicated by an empty
+#'   numeric vector (\code{numeric(0)}).
+#'
+#' @return A copy of the numeric vector \code{y} with values at the hinges
+#'   replaced by interpolation of neighbours. The lengths of \code{x}, \code{y}
+#'   and the returned vector are the same.
+#'
+#' @keywords internal.
+#'
+#' @family low-level functions operating on numeric vectors.
+#'
+v_replace_hinges <- function(x, y, h) {
+  # sanitize 'hinges'
+  h.idxs <- which(x %in% h)
+  y.out <- y
+  # we fill the hinges by interpolation
+  if (is.numeric(y)) {
+    y.out[h.idxs] <- y[h.idxs + 1] -
+      (x[h.idxs + 1] - x[h.idxs - 1]) /
+      (x[h.idxs + 1] - x[h.idxs]) *
+      (y[h.idxs + 1] - y[h.idxs - 1])
   } else if (length(unique(y)) == 1) {
     y.out[h.idxs] <- y[1]
   } else {

@@ -5,6 +5,45 @@ editor_options:
     wrap: 72
 ---
 
+# photobiology 0.14.0
+
+The main change in this update is in how _normalization metadata_ and _geocode
+metadata_ are stored in objects containing multiple spectra in long form. In
+both cases these are fixes for design weaknesses, rather than for coding bugs.
+Objects created with earlier versions should work as before, but operations with
+functions and methods from earlier versions can in isolated cases fail to work
+correctly with objects created with this version. Spectral data objects can
+have small differences as the "thinning of wavelengths" has been made less
+aggressive, giving better preservation of features and between 10% and 50%
+increase in storage requirements. The version tag of spectral objects is
+increased to 3, to help with debugging problems.
+
+* As the bug-fix in interpolation of spectra turned out to be more disruptive
+than expected, the default was changed back to `"approx"`, the previous 
+_accidental_ default, and parameter `method` added to allow overriding of this
+default. Using linear approximation is in general safer, as interpolation with
+natural splines can behave badly with noisy input data.
+* Make test for scaled and normalised input in `irrad()`, `q_irrad()`, and
+`e_irrad()` more stringent, with `NA` as default returned value.
+* Handle gracefully bad field names and missing fields in `instr.desc` and
+`instr.settings` attributes.
+* Add `as.response_spct()` specialization for conversion of `waveband` objects.
+* **Bug fix:** preserve/restore the `normalize` and `normalization` attributes
+in `rbindspct()` and `subset2mspct()`.
+* **Bug fix:** update how the geocodes are stored in objects containing multiple
+spectra in long form when they differ among the spectra. This is an edge case
+as the usual use case is to store time series of spectra in such objects, with a
+single common geocode value. 
+* To accommodate this change, `setWhenMeasured()` and `getWhenMeasured()` were
+rewritten using the new functions `bind_geocodes()` and `split_geocodes()` from
+package 'SunCalcMeeus' (>= 0.1.3), still by default accepting the same argument 
+values and returning the same values as in earlier versions.
+* Change default arguments to `thin_wl()` so make the default action milder and
+more inclined to respect small peaks to better preserve the features of spectra.
+* Make the check for variation the wavelength step size in peak- and
+valley-related functions and methods less strict as the algorithm in `thin_wl()`
+preserves peaks.
+
 # photobiology 0.13.2
 
 * Support `log()` and `sqrt()` transformations for `local.reference` in

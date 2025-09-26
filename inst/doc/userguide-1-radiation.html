@@ -12,7 +12,7 @@
 
 <meta name="author" content="Pedro J. Aphalo" />
 
-<meta name="date" content="2025-07-31" />
+<meta name="date" content="2025-09-26" />
 
 <title>User Guide: 1 Radiation</title>
 
@@ -50,8 +50,9 @@ overflow: visible;
 }
 </style>
 <style type="text/css" data-origin="pandoc">
+html { -webkit-text-size-adjust: 100%; }
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -62,7 +63,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
 { counter-reset: source-line 0; }
@@ -339,9 +340,9 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 
 <h1 class="title toc-ignore">User Guide: 1 Radiation</h1>
-<h3 class="subtitle">Package ‘photobiology’ 0.13.2</h3>
+<h3 class="subtitle">Package ‘photobiology’ 0.14.0</h3>
 <h4 class="author">Pedro J. Aphalo</h4>
-<h4 class="date">2025-07-31</h4>
+<h4 class="date">2025-09-26</h4>
 
 
 <div id="TOC">
@@ -2252,6 +2253,7 @@ the <code>idfactor</code> unless an argument is passed to parameter
 ## Label: cosine.hour.9 
 ## time.01 measured on 2023-06-12 18:38:00.379657 UTC
 ## time.02 measured on 2023-06-12 18:39:00.797266 UTC 
+## Measured at 60.227 N, 24.018 E; Viikki, Helsinki, FI
 ## Measured at 60.227 N, 24.018 E; Viikki, Helsinki, FI 
 ## Variables:
 ##  w.length: Wavelength [nm]
@@ -3170,7 +3172,7 @@ abbreviation for <code>source_spct</code> or
 <tr class="header">
 <th align="left">functions</th>
 <th align="left">class of argument</th>
-<th align="left">class of returned spectrum</th>
+<th align="left">class of returned spectrum/a</th>
 <th align="left">variables in spectrum</th>
 </tr>
 </thead>
@@ -3369,6 +3371,36 @@ abbreviation for <code>source_spct</code> or
 <td align="left"><code>generic_spct</code></td>
 <td align="left">input tagged <code>.min</code> and
 <code>.max</code></td>
+</tr>
+<tr class="odd">
+<td align="left"><code>s_quantile</code></td>
+<td align="left"><code>source_spct/mspct</code></td>
+<td align="left"><code>source_mspct/spct</code></td>
+<td align="left">same as input</td>
+</tr>
+<tr class="even">
+<td align="left"><code>s_quantile</code></td>
+<td align="left"><code>response_spct/mspct</code></td>
+<td align="left"><code>response_mspct/spct</code></td>
+<td align="left">same as input</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>s_quantile</code></td>
+<td align="left"><code>filter_spct/mspct</code></td>
+<td align="left"><code>filter_mspct/spct</code></td>
+<td align="left">same as input</td>
+</tr>
+<tr class="even">
+<td align="left"><code>s_quantile</code></td>
+<td align="left"><code>reflector_spct/mspct</code></td>
+<td align="left"><code>reflector_mspct/spct</code></td>
+<td align="left">same as input</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>s_quantile</code></td>
+<td align="left"><code>calibration_spct/mspct</code></td>
+<td align="left"><code>calibration_mspct/spct</code></td>
+<td align="left">same as input</td>
 </tr>
 </tbody>
 </table>
@@ -3658,10 +3690,10 @@ supplied as arguments.</p>
 ## # A tibble: 1,630 × 2
 ##   w.length s.e.irrad
 ##      &lt;dbl&gt;     &lt;dbl&gt;
-## 1     290  -1.08e- 8
-## 2     290. -6.11e-24
-## 3     290.  2.85e- 8
-## 4     291.  4.90e- 8
+## 1     290          0
+## 2     290.         0
+## 3     290.         0
+## 4     291.         0
 ## # ℹ 1,626 more rows
 ## --- Member: time.02 ---
 ## Object: source_spct [1,630 x 2]
@@ -3676,10 +3708,10 @@ supplied as arguments.</p>
 ## # A tibble: 1,630 × 2
 ##   w.length s.e.irrad
 ##      &lt;dbl&gt;     &lt;dbl&gt;
-## 1     290  -1.08e- 8
-## 2     290. -6.11e-24
-## 3     290.  2.85e- 8
-## 4     291.  4.90e- 8
+## 1     290          0
+## 2     290.         0
+## 3     290.         0
+## 4     291.         0
 ## # ℹ 1,626 more rows
 ## 
 ## --- END ---</code></pre>
@@ -5939,6 +5971,7 @@ argument, this is used as name for the factor.</p>
 ## Label: sunlight, simulated 
 ## spct_1 measured on 2010-06-22 09:51:00 UTC
 ## spct_2 measured on 2010-06-22 09:51:00 UTC 
+## Measured at 60.20911 N, 24.96474 E; Kumpula, Helsinki, FI
 ## Measured at 60.20911 N, 24.96474 E; Kumpula, Helsinki, FI 
 ## Variables:
 ##  w.length: Wavelength [nm]
@@ -5960,6 +5993,7 @@ argument, this is used as name for the factor.</p>
 ## Label: sunlight, simulated 
 ## A measured on 2010-06-22 09:51:00 UTC
 ## B measured on 2010-06-22 09:51:00 UTC 
+## Measured at 60.20911 N, 24.96474 E; Kumpula, Helsinki, FI
 ## Measured at 60.20911 N, 24.96474 E; Kumpula, Helsinki, FI 
 ## Variables:
 ##  w.length: Wavelength [nm]
@@ -7088,9 +7122,9 @@ change with future implementations.</strong></p>
 <pre><code>## [1] 1 1</code></pre>
 <div class="sourceCode" id="cb423"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb423-1"><a href="#cb423-1" tabindex="-1"></a>thinned.spct <span class="ot">&lt;-</span> <span class="fu">thin_wl</span>(yellow_gel.spct)</span>
 <span id="cb423-2"><a href="#cb423-2" tabindex="-1"></a><span class="fu">nrow</span>(thinned.spct)</span></code></pre></div>
-<pre><code>## [1] 267</code></pre>
+<pre><code>## [1] 344</code></pre>
 <div class="sourceCode" id="cb425"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb425-1"><a href="#cb425-1" tabindex="-1"></a><span class="fu">wl_stepsize</span>(thinned.spct)</span></code></pre></div>
-<pre><code>## [1] 1 8</code></pre>
+<pre><code>## [1] 1 4</code></pre>
 <p>The strength of the thinning can be adjusted by passing arguments to
 parameters <code>max.wl.step</code> and <code>max.slope.delta</code>.
 This method is implemented for objects of all spectral classes that a

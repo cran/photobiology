@@ -256,16 +256,36 @@ getWhenMeasured.generic_mspct <- function(x,
 #' @param lat numeric Latitude in decimal degrees North.
 #' @param lon numeric Longitude in decimal degrees West.
 #' @param address character Human readable address.
+#' @param idFactor character Name of the column with IDs of the spectra stored
+#'   in long form or ID column name in bound geocodes to use for IDs of
+#'   collection of spectra members.
+#' @param simplify logical If all members share the same geocode value set as
+#'   attribute value a one row geocode instead of a named list of data frames.
 #' @param ... Allows use of additional arguments in methods for other classes.
 #'
-#' @return x, with the \code{"where.measured"} attribute set.
-#' @note This method alters \code{x} itself by reference and in addition returns
-#'   \code{x} invisibly. If \code{x} is not an object of a supported class,
-#'   \code{x} is not modified. If the argument to \code{where.measured} is not a
-#'   \code{POSIXct} object or \code{NULL} an error is triggered. A
-#'   \code{POSIXct} describes an instant in time (date plus time-of-day plus
-#'   time zone). As with \code{attr()} passing \code{NULL} as argument for
-#'   parameter \code{where.measured} unsets the attribute.
+#' @details Code \code{setWhereMeasured()} methods alter \code{x} itself by
+#'   reference and in addition return \code{x} invisibly. If \code{x} is not an
+#'   object of a supported class, \code{x} is not modified. If the argument to
+#'   \code{where.measured} is not a \code{data.frame} or \code{tibble} object or
+#'   \code{NULL} an error is triggered as a validation test is applied. A
+#'   geocode describes a geographic location based on longitude (\code{lon}) and
+#'   latitude (\code{lat}) as \code{numeric} values and can optionally contain
+#'   an address (\code{address}) as a single \code{character} string. Passing
+#'   \code{NULL} as argument for parameter \code{where.measured} unsets the
+#'   attribute. Parameters \code{lon}, \code{lat} and \code{address} provide an
+#'   alternative to passing a ready constructed geocode data frame as input.
+#'
+#'   By default, when setting the geocode attribute for multiple spectra stored
+#'   in long form, geocodes are stored as named lists of data frames unless they
+#'   are identical and can be simplified. It is possible to
+#'   disable simplification and force the use of a named list.
+#'
+#'   If the argument passed to parameter \code{geocode} is a data frame with one
+#'   row per spectrum and the \code{idFactor} name matches, it will be split
+#'   into a named list and, if possibly, simplified. It is also possible but
+#'   deprecated to set the attribute to an indexed geocode with multiple rows.
+#'
+#' @return x, with the \code{"where.measured"} attribute set or unset.
 #'
 #' @export
 #'
@@ -308,6 +328,8 @@ setWhereMeasured.generic_spct <- function(x,
                                           lat = NA,
                                           lon = NA,
                                           address = NA,
+                                          idFactor = getIdFactor(x),
+                                          simplify = TRUE,
                                           ...) {
   name <- substitute(x)
   if (!is.null(where.measured)) {
@@ -322,11 +344,24 @@ setWhereMeasured.generic_spct <- function(x,
                      stringsAsFactors = FALSE))
       stopifnot(SunCalcMeeus::is_valid_geocode(where.measured))
     } else if (is.list(where.measured) && !is.data.frame(where.measured)) {
-      where.measured <- sapply(where.measured, SunCalcMeeus::validate_geocode)
+      where.measured <- lapply(where.measured, SunCalcMeeus::validate_geocode)
       stopifnot(all(sapply(where.measured, SunCalcMeeus::is_valid_geocode)))
+      if (simplify && length(where.measured) == 1L) {
+        where.measured <- where.measured[[1]]
+      }
     } else {
-      where.measured <- SunCalcMeeus::validate_geocode(where.measured)
-      stopifnot(SunCalcMeeus::is_valid_geocode(where.measured))
+      where.measured <-
+        SunCalcMeeus::validate_geocode(where.measured)
+#      stopifnot(SunCalcMeeus::is_valid_geocode(where.measured))
+      if (getMultipleWl(x) > 1L &&
+          !is.na(idFactor)) {
+        if (nrow(where.measured) > 1L && idFactor %in% colnames(where.measured)) {
+          where.measured <-
+            SunCalcMeeus::split_geocodes(geocode = where.measured,
+                                         idx = idFactor,
+                                         simplify = simplify)
+        }
+      }
     }
   }
   attr(x, "where.measured") <- where.measured
@@ -424,6 +459,14 @@ setWhereMeasured.generic_mspct <- function(x,
 #'
 #' @param x a generic_spct object
 #' @param ... Allows use of additional arguments in methods for other classes.
+#' @param idx character Name of the column with the names of the members of the
+#'   collection of spectra.
+#' @param simplify logical If all members share the same attribute value return
+#'   one copy instead of a data.frame.
+#' @param .bind.geocodes logical In the case of collections of spectra if
+#'    \code{.bind.geocodes = TRUE}, the default, the returned value is a single
+#'    geocode with one row for each member spectrum. Otherwise the individual
+#'    geocode data frames are returned in a list column within a tibble.
 #'
 #' @return a data.frame with a single row and at least columns "lon" and "lat",
 #'    unless expand is set to \code{FALSE}.
@@ -432,6 +475,21 @@ setWhereMeasured.generic_mspct <- function(x,
 #'   \code{NA} is returned.
 #'
 #' @export
+#'
+#' @examples
+#' getWhereMeasured(sun.spct)
+#' getWhereMeasured(sun_evening.spct)
+#' getWhereMeasured(sun_evening.spct, simplify = TRUE)
+#' getWhereMeasured(sun_evening.mspct)
+#' getWhereMeasured(sun_evening.mspct, .bind.geocodes = FALSE)
+#' getWhereMeasured(sun_evening.mspct, simplify = TRUE)
+#' getWhereMeasured(sun_evening.mspct, simplify = FALSE)
+#'
+#' getWhereMeasured(summary(sun.spct))
+#' getWhereMeasured(summary(sun_evening.spct))
+#' getWhereMeasured(summary(sun_evening.mspct, expand = "each")[[1]])
+#'
+#' getWhereMeasured(polyester.spct)
 #'
 #' @family measurement metadata functions
 #'
@@ -455,26 +513,59 @@ getWhereMeasured.default <- function(x, ...) {
 #' @describeIn getWhereMeasured generic_spct
 #' @export
 #'
-getWhereMeasured.generic_spct <- function(x, ..., simplify = FALSE) {
+getWhereMeasured.generic_spct <- function(x,
+                                          ...,
+                                          idx = getIdFactor(x),
+                                          simplify = TRUE,
+                                          .bind.geocodes = TRUE) {
   where.measured <- attr(x, "where.measured", exact = TRUE)
-  if (is.null(where.measured)) return(SunCalcMeeus::na_geocode())
-
-  if (is.list(where.measured) && !is.data.frame(where.measured)) {
-    where.measured <- dplyr::bind_rows(where.measured)
+  # attribute not set or set to NA
+  if (is.null(where.measured) || all(is.na(where.measured))) {
+    return(SunCalcMeeus::na_geocode())
   }
-  if (!is.data.frame(where.measured)) {
-    # need to handle invalid or missing attribute values
-    where.measured <- SunCalcMeeus::na_geocode()
-  } else if (simplify && nrow(where.measured) > 1L &&
-              sum(!duplicated(where.measured[ , -which(names(where.measured) == getIdFactor(x))]) == 1L)) {
-    # double test below is because of a bug in earlier versions of 'photobiology'
-    # the default "spct.idx" could have persisted in objects with user-renamed idfactor
-    # triggering an error under R 4.5.0 RC
-    where.measured <-
-      where.measured[1, -which(names(where.measured) %in% c(getIdFactor(x), "spct.idx"))]
+  # single spectrum and not returning a list
+  if ((getMultipleWl(x) == 1L) &&
+      (simplify || .bind.geocodes || is.na(idx))) return(where.measured)
+  # bind list of geocodes into a single data frame
+  if (.bind.geocodes && !is.data.frame(where.measured)) {
+    if (is.na(idx)) {
+      idx <- "spct.idx"
+    }
+    SunCalcMeeus::bind_geocodes(where.measured,
+                                idx = idx)
+  } else if (!.bind.geocodes && is.data.frame(where.measured)) {
+    # split a multi-row data frame into list of data frames
+    if (idx %in% colnames(where.measured)) {
+      SunCalcMeeus::split_geocodes(where.measured,
+                                   idx = idx,
+                                   simplify = FALSE)
+    # single row geocode is already simplified
+    } else if (simplify && nrow(where.measured) == 1L) {
+      where.measured
+    } else {
+      warning("No 'idx' column \"", idx, "\" found! Returning 'where.measured' unchanged")
+      where.measured
+    }
+  } else if (.bind.geocodes && is.data.frame(where.measured)) {
+    # if a simplified geocode has an idx column, remove it
+    if (nrow(where.measured) == 1L && idx %in% colnames(where.measured)) {
+      where.measured[ , -which(colnames(where.measured) == idx)]
+    } else if (nrow(where.measured) == 1L &&
+               "spct.idx" %in% colnames(where.measured)) {
+      where.measured[ , -which(colnames(where.measured) == "spct.idx")]
+    } else {
+      where.measured
+    }
+  } else if (!.bind.geocodes && is.list(where.measured)) {
+    if (simplify && length(where.measured) == 1L) {
+      where.measured[[1]]
+    } else {
+      if (!all(names(where.measured) %in% unique(x[[idx]]))) {
+        warning("Unexpected 'where.measured' value! Returning it unchanged")
+      }
+      where.measured
+    }
   }
-  # needed to clean inconsistent values from previous versions
-  SunCalcMeeus::validate_geocode(where.measured)
 }
 
 #' @describeIn getWhereMeasured summary_generic_spct
@@ -482,14 +573,6 @@ getWhereMeasured.generic_spct <- function(x, ..., simplify = FALSE) {
 getWhereMeasured.summary_generic_spct <- getWhereMeasured.generic_spct
 
 #' @describeIn getWhereMeasured generic_mspct
-#' @param idx character Name of the column with the names of the members of the
-#'   collection of spectra.
-#' @param simplify logical If all members share the same attribute value return
-#'   one copy instead of a data.frame.
-#' @param .bind.geocodes logical In the case of collections of spectra if
-#'    \code{.bind.geocodes = TRUE}, the default, the returned value is a single
-#'    geocode with one row for each member spectrum. Otherwise the individual
-#'    geocode data frames are returned in a list column within a tibble.
 #'
 #' @export
 #'
@@ -498,7 +581,7 @@ getWhereMeasured.generic_mspct <- function(x,
                                            idx = "spct.idx",
                                            .bind.geocodes = TRUE,
                                            simplify = FALSE) {
-  if (.bind.geocodes || simplify) {
+  if (.bind.geocodes) {
     z <- msdply(mspct = x, .fun = getWhereMeasured, idx = idx, ...)
     if (simplify) {
       unique.rows <- !duplicated(z[ , -which(names(z) == idx)])
@@ -507,13 +590,22 @@ getWhereMeasured.generic_mspct <- function(x,
       }
     }
   } else {
-    l <- mslply(mspct = x, .fun = getWhereMeasured, ...)
-    comment(l) <- NULL
-    z <- list(where.measured = l)
-    z[[idx]] <- factor(names(l), levels = names(l))
-    z <- tibble::as_tibble(z[c(2, 1)])
+    z <- mslply(mspct = x, .fun = getWhereMeasured, ...)
+    comment(z) <- NULL
+    if (simplify) {
+      if (length[z] == 1L) {
+        z <- z[[1]]
+      } else {
+        num.unique <- 1L
+        for (i in 2:length(z)) {
+          num.unique <- num.unique + isFALSE(all.equal(z[[1]], z[[i]]))
+        }
+        if (num.unique == 1L) {
+          z <- z[[1]]
+        }
+      }
+    }
   }
-
   z
 }
 
@@ -813,6 +905,12 @@ getInstrDesc <- function(x) {
   if (is.generic_spct(x) || is.summary_generic_spct(x)) {
     if (isValidInstrDesc(x)) {
       instr.desc <- attr(x, "instr.desc", exact = TRUE)
+      # earlier bug created objects with extra empty fields with bad names
+      bad.fields <- which(is.na(names(instr.desc)) |
+                            names(instr.desc) %in% c("NA", ""))
+      if (length(bad.fields)) {
+        instr.desc <- instr.desc[-bad.fields]
+      }
     } else {
       instr.desc <- list()
     }
@@ -828,6 +926,7 @@ getInstrDesc <- function(x) {
       if (any(missing)) {
         instr.desc <- c(instr.desc, minimal.desc[missing])
       }
+      # very old records lack class attribute
       if (!inherits(instr.desc, "instr_desc") &&
           !inherits(instr.desc[[1]], "instr_desc")) {
         class(instr.desc) <- c("instr_desc", class(instr.desc))
@@ -1083,12 +1182,19 @@ getInstrSettings <- function(x) {
     if (getMultipleWl(x) == 1) {
       if (isValidInstrSettings(x)) {
         instr.settings <- attr(x, "instr.settings", exact = TRUE)
+        # earlier bug created objects with extra empty fields with bad names
+        bad.fields <- which(is.na(names(instr.settings)) |
+                              names(instr.settings) %in% c("NA", ""))
+        if (length(bad.fields)) {
+          instr.settings <- instr.settings[-bad.fields]
+        }
       } else {
         instr.settings <- list(integ.time = NA_real_,
                                tot.time = NA_real_,
                                num.scans = NA_integer_,
                                rel.signal = NA_real_)
       }
+      # very old records lack class attribute
       if (!inherits(instr.settings, "instr_settings") &&
           !inherits(instr.settings[[1]], "instr_settings")) {
         class(instr.settings) <- c("instr_settings", class(instr.settings))
@@ -1436,16 +1542,17 @@ getWhatMeasured.generic_mspct <- function(x,
 #'   \code{"where.measured"}, \code{"when.measured"}, \code{"what.measured"},
 #'   \code{"how.measured"}, \code{"comment"}, \code{"normalised"},
 #'   \code{"normalized"}, \code{"scaled"}, \code{"bswf.used"},
-#'   \code{"instr.desc"}, \code{"instr.settings"}, \code{solute.properties},
+#'   \code{"instr.desc"}, \code{"instr.sn"}, \code{solute.properties},
 #'   \code{"filter.properties"}, \code{"Tfr.type"}, \code{"Rfr.type"},
-#'   \code{"time.unit"}.
+#'   \code{"time.unit"}, \code{bswf.used}, \code{multiple.wl}. Invalid character
+#'   values are ignored with a warning.
 #'
 #' @note The order of the first two arguments is reversed in
 #'   \code{add_attr2tb()}, \code{when_measured2tb()}, \code{what_measured2tb()},
 #'   etc., compared to attribute query functions, such as \code{spct_metadata},
 #'   \code{when_measured()}, \code{what_measured()}, \code{how_measured()}, etc.
-#'   This is to allow the use of \code{add_attr2tb()} in 'pipes' to add metadata
-#'   to summaries computed at earlier steps in the pipe.
+#'   This is to allow the use of \code{add_attr2tb()} and related functions in
+#'   'pipes' to add metadata to summaries computed at earlier steps in the pipe.
 #'
 #' @family measurement metadata functions
 #'
@@ -1513,7 +1620,7 @@ add_attr2tb <- function(tb = NULL,
     names(col.names)[selector] <- col.names[selector]
   }
   if (unnest && any(c("geocode", "where.measured") %in% col.names)) {
-    # setdiff removes names from the vector!
+    # setdiff removes names from the vector to avoid duplicated columns!
     col.names <- col.names[!col.names %in% c("lat", "lon")]
   }
   # We walk the list of attributes adding columns
@@ -1521,101 +1628,132 @@ add_attr2tb <- function(tb = NULL,
   for (a in names(col.names)) {
     tb <-
       switch(a,
-             multiple.wl = multiple_wl2tb(mspct = mspct,
-                                          tb = tb,
-                                          col.names = col.names["multiple.wl"],
-                                          idx = idx),
-             lon = lon2tb(mspct = mspct,
+             multiple.wl =
+               multiple_wl2tb(mspct = mspct,
+                              tb = tb,
+                              col.names = col.names["multiple.wl"],
+                              idx = idx),
+             lon =
+               lon2tb(mspct = mspct,
+                      tb = tb,
+                      col.names = col.names["lon"],
+                      idx = idx),
+             lat =
+               lat2tb(mspct = mspct,
+                      tb = tb,
+                      col.names = col.names["lat"],
+                      idx = idx),
+             address =
+               address2tb(mspct = mspct,
                           tb = tb,
-                          col.names = col.names["lon"],
+                          col.names = col.names["address"],
                           idx = idx),
-             lat = lat2tb(mspct = mspct,
+             geocode =
+               geocode2tb(mspct = mspct,
                           tb = tb,
-                          col.names = col.names["lat"],
+                          col.names = col.names["geocode"],
                           idx = idx),
-             address = address2tb(mspct = mspct,
-                                  tb = tb,
-                                  col.names = col.names["address"],
-                                  idx = idx),
-             geocode = geocode2tb(mspct = mspct,
-                                  tb = tb,
-                                  col.names = col.names["geocode"],
-                                  idx = idx),
-             where.measured = geocode2tb(mspct = mspct,
-                                         tb = tb,
-                                         col.names = col.names["where.measured"],
-                                         idx = idx),
-             when.measured = when_measured2tb(mspct = mspct,
-                                              tb = tb,
-                                              col.names = col.names["when.measured"],
-                                              idx = idx),
-             what.measured = what_measured2tb(mspct = mspct,
-                                              tb = tb,
-                                              col.names = col.names["what.measured"],
-                                              idx = idx),
-             how.measured = how_measured2tb(mspct = mspct,
-                                            tb = tb,
-                                            col.names = col.names["how.measured"],
-                                            idx = idx),
-             comment = comment2tb(mspct = mspct,
-                                  tb = tb,
-                                  col.names = col.names["comment"],
-                                  idx = idx),
-             normalized = normalized2tb(mspct = mspct,
-                                        tb = tb,
-                                        col.names = col.names["normalized"],
-                                        idx = idx),
-             normalised = normalized2tb(mspct = mspct,
-                                        tb = tb,
-                                        col.names = col.names["normalised"],
-                                        idx = idx),
-             scaled = scaled2tb(mspct = mspct,
+             where.measured =
+               geocode2tb(mspct = mspct,
+                          tb = tb,
+                          col.names = col.names["where.measured"],
+                          idx = idx),
+             when.measured =
+               when_measured2tb(mspct = mspct,
                                 tb = tb,
-                                col.names = col.names["scaled"],
+                                col.names = col.names["when.measured"],
                                 idx = idx),
-             instr.desc = instr_desc2tb(mspct = mspct,
-                                        tb = tb,
-                                        col.names = col.names["instr.desc"],
-                                        idx = idx),
-             instr.settings = instr_settings2tb(mspct = mspct,
-                                                tb = tb,
-                                                col.names = col.names["instr.settings"],
-                                                idx = idx),
-             filter.properties = filter_properties2tb(mspct = mspct,
-                                                      tb = tb,
-                                                      col.names = col.names["filter.properties"],
-                                                      idx = idx),
-             solute.properties = solute_properties2tb(mspct = mspct,
-                                                      tb = tb,
-                                                      col.names = col.names["solute.properties"],
-                                                      idx = idx),
-             Tfr.type = Tfr_type2tb(mspct = mspct,
+             what.measured =
+               what_measured2tb(mspct = mspct,
+                                tb = tb,
+                                col.names = col.names["what.measured"],
+                                idx = idx),
+             how.measured =
+               how_measured2tb(mspct = mspct,
+                               tb = tb,
+                               col.names = col.names["how.measured"],
+                               idx = idx),
+             comment =
+               comment2tb(mspct = mspct,
+                          tb = tb,
+                          col.names = col.names["comment"],
+                          idx = idx),
+             normalized =
+               normalized2tb(mspct = mspct,
+                             tb = tb,
+                             col.names = col.names["normalized"],
+                             idx = idx),
+             normalised =
+               normalized2tb(mspct = mspct,
+                             tb = tb,
+                             col.names = col.names["normalised"],
+                             idx = idx),
+             scaled =
+               scaled2tb(mspct = mspct,
+                         tb = tb,
+                         col.names = col.names["scaled"],
+                         idx = idx),
+             instr.desc =
+               instr_desc2tb(mspct = mspct,
+                             tb = tb,
+                             col.names = col.names["instr.desc"],
+                             idx = idx),
+             instr.sn =
+               instr_desc2tb(mspct = mspct,
+                             tb = tb,
+                             fields = "spectrometer.sn",
+                             col.names = col.names["instr.sn"],
+                             idx = idx),
+             instr.settings =
+               instr_settings2tb(mspct = mspct,
+                                 tb = tb,
+                                 col.names = col.names["instr.settings"],
+                                 idx = idx),
+             filter.properties =
+               filter_properties2tb(mspct = mspct,
                                     tb = tb,
-                                    col.names = col.names["Tfr.type"],
+                                    col.names = col.names["filter.properties"],
                                     idx = idx),
-             Rfr.type = Rfr_type2tb(mspct = mspct,
+             solute.properties =
+               solute_properties2tb(mspct = mspct,
                                     tb = tb,
-                                    col.names = col.names["Rfr.type"],
+                                    col.names = col.names["solute.properties"],
                                     idx = idx),
-             time.unit = time_unit2tb(mspct = mspct,
-                                      tb = tb,
-                                      col.names = col.names["time.unit"],
-                                      idx = idx),
-             bswf.used = BSWF_used2tb(mspct = mspct,
-                                      tb = tb,
-                                      col.names = col.names["bswf.used"],
-                                      idx = idx),
+             Tfr.type =
+               Tfr_type2tb(mspct = mspct,
+                           tb = tb,
+                           col.names = col.names["Tfr.type"],
+                           idx = idx),
+             Rfr.type =
+               Rfr_type2tb(mspct = mspct,
+                           tb = tb,
+                           col.names = col.names["Rfr.type"],
+                           idx = idx),
+             time.unit =
+               time_unit2tb(mspct = mspct,
+                            tb = tb,
+                            col.names = col.names["time.unit"],
+                            idx = idx),
+             bswf.used =
+               BSWF_used2tb(mspct = mspct,
+                            tb = tb,
+                            col.names = col.names["bswf.used"],
+                            idx = idx),
              {warning("Skipping unknown metada name: ", a);
                tb})
   }
   if (unnest) {
     list.cols <- colnames(tb)[sapply(tb, is.list)]
-    # do not expand preexisting list columns
+    # do not expand pre-existing list columns
     list.cols <- setdiff(list.cols, tb.cols)
     # expand metadata fields into columns
     for (col in list.cols) {
-      # handles lists of lists or lists of dataframes
-      tb <- tidyr::unnest_wider(tb, tidyr::all_of(col))
+      # avoid duplicate names
+      tb[[col]] <- lapply(tb[[col]], function(x) x[setdiff(names(x), colnames(tb))])
+      # handles lists of lists or lists of data frames
+      tb <- tidyr::unnest_wider(tb,
+                                tidyr::all_of(col),
+                                names_repair = "check_unique")
     }
   }
   tb
@@ -1671,8 +1809,9 @@ geocode2tb <- function(mspct,
                        col.names = "geocode",
                        idx = "spct.idx") {
   stopifnot(length(col.names) == 1L)
-  where.tb <- getWhereMeasured(mspct, idx = idx, .bind.geocodes = FALSE)
-  names(where.tb)[2L] <- col.names
+  where.ls <- getWhereMeasured(mspct, idx = idx, .bind.geocodes = FALSE)
+  where.tb <- tibble::tibble(factor(names(where.ls)), where.ls)
+  names(where.tb) <- c(idx, col.names)
   if (is.null(tb)) {
     where.tb
   } else {
@@ -1689,7 +1828,9 @@ lonlat2tb <- function(mspct,
                       col.names = c("lon", "lat"),
                       idx = "spct.idx") {
   stopifnot(length(col.names) == 2L)
-  lonlat.tb <- getWhereMeasured(mspct, idx = idx)[c(idx, "lon", "lat")]
+  lonlat.tb <- getWhereMeasured(mspct,
+                                idx = idx,
+                                .bind.geocodes = TRUE)[c(idx, "lon", "lat")]
   names(lonlat.tb)[2L:3L] <- col.names
   if (is.null(tb)) {
     lonlat.tb
@@ -1707,7 +1848,9 @@ lon2tb <- function(mspct,
                    col.names = "lon",
                    idx = "spct.idx") {
   stopifnot(length(col.names) == 1L)
-  lon.tb <- getWhereMeasured(mspct, idx = idx)[c(idx, "lon")]
+  lon.tb <- getWhereMeasured(mspct,
+                             idx = idx,
+                             .bind.geocodes = TRUE)[c(idx, "lon")]
   names(lon.tb)[2L] <- col.names
   if (is.null(tb)) {
     lon.tb
@@ -1725,7 +1868,9 @@ lat2tb <- function(mspct,
                    col.names = "lat",
                    idx = "spct.idx") {
   stopifnot(length(col.names) == 1L)
-  lat.tb <- getWhereMeasured(mspct, idx = idx)[c(idx, "lat")]
+  lat.tb <- getWhereMeasured(mspct,
+                             idx = idx,
+                             .bind.geocodes = TRUE)[c(idx, "lat")]
   names(lat.tb)[2L] <- col.names
   if (is.null(tb)) {
     lat.tb
@@ -1743,7 +1888,9 @@ address2tb <- function(mspct,
                        col.names = "address",
                        idx = "spct.idx") {
   stopifnot(length(col.names) == 1L)
-  address.tb <- getWhereMeasured(mspct, idx = idx)[c(idx, "address")]
+  address.tb <- getWhereMeasured(mspct,
+                                 idx = idx,
+                                 .bind.geocodes = TRUE)[c(idx, "address")]
   names(address.tb)[2L] <- col.names
   if (is.null(tb)) {
     address.tb
@@ -1835,15 +1982,26 @@ scaled2tb <- function(mspct,
 
 #' @rdname add_attr2tb
 #'
+#' @param fields character vector or logical Names of fields to extract from
+#'   each descriptor record.
+#'
 #' @export
 #'
 instr_desc2tb <- function(mspct,
                           tb = NULL,
                           col.names = "instr.desc",
+                          fields = TRUE,
                           idx = "spct.idx") {
   stopifnot(length(col.names) == 1L)
-  # method not implemented yet for collections
-  l <- mslply(mspct = mspct, .fun = getInstrDesc)
+  # allow partial extraction
+  getInstrDescFields <- function(x, fields) {
+    z <- getInstrDesc(x)
+    selector <- ifelse(is.character(fields),
+                       intersect(names(z), fields),
+                       fields)
+    z[selector]
+  }
+  l <- mslply(mspct = mspct, .fun = getInstrDescFields, fields = fields)
   comment(l) <- NULL
   z <- list(instr.desc = l)
   z[[idx]] <- factor(names(l), levels = names(l))
@@ -1863,10 +2021,18 @@ instr_desc2tb <- function(mspct,
 instr_settings2tb <- function(mspct,
                               tb = NULL,
                               col.names = "instr.settings",
+                              fields = TRUE,
                               idx = "spct.idx") {
   stopifnot(length(col.names) == 1L)
-  # method not implemented yet for collections
-  l <- mslply(mspct = mspct, .fun = getInstrSettings)
+  # allow partial extraction
+  getInstrSettingsFields <- function(x, fields) {
+    z <- getInstrSettings(x)
+    selector <- ifelse(is.character(fields),
+                       intersect(names(z), fields),
+                       fields)
+    z[selector]
+  }
+  l <- mslply(mspct = mspct, .fun = getInstrSettingsFields, fields = fields)
   comment(l) <- NULL
   z <- list(instr.settings = l)
   z[[idx]] <- factor(names(l), levels = names(l))
@@ -1885,7 +2051,7 @@ instr_settings2tb <- function(mspct,
 #'
 BSWF_used2tb <- function(mspct,
                          tb = NULL,
-                         col.names = "BSWF.used",
+                         col.names = "bswf.used",
                          idx = "spct.idx") {
   stopifnot(length(col.names) == 1L)
   # method not implemented yet for collections

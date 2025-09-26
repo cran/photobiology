@@ -243,6 +243,8 @@ rbindspct <- function(l,
     where.measured <- getWhereMeasured(l[[idxs]])
     what.measured <- getWhatMeasured(l[[idxs]])
     how.measured <- getHowMeasured(l[[idxs]])
+    normalized <- getNormalized(l[[idxs]])
+    normalization <- getNormalization(l[[idxs]])
   } else {
     # we avoid duplicating the attributes when possible
     comments <- lapply(l[idxs], comment)
@@ -265,17 +267,17 @@ rbindspct <- function(l,
     when.measured <- lapply(l[idxs], getWhenMeasured)
     names(when.measured) <- names.spct[idxs]
 
-    where.measured <-
-      dplyr::bind_rows(lapply(l[idxs], getWhereMeasured), .id = idfactor)
+    where.measured <- lapply(l[idxs], getWhereMeasured)
     if (attrs.simplify &&
-          (all(is.na(where.measured$lon)) ||
-             length(unique(where.measured$lon)) == 1) &&
-          (all(is.na(where.measured$lat)) ||
-             length(unique(where.measured$lat)) == 1) &&
-          (all(is.na(where.measured$address)) ||
-             length(unique(where.measured$address)) == 1)) {
-      where.measured <- where.measured[1, ]
-    # do not remove columns by numeric index!!
+        (all(is.na(where.measured$lon)) ||
+         length(unique(where.measured$lon)) == 1) &&
+        (all(is.na(where.measured$lat)) ||
+         length(unique(where.measured$lat)) == 1) &&
+        (all(is.na(where.measured$address)) ||
+         length(unique(where.measured$address)) == 1)) {
+      where.measured <- where.measured[[1]]
+    } else {
+      names(where.measured) <- names.spct[idxs]
     }
 
     what.measured <- lapply(l[idxs], getWhatMeasured)
@@ -291,6 +293,12 @@ rbindspct <- function(l,
     } else {
       names(how.measured) <- names.spct[idxs]
     }
+
+    normalized <- lapply(l[idxs], getNormalized)
+    names(normalized) <- names.spct[idxs]
+
+    normalization <- lapply(l[idxs], getNormalization)
+    names(normalization) <- names.spct[idxs]
 
   }
 
@@ -332,7 +340,7 @@ rbindspct <- function(l,
               "passed to rbindspct")
       return(filter_spct())
     }
-    filter.descriptor <- 
+    filter.descriptor <-
       sapply(l, FUN = getFilterProperties, return.null = TRUE)
     # TODO merge it if possible
     # and then set
@@ -401,9 +409,6 @@ rbindspct <- function(l,
   if (any(scaled.input)) {
     attr(ans, "scaled") <- TRUE
   }
-  if (any(normalized.input)) {
-    attr(ans, "normalized") <- TRUE
-  }
   if (!is.null(comment.ans)) {
     comment(ans) <- comment.ans
   }
@@ -411,9 +416,14 @@ rbindspct <- function(l,
     setIdFactor(ans, idfactor)
   }
   setWhenMeasured(ans, when.measured)
-  setWhereMeasured(ans, where.measured)
+  attr(ans, "where.measured") <- where.measured
+ # setWhereMeasured(ans, where.measured, simplify = TRUE)
   setWhatMeasured(ans, what.measured)
   setHowMeasured(ans, how.measured)
+  attr(ans, "normalized") <- normalized
+  if (any(normalized.input)) {
+    attr(ans, "normalization") <- normalization
+  }
   if (!all(is.na(instr.desc))) {
     setInstrDesc(ans, instr.desc)
   }
@@ -760,7 +770,7 @@ subset.generic_spct <- function(x, subset, select, drop = FALSE, ...) {
     class(x) <- c(old.class, class(x))
     attr(x, "mspct.dim") <- c(length(x), 1L)
     attr(x, "mspct.byrow") <- old.byrow
-    attr(x, "mspct.version") <- 2
+    attr(x, "mspct.version") <- 3
     x
   }
 
@@ -795,7 +805,7 @@ is.member_class <- function(l, x) {
   class(x) <- c(old.class, class(x))
   attr(x, "mspct.dim") <- old.mspct.dim
   attr(x, "mspct.byrow") <- old.byrow
-  attr(x, "mspct.version") <- 2
+  attr(x, "mspct.version") <- 3
   x
 }
 
@@ -846,7 +856,7 @@ is.member_class <- function(l, x) {
   class(x) <- c(old.class, class(x))
   attr(x, "mspct.dim") <- dimension
   attr(x, "mspct.byrow") <- old.byrow
-  attr(x, "mspct.version") <- 2
+  attr(x, "mspct.version") <- 3
   x
 }
 

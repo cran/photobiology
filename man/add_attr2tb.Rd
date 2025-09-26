@@ -57,16 +57,23 @@ normalized2tb(mspct, tb = NULL, col.names = "normalized", idx = "spct.idx")
 
 scaled2tb(mspct, tb = NULL, col.names = "scaled", idx = "spct.idx")
 
-instr_desc2tb(mspct, tb = NULL, col.names = "instr.desc", idx = "spct.idx")
+instr_desc2tb(
+  mspct,
+  tb = NULL,
+  col.names = "instr.desc",
+  fields = TRUE,
+  idx = "spct.idx"
+)
 
 instr_settings2tb(
   mspct,
   tb = NULL,
   col.names = "instr.settings",
+  fields = TRUE,
   idx = "spct.idx"
 )
 
-BSWF_used2tb(mspct, tb = NULL, col.names = "BSWF.used", idx = "spct.idx")
+BSWF_used2tb(mspct, tb = NULL, col.names = "bswf.used", idx = "spct.idx")
 
 filter_properties2tb(
   mspct,
@@ -106,6 +113,9 @@ collection of spectra.}
 
 \item{unnest}{logical Flag controlling if metadata attributes that are lists
 of values should be returned in a list column or in separate columns.}
+
+\item{fields}{character vector or logical Names of fields to extract from
+each descriptor record.}
 }
 \value{
 A \code{data.frame} or a \code{tibble} With the metadata attributes
@@ -136,17 +146,18 @@ Each attribute is by default copied to a column in a \code{tibble}
   \code{"where.measured"}, \code{"when.measured"}, \code{"what.measured"},
   \code{"how.measured"}, \code{"comment"}, \code{"normalised"},
   \code{"normalized"}, \code{"scaled"}, \code{"bswf.used"},
-  \code{"instr.desc"}, \code{"instr.settings"}, \code{solute.properties},
+  \code{"instr.desc"}, \code{"instr.sn"}, \code{solute.properties},
   \code{"filter.properties"}, \code{"Tfr.type"}, \code{"Rfr.type"},
-  \code{"time.unit"}.
+  \code{"time.unit"}, \code{bswf.used}, \code{multiple.wl}. Invalid character
+  values are ignored with a warning.
 }
 \note{
 The order of the first two arguments is reversed in
   \code{add_attr2tb()}, \code{when_measured2tb()}, \code{what_measured2tb()},
   etc., compared to attribute query functions, such as \code{spct_metadata},
   \code{when_measured()}, \code{what_measured()}, \code{how_measured()}, etc.
-  This is to allow the use of \code{add_attr2tb()} in 'pipes' to add metadata
-  to summaries computed at earlier steps in the pipe.
+  This is to allow the use of \code{add_attr2tb()} and related functions in
+  'pipes' to add metadata to summaries computed at earlier steps in the pipe.
 }
 \examples{
 # Add attributes to irradiance

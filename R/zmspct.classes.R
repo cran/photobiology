@@ -158,7 +158,7 @@ generic_mspct <- function(l = NULL,
   if (length(l) > 0 && is.null(names(l))) {
     attr(l, "names") <- paste("spct", seq_along(l), sep = "_")
   }
-  attr(l, "mspct.version") <- 2
+  attr(l, "mspct.version") <- 3
 
   dim(l) <- dim
   attr(l, "mspct.byrow") <- as.logical(byrow)
@@ -1870,7 +1870,7 @@ subset2mspct <- function(x,
     member.constr <- paste("as", member.class, sep = ".")
     collection.constr <- collection.class
     if (is.any_spct(x) && getMultipleWl(x) == 1) {
-      # nothing to subset
+      # one spectrum, nothing to subset
       if (!is.null(idx.var) && !is.na(idx.var) && idx.var %in% names(x)) {
         spct.name <- x[[idx.var]][1]
       } else {
@@ -1880,6 +1880,7 @@ subset2mspct <- function(x,
       margs <- list(l = l, ncol = ncol, byrow = byrow)
       z <- do.call(collection.constr, margs)
     } else {
+      # spectra in long form
       if (is.null(idx.var) || is.na(idx.var)) {
         idx.var <- getIdFactor(x)
         # handle objects created with old versions of 'photobiology'
@@ -1904,6 +1905,18 @@ subset2mspct <- function(x,
         groups <- unique(x[[idx]])
       }
       l <- list()
+      if (!is.any_spct(x)) {
+        normalized <- FALSE
+      } else {
+        normalized <- getNormalized(x)
+      }
+      if (length(normalized) == 1) {
+        normalized <- as.list(rep(normalized, length(groups)))
+        names(normalized) <- groups
+      }
+      if (any(as.logical(unlist(normalized, use.names = FALSE)))) {
+        normalization <- getNormalization(x)
+      }
       for (grp in groups) {
         slice <- subset(x, x[[idx]] == grp)
         if (drop.idx) {
@@ -1915,6 +1928,10 @@ subset2mspct <- function(x,
         args <- list(x = slice)
         args.ellipsis <- list(...)
         l[[grp]] <- do.call(member.constr, c(args, args.ellipsis))
+        attr(l[[grp]], "normalized") <- normalized[[grp]]
+        if (normalized[[grp]]) {
+          attr(l[[grp]], "normalization") <- normalization[[grp]]
+        }
       }
       margs <- list(l = l, ncol = ncol, byrow = byrow)
       z <- do.call(collection.constr, margs)
@@ -1928,9 +1945,6 @@ subset2mspct <- function(x,
       }
       if (is_scaled(x)) {
         z <- msmsply(z, setScaled, scaled = TRUE)
-      }
-      if (is_normalized(x)) {
-        z <- msmsply(z, setNormalized, norm = TRUE)
       }
       if (member.class == "source_spct" && is_effective(x)) {
         bswf.used <- getBSWFUsed(x)
@@ -1952,8 +1966,9 @@ subset2mspct <- function(x,
       when.measured <- getWhenMeasured(x)
       what.measured <- getWhatMeasured(x)
       how.measured <- getHowMeasured(x)
-      # these methods return a data.frame
-      where.measured <- getWhereMeasured(x)
+      # these methods return a data.frame or a list of data frames
+      where.measured <-
+        getWhereMeasured(x, .bind.geocodes = FALSE, simplify = TRUE)
       # these methods may return an empty list
       instr.desc <- getInstrDesc(x)
       instr.settings <- getInstrSettings(x)
@@ -1966,8 +1981,10 @@ subset2mspct <- function(x,
         solute.properties <- list()
       }
       for (i in seq(along.with = z)) {
+
         if (!all(is.na(when.measured))) {
-          if (is.list(when.measured) && length(when.measured) == length(groups)) {
+          if (is.list(when.measured) &&
+              length(when.measured) == length(groups)) {
             z[[i]] <- setWhenMeasured(z[[i]], when.measured[[i]])
           } else {
             z[[i]] <- setWhenMeasured(z[[i]], when.measured)
@@ -1975,8 +1992,22 @@ subset2mspct <- function(x,
         } else {
           z[[i]] <- setWhenMeasured(z[[i]], NULL)
         }
+
+        if (!all(is.na(where.measured))) {
+          if (is.list(where.measured) &&
+              length(where.measured) == length(groups) &&
+              !all(c("lon", "lat") %in% names(where.measured))) {
+            z[[i]] <- setWhereMeasured(z[[i]], where.measured[[i]])
+          } else {
+            z[[i]] <- setWhereMeasured(z[[i]], where.measured)
+          }
+        } else {
+          z[[i]] <- setWhereMeasured(z[[i]], NULL)
+        }
+
         if (!all(is.na(what.measured))) {
-          if (is.list(what.measured) && length(what.measured) == length(groups)) {
+          if (is.list(what.measured) &&
+              length(what.measured) == length(groups)) {
             z[[i]] <- setWhatMeasured(z[[i]], what.measured[[i]])
           } else {
             z[[i]] <- setWhatMeasured(z[[i]], what.measured)
@@ -1984,8 +2015,10 @@ subset2mspct <- function(x,
         } else {
           z[[i]] <- setWhatMeasured(z[[i]], NULL)
         }
+
         if (!all(is.na(how.measured))) {
-          if (is.list(how.measured) && length(how.measured) == length(groups)) {
+          if (is.list(how.measured) &&
+              length(how.measured) == length(groups)) {
             z[[i]] <- setHowMeasured(z[[i]], how.measured[[i]])
           } else {
             z[[i]] <- setHowMeasured(z[[i]], how.measured)
@@ -1993,6 +2026,7 @@ subset2mspct <- function(x,
         } else {
           z[[i]] <- setHowMeasured(z[[i]], NULL)
         }
+
         if (length(instr.desc) > 0) {
           if (is.list(instr.desc) &&
               !inherits(instr.desc, "instr_desc") &&
@@ -2004,6 +2038,7 @@ subset2mspct <- function(x,
         } else {
           z[[i]] <- setInstrDesc(z[[i]], NULL)
         }
+
         if (length(instr.settings) > 0) {
           if (is.list(instr.settings) &&
               !inherits(instr.settings, "instr_setting") &&
@@ -2026,6 +2061,7 @@ subset2mspct <- function(x,
         } else {
           z[[i]] <- setFilterProperties(z[[i]], NULL, verbose = FALSE)
         }
+
         if (length(solute.properties) > 0) {
           if (is.list(solute.properties) &&
               !inherits(solute.properties, "solute_properties") &&
@@ -2038,7 +2074,6 @@ subset2mspct <- function(x,
           z[[i]] <- setSoluteProperties(z[[i]], NULL, verbose = FALSE)
         }
       }
-      z <- setWhereMeasured(z, where.measured)
     }
 
     z
