@@ -1,8 +1,8 @@
 Package: photobiology
 Type: Package
 Title: Photobiological Calculations
-Version: 0.14.0
-Date: 2025-09-26
+Version: 0.14.1
+Date: 2026-01-01
 Authors@R: 
    c(
     person("Pedro J.", "Aphalo", email = "pedro.aphalo@helsinki.fi", role = c("aut", "cre"), comment = c(ORCID = "0000-0003-3385-972X")),
@@ -37,7 +37,7 @@ Encoding: UTF-8
 RoxygenNote: 7.3.3
 VignetteBuilder: knitr
 NeedsCompilation: no
-Packaged: 2025-09-25 21:38:24 UTC; Aphalo
+Packaged: 2026-01-08 21:11:34 UTC; aphalo
 Author: Pedro J. Aphalo [aut, cre] (ORCID:
     <https://orcid.org/0000-0003-3385-972X>),
   Titta K. Kotilainen [ctb] (ORCID:
@@ -45,4 +45,4 @@ Author: Pedro J. Aphalo [aut, cre] (ORCID:
   Glenn Davis [ctb],
   Agnese Fazio [ctb]
 Repository: CRAN
-Date/Publication: 2025-09-26 22:50:18 UTC
+Date/Publication: 2026-01-10 07:50:48 UTC

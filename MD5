@@ -1,6 +1,6 @@
-528adc36983982538e31c7b8eb44615b *DESCRIPTION
+2c6da71fc4e3e12042a54dbc8163a99a *DESCRIPTION
 ef52bf857c406e2e86a7f13158e5ae48 *NAMESPACE
-b056702e800bd05f58d0fc48fbf7beb1 *NEWS.md
+3968daf9ec2bacfb85c6fe3da30b83d4 *NEWS.md
 cce0ff6957935ab2e6ef3d836bb70b1c *R/NDxI.R
 b166e060dd64635e89b504270a56ea72 *R/as.energy.r
 ad1d7215db3c04a126faf6bca394913b *R/as.quantum.mol.r
@@ -119,10 +119,10 @@ f9b7266f1da473e91e04221a8a282dab *R/w.length2rgb.r
 0f275798ae6a503b8830d51560255369 *R/waveband.new.r
 981f6264c846c8414f6040574db170a0 *R/waveband.ratio.r
 d9f07ea63b4fe0acfa02abb3ce747cc6 *R/wl-conversions.R
-d056f692d18e5e8a068b042bae84cec7 *R/zmspct.classes.R
-1d5a1b49a963708829103dd2d36c7254 *README.md
-9d40159f50a5fc9949cbfe95a2884126 *build/partial.rdb
-d14a6e2755e651ec8a66fc377cc072bf *build/vignette.rds
+051fcbde363b9eb6ee5e0346f1aa5948 *R/zmspct.classes.R
+36bbbc1078afa8fca41bdc4fcb319731 *README.md
+d54042561b90aafd8a9a202ea63e1e4b *build/partial.rdb
+97bddb8cc816fb85eac4ae0d8e8cdc51 *build/vignette.rds
 9c55425c03e310d87a7dfade96177182 *data/A.illuminant.spct.rda
 e21700d4bbfeb503674e647927b730c1 *data/D2-FEL-constants.rda
 f633e5092e75408b0e026ee21fbe62a9 *data/D50.illuminant.spct.rda
@@ -150,10 +150,10 @@ c7b28d93718e0d3509e298add5fe1db8 *data/white-led-spct.rda
 495dc6604fdb7455e0dee314a83a300a *inst/CITATION
 eaa76a561f7f77a04c16281c188b401d *inst/doc/userguide-0-r4p-introduction.R
 53bf59ee32816c99af89e768b2063276 *inst/doc/userguide-0-r4p-introduction.Rmd
-1e1abdbee11c490c29d11bd8848c2b6d *inst/doc/userguide-0-r4p-introduction.html
+ed3dd4aa4ad593862ca7ffcdd200d9d7 *inst/doc/userguide-0-r4p-introduction.html
 45e0713fc14a34ba30581d3159b2ab82 *inst/doc/userguide-1-radiation.R
 4296664326aae78d62300e8e9ee1c530 *inst/doc/userguide-1-radiation.Rmd
-7a172f83e877feb0c005bd8634784bfe *inst/doc/userguide-1-radiation.html
+58d8a6644597622029c51cfbb8cf613f *inst/doc/userguide-1-radiation.html
 a1561ccadc40df0b937b10134d2abd91 *man/A.illuminant.spct.Rd
 412248f456b5fefbf8edb47dde1d5e9c *man/A2T.Rd
 f0504c26b285a0e7f2ce051253fda501 *man/Afr2T.Rd
