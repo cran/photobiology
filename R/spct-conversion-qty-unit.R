@@ -86,16 +86,7 @@ A2T.filter_spct <- function(x, action = "add", byref = FALSE, ...) {
   }
 
   if (norm.action == "update") {
-    # apply the pre-existing normalization criteria
-    old.norm <- old.normalization.ls$norm.type
-    if (old.norm[1] == "wavelength") {
-      old.norm <- old.normalization.ls$norm.wl
-    }
-    old.range <- old.normalization.ls$norm.range
-    x <- normalize(x,
-                   range = old.range,
-                   norm = old.norm,
-                   keep.scaling = TRUE)
+    x <- restore_normalization(x, old.normalization.ls)
   }
 
   if (byref && is.name(name)) { # this is a temporary safe net
@@ -125,7 +116,7 @@ A2T.filter_mspct <- function(x,
                              .paropts = NULL) {
   if (!length(x)) return(x)
   msmsply(x,
-          .fun = A2T,
+          .fun = A2T.filter_spct,
           action = action,
           byref = byref,
           ...,
@@ -271,16 +262,7 @@ T2A.filter_spct <- function(x,
   }
 
   if (norm.action == "update") {
-    # apply the pre-existing normalization criteria
-    old.norm <- old.normalization.ls$norm.type
-    if (old.norm[1] == "wavelength") {
-      old.norm <- old.normalization.ls$norm.wl
-    }
-    old.range <- old.normalization.ls$norm.range
-    x <- normalize(x,
-                   range = old.range,
-                   norm = old.norm,
-                   keep.scaling = TRUE)
+    x <- restore_normalization(x, old.normalization.ls)
   }
 
   if (byref && is.name(name)) {  # this is a temporary safe net
@@ -316,7 +298,7 @@ T2A.filter_mspct <- function(x,
                              .paropts = NULL) {
   if (!length(x)) return(x)
   msmsply(x,
-          .fun = T2A,
+          .fun = T2A.filter_spct,
           action = action,
           byref = byref,
           clean = clean,
@@ -502,16 +484,7 @@ T2Afr.filter_spct <- function(x,
   }
 
   if (norm.action == "update") {
-    # apply the pre-existing normalization criteria
-    old.norm <- old.normalization.ls$norm.type
-    if (old.norm[1] == "wavelength") {
-      old.norm <- old.normalization.ls$norm.wl
-    }
-    old.range <- old.normalization.ls$norm.range
-    x <- normalize(x,
-                   range = old.range,
-                   norm = old.norm,
-                   keep.scaling = TRUE)
+    x <- restore_normalization(x, old.normalization.ls)
   }
 
   if (byref && is.name(name)) {  # this is a temporary safe net
@@ -548,7 +521,7 @@ T2Afr.filter_mspct <- function(x,
                                .paropts = NULL) {
   if (!length(x)) return(x)
   msmsply(x,
-          .fun = T2Afr,
+          .fun = T2Afr.filter_spct,
           action = action,
           byref = byref,
           clean = FALSE,
@@ -701,17 +674,8 @@ Afr2T.filter_spct <- function(x,
     x[["A"]] <- NULL
   }
 
- if (norm.action == "update") {
-    # apply the pre-existing normalization criteria
-    old.norm <- old.normalization.ls$norm.type
-    if (old.norm[1] == "wavelength") {
-      old.norm <- old.normalization.ls$norm.wl
-    }
-    old.range <- old.normalization.ls$norm.range
-    x <- normalize(x,
-                   range = old.range,
-                   norm = old.norm,
-                   keep.scaling = TRUE)
+  if (norm.action == "update") {
+    x <- restore_normalization(x, old.normalization.ls)
   }
 
   if (byref && is.name(name)) {  # this is a temporary safe net
@@ -748,7 +712,7 @@ Afr2T.filter_mspct <- function(x,
                                .paropts = NULL) {
   if (!length(x)) return(x)
   msmsply(x,
-          .fun = T2Afr,
+          .fun = T2Afr.filter_spct,
           action = action,
           byref = byref,
           clean = FALSE,
@@ -934,16 +898,7 @@ e2q.source_spct <- function(x,
   }
 
   if (norm.action == "update") {
-    # apply the pre-existing normalization criteria
-    old.norm <- unique(old.normalization.ls$norm.type)
-    if (old.norm[1] == "wavelength") {
-      old.norm <- unique(old.normalization.ls$norm.wl)
-    }
-    old.range <- old.normalization.ls$norm.range
-    x <- normalize(x,
-                   range = old.range,
-                   norm = old.norm,
-                   keep.scaling = TRUE)
+    x <- restore_normalization(x, old.normalization.ls)
   }
 
   if (byref && is.name(name)) {  # this is a temporary safe net
@@ -958,7 +913,7 @@ e2q.source_spct <- function(x,
 #' @export
 #'
 e2q.response_spct <- function(x,
-                              action = "add",
+                              action = NULL,
                               byref = FALSE,
                               ...) {
   if (byref) {
@@ -997,16 +952,7 @@ e2q.response_spct <- function(x,
   }
 
   if (norm.action == "update") {
-    # apply the pre-existing normalization criteria
-    old.norm <- unique(old.normalization.ls$norm.type)
-    if (old.norm[1] == "wavelength") {
-      old.norm <- unique(old.normalization.ls$norm.wl)
-    }
-    old.range <- old.normalization.ls$norm.range
-    x <- normalize(x,
-                   range = old.range,
-                   norm = old.norm,
-                   keep.scaling = TRUE)
+    x <- restore_normalization(x, old.normalization.ls)
   }
 
   if (byref && is.name(name)) {  # this is a temporary safe net
@@ -1029,14 +975,14 @@ e2q.response_spct <- function(x,
 #' @export
 #'
 e2q.source_mspct <- function(x,
-                             action = "add",
+                             action = NULL,
                              byref = FALSE,
                              ...,
                              .parallel = FALSE,
                              .paropts = NULL) {
   if (!length(x)) return(x)
   msmsply(x,
-          .fun = e2q,
+          .fun = e2q.source_spct,
           action = action,
           byref = byref,
           ...,
@@ -1049,14 +995,14 @@ e2q.source_mspct <- function(x,
 #' @export
 #'
 e2q.response_mspct <- function(x,
-                               action = "add",
+                               action = NULL,
                                byref = FALSE,
                                ...,
                                .parallel = FALSE,
                                .paropts = NULL) {
   if (!length(x)) return(x)
   msmsply(x,
-          .fun = e2q,
+          .fun = e2q.response_spct,
           action = action,
           byref = byref,
           ...,
@@ -1142,16 +1088,7 @@ q2e.source_spct <- function(x,
   }
 
   if (norm.action == "update") {
-    # apply the pre-existing normalization criteria
-    old.norm <- unique(old.normalization.ls$norm.type)
-    if (old.norm[1] == "wavelength") {
-      old.norm <- unique(old.normalization.ls$norm.wl)
-    }
-    old.range <- old.normalization.ls$norm.range
-    x <- normalize(x,
-                   range = old.range,
-                   norm = old.norm,
-                   keep.scaling = TRUE)
+    x <- restore_normalization(x, old.normalization.ls)
   }
 
   if (byref && is.name(name)) {  # this is a temporary safe net
@@ -1205,16 +1142,7 @@ q2e.response_spct <- function(x,
   }
 
   if (norm.action == "update") {
-    # apply the pre-existing normalization criteria
-    old.norm <- old.normalization.ls$norm.type
-    if (old.norm[1] == "wavelength") {
-      old.norm <- old.normalization.ls$norm.wl
-    }
-    old.range <- old.normalization.ls$norm.range
-    x <- normalize(x,
-                   range = old.range,
-                   norm = old.norm,
-                   keep.scaling = TRUE)
+    x <- restore_normalization(x, old.normalization.ls)
   }
 
   if (byref && is.name(name)) {  # this is a temporary safe net
@@ -1244,7 +1172,7 @@ q2e.source_mspct <- function(x,
                              .paropts = NULL) {
   if (!length(x)) return(x)
   msmsply(x,
-          q2e,
+          q2e.source_spct,
           action = action,
           byref = byref,
           ...,
@@ -1265,7 +1193,7 @@ q2e.response_mspct <- function(x,
                                .paropts = NULL) {
   if (!length(x)) return(x)
   msmsply(x,
-          q2e,
+          q2e.response_spct,
           action = action,
           byref = byref,
           ...,

@@ -80,6 +80,9 @@ msdply <- function(mspct, .fun, ..., idx = NULL, col.names = NULL,
                    .paropts = .paropts)
 
   f.name <- as.character(substitute(.fun))
+  f.name <- gsub(paste0("\\.source_spct$|\\.response_spct$|\\.filter_spct$|",
+                        "\\.reflector_spct$|\\.generic_spct$|\\.solute_spct$"),
+                 "", x = f.name)
 
   if (f.name %in% c("min", "max", "range",
                     "min_wl", "max_wl", "range_wl",
@@ -174,8 +177,11 @@ mslply <- function(mspct, .fun, ...,
   names(z) <- names(mspct)
 
   f.name <- as.character(substitute(.fun))
+  f.name <- gsub(paste0("\\.source_spct$|\\.response_spct$|\\.filter_spct$|",
+                        "\\.reflector_spct$|\\.generic_spct$|\\.solute_spct$"),
+                 "", x = f.name)
 
-  comment(z) <- 
+  comment(z) <-
     paste("Applied function: '", f.name, "'.\n", sep = "", comment(mspct))
 
   z
@@ -212,6 +218,9 @@ msaply <- function(mspct, .fun, ..., .drop = TRUE,
                    .paropts = .paropts)
 
   f.name <- as.character(substitute(.fun))
+  f.name <- gsub(paste0("\\.source_spct$|\\.response_spct$|\\.filter_spct$|",
+                        "\\.reflector_spct$|\\.generic_spct$|\\.solute_spct$"),
+                 "", x = f.name)
 
   comment(z) <-
     paste("Applied function: '", f.name, "'.\n", sep = "", comment(mspct))
